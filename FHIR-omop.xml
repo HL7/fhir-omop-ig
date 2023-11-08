@@ -4,6 +4,7 @@
 <artifactPageExtension value="-definitions"/>
 <artifactPageExtension value="-examples"/>
 <artifactPageExtension value="-mappings"/>
+<artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
 <artifact id="StructureDefinition/PersonTable" key="StructureDefinition-PersonTable" name="Person OMOP Table"/>
 <page key="NA" name="(NA)"/>
 <page key="many" name="(many)"/>

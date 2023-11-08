@@ -1,14 +1,16 @@
 /// url = 'http://hl7.org/fhir/uv/omop/StructureMap/PersonMap'
 /// name = 'PersonMap'
 /// title = 'Mapping Patient resource to Person OMOP Domain'
-/// experimental = true
-/// status = 'active'
+/// status = 'draft'
 
-uses "http://hl7.org/fhir/StructureDefinition/patient" alias Patient as source
+uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/PersonTable" alias PersonTable as target
 
 group Person(source src: Patient, target tgt : PersonTable) {
-	src.id -> tgt.person_source_value;
-	src.gender -> tgt.gender_source_value;
-	src.birthDate as bdSrc -> tgt.birth_datetime = bdSrc, tgt.year_of_birth = bdSrc.substring(0,4), tgt.month_of_birth = bdSrc.substring(5,2), tgt.date_of_birth = bdSrc.substring(8,2);
+	src.id as id -> tgt.person_source_value = cast(id, "string");
+	src.gender as gender -> tgt.gender_source_value = cast(gender, "string");
+	src.birthDate as bdSrc -> tgt.birth_datetime = bdSrc, 
+		tgt.year_of_birth = evaluate(bdSrc, substring(0,4)), 
+		tgt.month_of_birth = evaluate(bdSrc, substring(5,2)), 
+		tgt.day_of_birth = evaluate(bdSrc, substring(8,2));
 }
