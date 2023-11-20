@@ -4,7 +4,7 @@
 /// status = 'draft'
 
 uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as source
-uses "http://hl7.org/fhir/uv/omop/StructureDefinition/PersonTable" alias PersonTable as target
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Person" alias PersonTable as target
 
 group Person(source src: Patient, target tgt : PersonTable) {
 	src.id as id -> tgt.person_source_value = cast(id, "string");
