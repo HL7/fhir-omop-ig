@@ -5,11 +5,15 @@
 <artifactPageExtension value="-examples"/>
 <artifactPageExtension value="-mappings"/>
 <artifact id="StructureDefinition/CareSite" key="StructureDefinition-CareSite" name="CareSite OMOP Table"/>
+<artifact id="StructureDefinition/ConditionOccurrence" key="StructureDefinition-ConditionOccurrence" name="Condition Occurrence OMOP Table"/>
+<artifact id="StructureDefinition/DrugOccurrence" key="StructureDefinition-DrugOccurrence" name="Drug Occurrence OMOP Table"/>
 <artifact id="StructureDefinition/Location" key="StructureDefinition-Location" name="Location OMOP Table"/>
 <artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
 <artifact id="StructureDefinition/ObservationPeriod" key="StructureDefinition-ObservationPeriod" name="Observation Period OMOP Table"/>
 <artifact id="StructureDefinition/Person" key="StructureDefinition-Person" name="Person OMOP Table"/>
+<artifact id="StructureDefinition/ProcedureOccurrence" key="StructureDefinition-ProcedureOccurrence" name="Procedure Occurrence OMOP Table"/>
 <artifact id="StructureDefinition/Provider" key="StructureDefinition-Provider" name="Provider OMOP Table"/>
+<artifact id="StructureDefinition/VisitDetail" key="StructureDefinition-VisitDetail" name="Visit Detail OMOP Table"/>
 <artifact id="StructureDefinition/VisitOccurrence" key="StructureDefinition-VisitOccurrence" name="Visit Occurrence OMOP Table"/>
 <page key="NA" name="(NA)"/>
 <page key="many" name="(many)"/>
