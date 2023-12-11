@@ -19,7 +19,7 @@ The OHDSI community has experienced rapid growth and adoption of its work worldw
 #### **The OMOP CDM**
 The OMOP Common Data Model (CDM) is the foundation of the OHDSI analytic technical infrastructure. Researchers in OHDSI actively use the OMOP Common Data Model as a means to standardize and align observational health data from a wide-variety of sources supporting evidence-generating analyses. As one of the foundational work-products of the OHDSI community, the OMOP CDM has a working group dedicated to its evolution supporting Real-World research use cases provided by OHDSI community members using Observational Data.  The OMOP CDM is actively maintained, supported and available in the public domain under an Apache 2.0 license. 
 
-\(IMAGE OF OMOP CDM v5.4) \[4]
+![OMOP Common Data Model v5.4](/input/pagecontent/cdm54.png "The OMOP v5.4 Common Data Model") \[4]
 
 Observational health data transformed to the OMOP CDM  utilize the alignment afforded by standardization  to achieve consistent and reliable data quality and support analytics across geographically divergent communities at-scale. A recently published study that surveyed leading US research institutions (Clinical and Translational Science Awards (CTSA) Program members, regarding their use of data sharing tools and programs, 94% of the 50 individual respondents indicated they used at least one OMOP-based system. \[5]
 
