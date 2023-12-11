@@ -1,5 +1,5 @@
 ### Background
-#### Background on OHDSI 
+#### **Background on OHDSI**
 Observational Health Data Sciences and Informatics, or OHDSI is an international open-science community that aims to improve health by empowering the community to collaboratively generate the evidence that promotes better health decisions and better care. \[1] OHDSI emerged as a result of the Observational Medical Outcomes Partnership (OMOP),a public-private partnership composed of members from industry, government, and academia,established to inform the appropriate use of observational healthcare databases for studying the effects of medical products, active from 2008 to 2013.\[2] OMOP successfully achieved its aims to:
 
 1. Conduct methodological research to empirically evaluate the performance of various analytical methods on their ability to identify true associations and avoid false findings
@@ -7,7 +7,7 @@ Observational Health Data Sciences and Informatics, or OHDSI is an international
 3. Establish a shared resource so that the broader research community can collaboratively advance the science \[3]
 
 A primary driver for OHDSI today is the value proposition that data generated as a by-product of care delivery can be analyzed to produce real-world evidence, which in turn could be disseminated across healthcare systems to inform clinical practice. 
-(IMAGE OF WORLD MAP)
+![OHDSI Collaborators Worldwide] (/OHDSI Map of collaborators_GlobalSymposium Oct2023.png "OHDSI Map of Collaborators")
 
 The OHDSI community has experienced rapid growth and adoption of its work worldwide, totalling more than 3700 collaborators at the end of 2023.   Among its activities, OHDSI supports research collaboration via utilization of  
 - The OMOP Common Data Model and Standard Vocabularies
@@ -15,14 +15,14 @@ The OHDSI community has experienced rapid growth and adoption of its work worldw
 - Development of advanced Research and Data Science implementation Methods 
 - Clinical evidence generation and dissemination
 
-#### The OMOP CDM
+#### **The OMOP CDM**
 The OMOP Common Data Model (CDM) is the foundation of the OHDSI analytic technical infrastructure. Researchers in OHDSI actively use the OMOP Common Data Model as a means to standardize and align observational health data from a wide-variety of sources supporting evidence-generating analyses. As one of the foundational work-products of the OHDSI community, the OMOP CDM has a working group dedicated to its evolution supporting Real-World research use cases provided by OHDSI community members using Observational Data.  The OMOP CDM is actively maintained, supported and available in the public domain under an Apache 2.0 license. 
 
 \(IMAGE OF OMOP CDM v5.4) \[4]
 
 Observational health data transformed to the OMOP CDM  utilize the alignment afforded by standardization  to achieve consistent and reliable data quality and support analytics across geographically divergent communities at-scale. A recently published study that surveyed leading US research institutions (Clinical and Translational Science Awards (CTSA) Program members, regarding their use of data sharing tools and programs, 94% of the 50 individual respondents indicated they used at least one OMOP-based system. \[5]
 
-#### OMOP + FHIR Interoperability
+#### **OMOP + FHIR Interoperability**
 As stated above, OMOP has widespread deployment internationally, utilized by a research community with a track record for generating high-value evidence based on observational data and is synergistic with FHIR..  HL7 has been the world’s preeminent health data standards developer for decades. The FHIR product family’s 12+ year history of rapid adoption clearly indicates it’s the world’s most important interoperability platform for health data in our time. 
 
 FHIR benefits from ongoing enhancements through the efforts of the HL7 Biomedical Research and Regulation (BR&R) Working Group and the Vulcan FHIR Accelerator supporting data exchange for real world data in observational and translational research. Whereas the FHIR accelerators and its user-community at-large are achieving enormous strides developing focused utilization of the standard in many key areas, FHIR developers do not aim to develop analytic methods that generate evidence at-scale as do members of the OHDSI community.  Rather, FHIR’s role in a research data ecosystem is provision of a platform capable of supporting lossless exchange of data, knowledge and other health artifacts via its numerous FHIR resources and compliant APIs. In contrast, the OMOP Common Data Model was designed to store observational data optimized for research analytics and for utilization by the OHDSI community using OMOP-compliant tools to generate novel research methods and discoveries improving health.
@@ -31,7 +31,7 @@ Establishing a standard set of OMOP + FHIR transformations for data originating 
 
 Research implementations using the OMOP CDM working in tandem with the data transport strengths that FHIR brings to the table will support accelerated adoption of research methods generated by the OHDSI community to organizations also using FHIR.  This will also advance interoperable utilization of clinical research data science methods using real world data that in turn, will support advanced data science methods in translational research and data model and workflows which can improve FHIR IGs. Without consistent utilization of OMOP + FHIR in research implementations, this kind of iterative and reflexive improvement in interoperability as well as evidence-generation would be difficult to achieve.
 
-#### Role of the Vulcan FHIR Accelerator
+#### **Role of the Vulcan FHIR Accelerator**
 The unique strategic strength the Vulcan community brings to this effort is through its diverse membership with representation from international academic, commercial, payor and government organizations. Projects of interest to Vulcan must meet certain criteria, particularly of interest are projects that link clinical care to clinical research. Vulcan projects should be:
 
 1. Unique, bridging existing gaps
@@ -46,7 +46,7 @@ All of these criteria pertain to the OMOP + FHIR collaboration, but specifically
 - a strategic consolidator of effort 
 - and is a use-case mediator, maximizing value to the broadest possible research constituency
 
-#### This Implementation Guide
+#### **This Implementation Guide**
 Of critical importance, and the aim of this publication, is the generation of a stable, reliable set of OMOP + FHIR transformations that will reduce implementation costs and increase the speed of ETL in projects for a core set of patient data. 
 
 As mentioned, there has been substantial previous work completed by many groups, though mostly in the OMOP to FHIR direction.  These transformations enable FHIR API access to OMOP repositories, which many international realms are defining.  The current work product is focused only on the reverse FHIR to OMOP transformations.
