@@ -7,7 +7,7 @@ Observational Health Data Sciences and Informatics, or OHDSI is an international
 3. Establish a shared resource so that the broader research community can collaboratively advance the science \[3]
 
 A primary driver for OHDSI today is the value proposition that data generated as a by-product of care delivery can be analyzed to produce real-world evidence, which in turn could be disseminated across healthcare systems to inform clinical practice. 
-![OHDSI Collaborators Worldwide] (input/pagecontent/OHDSI-Map-Oct2023.png "OHDSI Map of Collaborators")
+![OHDSI Collaborators Worldwide] (/input/pagecontent/OHDSI-Map-Oct2023.png "OHDSI Map of Collaborators")
 
 The OHDSI community has experienced rapid growth and adoption of its work worldwide, totalling more than 3700 collaborators at the end of 2023.   Among its activities, OHDSI supports research collaboration via utilization of  
 - The OMOP Common Data Model and Standard Vocabularies
