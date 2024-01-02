@@ -1,4 +1,4 @@
-Logical: DrugOccurrence
+Logical: DrugE
 Parent: Base
 Id: DrugOccurrence
 Characteristics: #can-be-target
