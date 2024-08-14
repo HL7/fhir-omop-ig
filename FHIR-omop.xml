@@ -5,14 +5,30 @@
 <artifactPageExtension value="-examples"/>
 <artifactPageExtension value="-mappings"/>
 <artifact id="StructureDefinition/CareSite" key="StructureDefinition-CareSite" name="CareSite OMOP Table"/>
+<artifact id="StructureDefinition/ConditionEra" key="StructureDefinition-ConditionEra" name="Condition Era OMOP Table"/>
 <artifact id="StructureDefinition/ConditionOccurrence" key="StructureDefinition-ConditionOccurrence" name="Condition Occurrence OMOP Table"/>
-<artifact id="StructureDefinition/DrugOccurrence" key="StructureDefinition-DrugOccurrence" name="Drug Occurrence OMOP Table"/>
+<artifact id="StructureDefinition/Cost" key="StructureDefinition-Cost" name="Cost OMOP Table"/>
+<artifact id="StructureDefinition/Death" key="StructureDefinition-Death" name="Death OMOP Table"/>
+<artifact id="StructureDefinition/DeviceExposure" key="StructureDefinition-DeviceExposure" name="Device Exposure OMOP Table"/>
+<artifact id="StructureDefinition/DoseEra" key="StructureDefinition-DoseEra" name="Dose Era OMOP Table"/>
+<artifact id="StructureDefinition/DrugEra" key="StructureDefinition-DrugEra" name="Drug Era OMOP Table"/>
+<artifact id="StructureDefinition/DrugExposure" key="StructureDefinition-DrugExposure" name="Drug Exposure OMOP Table"/>
+<artifact id="StructureDefinition/EpisodeEvent" key="StructureDefinition-EpisodeEvent" name="Episode Event OMOP Table"/>
+<artifact id="StructureDefinition/Episode" key="StructureDefinition-Episode" name="Episode OMOP Table"/>
+<artifact id="StructureDefinition/FactRelationship" key="StructureDefinition-FactRelationship" name="Fact Relationship OMOP Table"/>
 <artifact id="StructureDefinition/Location" key="StructureDefinition-Location" name="Location OMOP Table"/>
+<artifact id="StructureMap/ImmunizationMap" key="StructureMap-ImmunizationMap" name="Mapping Immunization resource to Drug Exposure OMOP Domain"/>
 <artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
+<artifact id="StructureDefinition/Measurement" key="StructureDefinition-Measurement" name="Measurement OMOP Table"/>
+<artifact id="StructureDefinition/NoteNLP" key="StructureDefinition-NoteNLP" name="Note NLP OMOP Table"/>
+<artifact id="StructureDefinition/Note" key="StructureDefinition-Note" name="Note OMOP Table"/>
+<artifact id="StructureDefinition/Observation" key="StructureDefinition-Observation" name="Observation OMOP Table"/>
 <artifact id="StructureDefinition/ObservationPeriod" key="StructureDefinition-ObservationPeriod" name="Observation Period OMOP Table"/>
+<artifact id="StructureDefinition/PayerPlanPeriod" key="StructureDefinition-PayerPlanPeriod" name="Payer Plan Period OMOP Table"/>
 <artifact id="StructureDefinition/Person" key="StructureDefinition-Person" name="Person OMOP Table"/>
 <artifact id="StructureDefinition/ProcedureOccurrence" key="StructureDefinition-ProcedureOccurrence" name="Procedure Occurrence OMOP Table"/>
 <artifact id="StructureDefinition/Provider" key="StructureDefinition-Provider" name="Provider OMOP Table"/>
+<artifact id="StructureDefinition/Specimen" key="StructureDefinition-Specimen" name="Specimen OMOP Table"/>
 <artifact id="StructureDefinition/VisitDetail" key="StructureDefinition-VisitDetail" name="Visit Detail OMOP Table"/>
 <artifact id="StructureDefinition/VisitOccurrence" key="StructureDefinition-VisitOccurrence" name="Visit Occurrence OMOP Table"/>
 <page key="NA" name="(NA)"/>

@@ -1,0 +1,38 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ImmunizationMap'
+/// name = 'ImmunizationMap'
+/// title = 'Mapping Immunization resource to Drug Exposure OMOP Domain'
+/// status = 'draft'
+
+uses "http://hl7.org/fhir/StructureDefinition/Immunization" alias Immunization as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugExposureTable as target
+
+group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
+	src.vaccineCode as s -> tgt then {
+		s.coding as sc -> tgt then {
+			sc.code -> tgt.drug_concept_id, tgt.drug_source_value, tgt.drug_source_concept_id;
+		};
+	};
+	src.patient as s -> tgt then {
+		s.reference -> tgt.person_id;
+		s.identifier as sid -> tgt then {
+			sid.value -> tgt.person_id;
+		};
+	};
+	src.doseQuantity as s -> tgt then {
+		s.value as s -> tgt.quantity = cast(s, "decimal");
+		s.code as s -> tgt.dose_unit_source_value = cast(s, "string");
+	};
+	src.route as s -> tgt then {
+		s.text as s -> tgt.route_source_value = cast(s, "string");
+		s.coding as sc -> tgt then {
+			sc.code -> tgt.route_concept_id, tgt.route_source_value;
+		};
+	};
+	src.occurrence : dateTime -> tgt.drug_exposure_start_date, tgt.drug_exposure_start_datetime, tgt.drug_exposure_end_date, tgt.drug_exposure_end_datetime;
+	src.encounter as s -> tgt then {
+		s.reference -> tgt.visit_occurrence_id;
+		s.identifier as sid -> tgt then {
+			sid.value -> tgt.visit_occurrence_id;
+		};
+	};
+}

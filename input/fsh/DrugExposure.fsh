@@ -1,8 +1,8 @@
-Logical: DrugE
+Logical: DrugExposure
 Parent: Base
-Id: DrugOccurrence
+Id: DrugExposure
 Characteristics: #can-be-target
-Title: "Drug Occurrence OMOP Table"
+Title: "Drug Exposure OMOP Table"
 Description: "This table captures records about the exposure to a Drug ingested or otherwise introduced into the body. A Drug is a biochemical substance formulated in such a way that when administered to a Person it will exert a certain biochemical effect on the metabolism. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Radiological devices ingested or applied locally do not count as Drugs."
 
 * drug_exposure_id 1..1 integer "Drug Exposure Identifier" "The unique key given to records of drug dispensings or administrations for a person. Refer to the ETL for how duplicate drugs during the same visit were handled."
