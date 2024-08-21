@@ -35,6 +35,7 @@
 <page key="many" name="(many)"/>
 <page key="artifacts" name="Artifacts Summary"/>
 <page key="background" name="Background"/>
+<page key="codemappings" name="Coded Field Mapping"/>
 <page key="index" name="Home"/>
 <page key="toc" name="Table of Contents"/>
 </specification>

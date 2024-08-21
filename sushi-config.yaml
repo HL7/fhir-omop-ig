@@ -27,22 +27,19 @@ extension:
     valueCode: brr
 
 pages:
- index.md:
-   title: Home
- background.md:
-   title: Background
-#   implementation.xml:
-#   examples.xml:
-#     title: Examples Overview
-#     simpleExamples.xml:
-#     complexExamples.xml:
-#
-#
+  index.md:
+    title: Home
+  background.md:
+    title: Background
+  codemappings.md:
+    title: Coded Field Mapping
 
 menu:
   Home: index.html
-  Artifacts: artifacts.html
   Background: background.html
+  Mapping Concepts:
+    Coded Fields: codemappings.html
+  Artifacts: artifacts.html
 
 #
 # ╭──────────────────────────────────────────SUSHI flags───────────────────────────────────────────╮
