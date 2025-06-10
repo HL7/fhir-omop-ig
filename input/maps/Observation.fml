@@ -4,13 +4,14 @@
 /// status = 'draft'
 
 uses "http://hl7.org/fhir/StructureDefinition/Observation" alias Observation as source
-uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTable 
-uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTable as target
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/FactRelationship" alias FactTable as target
 
-where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) group Measures(source src: Observation, target tgt : MeasureTable)
+where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) group Measures(source src : Observation, target tgt : MeasureTable)
     {
         src.id as id -> tgt.measurement_id = cast(id, "integer");
-        src.category as s -> tgt then {
+        src.code as s -> tgt then {
             s.coding as sc -> tgt then {
                 sc.code -> tgt.measurement_concept_id;
             };
@@ -27,6 +28,84 @@ where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.cod
 		    	sid.value -> tgt.visit_occurrence_id;
 		};
 	};
-
-
+        src.effectiveDateTime -> tgt.measurement_datetime, tgt.measurement_date = cast(effectiveInstant, "date");
+        src.effectiveInstant -> tgt.measurement_datetime = cast(effectiveInstant, "datetime"), tgt.measurement_date = cast(effectiveInstant, "date");
+        src.effectivePeriod as s -> tgt then {
+            s.start -> tgt.measurement_datetime = cast(effectiveInstant, "datetime"), tgt.measurement_date = cast(effectiveInstant, "date");
+        };
+    src.effectivePeriod as s -> tgt then 
+        { 
+            where (src.issued != src.effectiveDateTime AND src.issued != s.start) src.issued -> tgt.measurement_source_value = cast(issued, "string");    
+        };
+    src.performer as s -> tgt then {
+		s.reference -> tgt.provider_id;
+		s.identifier as sid -> tgt then {
+			sid.value -> tgt.provider_id;
+		};
+	};
+    src.valueQuantity as s -> tgt then {
+        s.value -> tgt.value_as_number;
+        s.unit -> tgt.unit_concept_id;
+    };
+    src.valueCodableConcept  -> tgt.value_as_concept_id;
+    src.valueString -> tgt.value_as_string;
+    src.interpretation -> tgt.value_as_concept_id;
+    src.note -> tgt.measurement_source_value; // complex notes should be in note table
+    };
+where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure' ).supersetOf(Observation.category.coding.code) group Observation(source src : Observation, target tgt : ObsTable)
+    {
+src.id as id -> tgt.observation_id = cast(id, "integer");
+        src.code as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code -> tgt.observation_concept_id;
+            };
+        };
+        src.patient as s -> tgt then {
+		s.reference -> tgt.person_id;
+		s.identifier as sid -> tgt then {
+			sid.value -> tgt.person_id;
+		};
+	};
+        src.encounter as s -> tgt then {
+		    s.reference -> tgt.visit_occurrence_id;
+		    s.identifier as sid -> tgt then {
+		    	sid.value -> tgt.visit_occurrence_id;
+		};
+	};
+        src.effectiveDateTime -> tgt.observation_datetime, tgt.observation_date = cast(effectiveInstant, "date");
+        src.effectiveInstant -> tgt.observation_datetime = cast(effectiveInstant, "datetime"), tgt.observation_date = cast(effectiveInstant, "date");
+        src.effectivePeriod as s -> tgt then {
+            s.start -> tgt.observation_datetime = cast(effectiveInstant, "datetime"), tgt.observation_date = cast(effectiveInstant, "date");
+        };
+    src.effectivePeriod as s -> tgt then 
+        { 
+            where (src.issued != src.effectiveDateTime AND src.issued != s.start) src.issued -> tgt.observation_source_value = cast(issued, "string");    
+        };
+    src.performer as s -> tgt then {
+		s.reference -> tgt.provider_id;
+		s.identifier as sid -> tgt then {
+			sid.value -> tgt.provider_id;
+		};
+	};
+    src.valueQuantity as s -> tgt then {
+        s.value -> tgt.value_as_number;
+        s.unit -> tgt.unit_concept_id;
+    };
+    src.valueCodableConcept  -> tgt.value_as_concept_id;
+    src.valueString -> tgt.value_as_string;
+    src.interpretation -> tgt.value_as_concept_id;
+    src.note -> tgt.observation_source_value; // complex notes should be in note table
+    src.bodySite -> tgt.observation_source_value;
+    src.method -> tgt.observation_source_value;
+    group Factoid(source src : Observation, target tgt : FactTable){
+        src.id as id -> tgt.domain_concept_id_1 = cast(id, "integer");
+        src.specimen as s -> tgt then {
+            s.reference -> tgt.fact_id_1;
+            s.type -> tgt.fact_id_2 = cast(type, "string");
+            s.identifier as sid -> tgt then {
+                sid.value -> domain_concept_id_2;
+                sid.system -> relationship_concept_id;
+            };
+        };
+    };
     }
