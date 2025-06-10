@@ -1,0 +1,32 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ObservationMap'
+/// name = 'ObservationMap'
+/// title = 'Mapping Observation resource to Measurement and Observation OMOP Domain'
+/// status = 'draft'
+
+uses "http://hl7.org/fhir/StructureDefinition/Observation" alias Observation as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTable 
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable
+
+where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) group Measures(source src: Observation, target tgt : MeasureTable)
+    {
+        src.id as id -> tgt.measurement_id = cast(id, "integer");
+        src.category as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code -> tgt.measurement_concept_id;
+            };
+        };
+        src.patient as s -> tgt then {
+		s.reference -> tgt.person_id;
+		s.identifier as sid -> tgt then {
+			sid.value -> tgt.person_id;
+		};
+	};
+        src.encounter as s -> tgt then {
+		    s.reference -> tgt.visit_occurrence_id;
+		    s.identifier as sid -> tgt then {
+		    	sid.value -> tgt.visit_occurrence_id;
+		};
+	};
+
+
+    }
