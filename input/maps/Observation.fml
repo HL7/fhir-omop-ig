@@ -17,13 +17,11 @@ where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.cod
             };
         };
         src.patient as s -> tgt then {
-		s.reference as a -> tgt.person_id = a;
 		s.identifier as sid -> tgt then {
 			sid.value as a -> tgt.person_id = a;
 		};
 	};
         src.encounter as s -> tgt then {
-		    s.reference as a -> tgt.visit_occurrence_id = a;
 		    s.identifier as sid -> tgt then {
 		    	sid.value as b -> tgt.visit_occurrence_id = b;
 		};
@@ -36,7 +34,6 @@ where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.cod
     src.effectivePeriod as s where (src.issued.toDate != src.effectiveDateTime AND src.issued.toDate != s.start) src.issued -> tgt.measurement_source_value = cast(src.issued, "string");
         
     src.performer as s -> tgt then {
-		s.reference as a -> tgt.provider_id = a;
 		s.identifier as sid -> tgt then {
 			sid.value as b -> tgt.provider_id = b;
 		};
@@ -60,13 +57,11 @@ where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity'
             };
         };
         src.patient as s -> tgt then {
-		s.reference as a -> tgt.person_id = a;
 		s.identifier as sid -> tgt then {
 			sid.value as a-> tgt.person_id = a;
 		};
 	};
         src.encounter as s -> tgt then {
-		    s.reference as a -> tgt.visit_occurrence_id = a ;
 		    s.identifier as sid -> tgt then {
 		    	sid.value as b -> tgt.visit_occurrence_id = b;
 		};
@@ -78,7 +73,6 @@ where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity'
         };
     src.effectivePeriod  where (src.issued.toDate != src.effectiveDateTime AND src.issued.toDate != s.start) src.issued -> tgt.observation_source_value = cast(src.issued, "string");    
     src.performer as s -> tgt then {
-		s.reference as a -> tgt.provider_id = a;
 		s.identifier as sid -> tgt then {
 			sid.value as b -> tgt.provider_id = b;
 		};
@@ -89,10 +83,7 @@ where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity'
     };
     src.valueCodableConcept as a  -> tgt.value_as_concept_id = a;
     src.valueString as b -> tgt.value_as_string = b;
-    src.interpretation as v -> tgt.value_as_concept_id = c;
     src.note  as d-> tgt.observation_source_value = d; // complex notes should be in note table
-    src.bodySite as e -> tgt.observation_source_value = e;
-    src.method as f -> tgt.observation_source_value = f;
     group Factoid(source src : Observation, target tgt2 : FactTable){
         src.id as id -> tgt.domain_concept_id_1 = cast(src.id, "integer");
         src.specimen as s -> tgt2 then {
