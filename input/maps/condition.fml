@@ -1,0 +1,68 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ConditionMap'
+/// name = 'ConditionMap'
+/// title = 'Mapping Condition resource to Condition Occurrence and Condition Era OMOP Domain'
+/// status = 'draft'
+
+uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias ConOccTable as target
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/COnditionEra" alias ConEraTable as target
+
+group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)
+    {
+        src.id as id -> tgt.condition_occurrence_id = cast(src.id, "integer");
+        src.patient as s -> tgt then {
+		s.identifier as sid -> tgt then {
+			sid.value as a -> tgt.person_id = a;
+		    };
+        };
+        src.code as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as a -> tgt.condition_concept_id = a;
+            };
+        };
+        src.recordedDate -> tgt.condition_start_datetime = cast(src.recordedDate,"datetime"), tgt.condition_start_date = src.recordedDate;
+        src.onsetDateTime -> tgt.condition_start_datetime = src.onsetDateTime, tgt.condition_start_date = cast(src.onsetDateTime, "date");
+        src.abatementDateTime -> tgt.condition_end_datetime = src.abatementTime, tgt.condition_end_date = cast(src.abatementDateTime, "date");
+        src.category as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code -> tgt.condition_type_concept_id = scd.code ;
+            };
+        };
+         src.clinicalStatus as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code -> tgt.condition_status_concept_id = sc.code ;
+            };
+        };
+        src.asserter as s -> tgt then {
+		s.identifier as sid -> tgt then {
+			sid.value as a -> tgt.provider_id = a;
+		    };
+        src.encounter as s -> tgt then {
+		    s.identifier as sid -> tgt then {
+		    	sid.value as b -> tgt.visit_occurrence_id = b;
+		};
+	};
+         src.evidence as s -> tgt then {
+            s.code as sc -> tgt {
+            sc.coding as sci -> tgt then {
+                sci.code -> tgt.condition_source_concept_id = sci.code ;
+            };
+        };
+    };
+}
+group ConditionEra(source src : Condition, target tgt : ConEraTable) {
+        src.id as id -> tgt.condition_era_id = cast(src.id, "integer");
+        src.patient as s -> tgt then {
+		s.identifier as sid -> tgt then {
+			sid.value as a -> tgt.person_id = a;
+		    };
+        };
+        src.code as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as a -> tgt.condition_concept_id = a;
+            };
+        };
+        src.recordedDate -> tgt.condition_start_datetime = cast(src.recordedDate,"datetime"), tgt.condition_start_date = src.recordedDate;
+        src.onsetDateTime -> tgt.condition_start_datetime = src.onsetDateTime, tgt.condition_start_date = cast(src.onsetDateTime, "date");
+        src.abatementDateTime -> tgt.condition_end_datetime = src.abatementTime, tgt.condition_end_date = cast(src.abatementDateTime, "date");
+}

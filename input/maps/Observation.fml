@@ -26,7 +26,7 @@ where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.cod
 		    	sid.value as b -> tgt.visit_occurrence_id = b;
 		};
 	};
-        src.effectiveDateTime -> tgt.measurement_datetime, tgt.measurement_date = cast(src.effectiveInstant, "date");
+        src.effectiveDateTime -> tgt.measurement_datetime = src.effectiveDateTime, tgt.measurement_date = cast(src.effectiveInstant, "date");
         src.effectiveInstant -> tgt.measurement_datetime = cast(src.effectiveInstant, "datetime"), tgt.measurement_date = cast(src.effectiveInstant, "date");
         src.effectivePeriod as s -> tgt then {
             s.start -> tgt.measurement_datetime = cast(src.effectiveInstant, "datetime"), tgt.measurement_date = cast(src.effectiveInstant, "date");
@@ -66,7 +66,7 @@ where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity'
 		    	sid.value as b -> tgt.visit_occurrence_id = b;
 		};
 	};
-        src.effectiveDateTime as a -> tgt.observation_datetime = src.effectiveInstant , tgt.observation_date = cast(src.effectiveInstant, "date");
+        src.effectiveDateTime as a -> tgt.observation_datetime = src.effectiveDateTime , tgt.observation_date = cast(src.effectiveDateTime, "date");
         src.effectiveInstant -> tgt.observation_datetime = cast(src.effectiveInstant, "datetime"), tgt.observation_date = cast(src.effectiveInstant, "date");
         src.effectivePeriod as s -> tgt then {
             s.start -> tgt.observation_datetime = cast(effectiveInstant, "datetime"), tgt.observation_date = cast(src.effectiveInstant, "date");
