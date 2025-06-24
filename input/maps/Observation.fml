@@ -10,7 +10,7 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/FactRelationship" alias Fa
 
 where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) group Measures(source src : Observation, target tgt : MeasureTable)
     {
-        src.id as id -> tgt.measurement_id = cast(src.id, "integer");
+        src.id as id -> tgt.measurement_id = cast(id, "integer");
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
                 sc.code as a -> tgt.measurement_concept_id = a;
@@ -50,7 +50,7 @@ where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.cod
 
 where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure' ).supersetOf(Observation.category.coding.code) group Observation(source src : Observation, target tgt : ObsTable)
     {
-    src.id as id -> tgt.observation_id = cast(src.id, "integer");
+    src.id as id -> tgt.observation_id = cast(id, "integer");
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
                 sc.code as a -> tgt.observation_concept_id = a;
