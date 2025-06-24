@@ -10,7 +10,7 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionEra" alias ConEra
 group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)
     {
         src.id as id -> tgt.condition_occurrence_id = cast(id, "integer");
-        src.patient as s -> tgt then {
+        src.subject as s -> tgt then {
 		s.identifier as sid -> tgt then {
 			sid.value as a -> tgt.person_id = a;
 		    };
@@ -20,12 +20,12 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)
                 sc.code as a -> tgt.condition_concept_id = a;
             };
         };
-        src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"datetime"), tgt.condition_start_date = src.recordedDate;
-        src.onsetDateTime as osd -> tgt.condition_start_datetime = src.onsetDateTime, tgt.condition_start_date = cast(osd, "date");
-        src.abatementDateTime as abdt -> tgt.condition_end_datetime = src.abatementTime, tgt.condition_end_date = cast(abdt, "date");
+        src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"datetime"), tgt.condition_start_date = rd;
+        src.onset : dateTime as osd -> tgt.condition_start_datetime = osd, tgt.condition_start_date = cast(osd, "date");
+        src.abatement : dateTime as abdt -> tgt.condition_end_datetime = adt, tgt.condition_end_date = cast(abdt, "date");
         src.category as s -> tgt then {
             s.coding as sc -> tgt then {
-                sc.code -> tgt.condition_type_concept_id = scd.code ;
+                sc.code -> tgt.condition_type_concept_id = sc.code ;
             };
         };
          src.clinicalStatus as s -> tgt then {
@@ -33,10 +33,7 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)
                 sc.code -> tgt.condition_status_concept_id = sc.code ;
             };
         };
-        src.asserter as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as a -> tgt.provider_id = a;
-		    };
+        
         src.encounter as s -> tgt then {
 		    s.identifier as sid -> tgt then {
 		    	sid.value as b -> tgt.visit_occurrence_id = b;
@@ -54,7 +51,7 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)
 
 group ConditionEra(source src : Condition, target tgt : ConEraTable) {
         src.id as id -> tgt.condition_era_id = cast(id, "integer");
-        src.patient as s -> tgt then {
+        src.subject as s -> tgt then {
 		s.identifier as sid -> tgt then {
 			sid.value as a -> tgt.person_id = a;
 		    };
@@ -64,7 +61,7 @@ group ConditionEra(source src : Condition, target tgt : ConEraTable) {
                 sc.code as a -> tgt.condition_concept_id = a;
             };
         };
-        src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"datetime"), tgt.condition_start_date = src.recordedDate;
-        src.onsetDateTime as odt-> tgt.condition_start_datetime = src.onsetDateTime, tgt.condition_start_date = cast(odt, "date");
-        src.abatementDateTime as abdt -> tgt.condition_end_datetime = src.abatementTime, tgt.condition_end_date = cast(abdt, "date");
+        src.recordedDate as rd -> tgt.condition_era_start_date = cast(rd,"datetime"), tgt.condition_era_start_date = rd;
+        src.onset : dateTime as odt-> tgt.condition_era_start_date = odt, tgt.condition_era_start_date = cast(odt, "date");
+        src.abatement : dateTime as abdt -> tgt.condition_era_end_date = abdt, tgt.condition_era_end_date = cast(abdt, "date");
 }
