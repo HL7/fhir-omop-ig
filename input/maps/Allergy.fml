@@ -1,0 +1,45 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/AllergyMap'
+/// name = 'AllergyMap'
+/// title = 'Mapping Allergy resource to Observation OMOP Domain'
+/// status = 'draft'
+
+uses "http://hl7.org/fhir/StructureDefinition/AllergyIntolerance" alias Allergy as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObservationTable as target
+
+group Observation(source src: Allergy, target tgt : ObservationTable) {
+
+	src.id as id -> tgt.observation_id = cast(id, "integer");
+	src.code as s -> tgt then {
+		s.coding as sc -> tgt then {
+			sc.code -> tgt.observation_concept_id, tgt.observation_source_value, tgt.observation_source_concept_id;
+		};
+	};
+	
+	src.patient as s -> tgt then {
+		s.identifier as sid -> tgt then {
+			sid.value -> tgt.person_id;
+		};
+	};
+	
+	src.encounter as s -> tgt then {
+		s.identifier as sid -> tgt then {
+			sid.value -> tgt.visit_occurrence_id;
+		};
+	};
+	
+    src.recorder as s -> tgt then {
+		s.identifier as sid -> tgt then {
+			sid.value as b -> tgt.provider_id = b;
+		};
+	};
+	
+	src.onset : dateTime -> tgt.observation_date, tgt.observation_datetime;
+	
+	src.reaction as s -> tgt then {
+		s.manifestation as sman -> tgt then {
+			sman.coding as sc -> tgt then {
+				sc.code -> tgt.value_as_concept_id, tgt.value_source_value;
+			};
+		};
+	};
+}
