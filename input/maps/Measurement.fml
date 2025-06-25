@@ -25,9 +25,9 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
 		};
 	};
         src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
-        src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "datetime"), tgt.measurement_date = cast(einst, "date");
+        src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), tgt.measurement_date = cast(einst, "date");
         src.effective : Period as s -> tgt then {
-            s.start as eps -> tgt.measurement_datetime = cast(eps, "datetime"), tgt.measurement_date = cast(eps, "date");
+            s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = cast(eps, "date");
         };
     src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
         

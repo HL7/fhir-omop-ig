@@ -19,7 +19,7 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
                 sc.code as a -> tgt.condition_concept_id = a;
             };
         };
-        src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"datetime"), tgt.condition_start_date = rd;
+        src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"dateTime"), tgt.condition_start_date = rd;
         src.onset : dateTime as osd -> tgt.condition_start_datetime = osd, tgt.condition_start_date = cast(osd, "date");
         src.abatement : dateTime as abdt -> tgt.condition_end_datetime = adt, tgt.condition_end_date = cast(abdt, "date");
         src.category as s -> tgt then {
@@ -59,7 +59,7 @@ group ConditionEra(source src : Condition, target tgt : ConEraTable) {
                 sc.code as a -> tgt.condition_concept_id = a;
             };
         };
-        src.recordedDate as rd -> tgt.condition_era_start_date = cast(rd,"datetime"), tgt.condition_era_start_date = rd;
+        src.recordedDate as rd -> tgt.condition_era_start_date = cast(rd,"dateTime"), tgt.condition_era_start_date = rd;
         src.onset : dateTime as odt-> tgt.condition_era_start_date = odt, tgt.condition_era_start_date = cast(odt, "date");
         src.abatement : dateTime as abdt -> tgt.condition_era_end_date = abdt, tgt.condition_era_end_date = cast(abdt, "date");
 }

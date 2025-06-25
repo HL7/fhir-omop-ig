@@ -19,9 +19,9 @@ group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)  
             };
         };
 
-        src.occurrence : dateTime as edt -> tgt.procedure_datetime = cast(edt, "datetime"), tgt.procedure_date = edt;
+        src.occurrence : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = edt;
         src.occurrence : Period as s -> tgt then {
-            s.start as start -> tgt.procedure_datetime = cast(start, "datetime"), tgt.procedure_date = start;
+            s.start as start -> tgt.procedure_datetime = cast(start, "dateTime"), tgt.procedure_date = start;
 			s.end as end -> tgt.procedure_end_datetime, tgt.procedure_end_date = end;
         };
 

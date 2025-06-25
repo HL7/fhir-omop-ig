@@ -26,9 +26,9 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
 		};
 	};
         src.effective : dateTime as a -> tgt.observation_datetime = a , tgt.observation_date = cast(a, "date");
-        src.effective : instant as einst -> tgt.observation_datetime = cast(einst, "datetime"), tgt.observation_date = cast(einst, "date");
+        src.effective : instant as einst -> tgt.observation_datetime = cast(einst, "dateTime"), tgt.observation_date = cast(einst, "date");
         src.effective : Period as s -> tgt then {
-            s.start as ss -> tgt.observation_datetime = cast(ss, "datetime"), tgt.observation_date = cast(ss, "date");
+            s.start as ss -> tgt.observation_datetime = cast(ss, "dateTime"), tgt.observation_date = cast(ss, "date");
         };
     src.issued  as s  where (s.toDate != src.effectiveDate) -> tgt.observation_source_value = cast(s, "string");    
     src.performer as s -> tgt then {
