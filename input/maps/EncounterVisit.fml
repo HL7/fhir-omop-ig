@@ -1,0 +1,36 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/EncounterVisitMap'
+/// name = 'EncounterVisitMap'
+/// title = 'Mapping Encounter resource to VisitOccurrence OMOP Domain'
+/// status = 'draft'
+
+uses "http://hl7.org/fhir/StructureDefinition/Encounter" alias Encounter as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence" alias VisitTable as target
+
+group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
+
+	src.id as id -> tgt.visit_occurrence_id = cast(id, "integer");
+	
+	src.subject as s -> tgt then {
+		s.identifier as sid -> tgt then {
+			sid.value -> tgt.person_id;
+		};
+	};
+	
+	src.class as s -> tgt then {
+		s.code -> tgt.visit_concept_id, tgt.visit_source_value, tgt.visit_source_concept_id;
+	};
+	
+	src.period as s -> tgt then {
+		s.start -> tgt.visit_start_date, tgt.visit_start_datetime;
+		s.end -> tgt.visit_end_date, tgt.visit_end_datetime;
+	};
+
+	src.hospitalization as s -> tgt then {
+		s.dischargeDisposition as sd -> tgt then {
+			sd.coding as sc -> tgt then {
+				sd.code -> tgt.discharged_to_concept_id, tgt.discharged_to_source_value;
+			};
+		};
+	};
+	
+}
