@@ -40,7 +40,7 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
         s.value as a -> tgt.value_as_number = a;
         s.unit as b -> tgt.unit_concept_id = b;
     };
-    src.value : CodeableConcept as a  -> tgt then {
+    src.value : CodeableConcept as s  -> tgt then {
             s.coding as sc -> tgt then {
                 sc.code as a -> tgt.value_as_concept_id = a;
             };
