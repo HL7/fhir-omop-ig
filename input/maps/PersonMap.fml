@@ -11,7 +11,7 @@ group Person(source src: Patient, target tgt : PersonTable) {
 	src.id as id -> tgt.gender_concept_id, tgt.person_source_value = cast(id, "string");
 	src.gender as gender -> tgt.gender_source_value = cast(gender, "string");
 	src.birthDate as bdSrc -> tgt.birth_datetime = bdSrc, 
-		tgt.year_of_birth = evaluate(bdSrc, substring(0,4)), 
-		tgt.month_of_birth = evaluate(bdSrc, substring(5,2)), 
-		tgt.day_of_birth = evaluate(bdSrc, substring(8,2));
+		tgt.year_of_birth = (birthDate.toString().substring(0,4)), 
+		tgt.month_of_birth = (birthDate.toString().substring(5,2)), 
+		tgt.day_of_birth = (birthDate.toString().substring(8,2));
 }
