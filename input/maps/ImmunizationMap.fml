@@ -7,6 +7,8 @@ uses "http://hl7.org/fhir/StructureDefinition/Immunization" alias Immunization a
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugExposureTable as target
 
 group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
+
+	src.id as id -> tgt.drug_exposure_id = cast(id, "integer");
 	src.vaccineCode as s -> tgt then {
 		s.coding as sc -> tgt then {
 			sc.code -> tgt.drug_concept_id, tgt.drug_source_value, tgt.drug_source_concept_id;
@@ -14,7 +16,6 @@ group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
 	};
 	
 	src.patient as s -> tgt then {
-		s.reference -> tgt.person_id;
 		s.identifier as sid -> tgt then {
 			sid.value -> tgt.person_id;
 		};
@@ -35,11 +36,16 @@ group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
 	src.occurrence : dateTime -> tgt.drug_exposure_start_date, tgt.drug_exposure_start_datetime, tgt.drug_exposure_end_date, tgt.drug_exposure_end_datetime;
 	
 	src.encounter as s -> tgt then {
-		s.reference -> tgt.visit_occurrence_id;
 		s.identifier as sid -> tgt then {
 			sid.value -> tgt.visit_occurrence_id;
 		};
 	};
 	
 	src.lotNumber as s -> tgt.lot_number = cast(s, "string");
+
+    src.performer as s -> tgt then {
+		s.identifier as sid -> tgt then {
+			sid.value as b -> tgt.provider_id = b;
+		};
+	};
 }
