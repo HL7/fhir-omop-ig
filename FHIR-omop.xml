@@ -22,6 +22,7 @@
 <artifact id="StructureMap/ProcedureMap" key="StructureMap-ProcedureMap" name="Mapping Condition resource to Procedure Occurrence OMOP Domain"/>
 <artifact id="StructureMap/EncounterVisitMap" key="StructureMap-EncounterVisitMap" name="Mapping Encounter resource to VisitOccurrence OMOP Domain"/>
 <artifact id="StructureMap/ImmunizationMap" key="StructureMap-ImmunizationMap" name="Mapping Immunization resource to Drug Exposure OMOP Domain"/>
+<artifact id="StructureMap/MedicationMap" key="StructureMap-MedicationMap" name="Mapping MedicationStatement resource to DrugExposure OMOP Domain"/>
 <artifact id="StructureMap/MeasurementMap" key="StructureMap-MeasurementMap" name="Mapping Observation resource to Measurement OMOP Domain"/>
 <artifact id="StructureMap/ObservationMap" key="StructureMap-ObservationMap" name="Mapping Observation resource to Observation OMOP Domain"/>
 <artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>

@@ -1,0 +1,45 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/MedicationMap'
+/// name = 'MedicationMap'
+/// title = 'Mapping MedicationStatement resource to DrugExposure OMOP Domain'
+/// status = 'draft'
+
+uses "http://hl7.org/fhir/StructureDefinition/MedicationStatement" alias MedState as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugExpTable as target
+
+group MedExposure(source src : MedState, target tgt : DrugExpTable) {
+        src.id as id -> tgt.drug_exposure_id = cast(id, "integer");
+        src.subject as s -> tgt then {
+		s.identifier as sid -> tgt then {
+			sid.value as a -> tgt.person_id = a;
+		    };
+        };
+        src.medication : CodeableReference as s -> tgt then {
+          s.concept as scs -> tgt then {
+            scs.coding as sc -> tgt then {
+                sc.code as a -> tgt.drug_concept_id  = a;
+            };
+          };
+        };
+        src.effective : dateTime as edt -> tgt.drug_exposure_start_datetime = edt, tgt.drug_exposure_start_date = cast(edt, "date");
+        src.effective : Period as s -> tgt then {
+            s.start as fps -> tgt.drug_exposure_start_datetime = fps, tgt.drug_exposure_start_date = cast(fps, "date");
+        };
+        src.effective : Period as s -> tgt then {
+            s.end as fpe -> tgt.drug_exposure_end_datetime = fpe, tgt.drug_exposure_end_date = cast(fps, "date");
+        };
+        src.effective : Period as s -> tgt then {
+            s.end as fpe -> tgt.verbatim_end_date = cast(fps, "date");
+        };
+        src.category : CodeableConcept as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as a -> tgt.drug_type_concept_id = a;
+            };
+        };
+        src.reason : CodeableReference as s -> tgt then {
+          s.concept as scs -> tgt then {
+            scs.coding as sc -> tgt then {
+                sc.code as a -> tgt.stop_reason = a;
+            };
+        };
+    };
+};

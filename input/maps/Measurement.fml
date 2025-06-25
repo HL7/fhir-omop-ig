@@ -27,7 +27,7 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
         src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
         src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "datetime"), tgt.measurement_date = cast(einst, "date");
         src.effective : Period as s -> tgt then {
-            s.start -> tgt.measurement_datetime = cast(einst, "datetime"), tgt.measurement_date = cast(einst, "date");
+            s.start as eps -> tgt.measurement_datetime = cast(eps, "datetime"), tgt.measurement_date = cast(eps, "date");
         };
     src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
         
@@ -40,7 +40,11 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
         s.value as a -> tgt.value_as_number = a;
         s.unit as b -> tgt.unit_concept_id = b;
     };
-    src.value : CodeableConcept as a  -> tgt.value_as_concept_id = a;
+    src.value : CodeableConcept as a  -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as a -> tgt.value_as_concept_id = a;
+            };
+        };
     src.value : string as b -> tgt.value_source_value = b;
     src.interpretation as c -> tgt.value_as_concept_id = c;
     src.note  as d -> tgt.measurement_source_value = d; // complex notes should be in note table

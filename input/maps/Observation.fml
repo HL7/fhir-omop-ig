@@ -40,7 +40,11 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
         s.value as a  -> tgt.value_as_number = a;
         s.unit as b -> tgt.unit_concept_id = b;
     };
-    src.value : CodeableConcept as a  -> tgt.value_as_concept_id = a;
+    src.value : CodeableConcept as a  -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as a -> tgt.value_as_concept_id = a;
+            };
+        };
     src.value : string as b -> tgt.value_as_string = b;
     src.note as d -> tgt.observation_source_value = d; 
     } "OnlyObs";
