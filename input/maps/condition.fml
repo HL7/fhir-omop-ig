@@ -47,7 +47,6 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)
         };
     };
 };
-    };
 
 group ConditionEra(source src : Condition, target tgt : ConEraTable) {
         src.id as id -> tgt.condition_era_id = cast(id, "integer");
