@@ -7,8 +7,7 @@ uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias ConOccTable as target
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionEra" alias ConEraTable as target
 
-group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)
-    {
+group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     {
         src.id as id -> tgt.condition_occurrence_id = cast(id, "integer");
         src.subject as s -> tgt then {
 		s.identifier as sid -> tgt then {
@@ -40,7 +39,7 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)
 		};
 	};
          src.evidence as s -> tgt then {
-            s.code as sc -> tgt then {
+            s.concept as sc -> tgt then {
             sc.coding as sci -> tgt then {
                 sci.code -> tgt.condition_source_concept_id = sci.code ;
             };

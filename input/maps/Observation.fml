@@ -8,9 +8,9 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/FactRelationship" alias FactTable as target
 
+group Measbase (source src : Observation, target tgt : ObsTable) {
 src where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) -> tgt then { 
-    group Measures(source src : Observation, target tgt : MeasureTable) 
-    {
+    group Measures (source src : Observation, target tgt : MeasureTable)     {
         src.id as id -> tgt.measurement_id = cast(id, "integer");
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
@@ -49,9 +49,9 @@ src where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding
     src.note  as d -> tgt.measurement_source_value = d; // complex notes should be in note table
     };
 };
-src where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure' ).supersetOf(Observation.category.coding.code) then {
- group Observation(source src : Observation, target tgt : ObsTable)
-    {
+
+src where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure' ).supersetOf(Observation.category.coding.code) -> tgt then {
+ group Observe (source src : Observation, target tgt : ObsTable)     {
     src.id as id -> tgt.observation_id = cast(id, "integer");
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
@@ -98,4 +98,5 @@ src where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activ
         };
     };
     };
+};
 };

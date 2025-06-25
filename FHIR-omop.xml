@@ -17,6 +17,7 @@
 <artifact id="StructureDefinition/Episode" key="StructureDefinition-Episode" name="Episode OMOP Table"/>
 <artifact id="StructureDefinition/FactRelationship" key="StructureDefinition-FactRelationship" name="Fact Relationship OMOP Table"/>
 <artifact id="StructureDefinition/Location" key="StructureDefinition-Location" name="Location OMOP Table"/>
+<artifact id="StructureMap/ConditionMap" key="StructureMap-ConditionMap" name="Mapping Condition resource to Condition Occurrence and Condition Era OMOP Domain"/>
 <artifact id="StructureMap/ImmunizationMap" key="StructureMap-ImmunizationMap" name="Mapping Immunization resource to Drug Exposure OMOP Domain"/>
 <artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
 <artifact id="StructureDefinition/Measurement" key="StructureDefinition-Measurement" name="Measurement OMOP Table"/>
