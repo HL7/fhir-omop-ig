@@ -1,12 +1,12 @@
 /// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ObservationMap'
 /// name = 'ObservationMap'
-/// title = 'Mapping Observation resource to Measurement and Observation OMOP Domain'
+/// title = 'Mapping Observation resource to  Observation OMOP Domain'
 /// status = 'draft'
 
 uses "http://hl7.org/fhir/StructureDefinition/Observation" alias Observation as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTable as target
 
- group Observe (source src : Observation, target tgt : ObsTable) 
+ group Observe(source src : Observation, target tgt : ObsTable) 
  {
     src where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure' ).supersetOf(Observation.category.coding.code)  then {
     src.id as id -> tgt.observation_id = cast(id, "integer");
@@ -25,8 +25,8 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
 		    	sid.value as b -> tgt.visit_occurrence_id = b;
 		};
 	};
-        src.effective : DateTime as a -> tgt.observation_datetime = a , tgt.observation_date = cast(a, "date");
-        src.effective : Instant as einst -> tgt.observation_datetime = cast(einst, "datetime"), tgt.observation_date = cast(einst, "date");
+        src.effective : dateTime as a -> tgt.observation_datetime = a , tgt.observation_date = cast(a, "date");
+        src.effective : instant as einst -> tgt.observation_datetime = cast(einst, "datetime"), tgt.observation_date = cast(einst, "date");
         src.effective : Period as s -> tgt then {
             s.start as ss -> tgt.observation_datetime = cast(ss, "datetime"), tgt.observation_date = cast(ss, "date");
         };
@@ -40,8 +40,8 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
         s.value as a  -> tgt.value_as_number = a;
         s.unit as b -> tgt.unit_concept_id = b;
     };
-    src.value : CodableConcept as a  -> tgt.value_as_concept_id = a;
-    src.value : String as b -> tgt.value_as_string = b;
+    src.value : CodeableConcept as a  -> tgt.value_as_concept_id = a;
+    src.value : string as b -> tgt.value_as_string = b;
     src.note as d -> tgt.observation_source_value = d; 
-    };
+    } "OnlyObs";
 };
