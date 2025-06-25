@@ -17,7 +17,7 @@ group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
 	
 	src.patient as s -> tgt then {
 		s.identifier as sid -> tgt then {
-			sid.value -> tgt.person_id;
+			sid.value as a -> tgt.person_id = a;
 		};
 	};
 	
@@ -33,19 +33,21 @@ group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
 		};
 	};
 	
-	src.occurrence : dateTime -> tgt.drug_exposure_start_date, tgt.drug_exposure_start_datetime, tgt.drug_exposure_end_date, tgt.drug_exposure_end_datetime;
+	src.occurrence : dateTime as odt -> tgt.drug_exposure_start_date = cast(odt, "date"), tgt.drug_exposure_start_datetime = odt, tgt.drug_exposure_end_date = cast(odt, "date"), tgt.drug_exposure_end_datetime = odt;
 	
 	src.encounter as s -> tgt then {
 		s.identifier as sid -> tgt then {
-			sid.value -> tgt.visit_occurrence_id;
+			sid.value as a -> tgt.visit_occurrence_id = a;
 		};
 	};
 	
 	src.lotNumber as s -> tgt.lot_number = cast(s, "string");
 
     src.performer as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as b -> tgt.provider_id = b;
+		s.actor as sa -> tgt then {
+			sa.identifier as sid -> tgt then {
+				sid.value as b -> tgt.provider_id = b;
+			};
 		};
 	};
 }

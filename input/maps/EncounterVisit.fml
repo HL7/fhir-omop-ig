@@ -12,23 +12,31 @@ group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
 	
 	src.subject as s -> tgt then {
 		s.identifier as sid -> tgt then {
-			sid.value -> tgt.person_id;
+			sid.value as a -> tgt.person_id = a;
 		};
 	};
 	
 	src.class as s -> tgt then {
-		s.code -> tgt.visit_concept_id, tgt.visit_source_value, tgt.visit_source_concept_id;
+		s.coding as sc -> tgt then {
+			sc.code as a-> tgt.visit_concept_id = a, tgt.visit_source_value = a, tgt.visit_source_concept_id = a;
+		};
 	};
 	
-	src.period as s -> tgt then {
-		s.start -> tgt.visit_start_date, tgt.visit_start_datetime;
-		s.end -> tgt.visit_end_date, tgt.visit_end_datetime;
+	src.actualPeriod as s -> tgt then {
+		s.start as std -> tgt.visit_start_date = cast(std, "date"), tgt.visit_start_datetime = std;
+		s.end as ed -> tgt.visit_end_date = cast(ed, "date"), tgt.visit_end_datetime = ed;
 	};
 
-	src.hospitalization as s -> tgt then {
+	src.admission as s -> tgt then {
+		s.admitSource as sa -> tgt then {
+			sa.coding as sc -> tgt then {
+				sc.code as code -> tgt.admitted_from_concept_id = code, tgt.admitted_from_source_value = code;
+			};
+		};
+	
 		s.dischargeDisposition as sd -> tgt then {
 			sd.coding as sc -> tgt then {
-				sd.code -> tgt.discharged_to_concept_id, tgt.discharged_to_source_value;
+				sc.code as code -> tgt.discharged_to_concept_id = code, tgt.discharged_to_source_value = code;
 			};
 		};
 	};
