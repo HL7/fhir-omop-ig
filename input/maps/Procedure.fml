@@ -1,0 +1,28 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ProcedureMap'
+/// name = 'ProcedureMap'
+/// title = 'Mapping Condition resource to Procedure Occurrence OMOP Domain'
+/// status = 'draft'
+
+uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target
+
+group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)     {
+        src.id as id -> tgt.procedure_occurrence_id = cast(id, "integer");
+        src.subject as s -> tgt then {
+		s.identifier as sid -> tgt then {
+			sid.value as a -> tgt.person_id = a;
+		    };
+        };
+        src.code as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code -> tgt.procedure_concept_id, tgt.procedure_source_value, tgt.procedure_source_concept_id;
+            };
+        };
+
+        src.performed : DateTime as edt -> tgt.procedure_datetime, tgt.procedure_date;
+        src.performed : Period as s -> tgt then {
+            s.start -> tgt.procedure_datetime, tgt.procedure_date;
+			s.end -> tgt.procedure_end_datetime, tgt.procedure_end_date;
+        };
+
+}
