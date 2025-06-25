@@ -1,6 +1,6 @@
 /// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ProcedureMap'
 /// name = 'ProcedureMap'
-/// title = 'Mapping Condition resource to Procedure Occurrence OMOP Domain'
+/// title = 'Mapping Procedure resource to Procedure Occurrence OMOP Domain'
 /// status = 'draft'
 
 uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as source
