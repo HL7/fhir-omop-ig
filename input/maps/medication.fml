@@ -7,12 +7,12 @@ uses "http://hl7.org/fhir/StructureDefinition/MedicationStatement" alias MedStat
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugExpTable as target
 
 group MedExposure(source src : MedState, target tgt : DrugExpTable) {
-        src.id as id -> tgt.drug_exposure_id = cast(id, "integer");
-        src.subject as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as a -> tgt.person_id = a;
-		    };
-        };
+        //src.id as id -> tgt.drug_exposure_id = cast(id, "integer");
+        //src.subject as s -> tgt then {
+		//s.identifier as sid -> tgt then {
+		//	sid.value as a -> tgt.person_id = a;
+		//    };
+        //};
         src.medication : CodeableReference as s -> tgt then {
           s.concept as scs -> tgt then {
             scs.coding as sc -> tgt then {

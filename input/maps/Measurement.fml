@@ -8,22 +8,22 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias Measure
 
 group Measures(source src : Observation, target tgt : MeasureTable) {
     src where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) then { 
-        src.id as id -> tgt.measurement_id = cast(id, "integer");
+        //src.id as id -> tgt.measurement_id = cast(id, "integer");
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
                 sc.code as a -> tgt.measurement_concept_id = a;
             };
         };
-        src.subject as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as a -> tgt.person_id = a;
-		};
-	};
-        src.encounter as s -> tgt then {
-		    s.identifier as sid -> tgt then {
-		    	sid.value as b -> tgt.visit_occurrence_id = b;
-		};
-	};
+        //src.subject as s -> tgt then {
+		//s.identifier as sid -> tgt then {
+		//	sid.value as a -> tgt.person_id = a;
+		//};
+		//};
+        //src.encounter as s -> tgt then {
+		//    s.identifier as sid -> tgt then {
+		//    	sid.value as b -> tgt.visit_occurrence_id = b;
+		//};
+		//};
         src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
         src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), tgt.measurement_date = cast(einst, "date");
         src.effective : Period as s -> tgt then {
@@ -31,11 +31,11 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
         };
     src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
         
-    src.performer as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as b -> tgt.provider_id = b;
-		};
-	};
+    //src.performer as s -> tgt then {
+	//	s.identifier as sid -> tgt then {
+	//		sid.value as b -> tgt.provider_id = b;
+	//	};
+	//};
     src.value : Quantity as s -> tgt then {
         s.value as a -> tgt.value_as_number = a;
         s.unit as b -> tgt.unit_concept_id = b;

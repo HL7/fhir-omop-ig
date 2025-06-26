@@ -9,33 +9,33 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
  group Observe(source src : Observation, target tgt : ObsTable) 
  {
     src where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure' ).supersetOf(Observation.category.coding.code)  then {
-    src.id as id -> tgt.observation_id = cast(id, "integer");
+    //src.id as id -> tgt.observation_id = cast(id, "integer");
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
                 sc.code as a -> tgt.observation_concept_id = a;
             };
         };
-        src.subject as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as a-> tgt.person_id = a;
-		};
-	};
-        src.encounter as s -> tgt then {
-		    s.identifier as sid -> tgt then {
-		    	sid.value as b -> tgt.visit_occurrence_id = b;
-		};
-	};
+    //    src.subject as s -> tgt then {
+	//	s.identifier as sid -> tgt then {
+	//		sid.value as a-> tgt.person_id = a;
+	//	};
+	//};
+    //    src.encounter as s -> tgt then {
+	//	    s.identifier as sid -> tgt then {
+	//	    	sid.value as b -> tgt.visit_occurrence_id = b;
+	//	};
+	//};
         src.effective : dateTime as a -> tgt.observation_datetime = a , tgt.observation_date = cast(a, "date");
         src.effective : instant as einst -> tgt.observation_datetime = cast(einst, "dateTime"), tgt.observation_date = cast(einst, "date");
         src.effective : Period as s -> tgt then {
             s.start as ss -> tgt.observation_datetime = cast(ss, "dateTime"), tgt.observation_date = cast(ss, "date");
         };
     src.issued  as s  where (s.toDate != src.effectiveDate) -> tgt.observation_source_value = cast(s, "string");    
-    src.performer as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as b -> tgt.provider_id = b;
-		};
-	};
+    //src.performer as s -> tgt then {
+	//	s.identifier as sid -> tgt then {
+	//		sid.value as b -> tgt.provider_id = b;
+	//	};
+	//};
     src.value : Quantity as s -> tgt then {
         s.value as a  -> tgt.value_as_number = a;
         s.unit as b -> tgt.unit_concept_id = b;

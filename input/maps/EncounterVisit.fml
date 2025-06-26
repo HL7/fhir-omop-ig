@@ -8,13 +8,13 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence" alias Vis
 
 group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
 
-	src.id as id -> tgt.visit_occurrence_id = cast(id, "integer");
+	//src.id as id -> tgt.visit_occurrence_id = cast(id, "integer");
 	
-	src.subject as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as a -> tgt.person_id = a;
-		};
-	};
+	//src.subject as s -> tgt then {
+	//	s.identifier as sid -> tgt then {
+	//		sid.value as a -> tgt.person_id = a;
+	//	};
+	//};
 	
 	src.class as s -> tgt then {
 		s.coding as sc -> tgt then {

@@ -8,32 +8,32 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias Observa
 
 group Observation(source src: Allergy, target tgt : ObservationTable) {
 
-	src.id as id -> tgt.observation_id = cast(id, "integer");
+	// src.id as id -> tgt.observation_id = cast(id, "integer");
 	src.code as s -> tgt then {
 		s.coding as sc -> tgt then {
 			sc.code -> tgt.observation_concept_id, tgt.observation_source_value, tgt.observation_source_concept_id;
 		};
 	};
 	
-	src.patient as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as a -> tgt.person_id = a;
-		};
-	};
+	// src.patient as s -> tgt then {
+	// 	s.identifier as sid -> tgt then {
+	// 		sid.value as a -> tgt.person_id = a;
+	// 	};
+	// };
 	
-	src.encounter as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as a -> tgt.visit_occurrence_id = a;
-		};
-	};
+	// src.encounter as s -> tgt then {
+	//	s.identifier as sid -> tgt then {
+	//		sid.value as a -> tgt.visit_occurrence_id = a;
+	//	};
+	// };
 	
-    src.participant as s -> tgt then {
-		s.actor as sa -> tgt then {
-			sa.identifier as sid -> tgt then {
-				sid.value as b -> tgt.provider_id = b;
-			};
-		};
-	};
+    // src.participant as s -> tgt then {
+	//	s.actor as sa -> tgt then {
+	//		sa.identifier as sid -> tgt then {
+	//			sid.value as b -> tgt.provider_id = b;
+	//		};
+	//	};
+	// };
 	
 	src.onset : dateTime as osd -> tgt.observation_date = cast(osd, "date"), tgt.observation_datetime = osd;
 	

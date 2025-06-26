@@ -8,18 +8,18 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugEx
 
 group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
 
-	src.id as id -> tgt.drug_exposure_id = cast(id, "integer");
+	//src.id as id -> tgt.drug_exposure_id = cast(id, "integer");
 	src.vaccineCode as s -> tgt then {
 		s.coding as sc -> tgt then {
 			sc.code -> tgt.drug_concept_id, tgt.drug_source_value, tgt.drug_source_concept_id;
 		};
 	};
 	
-	src.patient as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as a -> tgt.person_id = a;
-		};
-	};
+	//src.patient as s -> tgt then {
+	//	s.identifier as sid -> tgt then {
+	//		sid.value as a -> tgt.person_id = a;
+	//	};
+	//};
 	
 	src.doseQuantity as s -> tgt then {
 		s.value as s -> tgt.quantity = cast(s, "decimal");
@@ -35,19 +35,19 @@ group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
 	
 	src.occurrence : dateTime as odt -> tgt.drug_exposure_start_date = cast(odt, "date"), tgt.drug_exposure_start_datetime = odt, tgt.drug_exposure_end_date = cast(odt, "date"), tgt.drug_exposure_end_datetime = odt;
 	
-	src.encounter as s -> tgt then {
-		s.identifier as sid -> tgt then {
-			sid.value as a -> tgt.visit_occurrence_id = a;
-		};
-	};
+	//src.encounter as s -> tgt then {
+	//	s.identifier as sid -> tgt then {
+	//		sid.value as a -> tgt.visit_occurrence_id = a;
+	//	};
+	//};
 	
 	src.lotNumber as s -> tgt.lot_number = cast(s, "string");
 
-    src.performer as s -> tgt then {
-		s.actor as sa -> tgt then {
-			sa.identifier as sid -> tgt then {
-				sid.value as b -> tgt.provider_id = b;
-			};
-		};
-	};
+    //src.performer as s -> tgt then {
+	//	s.actor as sa -> tgt then {
+	//		sa.identifier as sid -> tgt then {
+	//			sid.value as b -> tgt.provider_id = b;
+	//		};
+	//	};
+	//};
 }
