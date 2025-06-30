@@ -5,6 +5,5 @@
 ### Flavors of Null on OMOP
 ### Temporal Completeness and Missing Dates
 ### Contextual Gaps in Data Mapping
-## Differentiating Between Patient-Reported and Clinician-Verified Data
 ## Data Absent Reasons
 ## Temporality & Utilization of Dates 
