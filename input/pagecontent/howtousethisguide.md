@@ -2,6 +2,8 @@
 ## Evaluation of FHIR to OMOP Use Cases and Source Data
 ## Considerations when Transforming FHIR to OMOP
 ### Granularity of FHIR Data vs. OMOP Standardization
+FHIR resources can contain detailed data, such as dosage adjustments or specific intervals for medication administration, which might not have direct counterparts in OMOP’s more generalized tables. An implication for data transformation is that this disparity means some FHIR data may be lost or generalized in the transformation process to OMOP.  This could impact specific use cases. When developing a data transformation from FHIR to OMOP, there is a need to document potential data losses resulting from a mismatch in source to target data granularity to inform data users about impacts to, and potential limitations this may cause in analyses.
+
 ### Impact of OMOP Standard Concepts & Domains
 The OMOP Common Data Model is designed to permit aggregation of very large data sets, in either a central repository or via distributed network architecture(s). This usually means that multiple sources create data that compose any one OMOP instance.  Statistical analyses conducted on observational data require representation of sufficient numbers of patients to ensure evidence validity and reduce regional, care delivery service population or source system data capture biases.  Each data source may have unique schema, coding systems and or concept representations. The OMOP tables, divided into ‘domains’ and the OHDSI Standardized Vocabularies provide an aligned transformation target that addresses the heterogeneous nature of observational source systems generating data. Use of the OHDSI Standardized Vocabularies is required in OMOP implementations.
 
