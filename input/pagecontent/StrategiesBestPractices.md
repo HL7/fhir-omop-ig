@@ -9,7 +9,7 @@ In any OMOP instance that is populated with a feed that has undergone a FHIR to 
      * Guidance on when to filter data (e.g., removing planned procedures).
  This guide leverages common EHR transformation scenarios and includes detailed examples as a foundation to help users develop navigate edge cases and develop implementation-specific strategies for effective and consistent ETL from FHIR to OMOP, especially where FHIR resources may vary by source.  
 
-### Technical Implementation Strategies
+### Transformation Implementation Strategies
 Successful FHIR-to-OMOP implementations benefit from comprehensive ETL documentation that specifies mapping hierarchies and clearly articulates assumptions made during the transformation process. This documentation becomes particularly critical when dealing with multiple source systems that may handle temporal data differently or have varying levels of data completeness.
 For organizations where audit requirements mandate robust provenance tracking, designing custom OMOP extensions specifically for recorded date preservation represents a strategic investment in data governance capabilities. These extensions should be carefully planned to avoid conflicts with standard OMOP conventions while providing the necessary metadata for compliance and quality assurance processes.
 
