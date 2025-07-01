@@ -77,7 +77,7 @@ One workaround could be to capture the context in an OMOP extension, such as "no
 
 ### Flavors of Null on OMOP
 
-## Data Absent Reasons
+## Data Absent Reasons Elements
 The Data Absent Reason element in FHIR allows implementers to record why information is missing or incomplete in observations, medication statements, and immunizations. When using FHIR resources that document reasons for absent data, it is important to assess carefully which of these reasons should be included in OMOP. This consideration applies to common scenarios such as missing lab results, medications that were not administered, or declined immunizations.
 
 Because Data Absent Reasons cover a spectrum ranging from clinically meaningful refusals to routine administrative gaps, a selective approach is recommended. Implementers are encouraged to map only those reasons with clear clinical or research value for the intended use case—which may include or exclude information such as patient refusals, or  adverse reactions —while excluding operational or ambiguous reasons like “unknown” or “unsupported.” 
