@@ -1,0 +1,73 @@
+<svg viewBox="0 0 600 750" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .box { fill: #e8f4fd; stroke: #2563eb; stroke-width: 2; rx: 8; }
+      .decision { fill: #fef3c7; stroke: #d97706; stroke-width: 2; }
+      .process { fill: #dcfce7; stroke: #16a34a; stroke-width: 2; rx: 8; }
+      .final { fill: #f3e8ff; stroke: #7c3aed; stroke-width: 2; rx: 8; }
+      .text { font-family: Arial, sans-serif; font-size: 12px; text-anchor: middle; }
+      .title { font-size: 14px; font-weight: bold; }
+      .arrow { stroke: #374151; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .label { font-size: 12px; font-weight: bold; fill: #6b7280; font-family: Arial, sans-serif; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="300" y="30" class="text title">FHIR to OMOP Coded Data Mapping Process</text>
+  
+  <!-- Step 1: Extract Coded Data -->
+  <rect x="200" y="60" width="200" height="60" class="box"/>
+  <text x="300" y="85" class="text title">1. Extract Coded Data</text>
+  <text x="300" y="105" class="text">From FHIR Resource</text>
+  
+  <!-- Step 2: Determine Domain -->
+  <rect x="200" y="160" width="200" height="60" class="process"/>
+  <text x="300" y="185" class="text title">2. Determine Domain</text>
+  <text x="300" y="205" class="text">Map to OMOP Domain</text>
+  
+  <!-- Step 3: Consult OMOP Vocabulary -->
+  <rect x="200" y="260" width="200" height="60" class="process"/>
+  <text x="300" y="285" class="text title">3. Consult OMOP</text>
+  <text x="300" y="305" class="text">Vocabulary</text>
+  
+  <!-- Decision Diamond: Standard Concept Found? -->
+  <polygon points="300,360 380,400 300,440 220,400" class="decision"/>
+  <text x="300" y="395" class="text title">Standard</text>
+  <text x="300" y="410" class="text title">Concept Found?</text>
+  
+  <!-- Step 4: Handle Non-standard Concepts (left branch) -->
+  <rect x="50" y="500" width="200" height="80" class="process"/>
+  <text x="150" y="530" class="text title">4. Handle Non-standard</text>
+  <text x="150" y="545" class="text title">Concepts</text>
+  <text x="150" y="565" class="text">Use concept_relationship</text>
+  
+  <!-- Step 5: Populate OMOP Fields -->
+  <rect x="200" y="620" width="200" height="80" class="final"/>
+  <text x="300" y="650" class="text title">5. Populate OMOP</text>
+  <text x="300" y="665" class="text title">Fields</text>
+  <text x="300" y="685" class="text">Fill target table</text>
+  
+  <!-- Arrows -->
+  <line x1="300" y1="120" x2="300" y2="160" class="arrow"/>
+  <line x1="300" y1="220" x2="300" y2="260" class="arrow"/>
+  <line x1="300" y1="320" x2="300" y2="360" class="arrow"/>
+  
+  <!-- No branch (left) -->
+  <line x1="220" y1="400" x2="150" y2="400" class="arrow"/>
+  <line x1="150" y1="400" x2="150" y2="500" class="arrow"/>
+  
+  <!-- Yes branch (down) -->
+  <line x1="300" y1="440" x2="300" y2="620" class="arrow"/>
+  
+  <!-- From non-standard to final -->
+  <line x1="150" y1="580" x2="150" y2="660" class="arrow"/>
+  <line x1="150" y1="660" x2="200" y2="660" class="arrow"/>
+  
+  <!-- Labels -->
+  <text x="170" y="395" class="label">No</text>
+  <text x="320" y="460" class="label">Yes</text>
+  
+</svg>
