@@ -59,7 +59,8 @@ One approach to address these challenges is to consider fallback strategies that
 
 It is equally important for implementers to reflect on the implications of partial data for downstream analyses. Records with incomplete information may introduce misinterpretation or bias if not carefully accounted for in study design and statistical modeling. Therefore, teams should exercise caution when drawing inferences from datasets containing records transformed from incomplete FHIR sources.
 
-### Temporal Completeness and Missing Dates
+### Temporal Completeness and Missing Dates 
+(see also: Temporal Precision Models: OMOP vs FHIR) 
 Temporal information in FHIR plays a critical role in accurately representing the timing and sequence of healthcare events. However, mapping this information into the OMOP data model can be challenging when dates are missing or ambiguous. FHIR resources often rely on elements such as effectiveDateTime, period, or endDate to define when an event occurred, but this information is frequently incomplete or approximate, especially in historical records or patient-reported data.
 
 Missing or estimated dates introduce substantial risks to data quality and analytic precision. For example, when a FHIR Procedure resource lacks an end date, it becomes unclear whether the procedure was completed or remains ongoing, which complicates the construction of care timelines. Similarly, approximate dates can undermine the reliability of studies requiring precise event sequencing or duration calculations.
