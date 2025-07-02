@@ -1,7 +1,18 @@
-The process of mapping coded source data from FHIR to OMOP involves several steps. This pattern ensures that data from FHIR resources is accurately represented in the OMOP common data model. Here’s a detailed look at this process:
+# FHIR to OMOP Coded Data Transformation Patterns
+Transforming FHIR coded source data to OMOP follows established transformation patterns where similar data sources are processed through a common series of steps to populate an OMOP target database. This standardized approach ensures consistent handling of coded clinical information across diverse healthcare datasets.
 
-### Overview
-Coded source data in FHIR refers to information represented using standardized code systems like SNOMED CT, LOINC, RxNorm, etc. When mapping this data to OMOP, it is crucial to ensure that the codes are appropriately translated into OMOP's standardized vocabulary and that the data fits into the correct domain within the OMOP model.
+## Understanding Coded Source Data
+Coded source data in FHIR refers to information represented using standardized code systems such as SNOMED CT, LOINC, RxNorm, and other established terminologies. (See Using Codes in Resources for more information.) When mapping these FHIR elements to OMOP, implementers must ensure that codes are appropriately translated into the OHDSI Standardized Vocabularies and that the resulting data aligns with the correct domain classifications within the OMOP model.
+
+## Mapping Complexity and Validation
+Ensuring valid mappings from different source coding systems requires careful attention to the nature of the relationships between source and target concepts. While some mappings represent true one-to-one relationships that can be transformed directly, many cases involve one-to-many relationships between a coded source and multiple OMOP target concepts. These target concepts may reside within a single domain or span multiple domains within the OMOP structure. (See Standard concepts & Domain discussion for detailed information.)
+
+The absence of established mappings in the OHDSI Standardized Vocabularies significantly increases the risk of incorrect or ambiguous data translation. Such gaps require careful evaluation and potentially custom mapping development to maintain data integrity during the transformation process.
+
+## Automated Mapping Support
+Leveraging a terminology server can facilitate automated mapping processes, particularly for free text or non-standard codes, while producing consistent mapping results across transformation instances. This approach reduces manual intervention and improves the reliability of code translation activities.
+
+The OHDSI Athena website provides a comprehensive searchable database that serves dual purposes for mapping activities. Implementers can use this resource to manually browse available vocabularies and identify codes that appropriately match source concepts to Standard OMOP concepts. This capability proves essential for validating automated mappings and resolving complex terminology translation challenges that arise during FHIR to OMOP transformation projects.
 
 ### Key Elements of FHIR Coded Data
 
@@ -11,6 +22,12 @@ Coded source data in FHIR refers to information represented using standardized c
 * **Version**: The version of the code system (optional).
 
 ### Mapping Process
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b>FHIR to OMOP Coded Data Mapping Process</b></figcaption>
+<img src="fhir_omop_mapping_flow (4).svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Coded Data Mapping Process"/>
+</figure>
+{::options parse_block_html="true" /}
 
 1. **Extract Coded Data**:  Identify the coded elements within the FHIR resource. These elements are often of the type CodeableConcept or Coding.
 2. **Determine the Domain**:  Use the FHIR code to determine the appropriate OMOP domain (e.g., Condition, Drug, Observation). This is usually based on the type of FHIR resource (e.g., Condition resource maps to OMOP Condition domain).
