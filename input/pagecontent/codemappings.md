@@ -10,7 +10,7 @@ Ensuring valid mappings from different source coding systems requires careful at
 The absence of established mappings in the OHDSI Standardized Vocabularies significantly increases the risk of incorrect or ambiguous data translation. Such gaps require careful evaluation and potentially custom mapping development to maintain data integrity during the transformation process.
 
 ## Automated Mapping Support
-Leveraging a terminology server can facilitate automated mapping processes, particularly for free text or non-standard codes, while producing consistent mapping results across transformation instances. This approach reduces manual intervention and improves the reliability of code translation activities.
+Leveraging a terminology server (e.g.: https://echidna.fhir.org) can facilitate automated mapping processes, particularly for free text or non-standard codes, while producing consistent mapping results across transformation instances. This approach reduces manual intervention and improves the reliability of code translation activities.
 
 The OHDSI Athena website provides a comprehensive searchable database that serves dual purposes for mapping activities. Implementers can use this resource to manually browse available vocabularies and identify codes that appropriately match source concepts to Standard OMOP concepts. This capability proves essential for validating automated mappings and resolving complex terminology translation challenges that arise during FHIR to OMOP transformation projects.
 
