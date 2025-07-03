@@ -1,5 +1,4 @@
 # How to Use This Guide
-## Evaluation of FHIR to OMOP Use Cases and Source Data
 ## Considerations when Transforming FHIR to OMOP
 ### Granularity of FHIR Data vs. OMOP Standardization
 FHIR resources can contain detailed data, such as dosage adjustments or specific intervals for medication administration, which might not have direct counterparts in OMOP’s more generalized tables. An implication for data transformation is that this disparity means some FHIR data may be lost or generalized in the transformation process to OMOP.  This could impact specific use cases. When developing a data transformation from FHIR to OMOP, there is a need to document potential data losses resulting from a mismatch in source to target data granularity to inform data users about impacts to, and potential limitations this may cause in analyses.
