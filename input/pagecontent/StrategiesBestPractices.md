@@ -1,6 +1,6 @@
 # Strategies & Best Practices
 ## Data Provenance & Traceability
-
+## Evaluation of FHIR to OMOP Use Cases and Source Data
 ## Consistency & Standardization in Transformations
 ### ETL Documentation 
 In any OMOP instance that is populated with a feed that has undergone a FHIR to OMOP transformation, there is a need for clear and detailed transformation documentation. As mentioned, the differences in purpose and structure of the underlying models dictate transformation choices that may need to be made to best serve the purpose of a specific OMOP instance. Aspects of ETL design rationale that should be documented include :
