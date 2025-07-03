@@ -1,4 +1,4 @@
-# Strategies & Best Practices
+# Transformation Strategies & Best Practices
 ## Data Provenance & Traceability
 ## Evaluation of FHIR to OMOP Use Cases and Source Data
 ## Consistency & Standardization in Transformations
