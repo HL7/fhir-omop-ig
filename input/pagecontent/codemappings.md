@@ -50,6 +50,140 @@ As stated previously, mapping coded data from FHIR to OMOP requires evaluation o
 4. **Handle Non-standard Concepts** see "OMOP non-Standard Concept Source Coding" section below
 5. **Populate OMOP Fields**:  Fill in the relevant fields in the OMOP table, including concept_id, source_value, and other relevant attributes.
 
+## Example: Mapping a Condition Resource
+
+### Source FHIR Condition Resource
+
+```json
+{
+  "resourceType": "Condition",
+  "id": "example",
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "44054006",
+        "display": "Diabetes mellitus type 2"
+      }
+    ]
+  },
+  "subject": {
+    "reference": "Patient/example"
+  },
+  "onsetDateTime": "2011-05-24"
+}
+```
+
+## Step-by-Step Base Pattern Transformation
+
+### Step 1: Extract Coded Data
+**Identify coded elements within the FHIR resource:**
+- **Resource Type**: Condition
+- **Coded Element Location**: `code` field
+- **Element Type**: CodeableConcept containing Coding
+- **Extracted Code**: 44054006
+- **Coding System**: SNOMED CT (http://snomed.info/sct)
+- **Display Text**: "Diabetes mellitus type 2"
+
+The Condition resource contains a coded element in the `code` field, which is a CodeableConcept containing a single Coding with SNOMED CT code 44054006.
+
+### Step 2: Consult OMOP Vocabulary
+**Use OMOP vocabulary tables to find equivalent concept ID:**
+
+```sql
+SELECT concept_id, concept_name, domain_id, vocabulary_id, concept_code, standard_concept
+FROM concept
+WHERE concept_code = '44054006' 
+  AND vocabulary_id = 'SNOMED';
+```
+
+**Query Results:**
+```
+concept_id: 201826
+concept_name: Type 2 diabetes mellitus
+domain_id: Condition
+vocabulary_id: SNOMED
+concept_code: 44054006
+standard_concept: S
+```
+
+**Vocabulary Lookup Analysis:**
+- **OMOP Concept Found**: Yes
+- **Concept ID**: 201826
+- **Standard Concept Status**: S (Standard)
+- **Vocabulary Match**: SNOMED CT vocabulary confirmed
+
+### Step 3: Determine the Domain
+**Determine appropriate OMOP domain based on FHIR code and resource type:**
+
+**Initial Domain Assessment:**
+- **FHIR Resource Type**: Condition
+- **Expected OMOP Domain**: Condition
+
+**OMOP Vocabulary Domain Verification:**
+- **Vocabulary Domain**: Condition (from concept.domain_id)
+- **Domain Alignment**: FHIR resource type matches OMOP domain
+- **Final Domain Assignment**: Condition
+
+The SNOMED CT code 44054006 resides in the Condition domain within OMOP vocabulary, which aligns with the FHIR Condition resource type, confirming appropriate domain assignment.
+
+### Step 4: Handle Non-standard Concepts
+**Evaluate standard concept status:**
+- **Standard Concept Flag**: S (Standard)
+- **Mapping Required**: No (already standard)
+- **Direct Mapping**: Proceed with concept_id 201826
+
+Since the SNOMED CT code maps to a standard OMOP concept, no additional concept relationship mapping is required. The concept can be used directly in OMOP tables.
+
+### Step 5: Populate OMOP Fields
+**Fill relevant fields in OMOP condition_occurrence table:**
+
+```sql
+INSERT INTO condition_occurrence (
+    condition_occurrence_id,
+    person_id,
+    condition_concept_id,
+    condition_start_date,
+    condition_start_datetime,
+    condition_source_value,
+    condition_source_concept_id,
+    condition_type_concept_id
+) VALUES (
+    [generated_id],                    -- condition_occurrence_id
+    [mapped_person_id],                -- person_id from Patient/example
+    201826,                            -- condition_concept_id (standard OMOP concept)
+    '2011-05-24',                      -- condition_start_date
+    '2011-05-24T00:00:00',            -- condition_start_datetime
+    '44054006',                        -- condition_source_value
+    201826,                            -- condition_source_concept_id
+    32020                              -- condition_type_concept_id (EHR record)
+);
+```
+
+## Field Mapping Details
+
+| OMOP Field | Value | Source | Transformation Notes |
+|------------|--------|---------|---------------------|
+| `condition_concept_id` | 201826 | OMOP vocabulary lookup | Standard concept from Step 2 |
+| `condition_source_value` | 44054006 | FHIR code.coding[0].code | Original source code preserved |
+| `condition_source_concept_id` | 201826 | Same as standard concept | Source code already standard |
+| `condition_start_date` | 2011-05-24 | FHIR onsetDateTime | Date extracted from FHIR |
+| `person_id` | [mapped_person_id] | FHIR subject reference | Patient reference resolution |
+
+## Base Pattern Validation
+### Transformation Steps Applied
+1. **Extract Coded Data**: SNOMED CT code 44054006 identified in CodeableConcept
+2. **Consult OMOP Vocabulary**: Successful lookup yielding concept_id 201826
+3. **Determine Domain**: Condition domain confirmed through resource type and vocabulary
+4. **Handle Non-standard Concepts**: Not required (standard concept found)
+5. **Populate OMOP Fields**: condition_occurrence table populated with mapped values
+
+### Quality Verification
+- **Code Extraction**: Successful identification of coded element
+- **Vocabulary Mapping**: Direct match found in OMOP concept table
+- **Domain Alignment**: FHIR resource type matches OMOP domain
+- **Data Preservation**: Source values maintained in OMOP fields
+
 ## FHIR CodeableConcept Mapping Pattern
 Codeable concepts are one of the coded datatypes represented in FHIR resources. In FHIR, a CodeableConcept is "A type that represents a concept by plain text and/or one or more coding elements"  The transformation of FHIR CodeableConcept elements to OMOP format create a challenge to uniform transformation practices, but also represents a critical bridge between the flexible, interoperable world of FHIR and the structured, analytics-focused environment of the OMOP Common Data Model. This Pattern aims to partially address the tension between FHIR's allowance for both structured codes and free text versus OMOP's strict requirement for standardized vocabularies, but does not explicitly address transformation of purely free-text expressions allowed in CodeableConcepts.
 
@@ -115,8 +249,12 @@ The proposed prioritization framework addresses the complex reality of multiple 
 This transformation pattern deliberately excludes free text handling, recognizing the significant challenges it poses to OMOP's structured requirements. While FHIR's flexibility allows for free text descriptions when structured codes are unavailable, OMOP's analytics-focused design requires standardized vocabularies. The decision to scope out free text in a project may be a pragmatic approach that prioritizes data quality and consistency over comprehensive coverage.  For implementations encountering and wishing to include free text, additional processing through utilization of terminology servers or natural language processing tools may be necessary to convert textual descriptions into standardized codes before applying this transformation pattern.
 
 
-## Value-as-concept map patterns
+## Value-as-concept Map Pattern
 accommodating concepts split into more than one field in the OMOP target and source name / value pairs
+
+
+
+
 
 ## One Source to many OMOP targets
 
