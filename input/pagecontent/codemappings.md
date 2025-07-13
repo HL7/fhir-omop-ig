@@ -184,6 +184,8 @@ INSERT INTO condition_occurrence (
 - **Domain Alignment**: FHIR resource type matches OMOP domain
 - **Data Preservation**: Source values maintained in OMOP fields
 
+The example above represents a straightforward transformation scenario with a direct vocabulary match and domain alignment. Real-world implementations should prepare for more complex scenarios involving non-standard vocabularies, domain mismatches, and mapping gaps, but this base pattern provides the foundational framework for handling all transformation cases systematically and consistently.
+
 ## FHIR CodeableConcept Mapping Pattern
 Codeable concepts are one of the coded datatypes represented in FHIR resources. In FHIR, a CodeableConcept is "A type that represents a concept by plain text and/or one or more coding elements"  The transformation of FHIR CodeableConcept elements to OMOP format create a challenge to uniform transformation practices, but also represents a critical bridge between the flexible, interoperable world of FHIR and the structured, analytics-focused environment of the OMOP Common Data Model. This Pattern aims to partially address the tension between FHIR's allowance for both structured codes and free text versus OMOP's strict requirement for standardized vocabularies, but does not explicitly address transformation of purely free-text expressions allowed in CodeableConcepts.
 
@@ -355,5 +357,69 @@ A patient’s record includes two SNOMED CT codes, 44054006 (Type 2 Diabetes Mel
 
 ### OMOP non-Standard Concept Source Coding
 If the FHIR code does not have a direct standard concept in OMOP, locate the non-standard concept_id and its record in the concept table. Then find the Standard concept using the concept_relationship table. A "Non-standard to Standard" map value ( and one other ) from the records with the non-standard concept_id in the relationship table indicate availabilty of an appropriate OMOP Standard target to map to.  
+
+## Alternative Scenarios
+
+### Scenario A: Non-Standard Source Code
+If the FHIR condition contained an ICD-10 code instead of SNOMED:
+
+**Step 2 - Consult OMOP Vocabulary:**
+```sql
+SELECT concept_id, concept_name, domain_id, vocabulary_id, concept_code, standard_concept
+FROM concept
+WHERE concept_code = 'E11.9' 
+  AND vocabulary_id = 'ICD10CM';
+```
+
+**Step 4 - Handle Non-standard Concepts:**
+```sql
+SELECT cr.concept_id_2 AS standard_concept_id,
+       c2.concept_name AS standard_concept_name
+FROM concept c1
+JOIN concept_relationship cr ON c1.concept_id = cr.concept_id_1
+JOIN concept c2 ON cr.concept_id_2 = c2.concept_id
+WHERE c1.concept_code = 'E11.9'
+  AND c1.vocabulary_id = 'ICD10CM'
+  AND cr.relationship_id = 'Maps to'
+  AND c2.standard_concept = 'S';
+```
+
+This would map ICD-10 E11.9 to the same standard concept 201826, but `condition_source_concept_id` would contain the ICD-10 concept ID rather than the standard concept ID.
+
+### Scenario B: Domain Mismatch
+If vocabulary lookup reveals the concept belongs to a different domain than expected:
+
+**Step 3 - Domain Determination:**
+- FHIR Resource: Observation
+- Expected Domain: Observation  
+- Vocabulary Domain: Measurement (from concept.domain_id)
+- **Action**: Use Measurement domain for OMOP table selection
+- **Result**: Populate measurement table instead of observation table
+
+## Implementation Considerations
+
+### Data Extraction
+- **Element Identification**: Systematically identify all coded elements in FHIR resources
+- **Coding Validation**: Verify coding system URIs and code formats
+- **Multi-code Handling**: Establish precedence rules for multiple codings
+- **Text Preservation**: Maintain original display text for audit purposes
+
+### Vocabulary Management
+- **Version Consistency**: Ensure OMOP vocabulary version compatibility
+- **Cache Strategy**: Implement efficient vocabulary lookup caching
+- **Update Procedures**: Establish vocabulary refresh and validation processes
+- **Coverage Assessment**: Monitor mapping success rates by vocabulary
+
+### Domain Assignment
+- **Resource Type Mapping**: Document FHIR resource to OMOP domain mappings
+- **Vocabulary Override**: Handle cases where vocabulary domain differs from resource type
+- **Multi-domain Concepts**: Address concepts that span multiple domains
+- **Custom Domains**: Manage institution-specific domain assignments
+
+### Quality Assurance
+- **Mapping Validation**: Verify concept mappings preserve clinical meaning
+- **Data Completeness**: Ensure all required OMOP fields are populated
+- **Audit Trails**: Maintain transformation decision logs
+- **Error Handling**: Implement robust fallback mechanisms for mapping failures
 
 ### Historical code and code system transformations
