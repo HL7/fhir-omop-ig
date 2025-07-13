@@ -250,6 +250,207 @@ The proposed prioritization framework addresses the complex reality of multiple 
 ### CodeableConcept Key Challenges and Considerations
 This transformation pattern deliberately excludes free text handling, recognizing the significant challenges it poses to OMOP's structured requirements. While FHIR's flexibility allows for free text descriptions when structured codes are unavailable, OMOP's analytics-focused design requires standardized vocabularies. The decision to scope out free text in a project may be a pragmatic approach that prioritizes data quality and consistency over comprehensive coverage.  For implementations encountering and wishing to include free text, additional processing through utilization of terminology servers or natural language processing tools may be necessary to convert textual descriptions into standardized codes before applying this transformation pattern.
 
+## Example: Mapping No Known Allergy CodeableConcept
+
+### Source FHIR AllergyIntolerance Resource
+
+```json
+{
+  "resourceType": "AllergyIntolerance",
+  "id": "no-known-allergy-example",
+  "clinicalStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+        "code": "active"
+      }
+    ]
+  },
+  "verificationStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+        "code": "confirmed"
+      }
+    ]
+  },
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "716186003",
+        "display": "No known allergy (situation)"
+      }
+    ],
+    "text": "NKA"
+  },
+  "patient": {
+    "reference": "Patient/example"
+  },
+  "recordedDate": "2023-01-15"
+}
+```
+
+## Step-by-Step CodeableConcept Transformation
+
+### Step 1: FHIR CodeableConcept Input
+**Input Analysis:**
+- **Resource Type**: AllergyIntolerance
+- **CodeableConcept Location**: `code` element
+- **Clinical Concept**: No known allergy status assertion
+- **Structured Code Present**: Yes (SNOMED CT code available)
+- **Free Text**: "NKA" (additional context)
+
+The AllergyIntolerance resource contains a CodeableConcept representing a negative assertion about allergies, which presents unique mapping challenges for OMOP transformation.
+
+### Step 2: Multiple Code Assessment
+**Decision Point**: Multiple codes present?
+- **Coding Array Count**: 1 code (SNOMED CT only)
+- **Decision**: No - Single code present
+- **Next Step**: Proceed to Step 3 (Use Single Code)
+
+The CodeableConcept contains only one structured code, eliminating the need for prioritization logic.
+
+### Step 3: Use Single Code
+**Single Code Processing:**
+- **Selected Code**: 716186003
+- **Source System**: SNOMED CT (http://snomed.info/sct)
+- **Display Name**: "No known allergy (situation)"
+- **Processing Status**: Direct mapping candidate identified
+
+The SNOMED CT code represents a standardized way to express the absence of known allergies, suitable for OMOP vocabulary lookup.
+
+### Step 4: OMOP Concept Lookup
+**Standard Vocabulary Mapping:**
+
+```sql
+SELECT concept_id, concept_name, domain_id, vocabulary_id, concept_code, standard_concept
+FROM concept
+WHERE concept_code = '716186003' 
+  AND vocabulary_id = 'SNOMED';
+```
+
+**Query Results:**
+```
+concept_id: 4222295
+concept_name: No known allergy
+domain_id: Observation
+vocabulary_id: SNOMED
+concept_code: 716186003
+standard_concept: S
+```
+
+**Lookup Analysis:**
+- **OMOP Concept Found**: Yes
+- **Standard Concept**: Yes (S flag)
+- **Domain Assignment**: Observation (not Condition as might be expected)
+- **Vocabulary Alignment**: SNOMED CT standard vocabulary confirmed
+
+**Critical Domain Consideration:**
+The OMOP vocabulary assigns this concept to the Observation domain rather than the Condition domain, despite originating from an AllergyIntolerance FHIR resource. This demonstrates the importance of vocabulary-driven domain assignment over resource type assumptions.
+
+### Step 5: OMOP Concept Mapped (Success Path)
+**Successful Mapping Outcome:**
+- **Target Concept ID**: 4222295
+- **Domain Classification**: Observation
+- **Concept Status**: Standard (S)
+- **Target OMOP Table**: observation (not condition_occurrence)
+
+The successful lookup reveals that "No known allergy" maps to the Observation domain in OMOP, requiring population of the observation table rather than condition_occurrence.
+
+## OMOP Table Population
+
+### Observation Table Mapping
+
+```sql
+INSERT INTO observation (
+    observation_id,
+    person_id,
+    observation_concept_id,
+    observation_date,
+    observation_datetime,
+    observation_type_concept_id,
+    value_as_concept_id,
+    observation_source_value,
+    observation_source_concept_id,
+    unit_source_value,
+    qualifier_source_value
+) VALUES (
+    [generated_id],                    -- observation_id
+    [mapped_person_id],                -- person_id from Patient/example
+    4222295,                           -- observation_concept_id (No known allergy)
+    '2023-01-15',                      -- observation_date
+    '2023-01-15T00:00:00',            -- observation_datetime
+    32817,                             -- observation_type_concept_id (EHR)
+    NULL,                              -- value_as_concept_id (not applicable)
+    '716186003',                       -- observation_source_value
+    4222295,                           -- observation_source_concept_id
+    NULL,                              -- unit_source_value
+    'NKA'                              -- qualifier_source_value
+);
+```
+
+### Field Mapping Details
+
+| OMOP Field | Value | Source | Transformation Notes |
+|------------|--------|---------|---------------------|
+| `observation_concept_id` | 4222295 | SNOMED 716186003 | Standard OMOP concept for "No known allergy" |
+| `observation_source_value` | 716186003 | FHIR code.coding[0].code | Original SNOMED code preserved |
+| `observation_source_concept_id` | 4222295 | Same as standard | Source code already standard |
+| `observation_date` | 2023-01-15 | FHIR recordedDate | Date of allergy status documentation |
+| `qualifier_source_value` | NKA | FHIR code.text | Free text abbreviation preserved |
+| `value_as_concept_id` | NULL | Not applicable | No additional value needed for status assertion |
+
+## CodeableConcept Decision Flow Validation
+
+### Applied Transformation Pattern
+1. **Step 1**: CodeableConcept input identified with negative assertion concept
+2. **Step 2**: Single code detected (no prioritization required)
+3. **Step 3**: Single SNOMED code processing applied
+4. **Step 4**: OMOP lookup successful with domain revelation
+5. **Step 5**: Concept mapped to Observation domain (not expected Condition)
+6. **Step 6**: Not applicable (successful mapping found)
+
+### Key Learning Points
+- **Domain Override**: Vocabulary domain (Observation) superseded resource type expectation (Condition)
+- **Negative Assertions**: "No known" concepts require special handling in OMOP
+- **Table Selection**: observation table used instead of condition_occurrence
+- **Context Preservation**: Free text "NKA" maintained in qualifier field
+
+## Prioritization Logic Application
+
+### Standard Vocabularies First
+- **SNOMED CT Priority**: Confirmed as highest priority standard vocabulary
+- **Single Code Scenario**: No prioritization competition present
+- **Standard Status**: S flag verified for direct usage
+
+### Clinical Specificity
+- **Concept Precision**: "No known allergy" is appropriately specific
+- **Situation Context**: SNOMED situational concept captures clinical meaning
+- **Negative Assertion**: Properly represents absence of condition
+
+## OMOP CDM Alignment
+
+### Concept Relationship Verification
+```sql
+SELECT cr.relationship_id, c2.concept_name, c2.domain_id
+FROM concept_relationship cr
+JOIN concept c2 ON cr.concept_id_2 = c2.concept_id  
+WHERE cr.concept_id_1 = 4222295
+  AND cr.relationship_id IN ('Maps to', 'Is a');
+```
+
+### Domain Classification Logic
+- **Resource Type**: AllergyIntolerance
+- **Expected Domain**: Condition
+- **Vocabulary Domain**: Observation
+- **Final Decision**: Use vocabulary domain (Observation)
+- **Rationale**: OMOP vocabulary domain takes precedence
+
+### Standard Concept Validation
+- **Standard Flag**: S (confirmed standard)
+- **Relationship Mapping**: Not required (already standard)
+- **Direct Usage**: Approved for observation_concept_id field
 
 ## Value-as-concept Map Pattern
 accommodating concepts split into more than one field in the OMOP target and source name / value pairs
