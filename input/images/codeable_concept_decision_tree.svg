@@ -12,7 +12,7 @@
   <rect x="250" y="50" width="300" height="80" rx="15" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
   <text x="400" y="75" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold">1. FHIR CodeableConcept Input</text>
   <text x="400" y="95" text-anchor="middle" font-family="Arial" font-size="11">Names a clinical event or observation</text>
-  <text x="400" y="110" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">& contains structured codes</text>
+  <text x="400" y="110" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">and contains structured codes</text>
   
   <!-- Decision 1: Multiple codes present? -->
   <polygon points="400,160 510,190 400,220 290,190" fill="#bbdefb" stroke="#0d47a1" stroke-width="2"/>
@@ -29,7 +29,7 @@
   <text x="550" y="295" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">3. Use Single Code</text>
   <text x="550" y="315" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">Direct mapping candidate</text>
   
-  <!-- OHDSI Lookup -->
+  <!-- OMOP Concept Lookup -->
   <rect x="300" y="450" width="200" height="60" rx="10" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2"/>
   <text x="400" y="475" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">4. OMOP Concept Lookup</text>
   <text x="400" y="495" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">Standard vocabulary mapping</text>
