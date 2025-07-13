@@ -1,0 +1,84 @@
+<svg width="800" height="750" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="25" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#333">FHIR CodeableConcept to OMOP Pattern</text>
+  
+  <!-- Start: FHIR CodeableConcept -->
+  <rect x="250" y="50" width="300" height="80" rx="15" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+  <text x="400" y="75" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold">1. FHIR CodeableConcept Input</text>
+  <text x="400" y="95" text-anchor="middle" font-family="Arial" font-size="11">Names a clinical event or observation</text>
+  <text x="400" y="110" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">& contains structured codes</text>
+  
+  <!-- Decision 1: Multiple codes present? -->
+  <polygon points="400,160 510,190 400,220 290,190" fill="#bbdefb" stroke="#0d47a1" stroke-width="2"/>
+  <text x="400" y="185" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">Multiple codes</text>
+  <text x="400" y="200" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">present?</text>
+  
+  <!-- Multiple codes path - Apply prioritization logic -->
+  <rect x="150" y="270" width="200" height="60" rx="10" fill="#fff8e1" stroke="#ff8f00" stroke-width="2"/>
+  <text x="250" y="295" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">2. Apply Prioritization Logic</text>
+  <text x="250" y="315" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">(Standard vocab → Specificity → Primary)</text>
+  
+  <!-- Single code path -->
+  <rect x="450" y="270" width="200" height="60" rx="10" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+  <text x="550" y="295" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">3. Use Single Code</text>
+  <text x="550" y="315" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">Direct mapping candidate</text>
+  
+  <!-- OHDSI Lookup -->
+  <rect x="300" y="450" width="200" height="60" rx="10" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2"/>
+  <text x="400" y="475" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">4. OMOP Concept Lookup</text>
+  <text x="400" y="495" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">Standard vocabulary mapping</text>
+  
+  <!-- Decision 2: OMOP mapping found? -->
+  <polygon points="400,540 510,570 400,600 290,570" fill="#bbdefb" stroke="#0d47a1" stroke-width="2"/>
+  <text x="400" y="565" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">OMOP mapping</text>
+  <text x="400" y="580" text-anchor="middle" font-family="Arial" font-size="11" font-weight="bold">found?</text>
+  
+  <!-- Success path -->
+  <rect x="500" y="630" width="250" height="80" rx="15" fill="#bbdefb" stroke="#0d47a1" stroke-width="3"/>
+  <text x="625" y="655" text-anchor="middle" font-family="Arial" font-size="13" font-weight="bold">5. OMOP Concept Mapped</text>
+  <text x="625" y="675" text-anchor="middle" font-family="Arial" font-size="11">Domain + concept_ID</text>
+  <text x="625" y="695" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">Concept Status + Source Values</text>
+  
+  <!-- No mapping found path -->
+  <rect x="50" y="630" width="250" height="80" rx="10" fill="#e1f5fe" stroke="#01579b" stroke-width="2"/>
+  <text x="175" y="655" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold">6. No Standard Mapping</text>
+  <text x="175" y="675" text-anchor="middle" font-family="Arial" font-size="11">Store as source concept</text>
+  <text x="175" y="695" text-anchor="middle" font-family="Arial" font-size="10" fill="#666">concept_id=0, preserve original data</text>
+  
+  <!-- Arrows -->
+  <line x1="400" y1="130" x2="400" y2="160" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="345" y1="205" x2="250" y2="270" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="455" y1="205" x2="550" y2="270" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="250" y1="330" x2="390" y2="450" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="550" y1="330" x2="410" y2="450" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="400" y1="510" x2="400" y2="540" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="455" y1="585" x2="615" y2="630" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <line x1="345" y1="585" x2="185" y2="630" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  
+  <!-- Labels -->
+  <text x="315" y="240" font-family="Arial" font-size="11" font-weight="bold" fill="#000">Yes</text>
+  <text x="525" y="240" font-family="Arial" font-size="11" font-weight="bold" fill="#000">No</text>
+  <text x="470" y="605" font-family="Arial" font-size="11" font-weight="bold" fill="#000">Yes</text>
+  <text x="330" y="605" font-family="Arial" font-size="11" font-weight="bold" fill="#000">No</text>
+  
+  <!-- Priority annotation -->
+  <rect x="50" y="370" width="180" height="100" rx="5" fill="#fff8e1" stroke="#ff8f00" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="140" y="390" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#000">Prioritization Logic:</text>
+  <text x="140" y="405" text-anchor="middle" font-family="Arial" font-size="9" fill="#000">1. Standard vocabularies first</text>
+  <text x="140" y="420" text-anchor="middle" font-family="Arial" font-size="9" fill="#000">2. Most specific code</text>
+  <text x="140" y="435" text-anchor="middle" font-family="Arial" font-size="9" fill="#000">3. Primary designation</text>
+  <text x="140" y="450" text-anchor="middle" font-family="Arial" font-size="9" fill="#000">4. Temporal precedence</text>
+  
+  <!-- Processing note -->
+  <rect x="550" y="450" width="200" height="80" rx="5" fill="#e8eaf6" stroke="#3f51b5" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="650" y="470" text-anchor="middle" font-family="Arial" font-size="10" font-weight="bold" fill="#000">OMOP CDM Alignment:</text>
+  <text x="650" y="485" text-anchor="middle" font-family="Arial" font-size="9" fill="#000">• Concept relationship lookup</text>
+  <text x="650" y="500" text-anchor="middle" font-family="Arial" font-size="9" fill="#000">• Standard concept validation</text>
+  <text x="650" y="515" text-anchor="middle" font-family="Arial" font-size="9" fill="#000">• Domain classification</text>
+</svg>
