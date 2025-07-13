@@ -27,12 +27,15 @@ The code and system elements required in FHIR are also key search parameters whe
 ### Mapping Process Patterns
 As stated previously, mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations follow distinct patterns.  In this IG, we propose transformation patterns and guidance regarding: 
 
-* A base pattern that covers most simple code to concept transformation, 
-* Value-as-concept map patterns accommodating concepts split into more than one field in the OMOP target and source name / value pairs
+* A base pattern that covers most simple code to concept transformation
+* A pattern applicable to many Codeable Concepts
+* Value-as-concept map patterns 
 * One source to many OMOP target domains 
 * Multiple source reference evaluations
 * OMOP non-Standard concept source coding
 * Historical code and code system transformations
+
+### Base Mapping Pattern
 
 {::options parse_block_html="false" /}
 <figure>
@@ -42,10 +45,21 @@ As stated previously, mapping coded data from FHIR to OMOP requires evaluation o
 {::options parse_block_html="true" /}
 
 1. **Extract Coded Data**:  Identify the coded elements within the FHIR resource. These elements are often of the type CodeableConcept or Coding.
-2. **Determine the Domain**:  Use the FHIR code to determine the appropriate OMOP domain (e.g., Condition, Drug, Observation). This is usually based on the type of FHIR resource (e.g., Condition resource maps to OMOP Condition domain).
-3. **Consult OMOP Vocabulary**:  Use the OMOP vocabulary tables to find the equivalent OMOP concept ID for the FHIR code. This involves looking up the code in the concept table within OMOP to find a matching standard concept.
-4. **Handle Non-standard Concepts**:  If the FHIR code does not have a direct standard concept in OMOP, map it to a non-standard concept and then find the standard equivalent using the concept_relationship table.
+2.  **Consult OMOP Vocabulary**:  Use the OMOP vocabulary tables to find the equivalent OMOP concept ID for the FHIR code. This involves looking up the code in the concept table within OMOP to find a matching standard concept.
+3.  **Determine the Domain**:  Use the FHIR code to determine the appropriate OMOP domain (e.g., Condition, Drug, Observation). This could be based on the type of FHIR resource (e.g., Condition resource maps to OMOP Condition domain) or the OMOP Vocabulry may indicate the equivalent concept as modeled in the OHDSI Stanbdardize Vocabularies "lives" in a differt domain than the FHIR resource or profile it is sourced from.
+4. **Handle Non-standard Concepts** see "OMOP non-Standard Concept Source Coding" section below
 5. **Populate OMOP Fields**:  Fill in the relevant fields in the OMOP table, including concept_id, source_value, and other relevant attributes.
+
+### Codeable Concept Pattern
+
+
+### Value-as-concept map patterns
+accommodating concepts split into more than one field in the OMOP target and source name / value pairs
+
+### One Source to many OMOP targets
+
+
+
 
 ### Multiple Reference Codings
 Multiple reference codings occur when a single clinical concept in the source data is represented by multiple codes, either within the same coding system or across different coding systems. This scenario introduces complexity in the mapping process because it requires determining which code (or codes) should be used to represent the concept in the OMOP CDM.
@@ -138,3 +152,8 @@ A patient’s record includes two SNOMED CT codes, 44054006 (Type 2 Diabetes Mel
   * condition_source_value: 44054006
   * condition_concept_id: 201826
   * condition_source_concept_id: If applicable, the SNOMED CT code concept ID.
+
+### OMOP non-Standard Concept Source Coding
+If the FHIR code does not have a direct standard concept in OMOP, locate the non-standard concept_id and its record in the concept table. Then find the Standard concept using the concept_relationship table. A "Non-standard to Standard" map value ( and one other ) from the records with the non-standard concept_id in the relationship table indicate availabilty of an appropriate OMOP Standard target to map to.  
+
+### Historical code and code system transformations
