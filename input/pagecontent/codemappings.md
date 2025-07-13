@@ -51,6 +51,82 @@ As stated previously, mapping coded data from FHIR to OMOP requires evaluation o
 5. **Populate OMOP Fields**:  Fill in the relevant fields in the OMOP table, including concept_id, source_value, and other relevant attributes.
 
 ### Codeable Concept Pattern
+Codeable concepts are one of the coded datatypes represented in FHIR resources. In FHIR, a CodeableConcept is "A type that represents a concept by plain text and/or one or more coding elements"  The transformation of FHIR CodeableConcept elements to OMOP format create a challenge to uniform transformation procatices, but also represents a critical bridge between the flexible, interoperable world of FHIR and the structured, analytics-focused environment of the OMOP Common Data Model. This Pattern aims to partially addresses the tension between FHIR's allowance for both structured codes and free text versus OMOP's strict requirement for standardized vocabularies, but does not explicitly address transformation of purely free-text expressions allowed in CodeableConcepts.
+
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b>FHIR to OMOP Coded Data Base Mapping Pattern</b></figcaption>
+<img src="input/images/fhir_omop_base_pattern.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Coded Data Base Mapping Pattern"/>
+</figure>
+{::options parse_block_html="true" /}
+
+## Step-by-Step Transformation Process
+
+### Step 1: FHIR CodeableConcept Input
+The transformation begins with a FHIR CodeableConcept that names a clinical event or observation and contains structured codes. In FHIR, CodeableConcepts serve as the primary mechanism for representing coded data such as diagnoses, medications, allergies, and other clinical concepts. These elements can contain multiple "codings," each potentially including a code, display name, and system identifier. Importantly, this pattern assumes the presence of structured codes, deliberately scoping out free text scenarios that pose significant mapping challenges to OMOP's standardized vocabulary requirements.
+
+### Step 2: Multiple Code Assessment and Prioritization
+When multiple structured codes are present within the CodeableConcept, the system applies a sophisticated prioritization logic. This step addresses the reality that clinical systems often provide multiple codes for the same concept, either from different coding systems or at different levels of specificity. The prioritization follows a clear hierarchy: **standard vocabularies take precedence** (SNOMED CT, RxNorm, LOINC), followed by **code specificity** (more specific clinical concepts over general ones), then **primary designation** (if explicitly marked), and finally **temporal precedence** (first encountered code). This systematic approach ensures consistent, predictable mapping outcomes while preserving clinical accuracy.
+
+### Step 3: Single Code Processing
+For CodeableConcepts containing only one structured code, the process bypasses prioritization and proceeds directly to vocabulary lookup. This streamlined path recognizes that single codes represent the ideal scenario for FHIR-to-OMOP transformation, eliminating ambiguity while maintaining data integrity. The single code serves as a direct mapping candidate, though it still requires validation against OMOP's standardized vocabularies.
+
+### Step 4: OMOP Concept Lookup
+This critical step performs the actual transformation through standard vocabulary mapping. The selected code (whether from prioritization or single code processing) undergoes lookup against OMOP's standardized vocabularies to identify the corresponding OMOP concept. This process involves concept relationship traversal, standard concept validation, and domain classification. The lookup mechanism addresses OMOP's fundamental requirement that all data be represented using standardized vocabularies, ensuring that every clinical concept maps to a specific code from an accepted terminology system.
+
+### Step 5: Successful OMOP Concept Mapping
+When a valid OMOP mapping is found, the system creates a complete OMOP concept record including the domain classification, concept_ID, concept status, and source values. This successful outcome represents the achievement of OMOP's goal to maintain strict adherence to standardized coding systems while preserving the clinical meaning of the original FHIR data. The mapped concept becomes fully integrated into the OMOP ecosystem, supporting downstream analytics and research applications.
+
+### Step 6: No Standard Mapping Available
+When no standard OMOP mapping exists for the source code, the system stores the concept with concept_id=0 while preserving the original data. This approach acknowledges the reality that not all clinical codes have direct OMOP equivalents, particularly for newer terminologies or highly specialized clinical domains. By preserving the original data alongside the unmapped status, the system maintains data completeness while clearly indicating the limitation for OMOP-based analytics.
+
+## Supporting Decision Logic
+
+### Prioritization Logic (Golden Box)
+The prioritization framework addresses the complex reality of multiple coding scenarios by establishing clear precedence rules. This systematic approach eliminates ambiguity in code selection while ensuring reproducible transformation outcomes.
+
+#### 1. Standard Vocabularies First
+- **SNOMED CT**: Prioritize for conditions, procedures, and clinical observations due to its comprehensive coverage and OMOP's primary reliance on SNOMED concepts
+- **RxNorm**: Give precedence for medications, drug products, and pharmaceutical concepts as the standard drug vocabulary in OMOP
+- **LOINC**: Prioritize for laboratory tests, measurements, and clinical observations, particularly lab results and vital signs
+- **ICD-10/ICD-9**: Use only when no standard vocabulary equivalent exists, as these are considered non-standard in OMOP but may have mappings to standard concepts
+- **CPT/HCPCS**: Accept for procedures when SNOMED equivalents are not available, though these require mapping to standard concepts
+- **Local/Proprietary codes**: Lowest priority, should only be used when no standard vocabulary alternative exists
+
+#### 2. Most Specific Code
+- **Clinical granularity**: Choose codes that provide the highest level of clinical detail (e.g., "Type 2 diabetes with diabetic nephropathy" over "diabetes mellitus")
+- **Anatomical precision**: Prefer codes that specify exact anatomical locations when available (e.g., "fracture of left femoral neck" over "femoral fracture")
+- **Temporal specificity**: Select codes that include timing information when relevant (e.g., "acute myocardial infarction" over "myocardial infarction")
+- **Severity indicators**: Prioritize codes that include severity or stage information when clinically relevant
+- **Laterality**: Choose codes that specify left/right/bilateral when anatomically appropriate
+- **Avoid parent concepts**: Reject general parent codes when more specific child concepts are available in the coding array
+
+#### 3. Primary Designation
+- **Explicit primary flags**: Honor any explicit "primary" or "preferred" designations in the FHIR coding array
+- **Use flags**: Respect FHIR use codes such as "usual," "official," or "preferred" when present
+- **System preferences**: Consider organizational or system-level preferences for specific vocabularies when documented
+- **Clinical context**: Factor in the clinical context where primary designation may indicate diagnostic certainty or treatment focus
+- **Documentation guidelines**: Follow institutional coding guidelines that may designate preferred vocabularies for specific clinical domains
+
+#### 4. Temporal Precedence
+- **First encountered rule**: When all other criteria are equal, select the first code appearing in the coding array
+- **Consistent tie-breaking**: Apply this rule uniformly across all transformation instances to ensure reproducible results
+- **Array order preservation**: Maintain the original order of codes as provided by the source system
+- **Audit trail**: Document when temporal precedence was the deciding factor for transparency and quality assurance
+- **System behavior**: Ensure predictable behavior when multiple equally valid codes exist
+
+### OMOP CDM Alignment (Purple Box)
+The alignment process encompasses concept relationship lookup to traverse vocabulary hierarchies, standard concept validation to ensure OMOP compliance, and domain classification to properly categorize clinical concepts. This technical framework ensures that transformed data integrates seamlessly with OMOP's analytical infrastructure while maintaining the semantic meaning of the original clinical information.
+
+## Key Challenges and Considerations
+
+This transformation pattern deliberately excludes free text handling, recognizing the significant challenges it poses to OMOP's structured requirements. While FHIR's flexibility allows for free text descriptions when structured codes are unavailable, OMOP's analytics-focused design requires standardized vocabularies. The decision to scope out free text represents a practical approach that prioritizes data quality and consistency over comprehensive coverage.
+
+For implementations encountering free text scenarios, additional processing through terminology servers or natural language processing tools may be necessary to convert textual descriptions into standardized codes before applying this transformation pattern.
+
+## Conclusion
+
+This systematic approach to FHIR CodeableConcept transformation ensures that clinical data maintains its semantic meaning while conforming to OMOP's standardized vocabulary requirements. By focusing on structured codes and implementing robust prioritization logic, the pattern provides a reliable foundation for clinical data analytics while acknowledging the inherent challenges in bridging different healthcare data standards.
 
 
 ### Value-as-concept map patterns
