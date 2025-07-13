@@ -1,5 +1,5 @@
 # FHIR to OMOP Coded Data Transformation Patterns
-Transforming FHIR coded source data to OMOP follows established transformation patterns where similar data sources are processed through a common series of steps to populate an OMOP target database. This standardized approach ensures consistent handling of coded clinical information across diverse healthcare datasets.
+Unlike purely schema-to-schema transformations, transforming FHIR to OMOP requires evalutaion of the concepts coded in the source data to determine and assign appropriate representation in a target OMOP database. This means that FHIR resources contained in profiles such as "IPA-Condition" or "IPA-Observation" may or may not generate records on a target OMOP domain table bearing the same or similar names, such as "condition_occurrence" and "observation."  Rather, the concepts represented in the FHIR resource determine the appropriate transformation targets, and each must be evalated on a case-by-case basis. FHIR coded source data transformation to OMOP often do follow patterns where similar data sources are processed through a common series of steps to populate an OMOP target database. This standardized approach lowers the decsiion burden for ETL developers and ensures consistent handling of coded clinical information across diverse healthcare datasets.  
 
 ## Understanding Coded Source Data
 Coded source data in FHIR refers to information represented using standardized code systems such as SNOMED CT, LOINC, RxNorm, and other established terminologies. (See Using Codes in Resources for more information.) When mapping these FHIR elements to OMOP, implementers must ensure that codes are appropriately translated into the OHDSI Standardized Vocabularies and that the resulting data aligns with the correct domain classifications within the OMOP model.
@@ -24,7 +24,16 @@ Coded data in FHIR resources minimally employ a pattern specififying a code and 
 
 The code and system elements required in FHIR are also key search parameters when identifiying target concepts in the OHDSI Standardized Vocabularies. A FHIR Code System is represented in the OMOP CDM vocabulary table as a unique identifer (vocabulary_id) with an acompanying human-readable name (vocabulary_name).  A Code or Coding in FHIR is represented in the OMOP CDM concept table as a 'concept_code', which is linked to the vocabulary table via a vocabulary_id foreign key.  
 
-### Mapping Process
+### Mapping Process Patterns
+As stated previously, mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations follow distinct patterns.  In this IG, we propose transformation patterns and guidance regarding: 
+
+* A base pattern that covers most simple code to concept transformation, 
+* Value-as-concept map patterns accommodating concepts split into more than one field in the OMOP target and source name / value pairs
+* One source to many OMOP target domains 
+* Multiple source reference evaluations
+* OMOP non-Standard concept source coding
+* Historical code and code system transformations
+
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>FHIR to OMOP Coded Data Mapping Process</b></figcaption>
