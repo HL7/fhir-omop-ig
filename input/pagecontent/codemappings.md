@@ -76,7 +76,7 @@ As stated previously, mapping coded data from FHIR to OMOP requires evaluation o
 
 ## Step-by-Step Base Pattern Transformation
 
-### Step 1: Extract Coded Data
+### 1: Extract Coded Data
 **Identify coded elements within the FHIR resource:**
 - **Resource Type**: Condition
 - **Coded Element Location**: `code` field
@@ -87,7 +87,7 @@ As stated previously, mapping coded data from FHIR to OMOP requires evaluation o
 
 The Condition resource contains a coded element in the `code` field, which is a CodeableConcept containing a single Coding with SNOMED CT code 44054006.
 
-### Step 2: Consult OMOP Vocabulary
+### 2: Consult OMOP Vocabulary
 **Use OMOP vocabulary tables to find equivalent concept ID:**
 
 ```sql
@@ -113,7 +113,7 @@ standard_concept: S
 - **Standard Concept Status**: S (Standard)
 - **Vocabulary Match**: SNOMED CT vocabulary confirmed
 
-### Step 3: Determine the Domain
+### 3: Determine the Domain
 **Determine appropriate OMOP domain based on FHIR code and resource type:**
 
 **Initial Domain Assessment:**
@@ -127,7 +127,7 @@ standard_concept: S
 
 The SNOMED CT code 44054006 resides in the Condition domain within OMOP vocabulary, which aligns with the FHIR Condition resource type, confirming appropriate domain assignment.
 
-### Step 4: Handle Non-standard Concepts
+### 4: Handle Non-standard Concepts
 **Evaluate standard concept status:**
 - **Standard Concept Flag**: S (Standard)
 - **Mapping Required**: No (already standard)
@@ -135,7 +135,7 @@ The SNOMED CT code 44054006 resides in the Condition domain within OMOP vocabula
 
 Since the SNOMED CT code maps to a standard OMOP concept, no additional concept relationship mapping is required. The concept can be used directly in OMOP tables.
 
-### Step 5: Populate OMOP Fields
+### 5: Populate OMOP Fields
 **Fill relevant fields in OMOP condition_occurrence table:**
 
 ```sql
@@ -293,7 +293,7 @@ This transformation pattern deliberately excludes free text handling, recognizin
 
 ## Step-by-Step CodeableConcept Transformation
 
-### Step 1: FHIR CodeableConcept Input
+### 1: FHIR CodeableConcept Input
 **Input Analysis:**
 - **Resource Type**: AllergyIntolerance
 - **CodeableConcept Location**: `code` element
@@ -301,9 +301,9 @@ This transformation pattern deliberately excludes free text handling, recognizin
 - **Structured Code Present**: Yes (SNOMED CT code available)
 - **Free Text**: "NKA" (additional context)
 
-The AllergyIntolerance resource contains a CodeableConcept representing a negative assertion about allergies, which presents unique mapping challenges for OMOP transformation.
+The AllergyIntolerance resource contains a CodeableConcept that is a negative statement regarding the presence of allergies. This presents a challenge for OMOP transformation.
 
-### Step 2: Multiple Code Assessment
+### 2: Multiple Code Assessment
 **Decision Point**: Multiple codes present?
 - **Coding Array Count**: 1 code (SNOMED CT only)
 - **Decision**: No - Single code present
@@ -311,7 +311,7 @@ The AllergyIntolerance resource contains a CodeableConcept representing a negati
 
 The CodeableConcept contains only one structured code, eliminating the need for prioritization logic.
 
-### Step 3: Use Single Code
+### 3: Use Single Code
 **Single Code Processing:**
 - **Selected Code**: 716186003
 - **Source System**: SNOMED CT (http://snomed.info/sct)
@@ -320,7 +320,7 @@ The CodeableConcept contains only one structured code, eliminating the need for 
 
 The SNOMED CT code represents a standardized way to express the absence of known allergies, suitable for OMOP vocabulary lookup.
 
-### Step 4: OMOP Concept Lookup
+### 4: OMOP Concept Lookup
 **Standard Vocabulary Mapping:**
 
 ```sql
@@ -349,14 +349,13 @@ standard_concept: S
 **Critical Domain Consideration:**
 The OMOP vocabulary assigns this concept to the Observation domain rather than the Condition domain, despite originating from an AllergyIntolerance FHIR resource. This demonstrates the importance of vocabulary-driven domain assignment over resource type assumptions.
 
-### Step 5: OMOP Concept Mapped (Success Path)
-**Successful Mapping Outcome:**
+### 5: OMOP Concept Mapping
 - **Target Concept ID**: 4222295
 - **Domain Classification**: Observation
 - **Concept Status**: Standard (S)
 - **Target OMOP Table**: observation (not condition_occurrence)
 
-The successful lookup reveals that "No known allergy" maps to the Observation domain in OMOP, requiring population of the observation table rather than condition_occurrence.
+A lookup reveals that "No known allergy" maps to the Observation domain in OMOP, requiring population of the observation table rather than condition_occurrence.
 
 ## OMOP Table Population
 
@@ -401,56 +400,59 @@ INSERT INTO observation (
 | `qualifier_source_value` | NKA | FHIR code.text | Free text abbreviation preserved |
 | `value_as_concept_id` | NULL | Not applicable | No additional value needed for status assertion |
 
-## CodeableConcept Decision Flow Validation
+In this example, the transformation successfully followed the proposed pattern, beginning with identification of the CodeableConcept input containing a negative assertion concept for "No known allergy." Since only a single SNOMED CT code was present in the coding array, the system  can bypass the prioritization logic step. An OMOP vocabulary lookup located the concept with an unexpected domain revelation - the concept mapped to the Observation domain rather than the anticipated Condition domain based on the source IPA AllergyIntolerance profile. In this onstance, there a need to complete an additional stpe was elminiated, as a standard OMOP concept was found and could be used directly.
 
-### Applied Transformation Pattern
-1. **Step 1**: CodeableConcept input identified with negative assertion concept
-2. **Step 2**: Single code detected (no prioritization required)
-3. **Step 3**: Single SNOMED code processing applied
-4. **Step 4**: OMOP lookup successful with domain revelation
-5. **Step 5**: Concept mapped to Observation domain (not expected Condition)
-6. **Step 6**: Not applicable (successful mapping found)
+The transformation revealed several key insights about handling negative assertion concepts in OMOP. The vocabulary domain assignment took precedence over FHIR resource type expectations, demonstrating that OMOP's semantic organization may differ from FHIR's resource categorization. This required routing the data to the observation table instead of condition_occurrence, while preserving the clinical context through the qualifier_source_value field containing the "NKA" abbreviation.
 
-### Key Learning Points
-- **Domain Override**: Vocabulary domain (Observation) superseded resource type expectation (Condition)
-- **Negative Assertions**: "No known" concepts require special handling in OMOP
-- **Table Selection**: observation table used instead of condition_occurrence
-- **Context Preservation**: Free text "NKA" maintained in qualifier field
+Although prioritization was not required due to the single code scenario, the transformation validated adherence to the established hierarchy. SNOMED was confirmed as the highest priority standard vocabulary, and the concept's standard status (S flag) allowed for direct usage without additional relationship mapping. As the text provided is an exact match to the preferred term in SNOMED, "No known allergy (situation)" with the SNOMED situational concept effectively capturing the clinical meaning of a negative assertion about allergy status is appropriately accepted.
 
-## Prioritization Logic Application
+Concept relationship verification using the standard query pattern validated the concept's position within the vocabulary hierarchy, while domain classification logic demonstrated how OMOP vocabulary domain assignments take precedence over FHIR resource type expectations. The AllergyIntolerance resource type initially suggested a Condition domain mapping, but the vocabulary's assignment to the Observation domain guided the final table selection decision. Standard concept validation confirmed the S flag status, eliminating the need for concept relationship mapping and approving direct usage in the observation_concept_id field. This vocabulary-driven approach ensures semantic consistency within the OMOP ecosystem while preserving the clinical intent of the original FHIR data.
 
-### Standard Vocabularies First
-- **SNOMED CT Priority**: Confirmed as highest priority standard vocabulary
-- **Single Code Scenario**: No prioritization competition present
-- **Standard Status**: S flag verified for direct usage
+## Alternative Scenarios and Considerations: Multiple Allergy Status Codes
+If the CodeableConcept contained both SNOMED and a local code:
 
-### Clinical Specificity
-- **Concept Precision**: "No known allergy" is appropriately specific
-- **Situation Context**: SNOMED situational concept captures clinical meaning
-- **Negative Assertion**: Properly represents absence of condition
-
-## OMOP CDM Alignment
-
-### Concept Relationship Verification
-```sql
-SELECT cr.relationship_id, c2.concept_name, c2.domain_id
-FROM concept_relationship cr
-JOIN concept c2 ON cr.concept_id_2 = c2.concept_id  
-WHERE cr.concept_id_1 = 4222295
-  AND cr.relationship_id IN ('Maps to', 'Is a');
+```json
+"coding": [
+  {
+    "system": "http://snomed.info/sct",
+    "code": "716186003",
+    "display": "No known allergy (situation)"
+  },
+  {
+    "system": "http://hospital.org/allergy-codes",
+    "code": "NKA-001",
+    "display": "No Known Allergies"
+  }
+]
 ```
 
-### Domain Classification Logic
-- **Resource Type**: AllergyIntolerance
-- **Expected Domain**: Condition
-- **Vocabulary Domain**: Observation
-- **Final Decision**: Use vocabulary domain (Observation)
-- **Rationale**: OMOP vocabulary domain takes precedence
+**Prioritization Application:**
+- **Standard Vocabulary First**: SNOMED CT selected over local code
+- **Result**: Same mapping to concept_id 4222295
+- **Local Code**: Preserved in observation_source_value as secondary
 
-### Standard Concept Validation
-- **Standard Flag**: S (confirmed standard)
-- **Relationship Mapping**: Not required (already standard)
-- **Direct Usage**: Approved for observation_concept_id field
+### Scenario B: Related Allergy Concepts
+Similar concepts that might appear in allergy contexts:
+
+| SNOMED Code | Concept Name | OMOP Domain | Notes |
+|-------------|--------------|-------------|-------|
+| 716186003 | No known allergy | Observation | Status assertion |
+| 429625007 | No known food allergy | Observation | Specific category |
+| 428607008 | No known environmental allergy | Observation | Environmental focus |
+| 409137002 | No known drug allergy | Observation | Medication-specific |
+
+All these concepts map to the Observation domain, maintaining consistency in OMOP representation. A concept-based domain mapping strategy is the fundamental consideration when OMOP vocabulary domain assignments differ from FHIR resource type expectations. 
+
+The "absence of" semantics in these examples must be maintained in the target OMOP representation, ensuring that negative assertions remain clearly identifiable for clinical and research purposes. This preservation is critical because negative assertions significantly impact analytics queries - researchers must understand when "no known allergy" represents confirmed absence versus lack of documentation. Implementing robust temporal validity tracking becomes essential, as the timing of negative assertions affects their clinical relevance and validity periods. If manual mapping or hard-coded ETL processes are employed in FHIR to OMOP concpet mapping, clinical review processes must validate that OMOP representations accurately reflect the original clinical meaning, especially for concepts as are present in these examples that challenge traditional condition-versus-observation boundaries. Completeness checking ensures that all allergy status information is captured appropriately, while consistency monitoring tracks domain assignment patterns for similar concepts to identify potential mapping inconsistencies or opportunities for standardization across the implementation.
+
+These "No Known Allergy" example demonstrates several critical aspects of FHIR CodeableConcept to OMOP transformation:
+
+1. **Domain Complexity**: OMOP vocabulary domain assignment may differ from FHIR resource type expectations
+2. **Negative Assertions**: Absence-of-condition concepts require special consideration in clinical data mapping
+3. **Table Selection**: Proper OMOP table selection depends on vocabulary domain, not source resource type
+4. **Context Preservation**: Free text elements provide valuable clinical context that should be preserved
+
+The transformation successfully maps a common clinical concept while revealing the importance of vocabulary-driven domain assignment in OMOP implementations. This pattern applies to many similar negative assertion concepts in clinical documentation, providing a template for handling absence-of-finding scenarios in FHIR to OMOP transformations.
 
 ## Value-as-concept Map Pattern
 accommodating concepts split into more than one field in the OMOP target and source name / value pairs
