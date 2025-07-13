@@ -36,8 +36,8 @@ As stated previously, mapping coded data from FHIR to OMOP requires evaluation o
 
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b>FHIR to OMOP Coded Data Mapping Process</b></figcaption>
-<img src="fhir_omop_mapping_flow (4).svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Coded Data Mapping Process"/>
+<figcaption><b>FHIR to OMOP Coded Data Base Mapping Pattern</b></figcaption>
+<img src="input/images/fhir_omop_base_pattern.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Coded Data Base Mapping Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
 
