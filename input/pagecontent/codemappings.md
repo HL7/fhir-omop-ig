@@ -12,14 +12,17 @@ The absence of established mappings in the OHDSI Standardized Vocabularies signi
 ## Automated Mapping Support
 Leveraging a terminology server (e.g.: https://echidna.fhir.org) can facilitate automated mapping processes, particularly for free text or non-standard codes, while producing consistent mapping results across transformation instances. This approach reduces manual intervention and improves the reliability of code translation activities.
 
-The OHDSI Athena website provides a comprehensive searchable database that serves dual purposes for mapping activities. Implementers can use this resource to manually browse available vocabularies and identify codes that appropriately match source concepts to Standard OMOP concepts. This capability proves essential for validating automated mappings and resolving complex terminology translation challenges that arise during FHIR to OMOP transformation projects.
+The OHDSI Athena website provides both access to request OHDSI Vocabulary downloads and a comprehensive searchable database that serves dual purposes for mapping activities. Implementers can use this resource to manually browse available vocabularies and identify codes that appropriately match source concepts to Standard OMOP concepts and also receive vocabulary updates when new versions are published.  Acess to the OHDSI Standardized Vocabularies, whether via API, downloads utilized in local systems or via manual interation with the Athena serach UI is essential for validating mappings and resolving complex terminology translation challenges that arise during FHIR to OMOP transformation projects.
 
 ### Key Elements of FHIR Coded Data
+Coded data in FHIR resources minimally employ a pattern specififying a code and the coding system the code is derived from, and optional display and version attributes (see: Using Codes in Resources https://www.hl7.org/fhir/terminologies.html#4.1) 
 
 * **Code**: The actual code from a standardized code system.
 * **System**: The code system from which the code is drawn (e.g., SNOMED CT, LOINC).
 * **Display**: A human-readable version of the code (optional).
 * **Version**: The version of the code system (optional).
+
+The code and system elements required in FHIR are also key search parameters when identifiying target concepts in the OHDSI Standardized Vocabularies. A FHIR Code System is represented in the OMOP CDM vocabulary table as a unique identifer (vocabulary_id) with an acompanying human-readable name (vocabulary_name).  A Code or Coding in FHIR is represented in the OMOP CDM concept table as a 'concept_code', which is linked to the vocabulary table via a vocabulary_id foreign key.  
 
 ### Mapping Process
 {::options parse_block_html="false" /}
