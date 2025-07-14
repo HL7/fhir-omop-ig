@@ -454,9 +454,14 @@ These "No Known Allergy" example demonstrates several critical aspects of FHIR C
 
 The transformation successfully maps a common clinical concept while revealing the importance of vocabulary-driven domain assignment in OMOP implementations. This pattern applies to many similar negative assertion concepts in clinical documentation, providing a template for handling absence-of-finding scenarios in FHIR to OMOP transformations.
 
-## Value-as-concept Map Pattern
+## Value-as-Concept Map Pattern
 accommodating concepts split into more than one field in the OMOP target and source name / value pairs
-
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b>FHIR to OMOP Value as Concept Map Pattern</b></figcaption>
+<img src="../images/Value as concept map pattern (2).svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Value as Concept Map Pattern"/>
+</figure>
+{::options parse_block_html="true" /}
 
 
 
