@@ -454,7 +454,7 @@ These "No Known Allergy" example demonstrates several critical aspects of FHIR C
 
 The transformation successfully maps a common clinical concept while revealing the importance of vocabulary-driven domain assignment in OMOP implementations. This pattern applies to many similar negative assertion concepts in clinical documentation, providing a template for handling absence-of-finding scenarios in FHIR to OMOP transformations.
 
-## Value-as-Concept Map Pattern
+## FHIR to OMOP Value-as-Concept Map Pattern
 Drug allergies represent a complex transformation challenge in FHIR-to-OMOP mapping due to their composite nature. In FHIR, an AllergyIntolerance resource typically contains a coded element representing both the allergy type and the specific substance.  This is not aligned with OMOP's preference for decomposed, granular concept representation. The Value-as-Comcept Map pattern addresses the tension between FHIR's composite coding approach and OMOP's value-as-concept methodology, which separates the observation type (allergy classification) from the specific substance causing the reaction.
 
 ### FHIR to OMOP Value as Concept Pattern: Drug Allergy
