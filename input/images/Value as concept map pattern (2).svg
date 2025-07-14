@@ -1,0 +1,138 @@
+<svg width="800" height="1100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .box { fill: #E3F2FD; stroke: #1976D2; stroke-width: 2; rx: 10; }
+      .decision { fill: #E3F2FD; stroke: #1976D2; stroke-width: 2; }
+      .process-yes { fill: #E3F2FD; stroke: #1976D2; stroke-width: 2; rx: 10; }
+      .process-no { fill: #E3F2FD; stroke: #1976D2; stroke-width: 2; rx: 10; }
+      .process-blue { fill: #E3F2FD; stroke: #1976D2; stroke-width: 2; rx: 10; }
+      .process-purple { fill: #E3F2FD; stroke: #1976D2; stroke-width: 2; rx: 10; }
+      .process-cyan { fill: #E3F2FD; stroke: #1976D2; stroke-width: 2; rx: 10; }
+      .final { fill: #E3F2FD; stroke: #1976D2; stroke-width: 3; rx: 15; }
+      .title-text { font-family: Arial, sans-serif; font-size: 18px; font-weight: bold; text-anchor: middle; fill: black; }
+      .text-main { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; text-anchor: middle; fill: black; }
+      .text-sub { font-family: Arial, sans-serif; font-size: 10px; text-anchor: middle; fill: black; }
+      .text-example { font-family: Arial, sans-serif; font-size: 9px; text-anchor: start; fill: black; }
+      .arrow { stroke: #333; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .dashed-box { fill: #FFF2CC; stroke: #D6B656; stroke-width: 1; stroke-dasharray: 5,5; rx: 5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="25" class="title-text">FHIR to OMOP Value as Concept Map Pattern: Drug Allergy</text>
+  
+  <!-- 1. FHIR AllergyIntolerance Input -->
+  <rect x="250" y="45" width="300" height="70" class="box"/>
+  <text x="400" y="65" class="text-main">1. FHIR AllergyIntolerance Input</text>
+  <text x="400" y="80" class="text-sub">Extract coded elements from resource</text>
+  <text x="400" y="95" class="text-sub">Example: "Allergy to benzylpenicillin"</text>
+  
+  <!-- Arrow 1 -->
+  <line x1="400" y1="115" x2="400" y2="130" class="arrow"/>
+  
+  <!-- 2. Decompose for Mapping Analysis -->
+  <rect x="250" y="130" width="300" height="50" class="box"/>
+  <text x="400" y="145" class="text-main">2. Decompose for Mapping Analysis</text>
+  <text x="400" y="160" class="text-sub">Extract allergy type + substance from composite concept</text>
+  
+  <!-- Arrow 2 -->
+  <line x1="400" y1="180" x2="400" y2="220" class="arrow"/>
+  
+  <!-- Example Mapping Box -->
+  <rect x="50" y="250" width="200" height="80" class="dashed-box"/>
+  <text x="60" y="265" class="text-example">Example Mapping:</text>
+  <text x="60" y="280" class="text-example">SNOMED: 294930007</text>
+  <text x="60" y="295" class="text-example">→ Obs: 439224 (Allergy to drug)</text>
+  <text x="60" y="310" class="text-example">→ Value: 1728416 (Penicillin G)</text>
+  
+  <!-- Decision Diamond -->
+  <polygon points="400,220 520,290 400,360 280,290" class="decision"/>
+  <text x="400" y="285" class="text-main">Decomposition available as</text>
+  <text x="400" y="300" class="text-main">OMOP Standard concepts?</text>
+  
+  <!-- Yes Arrow -->
+  <line x1="340" y1="325" x2="200" y2="380" class="arrow"/>
+  <text x="270" y="350" class="text-sub" font-weight="bold">Yes</text>
+  
+  <!-- No Arrow -->
+  <line x1="460" y1="325" x2="530" y2="380" class="arrow"/>
+  <text x="500" y="350" class="text-sub" font-weight="bold">No</text>
+  
+  <!-- 3a. Apply Value as Concept -->
+  <rect x="75" y="380" width="250" height="70" class="process-blue"/>
+  <text x="200" y="400" class="text-main">3a. Apply Value as Concept</text>
+  <text x="200" y="415" class="text-sub">observation_concept_id = "Allergy to Drug"</text>
+  <text x="200" y="430" class="text-sub">value_as_concept_id = specific substance</text>
+  
+  <!-- 3b. Manual Mapping -->
+  <rect x="430" y="380" width="200" height="70" class="process-no"/>
+  <text x="530" y="410" class="text-main">3b. Manual Mapping</text>
+  <text x="530" y="425" class="text-sub">Create custom mapping pattern</text>
+  
+  <!-- Arrows from 3a and 3b to 4 -->
+  <line x1="200" y1="450" x2="400" y2="510" class="arrow"/>
+  <line x1="530" y1="450" x2="400" y2="510" class="arrow"/>
+  
+  <!-- 4. OMOP Vocabulary Lookup -->
+  <rect x="250" y="510" width="300" height="70" class="process-blue"/>
+  <text x="400" y="540" class="text-main">4. OMOP Vocabulary Lookup</text>
+  <text x="400" y="555" class="text-sub">Verify concepts exist in OMOP vocabularies</text>
+  
+  <!-- Arrow 4 -->
+  <line x1="400" y1="580" x2="400" y2="610" class="arrow"/>
+  
+  <!-- Decision Diamond 2 -->
+  <polygon points="400,610 500,650 400,690 300,650" class="decision"/>
+  <text x="400" y="645" class="text-main">All concepts</text>
+  <text x="400" y="660" class="text-main">found in OMOP?</text>
+  
+  <!-- Yes Arrow to 5a -->
+  <line x1="350" y1="680" x2="300" y2="740" class="arrow"/>
+  <text x="310" y="705" class="text-sub" font-weight="bold">Yes</text>
+  
+  <!-- No Arrow to 5b -->
+  <line x1="450" y1="680" x2="500" y2="740" class="arrow"/>
+  <text x="490" y="705" class="text-sub" font-weight="bold">No</text>
+  
+  <!-- 5a. Populate appropriate OMOP domain -->
+  <rect x="100" y="740" width="300" height="90" class="process-yes"/>
+  <text x="250" y="765" class="text-main">5a. Populate appropriate OMOP domain</text>
+  <text x="250" y="785" class="text-sub">concept_id: 439224 (Allergy to drug), Observation Domain and</text>
+  <text x="250" y="805" class="text-sub">value_as_concept_id: 1728416 (Penicillin G)</text>
+  
+  <!-- 5b. Identify Vocabulary Gap -->
+  <rect x="520" y="740" width="200" height="90" class="process-no"/>
+  <text x="620" y="760" class="text-main">5b. Identify Vocabulary Gap</text>
+  <text x="620" y="780" class="text-sub">Document missing concepts</text>
+  <text x="620" y="795" class="text-sub">Consider local extension for</text>
+  <text x="620" y="810" class="text-sub">missing source concepts</text>
+  
+  <!-- Arrow from 5a to 6 -->
+  <line x1="250" y1="830" x2="200" y2="880" class="arrow"/>
+  
+  <!-- Arrow from 5b to 7 -->
+  <line x1="620" y1="830" x2="620" y2="880" class="arrow"/>
+  
+  <!-- 6. Optional: Handle Reactions -->
+  <rect x="50" y="880" width="300" height="70" class="process-purple"/>
+  <text x="200" y="905" class="text-main">6. Optional: Handle Reactions</text>
+  <text x="200" y="920" class="text-sub">Create linked observation for reactions using observation_event_id</text>
+  
+  <!-- 7. Quality Validation -->
+  <rect x="470" y="880" width="300" height="70" class="process-cyan"/>
+  <text x="620" y="905" class="text-main">7. Quality Validation</text>
+  <text x="620" y="920" class="text-sub">Verify clinical meaning preserved</text>
+  <text x="620" y="935" class="text-sub">Check value concept alignment</text>
+  
+  <!-- Arrows to final -->
+  <line x1="200" y1="950" x2="350" y2="990" class="arrow"/>
+  <line x1="620" y1="950" x2="450" y2="990" class="arrow"/>
+  
+  <!-- Final Step -->
+  <rect x="250" y="990" width="300" height="70" class="final"/>
+  <text x="400" y="1015" class="text-main">Complete OMOP Allergy Record</text>
+  <text x="400" y="1035" class="text-sub">With value as concept pattern applied</text>
+</svg>
