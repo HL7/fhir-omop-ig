@@ -192,7 +192,7 @@ Codeable concepts are one of the coded datatypes represented in FHIR resources. 
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>FHIR CodeableConcept to OMOP Pattern</b></figcaption>
-<img src="input/images/codeable_concept_decision_tree.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR CodeableConcept to OMOP Pattern"/>
+<img src="../images/codeable_concept_decision_tree.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR CodeableConcept to OMOP Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
 
