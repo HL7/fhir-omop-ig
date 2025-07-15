@@ -186,8 +186,11 @@ This example demonstrates the straightforward application of the base pattern, s
 
 The example above represents a straightforward transformation scenario with a direct vocabulary match and domain alignment. Real-world implementations should prepare for more complex scenarios involving non-standard vocabularies, domain mismatches, and mapping gaps, but this base pattern provides the foundational framework for handling all transformation cases systematically and consistently.
 
-## FHIR CodeableConcept Mapping Pattern
-Codeable concepts are one of the coded datatypes represented in FHIR resources. In FHIR, a CodeableConcept is "A type that represents a concept by plain text and/or one or more coding elements"  The transformation of FHIR CodeableConcept elements to OMOP format create a challenge to uniform transformation practices, but also represents a critical bridge between the flexible, interoperable world of FHIR and the structured, analytics-focused environment of the OMOP Common Data Model. This Pattern aims to partially address the tension between FHIR's allowance for both structured codes and free text versus OMOP's strict requirement for standardized vocabularies, but does not explicitly address transformation of purely free-text expressions allowed in CodeableConcepts.
+### Pattern 2: CodeableConcept Multi-Code Pattern
+
+The CodeableConcept pattern addresses the challenge of transforming FHIR CodeableConcept elements that may contain multiple codes, free text, or combinations of both. This pattern recognizes the tension between FHIR's flexibility in representing clinical concepts and OMOP's requirement for standardized, unambiguous concept identification. The approach provides systematic methodology for handling the complexity inherent in CodeableConcept structures while preserving clinical meaning and maintaining data quality standards.
+
+CodeableConcept elements in FHIR can contain multiple coding entries, each potentially representing the same clinical concept through different terminology systems or at different levels of granularity. This multiplicity creates opportunities for enhanced semantic representation but also introduces complexity in determining which code should serve as the primary mapping target for OMOP transformation. The pattern addresses this complexity through sophisticated assessment and prioritization logic that ensures consistent, reproducible transformation outcomes.
 
 {::options parse_block_html="false" /}
 <figure>
@@ -196,84 +199,22 @@ Codeable concepts are one of the coded datatypes represented in FHIR resources. 
 </figure>
 {::options parse_block_html="true" /}
 
-### 1: FHIR CodeableConcept Input
-In FHIR, CodeableConcept elements can contain multiple "codings," each potentially including a code, display name, and system identifier. Importantly, this FHIR to OMOP transformation Pattern assumes the presence of structured codes, deliberately scoping out free text scenarios that pose significant mapping challenges to OMOP's standardized vocabulary requirements.
+The transformation process begins with assessing code multiplicity within the CodeableConcept structure, determining whether multiple structured codes exist and evaluating their relationships to each other. When multiple codes are present, the system applies the Universal Code Prioritization Framework to select the most appropriate code for OMOP mapping, considering vocabulary precedence, clinical specificity, primary designations, and temporal factors.
 
-### 2: Multiple Code Assessment and Prioritization
-When multiple structured codes are present within the CodeableConcept, the system should apply a sophisticated prioritization logic. This step addresses the reality that clinical systems often provide multiple codes for the same concept, either from different coding systems or at different levels of specificity. The prioritization follows a clear hierarchy: **OMOP standard vocabularies** take precedence (SNOMED CT, RxNorm, LOINC), followed by **code specificity** (more specific clinical concepts over general ones), then **primary designation** (if explicitly marked as, for example a primary or admitting diagnosis), and finally **temporal precedence** (the first time a coded event or condition was encountered). Applying a systematic approach prioritizing otherwise undifferentiated multiple inputs ensures consistent, predictable mapping outcomes while preserving clinical accuracy.
+For CodeableConcepts containing only single structured codes, the process bypasses complex prioritization logic and proceeds directly to vocabulary lookup and domain assignment. This streamlined approach recognizes that single codes represent the ideal scenario for FHIR-to-OMOP transformation, eliminating ambiguity while maintaining data integrity and processing efficiency.
 
-### 3: Single Code Processing
-For CodeableConcepts containing only one structured code, the process bypasses prioritization and proceeds directly to vocabulary lookup. This streamlined path recognizes that single codes represent the ideal scenario for FHIR-to-OMOP transformation, eliminating ambiguity while maintaining data integrity. The single code serves as a direct mapping candidate, though it still requires validation against OMOP's standardized vocabularies.
+The vocabulary lookup phase applies standard methodology to identify corresponding OMOP concepts, with particular attention to domain assignment that may differ from FHIR resource type expectations. This vocabulary-driven approach ensures that clinical concepts are stored in semantically appropriate OMOP domains, even when this conflicts with structural assumptions based on FHIR resource categorization.
 
-### 4: OMOP Concept Lookup
-Just like the Base Transformation Pattern outlined above, this critical step is the foundation for transformation through OMOP Standard vocabulary mapping. The selected code (whether from prioritization or single code processing) undergoes lookup against the OHDSI Standardized Vocabularies to identify the corresponding OMOP concept_id. This process involves concept relationship traversal, Standard OMOP concept validation, and domain classification. The lookup mechanism addresses OMOP's critical, key alignment feature and requirement that all data be represented using a single Standard concept in each OMOP domain.  This also ensures that every clinical concept maps to a single OMOP concept_id from an included source terminology system.
-
-### 5: OMOP Concept Mapping
-When a valid OMOP mapping is identified, the system should create a complete record on the OMOP concept table, including the domain classification, concept_id, concept status, and source values. Although the source values are not required by the OMOP CDM specification, it is a strongly encouraged best practice to populate the source value fields.  This small ETL effort  makes the OMOP datastore much more “future-proof”, as the source data provides invaluable information about its context at generation and transformation lineage.
-
-### 6: No Standard Mapping Available
-When no standard OMOP mapping exists for the source code, the system stores the concept with concept_id=0 ,and as stated above should preserve the original source data. This approach acknowledges the reality that not all clinical codes have direct OMOP equivalents, particularly for newer terminologies or highly specialized clinical domains. By preserving the original data alongside the unmapped status, the system maintains data completeness and alignment with the OMOP CDM while clearly indicating the limitation of that data specifically for use in OMOP-based analytics.
-
-### Prioritization Logic (Golden Box)
-The proposed prioritization framework addresses the complex reality of multiple coding scenarios by establishing clear precedence rules. This systematic approach eliminates ambiguity in code selection while ensuring reproducible transformation outcomes.
-
-#### 1. Standard Vocabularies First
-- **SNOMED CT**: Prioritize for conditions, procedures, and clinical observations due to its comprehensive coverage and OMOP's primary reliance on SNOMED concepts
-- **RxNorm**: Give precedence for medications, drug products, and pharmaceutical concepts as the standard drug vocabulary in OMOP
-- **LOINC**: Prioritize for laboratory tests, measurements, and clinical observations, particularly lab results and vital signs
-- **ICD-10/ICD-9**: Use only when no standard vocabulary equivalent exists, as these are considered non-standard in OMOP but may have mappings to standard concepts
-- **CPT/HCPCS**: Accept for procedures when SNOMED equivalents are not available, though these require mapping to standard concepts
-- **Local/Proprietary codes**: Lowest priority, should only be used when no standard vocabulary alternative exists
-
-#### 2. Most Specific Code
-- **Clinical granularity**: Choose codes that provide the highest level of clinical detail (e.g., "Type 2 diabetes with diabetic nephropathy" over "diabetes mellitus")
-- **Anatomical precision**: Prefer codes that specify exact anatomical locations when available (e.g., "fracture of left femoral neck" over "femoral fracture")
-- **Temporal specificity**: Select codes that include timing information when relevant (e.g., "acute myocardial infarction" over "myocardial infarction")
-- **Severity indicators**: Prioritize codes that include severity or stage information when clinically relevant
-- **Laterality**: Choose codes that specify left/right/bilateral when anatomically appropriate
-- **Avoid parent concepts**: Reject general parent codes when more specific child concepts are available in the coding array
-
-#### 3. Primary Designation
-- **Explicit primary flags**: Honor any explicit "primary" or "preferred" designations in the FHIR coding array
-- **Use flags**: Respect FHIR use codes such as "usual," "official," or "preferred" when present
-- **System preferences**: Consider organizational or system-level preferences for specific vocabularies when documented
-- **Clinical context**: Factor in the clinical context where primary designation may indicate diagnostic certainty or treatment focus
-- **Documentation guidelines**: Follow institutional coding guidelines that may designate preferred vocabularies for specific clinical domains
-
-#### 4. Temporal Precedence
-- **First encountered rule**: When all other criteria are equal, select the first code appearing in the coding array
-- **Consistent tie-breaking**: Apply this rule uniformly across all transformation instances to ensure reproducible results
-- **Array order preservation**: Maintain the original order of codes as provided by the source system
-- **Audit trail**: Document when temporal precedence was the deciding factor for transparency and quality assurance
-- **System behavior**: Ensure predictable behavior when multiple equally valid codes exist
-
-### CodeableConcept Key Challenges and Considerations
-This transformation pattern deliberately excludes free text handling, recognizing the significant challenges it poses to OMOP's structured requirements. While FHIR's flexibility allows for free text descriptions when structured codes are unavailable, OMOP's analytics-focused design requires standardized vocabularies. The decision to scope out free text in a project may be a pragmatic approach that prioritizes data quality and consistency over comprehensive coverage.  For implementations encountering and wishing to include free text, additional processing through utilization of terminology servers or natural language processing tools may be necessary to convert textual descriptions into standardized codes before applying this transformation pattern.
+Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern provides mechanisms for preserving this contextual information in appropriate OMOP fields, ensuring that clinical nuance is not lost during the transformation process.
 
 ## Example: Mapping No Known Allergy CodeableConcept
 
-### Source FHIR AllergyIntolerance Resource
+The transformation of negative assertion concepts demonstrates the importance of vocabulary-driven domain assignment in CodeableConcept processing. Consider an AllergyIntolerance resource that documents the absence of known allergies, representing a clinical concept that challenges traditional resource-to-domain mapping assumptions.
 
 ```json
 {
   "resourceType": "AllergyIntolerance",
   "id": "no-known-allergy-example",
-  "clinicalStatus": {
-    "coding": [
-      {
-        "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
-        "code": "active"
-      }
-    ]
-  },
-  "verificationStatus": {
-    "coding": [
-      {
-        "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
-        "code": "confirmed"
-      }
-    ]
-  },
   "code": {
     "coding": [
       {
@@ -290,76 +231,9 @@ This transformation pattern deliberately excludes free text handling, recognizin
   "recordedDate": "2023-01-15"
 }
 ```
+The CodeableConcept contains a single SNOMED CT code representing a standardized approach to expressing the absence of known allergies, supplemented by free text that provides additional clinical context. Vocabulary lookup reveals that SNOMED CT code 716186003 maps to OMOP concept_id 4222295, but critically, this concept resides in the Observation domain rather than the Condition domain that might be expected based on the AllergyIntolerance resource type.
 
-## Step-by-Step CodeableConcept Transformation
-
-### 1: FHIR CodeableConcept Input
-**Input Analysis:**
-- **Resource Type**: AllergyIntolerance
-- **CodeableConcept Location**: `code` element
-- **Clinical Concept**: No known allergy status assertion
-- **Structured Code Present**: Yes (SNOMED CT code available)
-- **Free Text**: "NKA" (additional context)
-
-The AllergyIntolerance resource contains a CodeableConcept that is a negative statement regarding the presence of allergies. This presents a challenge for OMOP transformation.
-
-### 2: Multiple Code Assessment
-**Decision Point**: Multiple codes present?
-- **Coding Array Count**: 1 code (SNOMED CT only)
-- **Decision**: No - Single code present
-- **Next Step**: Proceed to Step 3 (Use Single Code)
-
-The CodeableConcept contains only one structured code, eliminating the need for prioritization logic.
-
-### 3: Use Single Code
-**Single Code Processing:**
-- **Selected Code**: 716186003
-- **Source System**: SNOMED CT (http://snomed.info/sct)
-- **Display Name**: "No known allergy (situation)"
-- **Processing Status**: Direct mapping candidate identified
-
-The SNOMED CT code represents a standardized way to express the absence of known allergies, suitable for OMOP vocabulary lookup.
-
-### 4: OMOP Concept Lookup
-**Standard Vocabulary Mapping:**
-
-```sql
-SELECT concept_id, concept_name, domain_id, vocabulary_id, concept_code, standard_concept
-FROM concept
-WHERE concept_code = '716186003' 
-  AND vocabulary_id = 'SNOMED';
-```
-
-**Query Results:**
-```
-concept_id: 4222295
-concept_name: No known allergy
-domain_id: Observation
-vocabulary_id: SNOMED
-concept_code: 716186003
-standard_concept: S
-```
-
-**Lookup Analysis:**
-- **OMOP Concept Found**: Yes
-- **Standard Concept**: Yes (S flag)
-- **Domain Assignment**: Observation (not Condition as might be expected)
-- **Vocabulary Alignment**: SNOMED CT standard vocabulary confirmed
-
-**Critical Domain Consideration:**
-The OMOP vocabulary assigns this concept to the Observation domain rather than the Condition domain, despite originating from an AllergyIntolerance FHIR resource. This demonstrates the importance of vocabulary-driven domain assignment over resource type assumptions.
-
-### 5: OMOP Concept Mapping
-- **Target Concept ID**: 4222295
-- **Domain Classification**: Observation
-- **Concept Status**: Standard (S)
-- **Target OMOP Table**: observation (not condition_occurrence)
-
-A lookup reveals that "No known allergy" maps to the Observation domain in OMOP, requiring population of the observation table rather than condition_occurrence.
-
-## OMOP Table Population
-
-### Observation Table Mapping
+This domain assignment reflects OMOP's semantic organization, where negative assertions about clinical conditions are typically modeled as observations rather than conditions themselves. The vocabulary-driven domain assignment takes precedence over resource type expectations, demonstrating the importance of semantic accuracy in OMOP transformation processes.
 
 ```sql
 INSERT INTO observation (
@@ -367,27 +241,19 @@ INSERT INTO observation (
     person_id,
     observation_concept_id,
     observation_date,
-    observation_datetime,
-    observation_type_concept_id,
-    value_as_concept_id,
     observation_source_value,
-    observation_source_concept_id,
-    unit_source_value,
     qualifier_source_value
 ) VALUES (
-    [generated_id],                    -- observation_id
-    [mapped_person_id],                -- person_id from Patient/example
-    4222295,                           -- observation_concept_id (No known allergy)
-    '2023-01-15',                      -- observation_date
-    '2023-01-15T00:00:00',            -- observation_datetime
-    32817,                             -- observation_type_concept_id (EHR)
-    NULL,                              -- value_as_concept_id (not applicable)
-    '716186003',                       -- observation_source_value
-    4222295,                           -- observation_source_concept_id
-    NULL,                              -- unit_source_value
-    'NKA'                              -- qualifier_source_value
+    [generated_id],
+    [mapped_person_id],
+    4222295,              -- No known allergy concept
+    '2023-01-15',
+    '716186003',         -- Source preservation
+    'NKA'                -- Free text context preserved
 );
 ```
+
+The transformation successfully preserves both the structured coded information and the free text context while ensuring appropriate domain assignment based on vocabulary semantics. This example illustrates the critical importance of vocabulary-driven transformation logic and the value of preserving contextual information that supplements coded clinical data.
 
 ### Field Mapping Details
 
