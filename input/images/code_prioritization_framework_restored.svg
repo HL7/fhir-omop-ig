@@ -1,0 +1,131 @@
+<svg viewBox="0 0 700 485" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title-text { font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #333; }
+      .level-title { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #333; }
+      .level-number { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: white; }
+      .item-text { font-family: Arial, sans-serif; font-size: 10px; fill: #555; }
+      .arrow-text { font-family: Arial, sans-serif; font-size: 24px; fill: black; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Title -->
+  <text x="350" y="25" text-anchor="middle" class="title-text">Code Prioritization Framework</text>
+  
+  <!-- Level 1: Standard Vocabularies (Green) -->
+  <rect x="20" y="50" width="660" height="80" fill="#f0f8f0" stroke="#27ae60" stroke-width="2" rx="5"/>
+  <circle cx="40" cy="70" r="15" fill="#27ae60"/>
+  <text x="40" y="75" text-anchor="middle" class="level-number">1</text>
+  <text x="65" y="75" class="level-title">Standard Vocabularies</text>
+  
+  <!-- Vocabulary items -->
+  <rect x="30" y="85" width="100" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="80" y="96" text-anchor="middle" class="item-text">1. SNOMED CT</text>
+  <text x="80" y="107" text-anchor="middle" class="item-text">Conditions, procedures</text>
+  
+  <rect x="140" y="85" width="100" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="190" y="96" text-anchor="middle" class="item-text">2. RxNorm</text>
+  <text x="190" y="107" text-anchor="middle" class="item-text">Medications, drugs</text>
+  
+  <rect x="250" y="85" width="100" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="300" y="96" text-anchor="middle" class="item-text">3. LOINC</text>
+  <text x="300" y="107" text-anchor="middle" class="item-text">Lab tests, vitals</text>
+  
+  <rect x="360" y="85" width="100" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="410" y="96" text-anchor="middle" class="item-text">4. ICD-10/ICD-9</text>
+  <text x="410" y="107" text-anchor="middle" class="item-text">When no standard</text>
+  
+  <rect x="470" y="85" width="100" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="520" y="96" text-anchor="middle" class="item-text">5. CPT/HCPCS</text>
+  <text x="520" y="107" text-anchor="middle" class="item-text">Procedures backup</text>
+  
+  <rect x="580" y="85" width="90" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="625" y="96" text-anchor="middle" class="item-text">6. Local/Proprietary</text>
+  <text x="625" y="107" text-anchor="middle" class="item-text">Lowest priority</text>
+  
+  <!-- Arrow -->
+  <text x="350" y="150" text-anchor="middle" class="arrow-text">↓</text>
+  
+  <!-- Level 2: Clinical Specificity (Blue) -->
+  <rect x="20" y="165" width="660" height="80" fill="#f0f8ff" stroke="#3498db" stroke-width="2" rx="5"/>
+  <circle cx="40" cy="185" r="15" fill="#3498db"/>
+  <text x="40" y="190" text-anchor="middle" class="level-number">2</text>
+  <text x="65" y="190" class="level-title">Clinical Specificity</text>
+  
+  <!-- Specificity items -->
+  <rect x="30" y="200" width="125" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="92" y="211" text-anchor="middle" class="item-text">1. Clinical Granularity</text>
+  <text x="92" y="222" text-anchor="middle" class="item-text">Highest detail level</text>
+  
+  <rect x="165" y="200" width="125" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="227" y="211" text-anchor="middle" class="item-text">2. Anatomical Precision</text>
+  <text x="227" y="222" text-anchor="middle" class="item-text">Specific locations</text>
+  
+  <rect x="300" y="200" width="125" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="362" y="211" text-anchor="middle" class="item-text">3. Temporal Specificity</text>
+  <text x="362" y="222" text-anchor="middle" class="item-text">Timing information</text>
+  
+  <rect x="435" y="200" width="125" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="497" y="211" text-anchor="middle" class="item-text">4. Severity Indicators</text>
+  <text x="497" y="222" text-anchor="middle" class="item-text">Clinical severity</text>
+  
+  <rect x="570" y="200" width="100" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="620" y="211" text-anchor="middle" class="item-text">5. Laterality</text>
+  <text x="620" y="222" text-anchor="middle" class="item-text">Anatomical sides</text>
+  
+  <!-- Arrow -->
+  <text x="350" y="265" text-anchor="middle" class="arrow-text">↓</text>
+  
+  <!-- Level 3: Primary Designations (Yellow/Orange) -->
+  <rect x="20" y="280" width="660" height="80" fill="#fef9e7" stroke="#f39c12" stroke-width="2" rx="5"/>
+  <circle cx="40" cy="300" r="15" fill="#f39c12"/>
+  <text x="40" y="305" text-anchor="middle" class="level-number">3</text>
+  <text x="65" y="305" class="level-title">Primary Designations &amp; FHIR Structure</text>
+  
+  <!-- FHIR items -->
+  <rect x="30" y="315" width="125" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="92" y="326" text-anchor="middle" class="item-text">1. Primary Indicators</text>
+  <text x="92" y="337" text-anchor="middle" class="item-text">FHIR primary markers</text>
+  
+  <rect x="165" y="315" width="125" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="227" y="326" text-anchor="middle" class="item-text">2. FHIR Use Codes</text>
+  <text x="227" y="337" text-anchor="middle" class="item-text">usual, official, preferred</text>
+  
+  <rect x="300" y="315" width="125" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="362" y="326" text-anchor="middle" class="item-text">3. Organizational Prefs</text>
+  <text x="362" y="337" text-anchor="middle" class="item-text">System-level choices</text>
+  
+  <rect x="435" y="315" width="125" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="497" y="326" text-anchor="middle" class="item-text">4. Clinical Context</text>
+  <text x="497" y="337" text-anchor="middle" class="item-text">Diagnostic certainty</text>
+  
+  <rect x="570" y="315" width="100" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="620" y="326" text-anchor="middle" class="item-text">5. Guidelines</text>
+  <text x="620" y="337" text-anchor="middle" class="item-text">Domain preferences</text>
+  
+  <!-- Arrow -->
+  <text x="350" y="380" text-anchor="middle" class="arrow-text">↓</text>
+  
+  <!-- Level 4: Temporal Precedence (Red) -->
+  <rect x="20" y="395" width="660" height="80" fill="#fdf2f2" stroke="#e74c3c" stroke-width="2" rx="5"/>
+  <circle cx="40" cy="415" r="15" fill="#e74c3c"/>
+  <text x="40" y="420" text-anchor="middle" class="level-number">4</text>
+  <text x="65" y="420" class="level-title">Temporal Precedence (Tie-Breaker)</text>
+  
+  <!-- Temporal items -->
+  <rect x="30" y="430" width="155" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="107" y="441" text-anchor="middle" class="item-text">1. First Encountered Rule</text>
+  <text x="107" y="452" text-anchor="middle" class="item-text">First in sequence</text>
+  
+  <rect x="195" y="430" width="155" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="272" y="441" text-anchor="middle" class="item-text">2. Consistent Tie-Breaking</text>
+  <text x="272" y="452" text-anchor="middle" class="item-text">Predictable behavior</text>
+  
+  <rect x="360" y="430" width="155" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="437" y="441" text-anchor="middle" class="item-text">3. Source Order Preservation</text>
+  <text x="437" y="452" text-anchor="middle" class="item-text">Original system order</text>
+  
+  <rect x="525" y="430" width="145" height="25" fill="white" stroke="#ddd" rx="3"/>
+  <text x="597" y="441" text-anchor="middle" class="item-text">4. Documentation Required</text>
+  <text x="597" y="452" text-anchor="middle" class="item-text">Record when used</text>
+</svg>
