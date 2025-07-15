@@ -1,7 +1,5 @@
 # IPA Profile-specific issues
-## Handling of Procedure and Observation Resources
-Naturally, there is variability in source EHR data representation, where each EHR may represent the same clinical activity differently when exported to FHIR. For instance, some procedures in FHIR are represented in the Measurements or Observations domains in OMOP, such as lab orders and diagnostic imaging. It is a mapping challenge in deciding whether to map individual activities to the OMOP Procedure Occurrence, Measurement, or Observation domains. As alluded to previously, this is determined by domain assignment of the target OMOP concept_id(s) for any given procedure represented on FHIR.  An evaluation of each source procedure that differentiates true procedures (e.g., surgeries) from diagnostic activities is necessary to avoid FHIR procedure resource data misclassification.
-
+## General Considerations
 ## Handling Encounters and Contextual Data
 In FHIR, procedures, medications, and other clinical actions are often linked to an encounter for context. OMOP has Visit Occurrence and Visit Detail tables that provide temporal and venue-specific clinical context.  However, inconsistencies in how encounters are represented across FHIR resources and systems present challenges to consistent data transformation. Mapping encounter data to OMOP’s visit_occurrence table and populating other domains with a visit_occurence_concept_id foreign key should be done wherever possible.  However, an evaluation of how consistent the source data are in representing encounters will determine whether there may be some flexibility required in a FHIR to OMOP transformation.
 
@@ -13,6 +11,7 @@ For immunizations, the value of documenting vaccines that were not administered 
 
 Data absent reasons such as “insufficient sample,” “not detected,” or “patient declined” may be included for labs and imaging to enrich analytic context. For immunizations, documentation can focus on significant refusals or contraindications, while administrative reasons are generally excluded. 
 
+# FHIR Condition Considerations
 ## Condition Start Date vs. Recorded Date
 When implementing FHIR-to-OMOP transformations, two temporal concepts require careful consideration due to their distinct semantic meanings and downstream analytical impact. Understanding these differences is crucial for health data professionals working on interoperability projects and clinical data warehousing initiatives.
 
@@ -36,3 +35,26 @@ A technique that may be overlooked involves leveraging the condition_type_concep
 ### Condition Date Practical Applications and Use Cases
 The distinction between these temporal concepts becomes most apparent when considering their respective applications in healthcare analytics and operations. Condition start dates serve as the foundation for clinical research initiatives, outcomes analysis projects, and temporal cohort definitions where understanding the natural history of disease is essential. These applications require temporal precision that reflects biological and clinical reality rather than administrative convenience.
 Conversely, recorded dates prove invaluable for data governance initiatives, ETL validation processes, documentation pattern analysis, and regulatory compliance activities. These applications focus on understanding and improving healthcare delivery processes, audit trails, and operational efficiency rather than clinical outcomes.
+
+# FHIR Procedures Considerations
+## OMOP CDM Domain Assignment
+Naturally, there is variability in source EHR data representation, where each EHR may represent the same clinical activity differently when exported to FHIR. For instance, some procedures in FHIR are represented in the Measurements or Observations domains in OMOP, such as lab orders and diagnostic imaging. It is a mapping challenge in deciding whether to map individual activities to the OMOP Procedure Occurrence, Measurement, or Observation domains. As alluded to previously, this is determined by domain assignment of the target OMOP concept_id(s) for any given procedure represented on FHIR.  An evaluation of each source procedure that differentiates true procedures (e.g., surgeries) from diagnostic activities is necessary to avoid FHIR procedure resource data misclassification. Activities should be mapped to the appropriate OMOP measurement or observation tables rather than procedure_occurrence through evaluation of the underlying concepts and which domain each is represented withtin the OHDSI Standardized Vocabularies.
+
+## Temporal Context and Encounter Linkage
+The performedDateTime or performedPeriod fields should map to procedure_date in OMOP, with the start date serving as the primary temporal reference. When a performedPeriod includes an end date, this may optionally map to procedure_end_date to capture procedure duration. The associated Encounter should map to visit_occurrence_id, establishing the contextual relationship between the procedure and the healthcare visit.
+
+### Provider Attribution
+When available, the Performer field should map to provider_id in the procedure_occurrence table. While not all data sources provide specific performer information, including this mapping when possible enhances analytical capabilities for provider attribution studies.
+
+## Status and Type Considerations
+### Procedure Status Handling
+Only completed procedures should be mapped to the OMOP procedure_occurrence table. Transformation should filter out planned, cancelled, or incomplete procedures to ensure data integrity. This filtering criterion should be clearly documented in ETL specifications.
+
+### Procedure Type Classification
+The procedure type should be mapped to procedure_type_concept_id based on the healthcare setting context, such as inpatient surgery or outpatient diagnostic procedures. This classification helps differentiate care settings and supports research into distinctions between venues of care delivery.
+
+# FHIR Observation Considerations
+### Observation Category Definitions and Clinical Context
+FHIR Observation Categories serve as organizational tools within EHR systems, providing essential context for clinical decision support and data retrieval operations. The categories in this value set encompass a spectrum of clinical observations, including Social History, Vital Signs, Laboratory, Imaging, Procedure, Survey, Exam, Therapy, and Activity. Considering the OMOP CDM semantically-based framework, FHIR Observations with Categories such as Laboratory and Vital Signs may actually map to OMOP's Measurement or other tables. As such, FHIR Observations may or may not align naturally with OMOP's existing Observation domain architecture, where the data are normalized across the OMOP CDM through Standardized concepts established in each domain. 
+
+OMOP's domain structure inherently categorizes data elements into logical groupings, with the Measurement domain handling quantitative clinical data and the Observation domain managing qualitative findings and contextual information. This existing structure effectively represents many FHIR categories without requiring explicit category mapping. However, the nuanced distinction between clinical observations and patient-reported data, or between routine clinical measurements and lifestyle assessments, may not be adequately preserved through domain assignment alone. A selective mapping approach recognizes that certain categories may provide metadata that enhances research utility beyond what an OMOP domain assignment can achieve.
