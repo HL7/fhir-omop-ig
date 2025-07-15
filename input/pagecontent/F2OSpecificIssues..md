@@ -77,7 +77,23 @@ A challenge faced in transforming FHIR to OMOP is that FHIR resources often cont
    
 One workaround could be to capture the context in an OMOP extension, such as "note," but this would have limitations.  Further, any extension suggested as universally applicable for FHIR source data would suggest implementation of OMOP CDM non-conformant as a routine. Rather, for the scope of this implementation guide, we want to call attention to the limitation and suggest review of the source data for potential proxies in the choices made for target Standard concepts, special attention to selection of record ‘type’ concepts that confer metadata about the source records or ensuring linkage in the transformed data to specific `visit_occurrence` records to approximate some context potentially lost. As suggested with identifiers, if the contextual information potentially lost in transformation cannot be accommodated and is critical to the research intended, then accommodation with concept or table extensions may be considered. 
 
-### Flavors of Null on OMOP
+### HL7 Flavors of Null and OMOP
+When implementing an HL7 FHIR to OMOP transformation using a FHIR Implementation Guide (IG), handling null values or *flavors of null* is a critical concern. In HL7 FHIR, data absence can be explicitly communicated using extensions like data-absent-reason, which distinguishes between *unknown*, *asked-but-unknown*, or *not-applicable* values. OMOP CDM, however, represents nulls more implicitly: fields may be left empty, or encoded using specific concepts like 0 (for “No matching concept”) or NULL in SQL. Mapping between these two paradigms requires careful alignment to avoid misinterpretation of data. For instance, a FHIR Observation with a data-absent-reason \= unknown must be mapped meaningfully to the OMOP measurement table, potentially setting the value\_as\_number and value\_as\_concept\_id to NULL, while assigning an appropriate observation\_concept\_id to indicate that the test was performed but the result was unavailable.
+
+**Comparison Table: FHIR vs OMOP Flavors of Null**
+
+| Aspect | HL7 FHIR | OMOP CDM |
+| :---- | :---- | :---- |
+| **Representation of null** | data-absent-reason extension | NULL in SQL or concept ID \= 0 |
+| **Granularity of nulls** | Fine-grained (unknown, not-applicable, masked, etc.) | Implicit; often lacks detailed flavor semantics |
+| **Standard terminology** | Uses codes like unknown, not-asked, etc. | No standard codes; often relies on documentation or conventions |
+| **Handling missing values** | Structured via extensions or empty elements with context | Fields left NULL or set to 0 (no matching concept) |
+| **ETL challenge** | Requires preserving semantic meaning during mapping | Requires selecting appropriate mapping logic per use case |
+
+In short, FHIR provides a more expressive mechanism to convey the *reason* for missing data, while OMOP assumes nulls are more operational or structural. Mapping between them in a FHIR-to-OMOP ETL process requires deliberate rules to preserve clinical meaning without overfitting to the destination model.
+
+OMOP provides \*\_source\_value fields that can be leveraged to carry forward original FHIR null semantics (e.g., “refused” or “masked”) when they do not map cleanly to a standard concept. For instance, a FHIR Observation with data-absent-reason \= not-permitted may result in a NULL value\_as\_number and value\_as\_concept\_id, but the string "not-permitted" could be preserved in the value\_source\_value field. This approach ensures that valuable context about the data's absence is not lost in the transformation, preserving semantic integrity across models.
+
 
 ## Data Absent Reasons Elements
 The Data Absent Reason element in FHIR allows implementers to record why information is missing or incomplete in observations, medication statements, and immunizations. When using FHIR resources that document reasons for absent data, it is important to assess carefully which of these reasons should be included in OMOP. This consideration applies to common scenarios such as missing lab results, medications that were not administered, or declined immunizations.
