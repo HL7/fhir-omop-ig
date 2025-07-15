@@ -1,4 +1,4 @@
-# FHIR Profiles General Considerations
+# FHIR Profile General Considerations
 ## Handling Encounters and Contextual Data
 In FHIR, procedures, medications, and other clinical actions are often linked to an encounter for context. OMOP has Visit Occurrence and Visit Detail tables that provide temporal and venue-specific clinical context.  However, inconsistencies in how encounters are represented across FHIR resources and systems present challenges to consistent data transformation. Mapping encounter data to OMOP’s visit_occurrence table and populating other domains with a visit_occurence_concept_id foreign key should be done wherever possible.  However, an evaluation of how consistent the source data are in representing encounters will determine whether there may be some flexibility required in a FHIR to OMOP transformation.
 
