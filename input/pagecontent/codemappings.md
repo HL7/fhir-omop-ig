@@ -87,33 +87,259 @@ As stated previously, mapping coded data from FHIR to OMOP requires evaluation o
 
 The Condition resource contains a coded element in the `code` field, which is a CodeableConcept containing a single Coding with SNOMED CT code 44054006.
 
-### 2: Consult OMOP Vocabulary
-**Use OMOP vocabulary tables to find equivalent concept ID:**
+### 2: Translate Code to Concept ID:
 
-```sql
-SELECT concept_id, concept_name, domain_id, vocabulary_id, concept_code, standard_concept
-FROM concept
-WHERE concept_code = '44054006' 
-  AND vocabulary_id = 'SNOMED';
+**Use ConceptMap [$translate](https://www.hl7.org/fhir/R5/conceptmap-operation-translate.html) operation:**
+
+```shell
+curl 'https://echidna.fhir.org/r5/ConceptMap/$translate' \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "resourceType": "Parameters",
+  "parameter": [
+    {
+      "name": "sourceCoding",
+      "valueCoding": {
+        "system": "http://snomed.info/sct",
+        "code": "44054006"
+      }
+    },
+    {
+      "name": "targetSystem",
+      "valueUri": "https://fhir-terminology.ohdsi.org"
+    }
+  ]
+}'
 ```
 
-**Query Results:**
-```
-concept_id: 201826
-concept_name: Type 2 diabetes mellitus
-domain_id: Condition
-vocabulary_id: SNOMED
-concept_code: 44054006
-standard_concept: S
+**Response:**
+```json
+{
+  "resourceType": "Parameters",
+  "parameter": [
+    {
+      "name": "result",
+      "valueBoolean": true
+    },
+    {
+      "name": "match",
+      "part": [
+        {
+          "name": "relationship",
+          "valueCode": "equivalent"
+        },
+        {
+          "name": "concept",
+          "valueCoding": {
+            "code": "201826",
+            "system": "https://fhir-terminology.ohdsi.org",
+            "version": "20250227"
+          }
+        }
+      ]
+    }
+  ]
+}
 ```
 
-**Vocabulary Lookup Analysis:**
+**Translate Analysis:**
+- **OMOP Concept Translated**: Yes
+- **Concept ID**: 201826
+- **Vocabulary Match**: SNOMED CT vocabulary confirmed
+
+### 3. Lookup Concept
+
+**Use CodeSystem [$lookup](https://www.hl7.org/fhir/R5/codesystem-operation-lookup.html) operation:**
+
+```shell
+curl 'https://echidna.fhir.org/r5/CodeSystem/$lookup' \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "resourceType": "Parameters",
+  "parameter": [
+    {
+      "name": "code",
+      "valueCode": "201826"
+    },
+    {
+      "name": "system",
+      "valueUri": "https://fhir-terminology.ohdsi.org"
+    }
+  ]
+}'
+```
+
+Response:
+```json
+{
+  "resourceType": "Parameters",
+  "parameter": [
+    {
+      "name": "system",
+      "valueUri": "https://fhir-terminology.ohdsi.org"
+    },
+    {
+      "name": "name",
+      "valueString": "OMOP Concepts"
+    },
+    {
+      "name": "version",
+      "valueString": "20250227"
+    },
+    {
+      "name": "code",
+      "valueCode": "201826"
+    },
+    {
+      "name": "display",
+      "valueString": "Type 2 diabetes mellitus"
+    },
+    {
+      "name": "property",
+      "part": [
+        {
+          "name": "code",
+          "valueCode": "concept-id"
+        },
+        {
+          "name": "value",
+          "valueInteger": 201826
+        }
+      ]
+    },
+    {
+      "name": "property",
+      "part": [
+        {
+          "name": "code",
+          "valueCode": "source-concept-code"
+        },
+        {
+          "name": "value",
+          "valueCoding": {
+            "code": "44054006",
+            "system": "http://snomed.info/sct"
+          }
+        }
+      ]
+    },
+    {
+      "name": "property",
+      "part": [
+        {
+          "name": "code",
+          "valueCode": "domain-id"
+        },
+        {
+          "name": "value",
+          "valueCode": "Condition"
+        }
+      ]
+    },
+    {
+      "name": "property",
+      "part": [
+        {
+          "name": "code",
+          "valueCode": "vocabulary-id"
+        },
+        {
+          "name": "value",
+          "valueCode": "SNOMED"
+        }
+      ]
+    },
+    {
+      "name": "property",
+      "part": [
+        {
+          "name": "code",
+          "valueCode": "concept-class-id"
+        },
+        {
+          "name": "value",
+          "valueCode": "Disorder"
+        }
+      ]
+    },
+    {
+      "name": "property",
+      "part": [
+        {
+          "name": "code",
+          "valueCode": "standard-concept"
+        },
+        {
+          "name": "value",
+          "valueCode": "S"
+        }
+      ]
+    },
+    {
+      "name": "property",
+      "part": [
+        {
+          "name": "code",
+          "valueCode": "inactive"
+        },
+        {
+          "name": "value",
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "name": "property",
+      "part": [
+        {
+          "name": "code",
+          "valueCode": "valid-start-date"
+        },
+        {
+          "name": "value",
+          "valueDate": "2002-01-31"
+        }
+      ]
+    },
+    {
+      "name": "property",
+      "part": [
+        {
+          "name": "code",
+          "valueCode": "valid-end-date"
+        },
+        {
+          "name": "value",
+          "valueDate": "2099-12-31"
+        }
+      ]
+    },
+    {
+      "name": "property",
+      "part": [
+        {
+          "name": "code",
+          "valueCode": "invalid-reason"
+        },
+        {
+          "name": "value",
+          "valueCode": ""
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Lookup Analysis:**
 - **OMOP Concept Found**: Yes
 - **Concept ID**: 201826
 - **Standard Concept Status**: S (Standard)
-- **Vocabulary Match**: SNOMED CT vocabulary confirmed
+- **Domain**: Condition
 
-### 3: Determine the Domain
+### 4: Determine the Domain
 **Determine appropriate OMOP domain based on FHIR code and resource type:**
 
 **Initial Domain Assessment:**
@@ -121,13 +347,13 @@ standard_concept: S
 - **Expected OMOP Domain**: Condition
 
 **OMOP Vocabulary Domain Verification:**
-- **Vocabulary Domain**: Condition (from concept.domain_id)
+- **Vocabulary Domain**: Condition (from `domain-id`)
 - **Domain Alignment**: FHIR resource type matches OMOP domain
 - **Final Domain Assignment**: Condition
 
 The SNOMED CT code 44054006 resides in the Condition domain within OMOP vocabulary, which aligns with the FHIR Condition resource type, confirming appropriate domain assignment.
 
-### 4: Handle Non-standard Concepts
+### 5: Handle Non-standard Concepts
 **Evaluate standard concept status:**
 - **Standard Concept Flag**: S (Standard)
 - **Mapping Required**: No (already standard)
@@ -135,7 +361,7 @@ The SNOMED CT code 44054006 resides in the Condition domain within OMOP vocabula
 
 Since the SNOMED CT code maps to a standard OMOP concept, no additional concept relationship mapping is required. The concept can be used directly in OMOP tables.
 
-### 5: Populate OMOP Fields
+### 6: Populate OMOP Fields
 **Fill relevant fields in OMOP condition_occurrence table:**
 
 ```sql
@@ -162,21 +388,22 @@ INSERT INTO condition_occurrence (
 
 ## Field Mapping Details
 
-| OMOP Field | Value | Source | Transformation Notes |
-|------------|--------|---------|---------------------|
-| `condition_concept_id` | 201826 | OMOP vocabulary lookup | Standard concept from Step 2 |
-| `condition_source_value` | 44054006 | FHIR code.coding[0].code | Original source code preserved |
-| `condition_source_concept_id` | 201826 | Same as standard concept | Source code already standard |
-| `condition_start_date` | 2011-05-24 | FHIR onsetDateTime | Date extracted from FHIR |
-| `person_id` | [mapped_person_id] | FHIR subject reference | Patient reference resolution |
+| OMOP Field                    | Value              | Source                   | Transformation Notes           |
+|-------------------------------|--------------------|--------------------------|--------------------------------|
+| `condition_concept_id`        | 201826             | OMOP vocabulary lookup   | Standard concept from Step 2   |
+| `condition_source_value`      | 44054006           | FHIR code.coding[0].code | Original source code preserved |
+| `condition_source_concept_id` | 201826             | Same as standard concept | Source code already standard   |
+| `condition_start_date`        | 2011-05-24         | FHIR onsetDateTime       | Date extracted from FHIR       |
+| `person_id`                   | [mapped_person_id] | FHIR subject reference   | Patient reference resolution   |
 
 ## Base Pattern Validation
 ### Transformation Steps Applied
 1. **Extract Coded Data**: SNOMED CT code 44054006 identified in CodeableConcept
-2. **Consult OMOP Vocabulary**: Successful lookup yielding concept_id 201826
-3. **Determine Domain**: Condition domain confirmed through resource type and vocabulary
-4. **Handle Non-standard Concepts**: Not required (standard concept found)
-5. **Populate OMOP Fields**: condition_occurrence table populated with mapped values
+2. **Translate Code to Concept ID**: Successful translation yielding `concept-id` (201826)
+3. **Lookup Concept**: Successful lookup yielding `standard-concept` (S), `domain-id` (Condition)
+4. **Determine Domain**: Condition domain confirmed through resource type and vocabulary
+5. **Handle Non-standard Concepts**: Not required (standard concept found)
+6. **Populate OMOP Fields**: condition_occurrence table populated with mapped values
 
 ### Quality Verification
 - **Code Extraction**: Successful identification of coded element
@@ -912,28 +1139,165 @@ If the FHIR code does not have a direct standard concept in OMOP, locate the non
 ### Scenario A: Non-Standard Source Code
 If the FHIR condition contained an ICD-10 code instead of SNOMED:
 
-**Step 2 - Consult OMOP Vocabulary:**
-```sql
-SELECT concept_id, concept_name, domain_id, vocabulary_id, concept_code, standard_concept
-FROM concept
-WHERE concept_code = 'E11.9' 
-  AND vocabulary_id = 'ICD10CM';
+**Step 2 - Translate Code to Concept ID:**
+
+```shell
+curl 'https://echidna.fhir.org/r5/ConceptMap/$translate' \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "resourceType": "Parameters",
+  "parameter": [
+    {
+      "name": "sourceCoding",
+      "valueCoding": {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "code": "E11"
+      }
+    },
+    {
+      "name": "targetSystem",
+      "valueUri": "https://fhir-terminology.ohdsi.org"
+    }
+  ]
+}'
 ```
 
-**Step 4 - Handle Non-standard Concepts:**
-```sql
-SELECT cr.concept_id_2 AS standard_concept_id,
-       c2.concept_name AS standard_concept_name
-FROM concept c1
-JOIN concept_relationship cr ON c1.concept_id = cr.concept_id_1
-JOIN concept c2 ON cr.concept_id_2 = c2.concept_id
-WHERE c1.concept_code = 'E11.9'
-  AND c1.vocabulary_id = 'ICD10CM'
-  AND cr.relationship_id = 'Maps to'
-  AND c2.standard_concept = 'S';
+**Response:**
+```json
+{
+	"resourceType": "Parameters",
+	"parameter": [
+		{
+			"name": "result",
+			"valueBoolean": true
+		},
+		{
+			"name": "match",
+			"part": [
+				{
+					"name": "relationship",
+					"valueCode": "equivalent"
+				},
+				{
+					"name": "concept",
+					"valueCoding": {
+						"code": "1567956",
+						"system": "https://fhir-terminology.ohdsi.org",
+						"version": "20250227"
+					}
+				}
+			]
+		}
+	]
+}
 ```
 
-This would map ICD-10 E11.9 to the same standard concept 201826, but `condition_source_concept_id` would contain the ICD-10 concept ID rather than the standard concept ID.
+**Step 3 - Lookup Concept:**
+
+```shell
+curl 'https://echidna.fhir.org/r5/CodeSystem/$lookup' \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "resourceType": "Parameters",
+  "parameter": [
+    {
+      "name": "code",
+      "valueCode": "1567956"
+    },
+    {
+      "name": "system",
+      "valueUri": "https://fhir-terminology.ohdsi.org"
+    },
+    {
+      "name": "property",
+      "valueString": "domain-id"
+    },
+    {
+      "name": "property",
+      "valueString": "standard-concept"
+    },
+    {
+      "name": "property",
+      "valueString": "Maps to"
+    }
+  ]
+}'
+```
+
+**Response:**
+
+```json
+{
+	"resourceType": "Parameters",
+	"parameter": [
+		{
+			"name": "system",
+			"valueUri": "https://fhir-terminology.ohdsi.org"
+		},
+		{
+			"name": "name",
+			"valueString": "OMOP Concepts"
+		},
+		{
+			"name": "version",
+			"valueString": "20250227"
+		},
+		{
+			"name": "code",
+			"valueCode": "1567956"
+		},
+		{
+			"name": "display",
+			"valueString": "Type 2 diabetes mellitus"
+		},
+		{
+			"name": "property",
+			"part": [
+				{
+					"name": "code",
+					"valueCode": "domain-id"
+				},
+				{
+					"name": "value",
+					"valueCode": "Condition"
+				}
+			]
+		},
+		{
+			"name": "property",
+			"part": [
+				{
+					"name": "code",
+					"valueCode": "standard-concept"
+				},
+				{
+					"name": "value",
+					"valueCode": ""
+				}
+			]
+		},
+		{
+			"name": "property",
+			"part": [
+				{
+					"name": "code",
+					"valueCode": "Maps to"
+				},
+				{
+					"name": "value",
+					"valueCoding": {
+						"code": "201826"
+					}
+				}
+			]
+		}
+	]
+}
+```
+
+This would map ICD-10 "E11" to the same standard concept 201826, but `condition_source_concept_id` would contain the ICD-10 concept ID rather than the standard concept ID.
 
 ### Scenario B: Domain Mismatch
 If vocabulary lookup reveals the concept belongs to a different domain than expected:
