@@ -1,12 +1,9 @@
 # AllergyIntolerance Mapping Considerations
-**Note:** The AllergyIntolerance resource serves as a use case example in the CodeableConcept and Value as Concept mapping patterns. The principles and patterns are described there in more detail.
-
 Mapping FHIR Allergy and Intolerance resources to OMOP present unique challenges that require consideration of data granularity, standardization, and preservation of clinical relationships.
+**Note:** The AllergyIntolerance resource serves as a use case example in the CodeableConcept (**insert link**) and Value as Concept mapping (**insert link**) patterns. The principles and patterns are described there in more detail.
 
 ## Allergy Mapping Examples
-
 ### No Known Allergies: CodeableConcept Pattern
-
 The simplest mapping scenario involves patients with no known allergies. In this case:
 
 - **FHIR Representation**: The AllergyIntolerance resource contains a standardized SNOMED CT code indicating "No Known Allergies"
@@ -14,45 +11,19 @@ The simplest mapping scenario involves patients with no known allergies. In this
 - **Implementation**: Use standard vocabulary mapping tables to identify the appropriate OMOP concept_id for the "No Known Allergies" status
 
 ### Allergy to Specific Substances: Value as Concept Pattern
-
 When patients have documented allergies to specific substances, the mapping complexity increases significantly. Consider the example of "Allergy to Penicillin G":
 
 - **Challenge**: The allergy encompasses both the general concept of drug allergy and the specific substance involved
 - **Solution**: Utilize the OMOP "value as concept" pattern to capture both dimensions of the information
 
-## The Value as Concept Pattern
-
-### Pattern Overview
-
-The "value as concept" pattern in OMOP addresses scenarios where an observation has both a general category and a specific value that must be captured separately. This pattern is essential for allergy mappings and involves two key fields:
+The "value as concept" mapping pattern to OMOP addresses scenarios where an observation has both a general category and a specific value that must be captured separately. This pattern is employed for allergy mappings, involving two key fields:
 
 1. **Observation Concept ID**: Represents the type of observation (e.g., "Allergy to Drug")
 2. **Value as Concept ID**: Represents the specific substance or agent (e.g., "Penicillin G")
 
-### Implementation Example
+## Mapping Allergic Reactions
 
-For a FHIR AllergyIntolerance resource documenting "Allergy to Penicillin G":
-
-**Step 1: Identify Components**
-- General allergy type: "Allergy to Drug"
-- Specific substance: "Penicillin G"
-
-**Step 2: Map to OMOP**
-- `observation_concept_id`: Standard concept for "Allergy to Drug"
-- `value_as_concept_id`: Standard concept for "Penicillin G"
-
-**Step 3: Create Observation Record**
-```
-observation_concept_id: [Standard concept for "Allergy to Drug"]
-value_as_concept_id: [Standard concept for "Penicillin G"]
-```
-
-## Handling Allergic Reactions
-
-### Reaction Mapping Strategy
-
-When allergy data includes specific reactions (e.g., rash, anaphylaxis), implement the following approach:
-
+When allergy data FHIR resouces includes specific reactions (e.g., rash, anaphylaxis), two records should be created: 
 **Primary Allergy Record**
 - `observation_concept_id`: "Allergy to Drug"
 - `value_as_concept_id`: Specific allergen (e.g., "Penicillin G")
@@ -62,7 +33,6 @@ When allergy data includes specific reactions (e.g., rash, anaphylaxis), impleme
 - `value_as_concept_id`: Specific reaction (e.g., "Rash")
 
 ### Linking Related Observations
-
 To maintain the clinical relationship between allergies and their reactions:
 
 1. **Use observation_event_id**: Set the `observation_event_id` in the reaction record to reference the `observation_id` of the primary allergy record
