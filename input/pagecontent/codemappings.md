@@ -492,23 +492,134 @@ Unmapped content receives concept_id=0 with complete source text preservation in
 
 ## CodeableConcept Free Text Mapping Examples
 
-### Text with User-Selected Coding
+### 1. Text with User-Selected Coding
 **Source Text**: "Type 2 diabetes"
 **Associated Coding**: SNOMED 44054006 with userSelected=true
 **Transformation**: Use coded concept (201826) while preserving text in source_value
 
-### Ambiguous Clinical Language
+*OMOP Condition Record:*
+```sql
+INSERT INTO condition_occurrence (
+    condition_occurrence_id,
+    person_id,
+    condition_concept_id,
+    condition_start_date,
+    condition_start_datetime,
+    condition_type_concept_id,
+    condition_source_value,
+    condition_source_concept_id
+) VALUES (
+    12345,                                     -- condition_occurrence_id
+    67890,                                     -- person_id
+    201826,                                    -- condition_concept_id (Type 2 diabetes mellitus)
+    '2024-03-15',                             -- condition_start_date
+    '2024-03-15T10:30:00',                    -- condition_start_datetime
+    32817,                                     -- condition_type_concept_id (EHR)
+    'Type 2 diabetes',                         -- condition_source_value (original text)
+    201826                                     -- condition_source_concept_id (same as standard)
+);
+```
+
+### 2. Ambiguous Clinical Language
 **Source Text**: "Patient has diabetes"
 **Challenge**: Unspecified diabetes type
 **Mapping Strategy**: Map to general diabetes concept with quality flag for specificity limitation
 
-### Medical Abbreviations
+*OMOP Condition Record:*
+```sql
+INSERT INTO condition_occurrence (
+    condition_occurrence_id,
+    person_id,
+    condition_concept_id,
+    condition_start_date,
+    condition_start_datetime,
+    condition_type_concept_id,
+    condition_source_value,
+    condition_source_concept_id,
+    qualifier_source_value
+) VALUES (
+    12346,                                     -- condition_occurrence_id
+    67890,                                     -- person_id
+    201820,                                    -- condition_concept_id (Diabetes mellitus)
+    '2024-03-15',                             -- condition_start_date
+    '2024-03-15T10:30:00',                    -- condition_start_datetime
+    32817,                                     -- condition_type_concept_id (EHR)
+    'Patient has diabetes',                    -- condition_source_value (original text)
+    0,                                         -- condition_source_concept_id (unmapped source)
+    'LOW_SPECIFICITY'                          -- qualifier_source_value (quality flag)
+);
+```
+
+### 3. Medical Abbreviations
 **Source Text**: "Pt w/ h/o MI, now c/o SOB"
 **NLP Processing**: 
 - "h/o MI" → "history of myocardial infarction"
 - "c/o SOB" → "complains of shortness of breath"
 **Result**: Two distinct condition records
 
+*OMOP Condition Record 1 - History of MI:*
+```sql
+INSERT INTO condition_occurrence (
+    condition_occurrence_id,
+    person_id,
+    condition_concept_id,
+    condition_start_date,
+    condition_start_datetime,
+    condition_type_concept_id,
+    condition_source_value,
+    condition_source_concept_id,
+    qualifier_source_value
+) VALUES (
+    12347,                                     -- condition_occurrence_id
+    67890,                                     -- person_id
+    4329847,                                   -- condition_concept_id (Myocardial infarction)
+    '2024-03-15',                             -- condition_start_date
+    '2024-03-15T10:30:00',                    -- condition_start_datetime
+    32817,                                     -- condition_type_concept_id (EHR)
+    'h/o MI',                                  -- condition_source_value (original abbreviation)
+    0,                                         -- condition_source_concept_id (unmapped source)
+    'HISTORY_OF'                               -- qualifier_source_value (temporal qualifier)
+);
+```
+
+*OMOP Observation Record - Current SOB Complaint:*
+```sql
+INSERT INTO observation (
+    observation_id,
+    person_id,
+    observation_concept_id,
+    observation_date,
+    observation_datetime,
+    observation_type_concept_id,
+    observation_source_value,
+    observation_source_concept_id,
+    qualifier_source_value
+) VALUES (
+    54321,                                     -- observation_id
+    67890,                                     -- person_id
+    4000045,                                   -- observation_concept_id (Dyspnea)
+    '2024-03-15',                             -- observation_date
+    '2024-03-15T10:30:00',                    -- observation_datetime
+    32817,                                     -- observation_type_concept_id (EHR)
+    'c/o SOB',                                -- observation_source_value (original abbreviation)
+    0,                                         -- observation_source_concept_id (unmapped source)
+    'PATIENT_COMPLAINT'                        -- qualifier_source_value (clinical context)
+);
+```
+
+### example CodeableConcept Free Text Field Mapping Summary 
+
+| Scenario | OMOP Field | Value | Transformation Notes |
+|----------|------------|-------|---------------------|
+| **User-Selected Coding** | condition_concept_id | 201826 | Direct mapping from userSelected SNOMED code |
+| | condition_source_concept_id | 201826 | Source code already standard |
+| | condition_source_value | "Type 2 diabetes" | Preserves user-entered text |
+| **Ambiguous Language** | condition_concept_id | 201820 | General diabetes concept due to ambiguity |
+| | condition_source_concept_id | 0 | No source coding available |
+| | qualifier_source_value | "LOW_SPECIFICITY" | Quality flag for clinical review |
+| **Medical Abbreviations** | condition_concept_id | 4329847 | MI mapped to standard concept |
+| | observation_concept_id | 4000045 | SOB mapped to dyspnea concept |
+| | qualifier_source_value | "HISTORY_OF", "PATIENT_COMPLAINT" | Temporal and clinical context preserved |
 
 ## FHIR to OMOP Value-as-Concept Map Pattern
 Drug allergies represent a complex transformation challenge in FHIR-to-OMOP mapping due to their composite nature. In FHIR, an AllergyIntolerance resource typically contains a coded element representing both the allergy type and the specific substance.  This is not aligned with OMOP's preference for decomposed, granular concept representation. The Value-as-Comcept Map pattern addresses the tension between FHIR's composite coding approach and OMOP's value-as-concept methodology, which separates the observation type (allergy classification) from the specific substance causing the reaction.
