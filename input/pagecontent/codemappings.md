@@ -405,7 +405,7 @@ INSERT INTO condition_occurrence (
 5. **Handle Non-standard Concepts**: Not required (standard concept found)
 6. **Populate OMOP Fields**: condition_occurrence table populated with mapped values
 
-### Quality Verification
+### Transform Verification
 - **Code Extraction**: Successful identification of coded element
 - **Vocabulary Mapping**: Direct match found in OMOP concept table
 - **Domain Alignment**: FHIR resource type matches OMOP domain
@@ -834,7 +834,7 @@ INSERT INTO observation (
 );
 ```
 
-### example CodeableConcept Free Text Field Mapping Summary 
+### Example CodeableConcept Free Text Field Mapping Summary 
 
 | Scenario | OMOP Field | Value | Transformation Notes |
 |----------|------------|-------|---------------------|
@@ -1035,304 +1035,163 @@ Once again, this is an example the effectiveness of vocabulary-driven mapping ov
 
 
 ## One Source to many OMOP targets
+Multiple reference codings occur when a single clinical concept in the source FHIR data is represented by multiple codes, either within the same coding system or across different coding systems.
 
 
 
+## FHIR to OMOP Multiple Reference Codings
+The transformation of FHIR resources to the OMOP CDM frequently presents scenarios where a single clinical concept on OMOP contains multiple codes within the FHIR resource structure.  This scenario introduces complexity in the mapping process because it requires determining which code (or codes) should be used to represent the concept in the OMOP CDM. The mapping workflow begins with comprehensive identification of all coding elements within the FHIR resource, specifically extracting codes from the CodeableConcept.coding array structure. Each code requires documentation of its associated coding system through the system URI, along with any explicit ranking or preference indicators present in the source data.
 
-## Multiple Reference Codings
-Multiple reference codings occur when a single clinical concept in the source data is represented by multiple codes, either within the same coding system or across different coding systems. This scenario introduces complexity in the mapping process because it requires determining which code (or codes) should be used to represent the concept in the OMOP CDM.
+To ensure consistency and clinical validity implementers must apply selection logic identical to guidance provided for for CodeableConcepts. The hierarchy begins with standard vocabularies, where SNOMED CT, LOINC, and other OMOP-recognized terminologies take precedence over proprietary or legacy coding systems. Within this framework, clinical specificity serves as the secondary criterion, with more detailed diagnostic or procedural codes preferred over general classifications. The mapping process further considers explicit primary designations within the FHIR resource structure, where codes marked with primary indicators receive preference during selection. When all other factors remain equal, temporal precedence applies, selecting the first code encountered in the sequence. This systematic approach ensures reproducible results while maintaining the clinical intent of the original data.
 
-In this case, the process becomes:
+Once the primary code is selected, the system should performs concept mapping to identify the corresponding Stndard OMOP concept_id. When direct mapping is unavailable, the system should map to the closest parent concept while maintaining detailed documentation of all mapping decisions for audit and quality assurance purposes.
 
-1. **Extract Coded Data**: (same as above)
-2. **Identify All Source Codes**
-3. **Determine Priority**
-  *  Standard Over Non-Standard
-  *  First Encountered
-  *  Clinical Relevance
-4. **Mapping to OMOP Concepts**: (follow steps 2-5 above)
+Consider the following scenario where FHIR data contains multiple coding systems representing the same clinical concept. When encountering a diagnosis with both ICD-10 and SNOMED CT codes in the coding array, the selection process prioritizes the SNOMED CT code as the preferred standard vocabulary:
 
-### Concerns and Considerations
-
-* **One-to-One Mapping**: Participants emphasized the importance of ensuring that mappings between different coding systems (e.g., ICD-10 to SNOMED) are valid and represent true 1:1 relationships. In cases where such mappings do not exist, the risk of incorrect or ambiguous data translation increases.
-* **Challenges with Free Text**: OMOP requires that all data be represented using standardized vocabularies (e.g., SNOMED CT, RxNorm). This means that every piece of data must be associated with a specific code from an accepted terminology.  When FHIR data includes free text (e.g., a description of a condition or observation that isn’t linked to a standard code), it poses a challenge for OMOP, which does not natively support the use of free text in place of standardized codes.
-* **Choosing the Right Code from Multiple Codings**: In cases where multiple codes are provided, it can be challenging to determine which code most accurately represents the clinical data. This is particularly difficult when codes have different levels of specificity or when they come from different coding systems.
-* **Handling Redundancies in Multiple Codings**: If multiple codes represent the same concept, the system needs to avoid redundancies in the OMOP database. The chosen code should be the one that best aligns with the OMOP model's requirements.
-* **Clinical Interpretation in Multiple Codings**: In some cases, the choice of which code to map might depend on clinical context, requiring input from healthcare professionals to ensure accurate representation.
-
-### Example: Mapping a Condition Resource
-
-Let’s walk through a detailed example of mapping a FHIR Condition resource to the OMOP Condition domain.
-FHIR Condition Resource
-
-    {
-      "resourceType": "Condition",
-      "id": "example",
-      "code": {
-        "coding": [
-        {
-          "system": "http://snomed.info/sct",
-          "code": "44054006",
-          "display": "Diabetes mellitus type 2"
-        }]
-      },
-      "subject": {
-        "reference": "Patient/example"
-      }, 
-      "onsetDateTime": "2011-05-24"
-    }
-
-#### Steps to Map to OMOP
-
-1. **Extract Coded Data**:
-  * FHIR Code: 44054006
-  * System: SNOMED CT
-2. **Determine the Domain**: Since this is a Condition resource, it maps to the OMOP Condition domain.
-3. **Consult OMOP Vocabulary**: Query OMOP vocabulary tables to find the equivalent concept ID.
-
-        SELECT concept_id, concept_name, domain_id, vocabulary_id, concept_code
-          FROM concept
-          WHERE concept_code = '44054006' AND vocabulary_id = 'SNOMED';
-4. **Handle Non-standard Concepts (if necessary)**:  If no direct standard concept is found, use concept_relationship to find the standard mapping.
-
-		SELECT concept_id_2 AS standard_concept_id
-		FROM concept_relationship
-		WHERE concept_id_1 = <non-standard-concept-id>
-		  AND relationship_id = 'Maps to';
-5. **Populate OMOP Fields**: Assuming the query returns the following:
-  * concept_id = 201826
-  * concept_name = 'Type 2 diabetes mellitus'
-  * domain_id = 'Condition'
-  * vocabulary_id = 'SNOMED
-
-### Example Multiple Codes from Different Systems
-
-A patient’s record includes a diagnosis of "Type 2 Diabetes Mellitus" with both an ICD-10 code (E11.9) and a SNOMED CT code (44054006).
-
-#### Steps to Map to OMOP
-1. **Identify Codes**: The ICD-10 code E11.9 and the SNOMED CT code 44054006 both represent "Type 2 Diabetes Mellitus."
-2. **Priority**: The SNOMED CT code is preferred as it is typically the standard vocabulary used for conditions in OMOP.
-3. **Mapping**: The SNOMED CT code 44054006 is directly mapped to the OMOP concept ID 201826.
-4. **Storage in OMOP**:
-  * condition_source_value: 44054006 (or both E11.9 and 44054006 depending on implementation).
-  * condition_concept_id: 201826
-  * condition_source_concept_id: If applicable, the SNOMED CT code concept ID.
-
-### Example Multiple Codes from the Same System
-
-A patient’s record includes two SNOMED CT codes, 44054006 (Type 2 Diabetes Mellitus) and 11687002 (Diabetes Mellitus).
-
-#### Steps to Map to OMOP
-1. **Identify Codes**: Both SNOMED CT codes represent diabetes, but 44054006 is more specific.
-2. **Priority**: The more specific code 44054006 is chosen.
-3. **Mapping**: The SNOMED CT code 44054006 is directly mapped to the OMOP concept ID 201826.
-4. **Storage in OMOP**:
-  * condition_source_value: 44054006
-  * condition_concept_id: 201826
-  * condition_source_concept_id: If applicable, the SNOMED CT code concept ID.
-
-### OMOP non-Standard Concept Source Coding
-If the FHIR code does not have a direct standard concept in OMOP, locate the non-standard concept_id and its record in the concept table. Then find the Standard concept using the concept_relationship table. A "Non-standard to Standard" map value ( and one other ) from the records with the non-standard concept_id in the relationship table indicate availabilty of an appropriate OMOP Standard target to map to.  
-
-## Alternative Scenarios
-
-### Scenario A: Non-Standard Source Code
-If the FHIR condition contained an ICD-10 code instead of SNOMED:
-
-**Step 2 - Translate Code to Concept ID:**
-
-```shell
-curl 'https://echidna.fhir.org/r5/ConceptMap/$translate' \
-  --request POST \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "resourceType": "Parameters",
-  "parameter": [
-    {
-      "name": "sourceCoding",
-      "valueCoding": {
+```json
+{
+  "code": {
+    "coding": [
+      {
         "system": "http://hl7.org/fhir/sid/icd-10-cm",
-        "code": "E11"
+        "code": "E11.9",
+        "display": "Type 2 diabetes mellitus without complications"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "44054006",
+        "display": "Type 2 diabetes mellitus"
       }
-    },
-    {
-      "name": "targetSystem",
-      "valueUri": "https://fhir-terminology.ohdsi.org"
-    }
-  ]
-}'
-```
-
-**Response:**
-```json
-{
-	"resourceType": "Parameters",
-	"parameter": [
-		{
-			"name": "result",
-			"valueBoolean": true
-		},
-		{
-			"name": "match",
-			"part": [
-				{
-					"name": "relationship",
-					"valueCode": "equivalent"
-				},
-				{
-					"name": "concept",
-					"valueCoding": {
-						"code": "1567956",
-						"system": "https://fhir-terminology.ohdsi.org",
-						"version": "20250227"
-					}
-				}
-			]
-		}
-	]
+    ]
+  }
 }
 ```
 
-**Step 3 - Lookup Concept:**
+In this case, the system selects SNOMED CT code 44054006 for mapping to OMOP concept ID 201826, ensuring consistency with OMOP CDM preferences while maintaining the clinical accuracy of the original diagnosis.
 
-```shell
-curl 'https://echidna.fhir.org/r5/CodeSystem/$lookup' \
-  --request POST \
-  --header 'Content-Type: application/json' \
-  --data '{
-  "resourceType": "Parameters",
-  "parameter": [
-    {
-      "name": "code",
-      "valueCode": "1567956"
-    },
-    {
-      "name": "system",
-      "valueUri": "https://fhir-terminology.ohdsi.org"
-    },
-    {
-      "name": "property",
-      "valueString": "domain-id"
-    },
-    {
-      "name": "property",
-      "valueString": "standard-concept"
-    },
-    {
-      "name": "property",
-      "valueString": "Maps to"
-    }
-  ]
-}'
-```
-
-**Response:**
+Another frequent situation involves multiple codes from the same coding system with varying specificity levels. When FHIR data includes both specific and general diagnostic codes, the system selects the more specific code to preserve detailed clinical information:
 
 ```json
 {
-	"resourceType": "Parameters",
-	"parameter": [
-		{
-			"name": "system",
-			"valueUri": "https://fhir-terminology.ohdsi.org"
-		},
-		{
-			"name": "name",
-			"valueString": "OMOP Concepts"
-		},
-		{
-			"name": "version",
-			"valueString": "20250227"
-		},
-		{
-			"name": "code",
-			"valueCode": "1567956"
-		},
-		{
-			"name": "display",
-			"valueString": "Type 2 diabetes mellitus"
-		},
-		{
-			"name": "property",
-			"part": [
-				{
-					"name": "code",
-					"valueCode": "domain-id"
-				},
-				{
-					"name": "value",
-					"valueCode": "Condition"
-				}
-			]
-		},
-		{
-			"name": "property",
-			"part": [
-				{
-					"name": "code",
-					"valueCode": "standard-concept"
-				},
-				{
-					"name": "value",
-					"valueCode": ""
-				}
-			]
-		},
-		{
-			"name": "property",
-			"part": [
-				{
-					"name": "code",
-					"valueCode": "Maps to"
-				},
-				{
-					"name": "value",
-					"valueCoding": {
-						"code": "201826"
-					}
-				}
-			]
-		}
-	]
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "44054006",
+        "display": "Type 2 diabetes mellitus"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "11687002",
+        "display": "Diabetes mellitus"
+      }
+    ]
+  }
 }
 ```
 
-This would map ICD-10 "E11" to the same standard concept 201826, but `condition_source_concept_id` would contain the ICD-10 concept ID rather than the standard concept ID.
+This selection preserves the detailed clinical information while avoiding the loss of diagnostic precision during the mapping process, with the more specific code 44054006 taking precedence over the general term.
 
-### Scenario B: Domain Mismatch
-If vocabulary lookup reveals the concept belongs to a different domain than expected:
+The implementation also addresses scenarios where FHIR resources explicitly designate primary codes through metadata indicators. When the coding array contains multiple codes with one marked as primary, the selection process honors this designation:
 
-**Step 3 - Domain Determination:**
-- FHIR Resource: Observation
-- Expected Domain: Observation  
-- Vocabulary Domain: Measurement (from concept.domain_id)
-- **Action**: Use Measurement domain for OMOP table selection
-- **Result**: Populate measurement table instead of observation table
+```json
+{
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "44054006",
+        "display": "Type 2 diabetes mellitus",
+        "primary": true
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "11687002",
+        "display": "Diabetes mellitus"
+      }
+    ]
+  }
+}
+```
 
-## Implementation Considerations
+This approach respects the clinical decision-making embedded in the source system while maintaining consistency with OMOP requirements, regardless of other prioritization factors.
 
-### Data Extraction
-- **Element Identification**: Systematically identify all coded elements in FHIR resources
-- **Coding Validation**: Verify coding system URIs and code formats
-- **Multi-code Handling**: Establish precedence rules for multiple codings
-- **Text Preservation**: Maintain original display text for audit purposes
 
-### Vocabulary Management
-- **Version Consistency**: Ensure OMOP vocabulary version compatibility
-- **Cache Strategy**: Implement efficient vocabulary lookup caching
-- **Update Procedures**: Establish vocabulary refresh and validation processes
-- **Coverage Assessment**: Monitor mapping success rates by vocabulary
+### Historical Code and Code System Transformations
 
-### Domain Assignment
-- **Resource Type Mapping**: Document FHIR resource to OMOP domain mappings
-- **Vocabulary Override**: Handle cases where vocabulary domain differs from resource type
-- **Multi-domain Concepts**: Address concepts that span multiple domains
-- **Custom Domains**: Manage institution-specific domain assignments
+Healthcare data transformation frequently encounters historical coding systems that are no longer actively maintained or updated. These legacy codes present unique challenges during OMOP CDM implementation due to their deprecated status and complex mapping requirements. ICD-9 codes represent the most prominent example, having been largely replaced by ICD-10 in clinical settings. These codes commonly appear in legacy electronic health records, retrospective datasets, and clinical documentation predating modern coding system adoption.
 
-### Quality Assurance
-- **Mapping Validation**: Verify concept mappings preserve clinical meaning
-- **Data Completeness**: Ensure all required OMOP fields are populated
-- **Audit Trails**: Maintain transformation decision logs
-- **Error Handling**: Implement robust fallback mechanisms for mapping failures
+The management of historical codes introduces several complexities that require careful consideration during OMOP transformation. Maintenance limitations present the primary obstacle, as historical coding systems no longer receive updates or support from their originating organizations. This abandonment often results in their exclusion from current OMOP Standardized Vocabularies, creating gaps in direct mapping capabilities. Crosswalk complexity further complicates the transformation process, as historical-to-modern code relationships rarely follow simple one-to-one patterns. Many historical codes require mapping to multiple modern equivalents, while others may lack direct contemporary representations. This variability requires mapping strategies that preserve clinical meaning while accommodating structural differences between coding systems. Data integrity concerns arise when historical codes cannot be adequately mapped, potentially resulting in clinical information loss or the introduction of mapping-related inaccuracies. The diminishing availability of historical code support resources compounds these challenges, as fewer tools and expert resources remain dedicated to legacy system maintenance.
 
-### Historical code and code system transformations
+## Considerations for Legacy Vocabulary Versions
+
+The historical code management process begins with comprehensive identification of legacy codes within source datasets. Following identification, implementers must determine the optimal mapping strategy based on available resources and clinical requirements. ICD-9-CM, ICD-9-Proc, and ICD-9-ProcCN remain listed as source vocabularies for the OHDSI Standardized Vocabularies, but as of (***need a date here ***) are no longer being updated in the OHDSI Vocabularies. When OHDSI-generated reference content is not available, authoritative crosswalk utilization represents the preferred approach, leveraging mapping tables provided by organizations such as the Centers for Medicare & Medicaid Services or the National Library of Medicine. Optimally these crosswalks facilitate translation from historical codes to modern equivalents, including ICD-10 or SNOMED CT classifications that can then be levereaged to identify approrpoate Standard OMOP concpets. When crosswalks prove insufficient or unavailable, direct, manual mapping strategies may apply if historical codes remain present than codes represented in current OMOP vocabulary versions. 
+
+### OMOP Storage and Mapping Documentation
+
+Historical code storage within OMOP CDM requires careful attention to both original and transformed code preservation. The source value fields maintain the original historical codes, ensuring complete audit trails and enabling future remapping efforts if improved crosswalks become available. Not only does this preservation approach support transparency and reproducibility throughout the data transformation lifecycle, but it is crucial for historical codes for which crosswalks refelcting historical versions may or may not be avilable in the future.
+
+The concept ID fields store the results of the mapping process, containing OMOP concept identifiers derived from modern equivalent codes. When direct historical code concept IDs exist within OMOP vocabularies, these values populate the source concept ID fields. Otherwise, these fields remain null while detailed mapping documentation captures the transformation rationale. Comprehensive mapping documentation becomes essential for maintaining data provenance and supporting quality assurance efforts. This documentation encompasses mapping methodologies, expert decisions, assumptions made during complex transformations, and references to authoritative sources used in the crosswalk process.
+
+## Practical Implementation Example
+
+Consider a patient record from 2005 containing a COPD diagnosis with historical ICD-9 coding. The original FHIR resource structure demonstrates the challenge of managing legacy codes within modern healthcare data standards:
+
+```json
+{
+  "resourceType": "Condition",
+  "id": "historical-copd-example",
+  "subject": {
+    "reference": "Patient/patient-2005"
+  },
+  "code": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/icd-9-cm",
+        "code": "496",
+        "display": "Chronic airway obstruction, not elsewhere classified"
+      }
+    ]
+  },
+  "recordedDate": "2005-03-15"
+}
+```
+
+The transformation process begins with historical code identification, recognizing 496 as an ICD-9 classification requiring mapping to contemporary standards. Crosswalk consultation reveals multiple modern equivalents that result in an enhanced FHIR structure incorporating both historical and contemporary codes:
+
+```json
+{
+  "resourceType": "Condition",
+  "id": "mapped-copd-example",
+  "subject": {
+    "reference": "Patient/patient-2005"
+  },
+  "code": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/icd-9-cm",
+        "code": "496",
+        "display": "Chronic airway obstruction, not elsewhere classified"
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "code": "J44.9",
+        "display": "Chronic obstructive pulmonary disease, unspecified"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "13645005",
+        "display": "Chronic obstructive lung disease"
+      }
+    ]
+  },
+  "recordedDate": "2005-03-15"
+}
+```
+
+The preferred SNOMED CT mapping leads to OMOP concept ID 255573, establishing the final transformation target. Storage implementation places the original ICD-9 code 496 in the condition_source_value field, while condition_concept_id receives the OMOP concept ID 255573. The condition_source_concept_id field remains null if no historical ICD-9 concept exists in OMOP vocabularies, with complete mapping documentation preserved in associated metadata structures.
+
+## Implementation Recommendations
+
+Organizations utilizing data coded in historical coding systems should establish governance frameworks that include clinical terminology specialists and domain experts in historical code mapping decisions. Fallback strategies must address scenarios where historical codes cannot be mapped to modern equivalents, potentially utilizing generalized concepts when specific mappings are unavailable while clearly documenting these compromises. Regular review of available crosswalk resources, mapping tools and utilization of terminology servers ensures that transformation processes benefit from the most current and authoritative mapping information. Organizations should maintain flexibility in their mapping approaches, allowing for updates when improved crosswalks or mapping methodologies become available.
+
