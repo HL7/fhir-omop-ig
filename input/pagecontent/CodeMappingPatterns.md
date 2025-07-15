@@ -1,13 +1,9 @@
 ## Mapping Process Patterns
-As stated previously, mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations follow distinct patterns.  In this IG, we propose transformation patterns and guidance regarding: 
+Mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations can follow distinct patterns.  In this Implementation Guide, we propose transformation patterns and guidance regarding: 
 
 * A base pattern that covers most simple code to concept transformation
-* A pattern applicable to many Codeable Concepts
-* Value-as-concept map patterns 
-* One source to many OMOP target domains 
-* Multiple source reference evaluations
-* OMOP non-Standard concept source coding
-* Historical code and code system transformations
+* A pattern applicable to maultiple CodeableConcepts scenarios
+* Value-as-concept map pattern
 
 ## FHIR to OMOP Base Mapping Pattern
 
