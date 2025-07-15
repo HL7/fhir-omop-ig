@@ -109,15 +109,25 @@ As stated previously, mapping coded data from FHIR to OMOP requires evaluation o
 </figure>
 {::options parse_block_html="true" /}
 
-1. **Extract Coded Data**:  Identify the coded elements within the FHIR resource. These elements are often of the type CodeableConcept or Coding.
-2.  **Consult OMOP Vocabulary**:  Use the OMOP vocabulary tables to find the equivalent OMOP concept ID for the FHIR code. This involves looking up the code in the concept table within OMOP to find a matching standard concept.
-3.  **Determine the Domain**:  Use the FHIR code to determine the appropriate OMOP domain (e.g., Condition, Drug, Observation). This could be based on the type of FHIR resource (e.g., Condition resource maps to OMOP Condition domain) or the OMOP Vocabulry may indicate the equivalent concept as modeled in the OHDSI Stanbdardize Vocabularies "lives" in a differt domain than the FHIR resource or profile it is sourced from.
-4. **Handle Non-standard Concepts** see "OMOP non-Standard Concept Source Coding" section below
-5. **Populate OMOP Fields**:  Fill in the relevant fields in the OMOP table, including concept_id, source_value, and other relevant attributes.
+### Pattern 1: Base Mapping Pattern
 
-## Example: Mapping a Condition Resource
+The foundational pattern for simple code-to-concept transformations provides the essential framework that underlies all other transformation approaches. This pattern addresses the most straightforward scenarios where FHIR resources contain single, well-defined codes that can be directly mapped to OMOP standard concepts without requiring complex prioritization or decomposition logic.
 
-### Source FHIR Condition Resource
+The base mapping process begins with extracting coded data from FHIR resources, focusing on identifying coded elements of the type CodeableConcept or Coding within the resource structure. This extraction phase requires careful attention to the location and structure of coded elements, as they may appear in different fields depending on the FHIR resource type and profile being processed. The extraction process must capture not only the code values themselves but also the associated system identifiers and any relevant metadata that may influence the mapping process.
+
+Following code extraction, the transformation applies the Universal Code Prioritization Framework when multiple codes exist within the source data. Even in base mapping scenarios, multiple codes may be present due to system interoperability requirements or legacy data migration processes. The prioritization framework ensures consistent selection logic that favors standard vocabularies, clinical specificity, and explicit primary designations while providing fallback mechanisms for edge cases.
+
+The vocabulary lookup phase applies the Standard OMOP Vocabulary Lookup Methodology to identify corresponding OMOP concepts for the selected source codes. This critical step validates that source codes have appropriate representations within the OHDSI Standardized Vocabularies and determines whether direct mapping is possible or if concept relationship traversal is required for non-standard source codes.
+
+Domain determination utilizes the Domain Assignment Logic to identify the appropriate OMOP domain table for storing the clinical information. This step recognizes that vocabulary-driven domain assignment may differ from assumptions based solely on FHIR resource types, ensuring that clinical concepts are stored in semantically appropriate locations within the OMOP analytical framework.
+
+Non-standard concept handling addresses scenarios where source codes map to non-standard OMOP concepts, requiring traversal of the concept_relationship table to identify appropriate standard concepts for analytical use. This process maintains the connection between source codes and their standard representations while preserving the original mapping context for audit and validation purposes.
+
+The final population phase applies the Standard OMOP Field Population Template to ensure consistent data storage across all transformation instances. This standardization supports reliable analytical processes while maintaining essential data lineage information for quality assurance and future enhancement efforts.
+
+#### Example: Diabetes Condition Mapping
+
+Consider a straightforward diabetes diagnosis represented in a FHIR Condition resource with a single SNOMED CT code. The source resource demonstrates the ideal scenario for base pattern transformation, containing clear coded information without ambiguity or complex relationships.
 
 ```json
 {
@@ -139,69 +149,7 @@ As stated previously, mapping coded data from FHIR to OMOP requires evaluation o
 }
 ```
 
-## Step-by-Step Base Pattern Transformation
-
-### 1: Extract Coded Data
-**Identify coded elements within the FHIR resource:**
-- **Resource Type**: Condition
-- **Coded Element Location**: `code` field
-- **Element Type**: CodeableConcept containing Coding
-- **Extracted Code**: 44054006
-- **Coding System**: SNOMED CT (http://snomed.info/sct)
-- **Display Text**: "Diabetes mellitus type 2"
-
-The Condition resource contains a coded element in the `code` field, which is a CodeableConcept containing a single Coding with SNOMED CT code 44054006.
-
-### 2: Consult OMOP Vocabulary
-**Use OMOP vocabulary tables to find equivalent concept ID:**
-
-```sql
-SELECT concept_id, concept_name, domain_id, vocabulary_id, concept_code, standard_concept
-FROM concept
-WHERE concept_code = '44054006' 
-  AND vocabulary_id = 'SNOMED';
-```
-
-**Query Results:**
-```
-concept_id: 201826
-concept_name: Type 2 diabetes mellitus
-domain_id: Condition
-vocabulary_id: SNOMED
-concept_code: 44054006
-standard_concept: S
-```
-
-**Vocabulary Lookup Analysis:**
-- **OMOP Concept Found**: Yes
-- **Concept ID**: 201826
-- **Standard Concept Status**: S (Standard)
-- **Vocabulary Match**: SNOMED CT vocabulary confirmed
-
-### 3: Determine the Domain
-**Determine appropriate OMOP domain based on FHIR code and resource type:**
-
-**Initial Domain Assessment:**
-- **FHIR Resource Type**: Condition
-- **Expected OMOP Domain**: Condition
-
-**OMOP Vocabulary Domain Verification:**
-- **Vocabulary Domain**: Condition (from concept.domain_id)
-- **Domain Alignment**: FHIR resource type matches OMOP domain
-- **Final Domain Assignment**: Condition
-
-The SNOMED CT code 44054006 resides in the Condition domain within OMOP vocabulary, which aligns with the FHIR Condition resource type, confirming appropriate domain assignment.
-
-### 4: Handle Non-standard Concepts
-**Evaluate standard concept status:**
-- **Standard Concept Flag**: S (Standard)
-- **Mapping Required**: No (already standard)
-- **Direct Mapping**: Proceed with concept_id 201826
-
-Since the SNOMED CT code maps to a standard OMOP concept, no additional concept relationship mapping is required. The concept can be used directly in OMOP tables.
-
-### 5: Populate OMOP Fields
-**Fill relevant fields in OMOP condition_occurrence table:**
+The transformation process identifies SNOMED CT code 44054006 within the CodeableConcept structure, recognizing it as a single, well-defined concept suitable for direct mapping. Vocabulary lookup confirms that this code maps to OMOP concept_id 201826 with standard concept status, eliminating the need for concept relationship traversal. Domain assignment validation confirms that the concept resides in the Condition domain, aligning with the FHIR resource type and supporting storage in the condition_occurrence table.
 
 ```sql
 INSERT INTO condition_occurrence (
@@ -209,21 +157,21 @@ INSERT INTO condition_occurrence (
     person_id,
     condition_concept_id,
     condition_start_date,
-    condition_start_datetime,
     condition_source_value,
     condition_source_concept_id,
     condition_type_concept_id
 ) VALUES (
-    [generated_id],                    -- condition_occurrence_id
-    [mapped_person_id],                -- person_id from Patient/example
-    201826,                            -- condition_concept_id (standard OMOP concept)
-    '2011-05-24',                      -- condition_start_date
-    '2011-05-24T00:00:00',            -- condition_start_datetime
-    '44054006',                        -- condition_source_value
-    201826,                            -- condition_source_concept_id
-    32020                              -- condition_type_concept_id (EHR record)
+    [generated_id],
+    [mapped_person_id],
+    201826,                -- Standard OMOP concept
+    '2011-05-24',
+    '44054006',           -- Source preservation
+    201826,               -- Source concept (already standard)
+    32020                 -- EHR record type
 );
 ```
+
+This example demonstrates the straightforward application of the base pattern, showcasing direct vocabulary mapping, domain alignment, and comprehensive source preservation. The transformation maintains clinical accuracy while conforming to OMOP analytical requirements, providing a foundation for understanding more complex transformation scenarios.
 
 ## Field Mapping Details
 
@@ -235,19 +183,6 @@ INSERT INTO condition_occurrence (
 | `condition_start_date` | 2011-05-24 | FHIR onsetDateTime | Date extracted from FHIR |
 | `person_id` | [mapped_person_id] | FHIR subject reference | Patient reference resolution |
 
-## Base Pattern Validation
-### Transformation Steps Applied
-1. **Extract Coded Data**: SNOMED CT code 44054006 identified in CodeableConcept
-2. **Consult OMOP Vocabulary**: Successful lookup yielding concept_id 201826
-3. **Determine Domain**: Condition domain confirmed through resource type and vocabulary
-4. **Handle Non-standard Concepts**: Not required (standard concept found)
-5. **Populate OMOP Fields**: condition_occurrence table populated with mapped values
-
-### Transform Verification
-- **Code Extraction**: Successful identification of coded element
-- **Vocabulary Mapping**: Direct match found in OMOP concept table
-- **Domain Alignment**: FHIR resource type matches OMOP domain
-- **Data Preservation**: Source values maintained in OMOP fields
 
 The example above represents a straightforward transformation scenario with a direct vocabulary match and domain alignment. Real-world implementations should prepare for more complex scenarios involving non-standard vocabularies, domain mismatches, and mapping gaps, but this base pattern provides the foundational framework for handling all transformation cases systematically and consistently.
 
