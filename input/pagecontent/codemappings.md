@@ -324,11 +324,7 @@ The transformation successfully maps a common clinical concept while revealing t
 
 Free text mapping addresses the transformation of unstructured text into Standard OMOP concepts. CodeableConcept with free-text descriptions lacking corresponding coded elements, require manual review or natural language processing to extract and standardize clinical concepts. This description provides an approach for converting text in FHIR CodeableConcept elements into OMOP-compatible structured data while preserving clinical meaning.
 
-## Text in CodeableConcept Elements
-
 According to FHIR specification, the `text` element represents "the concept as entered or chosen by the user, and which most closely represents the intended meaning." The text often matches the display value of associated codings but may contain user-specific terminology or local clinical language. When codings are marked with `coding.userSelected = true`, this indicates the clinician's preferred representation. When no coding is user-selected, the text element becomes the preferred source of clinical meaning for transformation.
-
-### Free Text Only Representations
 
 FHIR permits text-only representations when no appropriate standardized code exists:
 
@@ -338,23 +334,7 @@ FHIR permits text-only representations when no appropriate standardized code exi
 }
 ```
 
-These scenarios present the greatest transformation challenge, requiring manual mapping, comprehensive NLP analysis or explicit handling on OMOP as an unmapped source data.
-
-## FHIR Free Text Sources and Context
-
-Free text appears across FHIR resources in CodeableConcept.text elements (Condition.code.text, Procedure.code.text, MedicationRequest.medicationCodeableConcept.text) and narrative fields (DiagnosticReport.conclusion, AllergyIntolerance.note.text). These sources often contain clinician-entered terminology that differs from standardized vocabulary displays while preserving essential clinical context.
-
-## Natural Language Processing for Clinical Text
-
-Clinical NLP systems must handle medical abbreviations, complex terminology, temporal expressions, and implicit clinical relationships. Advanced systems employ named entity recognition, relationship extraction, negation detection, and temporal analysis specifically adapted for medical language. Terminology mapping leverages SNOMED CT, RxNorm, LOINC, and UMLS resources through fuzzy matching, synonym recognition, and hierarchical concept navigation to accommodate clinical language variability.
-
-## OMOP Transformation and Source Value Preservation
-
-Like other mapping patterns discussed previously, mapping free text component of a CodeableConcept requires validation that identified concepts exist as standard OMOP concepts with appropriate domain assignments. The _source_value fields preserve original free text exactly as documented, while _source_concept_id typically contains 0 for unmapped source vocabularies. The _concept_id field contains the standard OMOP concept representing the extracted clinical meaning.
-
-## Handling Unmapped and Complex Clinical Text
-
-Unmapped content receives concept_id=0 with complete source text preservation in _source_value fields. Complex narratives may generate multiple OMOP records from single text sources, with temporal and contextual information influencing concept selection and date assignments.
+These scenarios present the greatest transformation challenge, requiring manual mapping, comprehensive NLP analysis or explicit handling on OMOP as an unmapped source data. Unmapped content receives concept_id=0 with complete source text preservation in _source_value fields. Complex narratives may generate multiple OMOP records from single text sources, with temporal and contextual information influencing concept selection and date assignments.
 
 ## CodeableConcept Free Text Mapping Examples
 
@@ -830,7 +810,21 @@ The transformation process begins with historical code identification, recognizi
 
 The preferred SNOMED CT mapping leads to OMOP concept ID 255573, establishing the final transformation target. Storage implementation places the original ICD-9 code 496 in the condition_source_value field, while condition_concept_id receives the OMOP concept ID 255573. The condition_source_concept_id field remains null if no historical ICD-9 concept exists in OMOP vocabularies, with complete mapping documentation preserved in associated metadata structures.
 
-## Implementation Recommendations
+## Historica Code Implementation Recommendations
 
 Organizations utilizing data coded in historical coding systems should establish governance frameworks that include clinical terminology specialists and domain experts in historical code mapping decisions. Fallback strategies must address scenarios where historical codes cannot be mapped to modern equivalents, potentially utilizing generalized concepts when specific mappings are unavailable while clearly documenting these compromises. Regular review of available crosswalk resources, mapping tools and utilization of terminology servers ensures that transformation processes benefit from the most current and authoritative mapping information. Organizations should maintain flexibility in their mapping approaches, allowing for updates when improved crosswalks or mapping methodologies become available.
+
+## Quality Assurance and Validation
+
+Comprehensive quality assurance ensures that FHIR to OMOP transformations maintain clinical accuracy, preserve essential data relationships, and conform to OMOP analytical requirements throughout the conversion process. The validation framework encompasses multiple dimensions of data quality, including technical accuracy, semantic preservation, and analytical utility of the transformed data.
+
+Transformation validation begins with code extraction verification to confirm successful identification of all coded elements within FHIR resources, ensuring that no clinical information is inadvertently omitted during the parsing and extraction phases. Vocabulary mapping validation verifies that identified codes successfully map to appropriate OMOP concepts while maintaining semantic accuracy and clinical meaning throughout the transformation process.
+
+Domain alignment checking ensures compatibility between FHIR resource types and OMOP domain assignments, with particular attention to scenarios where vocabulary-driven domain assignment may differ from resource type expectations. This validation helps identify potential semantic inconsistencies that require clinical review or alternative mapping strategies.
+
+Source preservation auditing validates that original codes and contextual information are properly maintained in OMOP source value fields, ensuring complete data lineage and supporting future validation or remapping efforts. Clinical meaning preservation confirmation ensures that essential clinical intent and semantic relationships are maintained throughout the transformation process, preventing loss of critical clinical information due to mapping limitations or system constraints.
+
+Documentation requirements encompass comprehensive logging of mapping decisions, particularly when multiple codes were available for selection or when complex prioritization logic influenced the final mapping outcome. Crosswalk source references document authoritative sources used for historical code mapping, while expert consultation notes capture clinical review inputs for complex or ambiguous cases. Quality flags mark records requiring additional validation or clinical review, ensuring that uncertain mappings receive appropriate attention.
+
+Error handling strategies address common challenges including missing standard mappings, domain conflicts, complex narratives, and unmapped content through systematic approaches that maintain data completeness while clearly indicating limitations. Missing standard mappings receive concept_id=0 with complete source preservation, while domain conflicts trigger escalation to clinical review processes to resolve semantic inconsistencies.
 
