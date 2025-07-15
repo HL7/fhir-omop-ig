@@ -79,3 +79,11 @@ FHIR Observation resources support multiple value types (Quantity, CodeableConce
 | Boolean | `value_as_concept_id` | Measurement/Observation | Typically mapped to standardized Yes/No concepts in OMOP vocabulary | Presence/absence indicators, binary clinical assessments |
 
 Implementation teams should note that FHIR's expressiveness often exceeds OMOP's structural capacity, requiring careful evaluation of value types that may need adaptation or exclusion if they cannot be effectively represented in the target OMOP model.
+
+## Unit Handling and Standardization
+FHIR Observation units are embedded within the Quantity type structure, typically utilizing standardized systems such as UCUM (Unified Code for Units of Measure). The mapping process must preserve unit information through OMOP's `unit_concept_id` field in the Measurement table.
+
+While UCUM provides a robust grammar-based approach for constructing unit expressions and supports machine-to-machine communication through consistent representation (using "mg" rather than variations like "milligram" or "milligramme"), implementation teams must exercise caution when working with UCUM units in clinical data warehouses. UCUM's flexibility in allowing the creation of new units through its grammar system, while beneficial for specialized domains, can introduce analytical challenges if not properly managed. Care should be taken to normalize units of measure assigned to each result type within the datastore to support analytic consistency. For example, while UCUM may allow both "mg/dL" and "mg/100mL" as valid representations of the same conceptual unit, analytical processes require standardized unit assignment to ensure accurate cross-patient comparisons and longitudinal analysis.
+
+**Unit Consistency** becomes essential for maintaining data quality and ensuring interoperability across mapped datasets. Implementation teams must address scenarios where units vary between source systems or are not specified in the original FHIR data, establishing normalization rules that leverage UCUM's machine-readable format while ensuring analytical uniformity.
+
