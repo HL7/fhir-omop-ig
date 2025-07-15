@@ -89,5 +89,32 @@ While UCUM provides a robust grammar-based approach for constructing unit expres
 
 **Unit Consistency** becomes essential for maintaining data quality and ensuring interoperability across mapped datasets. Implementation teams must address scenarios where units vary between source systems or are not specified in the original FHIR data, establishing normalization rules that leverage UCUM's machine-readable format while ensuring analytical uniformity.
 
+# FHIR Medication Request Resources
+The FHIR MedicationRequest resource represents a prescription or order for medication, capturing the intent to prescribe rather than confirming actual medication administration or patient adherence. When mapping MedicationRequest data to the OMOP Common Data Model's drug_exposure table, implementers should consider the inherent limitations of prescription data and apply appropriate transformation processes to prevent misinterpretation in downstream analyses. Mapping FHIR MedicationRequest resources reflect prescriptive intent rather than confirmed drug exposure, requiring thoughtful handling to maintain data integrity while preserving research utility. OMOP conventions allow utilization of prescriptions as drug exposure records. Mapping FHIR MedicationRequest resources to OMOP's drug_exposure table requires appropriate utilization of the drug_type_concept to differenetiate prescribed medication records from administered medications (covered under FHIR MedicationStatemnt Resource section), medication histories, patient-reported exposures etc.
+
+### AuthoredOn to Start Date
+
+The AuthoredOn field in MedicationRequest indicates when the medication was prescribed or requested by the provider. This date represents the prescriptive event rather than the initiation of actual medication use. When mapping to OMOP's drug_exposure.start_date, implementers should exercise caution. The AuthoredOn date should only be mapped to drug_exposure.start_date when no other temporal information is available, such as administration dates or patient-reported start dates. This mapping carries the assumption that the prescription date approximates when medication exposure began, though this assumption may not hold in practice due to delays in filling prescriptions, patient adherence patterns, or other factors.
+
+### Requester to Provider
+
+The Requester field identifies the healthcare provider who issued the medication prescription. This field maps directly to the provider_id in OMOP's drug_exposure table, establishing a clear link between the prescribing provider and the medication record. It is important to note that this mapping specifically identifies the prescribing provider rather than the individual who may have administered the medication or confirmed patient adherence. This distinction is particularly relevant in healthcare settings where prescription, dispensing, and administration may involve different providers.
+
+### Drug Type Concept Identification
+
+As mentioned previously, maintaining the context of data about a drug exposure, the drug_type_concept_id field in OMOP should be populated to indicate that the record represents a written prescription rather than confirmed drug exposure. This classification allows downstream users to appropriately filter and interpret the data based on their analytical needs.
+
+## Medication Coding and Dosage Information
+
+Medication identification should reference the coding systems used within the MedicationRequest resource itself, or link to associated Medication resources when referenced. Source coding systems such as RxNorm, NDC, etc. should be preserved in the drug_source_value field.  The dosageInstruction field within MedicationRequest provides valuable information for populating OMOP's SIG (signatura) or dose-related fields. This information captures the prescribed dosing regimen and administration instructions, which can be crucial for understanding the intended therapeutic approach even when actual adherence cannot be confirmed.
+
+## Implementation Documentation Requirements
+Clear documentation should accompany any transformation that includes MedicationRequest mappings, specifically addressing:
+
+- The temporal limitations of using AuthoredOn dates as exposure start dates
+- The distinction between prescribing and administering providers
+- The need for appropriate filtering based on drug_type_concept_id
+- Recommendations for handling prescription data in various analytical contexts
+
 
 
