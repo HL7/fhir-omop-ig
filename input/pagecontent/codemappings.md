@@ -24,6 +24,71 @@ Coded data in FHIR resources minimally employ a pattern specififying a code and 
 
 The code and system elements required in FHIR are also key search parameters when identifiying target concepts in the OHDSI Standardized Vocabularies. A FHIR Code System is represented in the OMOP CDM vocabulary table as a unique identifer (vocabulary_id) with an acompanying human-readable name (vocabulary_name).  A Code or Coding in FHIR is represented in the OMOP CDM concept table as a 'concept_code', which is linked to the vocabulary table via a vocabulary_id foreign key.  
 
+## Core Transformation Components
+
+### Universal Code Prioritization Framework
+
+When multiple codes are present for a single clinical concept, implementers must apply a systematic prioritization hierarchy across all transformation patterns to ensure consistency and clinical validity. This framework addresses the complex reality of multiple coding scenarios by establishing clear precedence rules that eliminate ambiguity in code selection while ensuring reproducible transformation outcomes.
+
+The hierarchy begins with standard vocabularies, where SNOMED CT takes priority for conditions, procedures, and clinical observations due to its comprehensive coverage and OMOP's primary reliance on SNOMED concepts. RxNorm receives precedence for medications, drug products, and pharmaceutical concepts as the standard drug vocabulary in OMOP, while LOINC takes priority for laboratory tests, measurements, and clinical observations, particularly lab results and vital signs. ICD-10 and ICD-9 codes should only be used when no standard vocabulary equivalent exists, as these are considered non-standard in OMOP but may have mappings to standard concepts. CPT and HCPCS codes are acceptable for procedures when SNOMED equivalents are not available, though these require mapping to standard concepts. Local or proprietary codes receive the lowest priority and should only be used when no standard vocabulary alternative exists.
+
+Within the framework of standard vocabulary selection, clinical specificity serves as the secondary criterion, with codes providing the highest level of clinical detail taking precedence over general classifications. This includes choosing codes that provide clinical granularity, anatomical precision that specifies exact locations when available, temporal specificity that includes timing information when relevant, severity indicators when clinically appropriate, and laterality specifications for anatomically relevant concepts. The system should consistently avoid parent concepts when more specific child concepts are available in the coding array.
+
+The mapping process further considers explicit primary designations within the FHIR resource structure, where codes marked with primary indicators receive preference during selection. This includes honoring explicit "primary" or "preferred" designations in the FHIR coding array, respecting FHIR use codes such as "usual," "official," or "preferred" when present, considering organizational or system-level preferences for specific vocabularies when documented, factoring in clinical context where primary designation may indicate diagnostic certainty or treatment focus, and following institutional coding guidelines that may designate preferred vocabularies for specific clinical domains.
+
+When all other factors remain equal, temporal precedence applies, selecting the first code encountered in the sequence. This first encountered rule provides consistent tie-breaking when multiple equally valid codes exist, maintains the original order of codes as provided by the source system, requires documentation when temporal precedence was the deciding factor for transparency and quality assurance, and ensures predictable behavior across all transformation instances.
+
+### Standard OMOP Vocabulary Lookup Methodology
+
+All transformation patterns utilize a consistent lookup approach that forms the foundation for vocabulary validation and concept identification. The lookup process involves querying the OMOP concept table to identify matching concepts based on the source code and vocabulary system, followed by comprehensive analysis of the returned results.
+
+```sql
+SELECT concept_id, concept_name, domain_id, vocabulary_id, concept_code, standard_concept
+FROM concept
+WHERE concept_code = '[SOURCE_CODE]' 
+  AND vocabulary_id = '[VOCABULARY_ID]';
+```
+
+The lookup analysis encompasses several critical components that ensure proper concept identification and validation. Implementers must verify OMOP concept existence to confirm that the source code has a corresponding representation in the standardized vocabularies. The standard concept status requires confirmation through the presence of the 'S' flag, indicating that the concept can be used directly in OMOP analytics without requiring additional concept relationship mapping. Vocabulary alignment validation ensures that the identified concept originates from the expected terminology system and maintains semantic consistency with the source data. Domain assignment determination identifies the appropriate OMOP domain table for storing the clinical information, which may differ from expectations based solely on FHIR resource type.
+
+This systematic lookup methodology provides the foundation for all subsequent mapping decisions and ensures consistent handling of vocabulary validation across different transformation patterns. The approach supports both automated processing and manual validation workflows, enabling implementers to maintain high data quality standards while achieving efficient transformation throughput.
+
+### Domain Assignment Logic
+
+Domain assignment follows a vocabulary-driven approach that prioritizes semantic accuracy over structural assumptions based on FHIR resource types. This methodology recognizes that OMOP's domain organization may differ from FHIR's resource categorization, requiring careful attention to vocabulary-based domain assignments to ensure proper analytical representation.
+
+The primary consideration in domain assignment involves using the domain_id from the OMOP concept table as the authoritative domain assignment source. This vocabulary-driven approach ensures that clinical concepts are stored in domains that align with their semantic meaning within the OMOP ecosystem, rather than being forced into domains based solely on their originating FHIR resource type. When vocabulary domain assignments conflict with FHIR resource type expectations, the vocabulary takes precedence to maintain semantic consistency within the OMOP analytical framework.
+
+FHIR resource type considerations serve as secondary guidance when vocabulary domain assignments are ambiguous or when multiple valid domain options exist for a particular concept. This secondary role ensures that transformation logic can fall back to resource type expectations while maintaining the priority of vocabulary-driven domain assignment. Clinical context application becomes necessary when domain assignments conflict with expected clinical meaning, requiring implementer judgment to resolve semantic inconsistencies that may arise from vocabulary evolution or mapping edge cases.
+
+This domain assignment logic ensures that transformed data maintains semantic accuracy within the OMOP ecosystem while acknowledging the structural differences between FHIR's resource-based organization and OMOP's domain-based analytical model. The approach supports both automated transformation workflows and manual review processes for complex or ambiguous domain assignment scenarios.
+
+### Source Value Preservation Best Practices
+
+Comprehensive source value preservation forms a critical component of FHIR to OMOP transformation, ensuring data lineage maintenance, supporting future remapping efforts, and enabling quality assurance validation. This preservation strategy recognizes that vocabulary evolution and improved mapping algorithms may require reprocessing of source data, making original value retention essential for long-term data management.
+
+Source value fields must always preserve original codes exactly as provided in FHIR resources, maintaining character-for-character accuracy to ensure complete traceability back to the source system. This preservation includes maintaining any formatting, spacing, or special characters present in the original codes, as these may carry semantic meaning or system-specific significance that could be relevant for future processing or validation efforts.
+
+Source concept ID fields require population with OMOP concept_id values when source codes exist within the standardized vocabularies, while unmapped codes receive the value 0 to indicate their non-standard status. This approach provides clear indication of mapping status while maintaining the relationship between source codes and their OMOP representations when available. The use of 0 for unmapped codes follows OMOP conventions and enables analytical queries to distinguish between successfully mapped and unmapped source data.
+
+Audit trail maintenance encompasses complete transformation lineage documentation, including mapping decisions, prioritization choices, and any manual interventions performed during the transformation process. This documentation enables future validation efforts, supports quality improvement initiatives, and provides the foundation for remapping activities when vocabulary updates or improved algorithms become available.
+
+Future-proofing considerations involve designing storage and documentation strategies that accommodate vocabulary evolution, improved mapping methodologies, and changing clinical terminology standards. This includes maintaining flexible data structures that can accommodate additional mapping metadata, preserving sufficient context for understanding original transformation decisions, and ensuring that source preservation strategies support both automated and manual remapping processes.
+
+### Standard OMOP Field Population Template
+
+Consistent field population across all domain tables ensures standardized transformation outcomes and supports reliable analytical processes. This template structure provides the foundation for populating OMOP domain tables while maintaining semantic accuracy and preserving essential data lineage information.
+
+The concept ID field receives values from OMOP vocabulary lookup results, specifically using standard concepts identified through the vocabulary validation process. This field represents the primary analytical key for the clinical concept and must contain valid OMOP concept identifiers that correspond to standard vocabularies within the appropriate domain. When source codes map to non-standard concepts, concept relationship traversal may be required to identify the appropriate standard concept for analytical use.
+
+Source value fields preserve original FHIR code elements exactly as provided in the source system, maintaining complete fidelity to the original clinical documentation. This preservation includes any formatting, case sensitivity, or special characters present in the source codes, ensuring that future validation or remapping efforts have access to the complete original context. The source value serves as the definitive reference for understanding what was actually documented in the source clinical system.
+
+Source concept ID fields contain OMOP concept identifiers when source codes exist within the standardized vocabularies, or the value 0 when source codes are not present in OMOP vocabularies. This field provides explicit indication of the mapping status for the source code and enables analytical queries to distinguish between different types of source code relationships within the OMOP ecosystem.
+
+Temporal fields extract date and datetime information from appropriate FHIR elements, ensuring that clinical timing information is preserved and properly formatted for OMOP analytical requirements. This includes handling various FHIR date formats, managing time zone considerations when present, and ensuring that temporal precision is maintained according to the source data quality and availability.
+
+Person identification fields resolve FHIR subject references to establish proper linkage with OMOP person records, ensuring that clinical information is correctly associated with individual patients within the analytical database. This resolution process must maintain referential integrity while supporting privacy and security requirements that may govern patient identification within the OMOP implementation.
+
 ## Mapping Process Patterns
 As stated previously, mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations follow distinct patterns.  In this IG, we propose transformation patterns and guidance regarding: 
 
