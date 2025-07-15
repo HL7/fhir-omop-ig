@@ -96,6 +96,98 @@ Temporal fields extract date and datetime information from appropriate FHIR elem
 
 Person identification fields resolve FHIR subject references to establish proper linkage with OMOP person records, ensuring that clinical information is correctly associated with individual patients within the analytical database. This resolution process must maintain referential integrity while supporting privacy and security requirements that may govern patient identification within the OMOP implementation.
 
+### Historical Code and Code System Transformations
+
+Healthcare data transformation frequently encounters historical coding systems that are no longer actively maintained or updated. These legacy codes present unique challenges during OMOP CDM implementation due to their deprecated status and complex mapping requirements. ICD-9 codes represent the most prominent example, having been largely replaced by ICD-10 in clinical settings. These codes commonly appear in legacy electronic health records, retrospective datasets, and clinical documentation predating modern coding system adoption.
+
+The management of historical codes introduces several complexities that require careful consideration during OMOP transformation. Maintenance limitations present the primary obstacle, as historical coding systems no longer receive updates or support from their originating organizations. This abandonment often results in their exclusion from current OMOP Standardized Vocabularies, creating gaps in direct mapping capabilities. Crosswalk complexity further complicates the transformation process, as historical-to-modern code relationships rarely follow simple one-to-one patterns. Many historical codes require mapping to multiple modern equivalents, while others may lack direct contemporary representations. This variability requires mapping strategies that preserve clinical meaning while accommodating structural differences between coding systems. Data integrity concerns arise when historical codes cannot be adequately mapped, potentially resulting in clinical information loss or the introduction of mapping-related inaccuracies. The diminishing availability of historical code support resources compounds these challenges, as fewer tools and expert resources remain dedicated to legacy system maintenance.
+
+## Considerations for Legacy Vocabulary Versions
+
+The historical code management process begins with comprehensive identification of legacy codes within source datasets. Following identification, implementers must determine the optimal mapping strategy based on available resources and clinical requirements. ICD-9-CM, ICD-9-Proc, and ICD-9-ProcCN remain listed as source vocabularies for the OHDSI Standardized Vocabularies, but as of (***need a date here ***) are no longer being updated in the OHDSI Vocabularies. When OHDSI-generated reference content is not available, authoritative crosswalk utilization represents the preferred approach, leveraging mapping tables provided by organizations such as the Centers for Medicare & Medicaid Services or the National Library of Medicine. Optimally these crosswalks facilitate translation from historical codes to modern equivalents, including ICD-10 or SNOMED CT classifications that can then be levereaged to identify approrpoate Standard OMOP concpets. When crosswalks prove insufficient or unavailable, direct, manual mapping strategies may apply if historical codes remain present than codes represented in current OMOP vocabulary versions. 
+
+### OMOP Storage and Mapping Documentation
+
+Historical code storage within OMOP CDM requires careful attention to both original and transformed code preservation. The source value fields maintain the original historical codes, ensuring complete audit trails and enabling future remapping efforts if improved crosswalks become available. Not only does this preservation approach support transparency and reproducibility throughout the data transformation lifecycle, but it is crucial for historical codes for which crosswalks refelcting historical versions may or may not be avilable in the future.
+
+The concept ID fields store the results of the mapping process, containing OMOP concept identifiers derived from modern equivalent codes. When direct historical code concept IDs exist within OMOP vocabularies, these values populate the source concept ID fields. Otherwise, these fields remain null while detailed mapping documentation captures the transformation rationale. Comprehensive mapping documentation becomes essential for maintaining data provenance and supporting quality assurance efforts. This documentation encompasses mapping methodologies, expert decisions, assumptions made during complex transformations, and references to authoritative sources used in the crosswalk process.
+
+## Practical Implementation Example
+
+Consider a patient record from 2005 containing a COPD diagnosis with historical ICD-9 coding. The original FHIR resource structure demonstrates the challenge of managing legacy codes within modern healthcare data standards:
+
+```json
+{
+  "resourceType": "Condition",
+  "id": "historical-copd-example",
+  "subject": {
+    "reference": "Patient/patient-2005"
+  },
+  "code": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/icd-9-cm",
+        "code": "496",
+        "display": "Chronic airway obstruction, not elsewhere classified"
+      }
+    ]
+  },
+  "recordedDate": "2005-03-15"
+}
+```
+
+The transformation process begins with historical code identification, recognizing 496 as an ICD-9 classification requiring mapping to contemporary standards. Crosswalk consultation reveals multiple modern equivalents that result in an enhanced FHIR structure incorporating both historical and contemporary codes:
+
+```json
+{
+  "resourceType": "Condition",
+  "id": "mapped-copd-example",
+  "subject": {
+    "reference": "Patient/patient-2005"
+  },
+  "code": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/icd-9-cm",
+        "code": "496",
+        "display": "Chronic airway obstruction, not elsewhere classified"
+      },
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "code": "J44.9",
+        "display": "Chronic obstructive pulmonary disease, unspecified"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "13645005",
+        "display": "Chronic obstructive lung disease"
+      }
+    ]
+  },
+  "recordedDate": "2005-03-15"
+}
+```
+
+The preferred SNOMED CT mapping leads to OMOP concept ID 255573, establishing the final transformation target. Storage implementation places the original ICD-9 code 496 in the condition_source_value field, while condition_concept_id receives the OMOP concept ID 255573. The condition_source_concept_id field remains null if no historical ICD-9 concept exists in OMOP vocabularies, with complete mapping documentation preserved in associated metadata structures.
+
+## Historical Code Implementation Recommendations
+
+Organizations utilizing data coded in historical coding systems should establish governance frameworks that include clinical terminology specialists and domain experts in historical code mapping decisions. Fallback strategies must address scenarios where historical codes cannot be mapped to modern equivalents, potentially utilizing generalized concepts when specific mappings are unavailable while clearly documenting these compromises. Regular review of available crosswalk resources, mapping tools and utilization of terminology servers ensures that transformation processes benefit from the most current and authoritative mapping information. Organizations should maintain flexibility in their mapping approaches, allowing for updates when improved crosswalks or mapping methodologies become available.
+
+## Quality Assurance and Validation
+
+Comprehensive quality assurance ensures that FHIR to OMOP transformations maintain clinical accuracy, preserve essential data relationships, and conform to OMOP analytical requirements throughout the conversion process. The validation framework encompasses multiple dimensions of data quality, including technical accuracy, semantic preservation, and analytical utility of the transformed data.
+
+Transformation validation begins with code extraction verification to confirm successful identification of all coded elements within FHIR resources, ensuring that no clinical information is inadvertently omitted during the parsing and extraction phases. Vocabulary mapping validation verifies that identified codes successfully map to appropriate OMOP concepts while maintaining semantic accuracy and clinical meaning throughout the transformation process.
+
+Domain alignment checking ensures compatibility between FHIR resource types and OMOP domain assignments, with particular attention to scenarios where vocabulary-driven domain assignment may differ from resource type expectations. This validation helps identify potential semantic inconsistencies that require clinical review or alternative mapping strategies.
+
+Source preservation auditing validates that original codes and contextual information are properly maintained in OMOP source value fields, ensuring complete data lineage and supporting future validation or remapping efforts. Clinical meaning preservation confirmation ensures that essential clinical intent and semantic relationships are maintained throughout the transformation process, preventing loss of critical clinical information due to mapping limitations or system constraints.
+
+Documentation requirements encompass comprehensive logging of mapping decisions, particularly when multiple codes were available for selection or when complex prioritization logic influenced the final mapping outcome. Crosswalk source references document authoritative sources used for historical code mapping, while expert consultation notes capture clinical review inputs for complex or ambiguous cases. Quality flags mark records requiring additional validation or clinical review, ensuring that uncertain mappings receive appropriate attention.
+
+Error handling strategies address common challenges including missing standard mappings, domain conflicts, complex narratives, and unmapped content through systematic approaches that maintain data completeness while clearly indicating limitations. Missing standard mappings receive concept_id=0 with complete source preservation, while domain conflicts trigger escalation to clinical review processes to resolve semantic inconsistencies.
+
 ## Mapping Process Patterns
 As stated previously, mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations follow distinct patterns.  In this IG, we propose transformation patterns and guidance regarding: 
 
@@ -743,95 +835,5 @@ The implementation also addresses scenarios where FHIR resources explicitly desi
 This approach respects the clinical decision-making embedded in the source system while maintaining consistency with OMOP requirements, regardless of other prioritization factors.
 
 
-### Historical Code and Code System Transformations
 
-Healthcare data transformation frequently encounters historical coding systems that are no longer actively maintained or updated. These legacy codes present unique challenges during OMOP CDM implementation due to their deprecated status and complex mapping requirements. ICD-9 codes represent the most prominent example, having been largely replaced by ICD-10 in clinical settings. These codes commonly appear in legacy electronic health records, retrospective datasets, and clinical documentation predating modern coding system adoption.
-
-The management of historical codes introduces several complexities that require careful consideration during OMOP transformation. Maintenance limitations present the primary obstacle, as historical coding systems no longer receive updates or support from their originating organizations. This abandonment often results in their exclusion from current OMOP Standardized Vocabularies, creating gaps in direct mapping capabilities. Crosswalk complexity further complicates the transformation process, as historical-to-modern code relationships rarely follow simple one-to-one patterns. Many historical codes require mapping to multiple modern equivalents, while others may lack direct contemporary representations. This variability requires mapping strategies that preserve clinical meaning while accommodating structural differences between coding systems. Data integrity concerns arise when historical codes cannot be adequately mapped, potentially resulting in clinical information loss or the introduction of mapping-related inaccuracies. The diminishing availability of historical code support resources compounds these challenges, as fewer tools and expert resources remain dedicated to legacy system maintenance.
-
-## Considerations for Legacy Vocabulary Versions
-
-The historical code management process begins with comprehensive identification of legacy codes within source datasets. Following identification, implementers must determine the optimal mapping strategy based on available resources and clinical requirements. ICD-9-CM, ICD-9-Proc, and ICD-9-ProcCN remain listed as source vocabularies for the OHDSI Standardized Vocabularies, but as of (***need a date here ***) are no longer being updated in the OHDSI Vocabularies. When OHDSI-generated reference content is not available, authoritative crosswalk utilization represents the preferred approach, leveraging mapping tables provided by organizations such as the Centers for Medicare & Medicaid Services or the National Library of Medicine. Optimally these crosswalks facilitate translation from historical codes to modern equivalents, including ICD-10 or SNOMED CT classifications that can then be levereaged to identify approrpoate Standard OMOP concpets. When crosswalks prove insufficient or unavailable, direct, manual mapping strategies may apply if historical codes remain present than codes represented in current OMOP vocabulary versions. 
-
-### OMOP Storage and Mapping Documentation
-
-Historical code storage within OMOP CDM requires careful attention to both original and transformed code preservation. The source value fields maintain the original historical codes, ensuring complete audit trails and enabling future remapping efforts if improved crosswalks become available. Not only does this preservation approach support transparency and reproducibility throughout the data transformation lifecycle, but it is crucial for historical codes for which crosswalks refelcting historical versions may or may not be avilable in the future.
-
-The concept ID fields store the results of the mapping process, containing OMOP concept identifiers derived from modern equivalent codes. When direct historical code concept IDs exist within OMOP vocabularies, these values populate the source concept ID fields. Otherwise, these fields remain null while detailed mapping documentation captures the transformation rationale. Comprehensive mapping documentation becomes essential for maintaining data provenance and supporting quality assurance efforts. This documentation encompasses mapping methodologies, expert decisions, assumptions made during complex transformations, and references to authoritative sources used in the crosswalk process.
-
-## Practical Implementation Example
-
-Consider a patient record from 2005 containing a COPD diagnosis with historical ICD-9 coding. The original FHIR resource structure demonstrates the challenge of managing legacy codes within modern healthcare data standards:
-
-```json
-{
-  "resourceType": "Condition",
-  "id": "historical-copd-example",
-  "subject": {
-    "reference": "Patient/patient-2005"
-  },
-  "code": {
-    "coding": [
-      {
-        "system": "http://hl7.org/fhir/sid/icd-9-cm",
-        "code": "496",
-        "display": "Chronic airway obstruction, not elsewhere classified"
-      }
-    ]
-  },
-  "recordedDate": "2005-03-15"
-}
-```
-
-The transformation process begins with historical code identification, recognizing 496 as an ICD-9 classification requiring mapping to contemporary standards. Crosswalk consultation reveals multiple modern equivalents that result in an enhanced FHIR structure incorporating both historical and contemporary codes:
-
-```json
-{
-  "resourceType": "Condition",
-  "id": "mapped-copd-example",
-  "subject": {
-    "reference": "Patient/patient-2005"
-  },
-  "code": {
-    "coding": [
-      {
-        "system": "http://hl7.org/fhir/sid/icd-9-cm",
-        "code": "496",
-        "display": "Chronic airway obstruction, not elsewhere classified"
-      },
-      {
-        "system": "http://hl7.org/fhir/sid/icd-10-cm",
-        "code": "J44.9",
-        "display": "Chronic obstructive pulmonary disease, unspecified"
-      },
-      {
-        "system": "http://snomed.info/sct",
-        "code": "13645005",
-        "display": "Chronic obstructive lung disease"
-      }
-    ]
-  },
-  "recordedDate": "2005-03-15"
-}
-```
-
-The preferred SNOMED CT mapping leads to OMOP concept ID 255573, establishing the final transformation target. Storage implementation places the original ICD-9 code 496 in the condition_source_value field, while condition_concept_id receives the OMOP concept ID 255573. The condition_source_concept_id field remains null if no historical ICD-9 concept exists in OMOP vocabularies, with complete mapping documentation preserved in associated metadata structures.
-
-## Historica Code Implementation Recommendations
-
-Organizations utilizing data coded in historical coding systems should establish governance frameworks that include clinical terminology specialists and domain experts in historical code mapping decisions. Fallback strategies must address scenarios where historical codes cannot be mapped to modern equivalents, potentially utilizing generalized concepts when specific mappings are unavailable while clearly documenting these compromises. Regular review of available crosswalk resources, mapping tools and utilization of terminology servers ensures that transformation processes benefit from the most current and authoritative mapping information. Organizations should maintain flexibility in their mapping approaches, allowing for updates when improved crosswalks or mapping methodologies become available.
-
-## Quality Assurance and Validation
-
-Comprehensive quality assurance ensures that FHIR to OMOP transformations maintain clinical accuracy, preserve essential data relationships, and conform to OMOP analytical requirements throughout the conversion process. The validation framework encompasses multiple dimensions of data quality, including technical accuracy, semantic preservation, and analytical utility of the transformed data.
-
-Transformation validation begins with code extraction verification to confirm successful identification of all coded elements within FHIR resources, ensuring that no clinical information is inadvertently omitted during the parsing and extraction phases. Vocabulary mapping validation verifies that identified codes successfully map to appropriate OMOP concepts while maintaining semantic accuracy and clinical meaning throughout the transformation process.
-
-Domain alignment checking ensures compatibility between FHIR resource types and OMOP domain assignments, with particular attention to scenarios where vocabulary-driven domain assignment may differ from resource type expectations. This validation helps identify potential semantic inconsistencies that require clinical review or alternative mapping strategies.
-
-Source preservation auditing validates that original codes and contextual information are properly maintained in OMOP source value fields, ensuring complete data lineage and supporting future validation or remapping efforts. Clinical meaning preservation confirmation ensures that essential clinical intent and semantic relationships are maintained throughout the transformation process, preventing loss of critical clinical information due to mapping limitations or system constraints.
-
-Documentation requirements encompass comprehensive logging of mapping decisions, particularly when multiple codes were available for selection or when complex prioritization logic influenced the final mapping outcome. Crosswalk source references document authoritative sources used for historical code mapping, while expert consultation notes capture clinical review inputs for complex or ambiguous cases. Quality flags mark records requiring additional validation or clinical review, ensuring that uncertain mappings receive appropriate attention.
-
-Error handling strategies address common challenges including missing standard mappings, domain conflicts, complex narratives, and unmapped content through systematic approaches that maintain data completeness while clearly indicating limitations. Missing standard mappings receive concept_id=0 with complete source preservation, while domain conflicts trigger escalation to clinical review processes to resolve semantic inconsistencies.
 
