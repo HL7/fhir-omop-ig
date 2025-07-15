@@ -26,11 +26,18 @@ The code and system elements required in FHIR are also key search parameters whe
 
 ## Core Transformation Components
 
-### Universal Code Prioritization Framework
+### Code Prioritization Framework
 
 When multiple codes are present for a single clinical concept, implementers must apply a systematic prioritization hierarchy across all transformation patterns to ensure consistency and clinical validity. This framework addresses the complex reality of multiple coding scenarios by establishing clear precedence rules that eliminate ambiguity in code selection while ensuring reproducible transformation outcomes.
 
 The hierarchy begins with standard vocabularies, where SNOMED CT takes priority for conditions, procedures, and clinical observations due to its comprehensive coverage and OMOP's primary reliance on SNOMED concepts. RxNorm receives precedence for medications, drug products, and pharmaceutical concepts as the standard drug vocabulary in OMOP, while LOINC takes priority for laboratory tests, measurements, and clinical observations, particularly lab results and vital signs. ICD-10 and ICD-9 codes should only be used when no standard vocabulary equivalent exists, as these are considered non-standard in OMOP but may have mappings to standard concepts. CPT and HCPCS codes are acceptable for procedures when SNOMED equivalents are not available, though these require mapping to standard concepts. Local or proprietary codes receive the lowest priority and should only be used when no standard vocabulary alternative exists.
+
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b>Code Prioritization Framework</b></figcaption>
+<img src="../images/Code Prioritization Framework.jpg" style="padding-top:0;padding-bottom:30px" width="800" alt="Code Prioritization Framework"/>
+</figure>
+{::options parse_block_html="true" /}
 
 Within the framework of standard vocabulary selection, clinical specificity serves as the secondary criterion, with codes providing the highest level of clinical detail taking precedence over general classifications. This includes choosing codes that provide clinical granularity, anatomical precision that specifies exact locations when available, temporal specificity that includes timing information when relevant, severity indicators when clinically appropriate, and laterality specifications for anatomically relevant concepts. The system should consistently avoid parent concepts when more specific child concepts are available in the coding array.
 
