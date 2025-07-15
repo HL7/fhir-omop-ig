@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Code Prioritization Framework</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 8px;
+            background: white;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0;
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            line-height: 1.3;
+        }
+        
+        .framework {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .priority-level {
+            position: relative;
+            background: #fafafa;
+            border-radius: 6px;
+            padding: 10px;
+            border-left: 4px solid;
+        }
+        
+        .level-1 { border-left-color: #e74c3c; }
+        .level-2 { border-left-color: #f39c12; }
+        .level-3 { border-left-color: #3498db; }
+        .level-4 { border-left-color: #27ae60; }
+        
+        .level-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .level-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 0.9em;
+        }
+        
+        .level-1 .level-number { background: #e74c3c; }
+        .level-2 .level-number { background: #f39c12; }
+        .level-3 .level-number { background: #3498db; }
+        .level-4 .level-number { background: #27ae60; }
+        
+        .level-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .vocabularies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .vocabulary-card {
+            background: white;
+            border-radius: 4px;
+            padding: 6px 8px;
+            text-align: center;
+            border: 1px solid #e0e0e0;
+            flex: 1;
+            min-width: 90px;
+        }
+        
+        .vocab-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+            font-size: 0.8em;
+        }
+        
+        .vocab-description {
+            font-size: 0.7em;
+            color: #7f8c8d;
+            line-height: 1.2;
+        }
+        
+        .criteria-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .criteria-item {
+            background: white;
+            border-radius: 4px;
+            padding: 6px 8px;
+            border-left: 3px solid #3498db;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .criteria-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+            font-size: 0.8em;
+        }
+        
+        .criteria-desc {
+            font-size: 0.7em;
+            color: #7f8c8d;
+        }
+        
+        .flow-arrow {
+            text-align: center;
+            font-size: 1.2em;
+            color: #bdc3c7;
+            margin: 3px 0;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 12px;
+            text-align: center;
+        }
+        
+        .highlight-title {
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .highlight-box div:last-child {
+            font-size: 0.8em;
+            line-height: 1.3;
+        }
+        
+        @media (max-width: 768px) {
+            .vocabularies {
+                flex-direction: column;
+            }
+            .criteria-list {
+                flex-direction: column;
+            }
+            .container {
+                padding: 8px;
+                margin: 5px;
+            }
+            .title {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">Universal Code Prioritization Framework</div>
+            <div class="subtitle">
+                Systematic hierarchy for clinical code selection ensuring consistency and validity across all transformation patterns
+            </div>
+        </div>
+        
+        <div class="framework">
+            <!-- Level 1: Standard Vocabularies -->
+            <div class="priority-level level-1">
+                <div class="level-header">
+                    <div class="level-number">1</div>
+                    <div class="level-title">Standard Vocabularies (Highest Priority)</div>
+                </div>
+                <div class="vocabularies">
+                    <div class="vocabulary-card">
+                        <div class="vocab-name">SNOMED CT</div>
+                        <div class="vocab-description">Conditions, procedures, clinical observations</div>
+                    </div>
+                    <div class="vocabulary-card">
+                        <div class="vocab-name">RxNorm</div>
+                        <div class="vocab-description">Medications, drug products, pharmaceuticals</div>
+                    </div>
+                    <div class="vocabulary-card">
+                        <div class="vocab-name">LOINC</div>
+                        <div class="vocab-description">Laboratory tests, measurements, vital signs</div>
+                    </div>
+                    <div class="vocabulary-card">
+                        <div class="vocab-name">ICD-10/ICD-9</div>
+                        <div class="vocab-description">When no standard equivalent exists</div>
+                    </div>
+                    <div class="vocabulary-card">
+                        <div class="vocab-name">CPT/HCPCS</div>
+                        <div class="vocab-description">Procedures when SNOMED unavailable</div>
+                    </div>
+                    <div class="vocabulary-card">
+                        <div class="vocab-name">Local/Proprietary</div>
+                        <div class="vocab-description">Lowest priority, last resort</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flow-arrow">↓</div>
+            
+            <!-- Level 2: Clinical Specificity -->
+            <div class="priority-level level-2">
+                <div class="level-header">
+                    <div class="level-number">2</div>
+                    <div class="level-title">Clinical Specificity Criteria</div>
+                </div>
+                <div class="criteria-list">
+                    <div class="criteria-item">
+                        <div class="criteria-title">Clinical Granularity</div>
+                        <div class="criteria-desc">Highest level of clinical detail</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">Anatomical Precision</div>
+                        <div class="criteria-desc">Specific location information</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">Temporal Specificity</div>
+                        <div class="criteria-desc">Timing information when relevant</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">Severity Indicators</div>
+                        <div class="criteria-desc">Clinical severity when appropriate</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">Laterality Specifications</div>
+                        <div class="criteria-desc">Anatomical side designations</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flow-arrow">↓</div>
+            
+            <!-- Level 3: Primary Designations -->
+            <div class="priority-level level-3">
+                <div class="level-header">
+                    <div class="level-number">3</div>
+                    <div class="level-title">Primary Designations & FHIR Structure</div>
+                </div>
+                <div class="criteria-list">
+                    <div class="criteria-item">
+                        <div class="criteria-title">Explicit Primary Indicators</div>
+                        <div class="criteria-desc">Codes marked as primary in FHIR</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">FHIR Use Codes</div>
+                        <div class="criteria-desc">"usual," "official," "preferred"</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">Organizational Preferences</div>
+                        <div class="criteria-desc">System-level vocabulary preferences</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">Clinical Context</div>
+                        <div class="criteria-desc">Diagnostic certainty or treatment focus</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">Institutional Guidelines</div>
+                        <div class="criteria-desc">Domain-specific coding preferences</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flow-arrow">↓</div>
+            
+            <!-- Level 4: Temporal Precedence -->
+            <div class="priority-level level-4">
+                <div class="level-header">
+                    <div class="level-number">4</div>
+                    <div class="level-title">Temporal Precedence (Tie-Breaker)</div>
+                </div>
+                <div class="criteria-list">
+                    <div class="criteria-item">
+                        <div class="criteria-title">First Encountered Rule</div>
+                        <div class="criteria-desc">First code in sequence when all else equal</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">Consistent Tie-Breaking</div>
+                        <div class="criteria-desc">Predictable behavior across instances</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">Source Order Preservation</div>
+                        <div class="criteria-desc">Maintains original system ordering</div>
+                    </div>
+                    <div class="criteria-item">
+                        <div class="criteria-title">Documentation Requirement</div>
+                        <div class="criteria-desc">Record when temporal precedence used</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="highlight-box">
+            <div class="highlight-title">Framework Outcome</div>
+            <div>Ensures consistent, reproducible, and clinically valid code selection across all OMOP transformation patterns while eliminating ambiguity in multi-code scenarios.</div>
+        </div>
+    </div>
+</body>
+</html>
