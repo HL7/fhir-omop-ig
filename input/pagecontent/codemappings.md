@@ -70,7 +70,7 @@ FHIR resource type considerations serve as secondary guidance when vocabulary do
 
 This domain assignment logic ensures that transformed data maintains semantic accuracy within the OMOP ecosystem while acknowledging the structural differences between FHIR's resource-based organization and OMOP's domain-based analytical model. The approach supports both automated transformation workflows and manual review processes for complex or ambiguous domain assignment scenarios.
 
-### Source Value Preservation Best Practices
+### Source Value Preservation: A Best Practice
 
 Comprehensive source value preservation forms a critical component of FHIR to OMOP transformation, ensuring data lineage maintenance, supporting future remapping efforts, and enabling quality assurance validation. This preservation strategy recognizes that vocabulary evolution and improved mapping algorithms may require reprocessing of source data, making original value retention essential for long-term data management.
 
