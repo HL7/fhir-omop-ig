@@ -35,7 +35,7 @@ The hierarchy begins with standard vocabularies, where SNOMED CT takes priority 
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>Code Prioritization Framework</b></figcaption>
-<img src="../images/Code Prioritization Framework.jpg" style="padding-top:0;padding-bottom:30px" width="800" alt="Code Prioritization Framework"/>
+<img src="../images/code_prioritization_framework_restored.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="Code Prioritization Framework"/>
 </figure>
 {::options parse_block_html="true" /}
 
