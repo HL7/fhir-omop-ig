@@ -408,7 +408,7 @@ Although prioritization was not required due to the single code scenario, the tr
 
 Concept relationship verification using the standard query pattern validated the concept's position within the vocabulary hierarchy, while domain classification logic demonstrated how OMOP vocabulary domain assignments take precedence over FHIR resource type expectations. The AllergyIntolerance resource type initially suggested a Condition domain mapping, but the vocabulary's assignment to the Observation domain guided the final table selection decision. Standard concept validation confirmed the S flag status, eliminating the need for concept relationship mapping and approving direct usage in the observation_concept_id field. This vocabulary-driven approach ensures semantic consistency within the OMOP ecosystem while preserving the clinical intent of the original FHIR data.
 
-## Alternative Scenarios and Considerations: Multiple Allergy Status Codes
+## Alternative Scenario: Multiple Allergy Status Codes
 If the CodeableConcept contained both SNOMED and a local code:
 
 ```json
@@ -453,6 +453,62 @@ These "No Known Allergy" example demonstrates several critical aspects of FHIR C
 4. **Context Preservation**: Free text elements provide valuable clinical context that should be preserved
 
 The transformation successfully maps a common clinical concept while revealing the importance of vocabulary-driven domain assignment in OMOP implementations. This pattern applies to many similar negative assertion concepts in clinical documentation, providing a template for handling absence-of-finding scenarios in FHIR to OMOP transformations.
+
+## Free Text in CodeableConcept Mapping
+
+Free text mapping addresses the transformation of unstructured text into Standard OMOP concepts. CodeableConcept with free-text descriptions lacking corresponding coded elements, require manual review or natural language processing to extract and standardize clinical concepts. This description provides an approach for converting text in FHIR CodeableConcept elements into OMOP-compatible structured data while preserving clinical meaning.
+
+## Text in CodeableConcept Elements
+
+According to FHIR specification, the `text` element represents "the concept as entered or chosen by the user, and which most closely represents the intended meaning." The text often matches the display value of associated codings but may contain user-specific terminology or local clinical language. When codings are marked with `coding.userSelected = true`, this indicates the clinician's preferred representation. When no coding is user-selected, the text element becomes the preferred source of clinical meaning for transformation.
+
+### Free Text Only Representations
+
+FHIR permits text-only representations when no appropriate standardized code exists:
+
+```json
+"valueCodeableConcept": {
+    "text": "uncoded free text result"
+}
+```
+
+These scenarios present the greatest transformation challenge, requiring manual mapping, comprehensive NLP analysis or explicit handling on OMOP as an unmapped source data.
+
+## FHIR Free Text Sources and Context
+
+Free text appears across FHIR resources in CodeableConcept.text elements (Condition.code.text, Procedure.code.text, MedicationRequest.medicationCodeableConcept.text) and narrative fields (DiagnosticReport.conclusion, AllergyIntolerance.note.text). These sources often contain clinician-entered terminology that differs from standardized vocabulary displays while preserving essential clinical context.
+
+## Natural Language Processing for Clinical Text
+
+Clinical NLP systems must handle medical abbreviations, complex terminology, temporal expressions, and implicit clinical relationships. Advanced systems employ named entity recognition, relationship extraction, negation detection, and temporal analysis specifically adapted for medical language. Terminology mapping leverages SNOMED CT, RxNorm, LOINC, and UMLS resources through fuzzy matching, synonym recognition, and hierarchical concept navigation to accommodate clinical language variability.
+
+## OMOP Transformation and Source Value Preservation
+
+Like other mapping patterns discussed previously, mapping free text component of a CodeableConcept requires validation that identified concepts exist as standard OMOP concepts with appropriate domain assignments. The _source_value fields preserve original free text exactly as documented, while _source_concept_id typically contains 0 for unmapped source vocabularies. The _concept_id field contains the standard OMOP concept representing the extracted clinical meaning.
+
+## Handling Unmapped and Complex Clinical Text
+
+Unmapped content receives concept_id=0 with complete source text preservation in _source_value fields. Complex narratives may generate multiple OMOP records from single text sources, with temporal and contextual information influencing concept selection and date assignments.
+
+## CodeableConcept Free Text Mapping Examples
+
+### Text with User-Selected Coding
+**Source Text**: "Type 2 diabetes"
+**Associated Coding**: SNOMED 44054006 with userSelected=true
+**Transformation**: Use coded concept (201826) while preserving text in source_value
+
+### Ambiguous Clinical Language
+**Source Text**: "Patient has diabetes"
+**Challenge**: Unspecified diabetes type
+**Mapping Strategy**: Map to general diabetes concept with quality flag for specificity limitation
+
+### Medical Abbreviations
+**Source Text**: "Pt w/ h/o MI, now c/o SOB"
+**NLP Processing**: 
+- "h/o MI" → "history of myocardial infarction"
+- "c/o SOB" → "complains of shortness of breath"
+**Result**: Two distinct condition records
+
 
 ## FHIR to OMOP Value-as-Concept Map Pattern
 Drug allergies represent a complex transformation challenge in FHIR-to-OMOP mapping due to their composite nature. In FHIR, an AllergyIntolerance resource typically contains a coded element representing both the allergy type and the specific substance.  This is not aligned with OMOP's preference for decomposed, granular concept representation. The Value-as-Comcept Map pattern addresses the tension between FHIR's composite coding approach and OMOP's value-as-concept methodology, which separates the observation type (allergy classification) from the specific substance causing the reaction.
