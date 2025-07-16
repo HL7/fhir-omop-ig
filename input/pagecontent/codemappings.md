@@ -137,7 +137,7 @@ The preferred SNOMED CT mapping leads to OMOP concept ID 255573, establishing th
 
 Organizations utilizing data coded in historical coding systems should establish governance frameworks that include clinical terminology specialists and domain experts in historical code mapping decisions. Fallback strategies must address scenarios where historical codes cannot be mapped to modern equivalents, potentially utilizing generalized concepts when specific mappings are unavailable while clearly documenting these compromises. Regular review of available crosswalk resources, mapping tools and utilization of terminology servers ensures that transformation processes benefit from the most current and authoritative mapping information. Organizations should maintain flexibility in their mapping approaches, allowing for updates when improved crosswalks or mapping methodologies become available.
 
-### Source Value Preservation: A Best Practice
+## Source Value Preservation: A Best Practice
 
 Consistently preserving source values is a critical component of FHIR to OMOP transformation, ensuring data lineage, maintenance of incremental data stores, supports future remapping efforts, and enabling quality assurance validation procedures. This strategy accomodates vocabulary evolution and improved mapping algorithms which may require reprocessing of source data, making original value retention essential for long-term data management. 
 
