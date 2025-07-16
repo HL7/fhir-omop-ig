@@ -1,11 +1,11 @@
-## Mapping Process Patterns
+# FHIR to OMOP Code Mapping Patterns
 Mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations can follow distinct patterns.  In this Implementation Guide, we propose transformation patterns and guidance regarding: 
 
 * A base pattern that covers most simple code to concept transformation
 * A pattern applicable to multiple CodeableConcepts scenarios
 * Value-as-concept map pattern
 
-## FHIR to OMOP Base Mapping Pattern
+## 1: Base Mapping Pattern
 
 {::options parse_block_html="false" /}
 <figure>
@@ -13,8 +13,6 @@ Mapping coded data from FHIR to OMOP requires evaluation of the concepts to be s
 <img src="../images/fhir_omop_base_pattern.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Coded Data Base Mapping Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
-
-### Pattern 1: Base Mapping Pattern
 
 The foundational pattern for simple code-to-concept transformations provides the essential framework that underlies all other transformation approaches. This pattern addresses the most straightforward scenarios where FHIR resources contain single, well-defined codes that can be directly mapped to OMOP standard concepts without requiring complex prioritization or decomposition logic.
 
@@ -30,7 +28,7 @@ Non-standard concept handling addresses scenarios where source codes map to non-
 
 The final population phase applies the Standard OMOP Field Population Template to ensure consistent data storage across all transformation instances. This standardization supports reliable analytical processes while maintaining essential data lineage information for quality assurance and future enhancement efforts.
 
-#### Example: Diabetes Condition Mapping
+### Example: Diabetes Condition Mapping
 
 Consider a straightforward diabetes diagnosis represented in a FHIR Condition resource with a single SNOMED CT code. The source resource demonstrates the ideal scenario for base pattern transformation, containing clear coded information without ambiguity or complex relationships.
 
@@ -78,7 +76,7 @@ INSERT INTO condition_occurrence (
 
 This example demonstrates the straightforward application of the base pattern, showcasing direct vocabulary mapping, domain alignment, and comprehensive source preservation. The transformation maintains clinical accuracy while conforming to OMOP analytical requirements, providing a foundation for understanding more complex transformation scenarios.
 
-## Field Mapping Details
+### Field Mapping Details
 
 | OMOP Field | Value | Source | Transformation Notes |
 |------------|--------|---------|---------------------|
@@ -91,9 +89,8 @@ This example demonstrates the straightforward application of the base pattern, s
 
 The example above represents a straightforward transformation scenario with a direct vocabulary match and domain alignment. Real-world implementations should prepare for more complex scenarios involving non-standard vocabularies, domain mismatches, and mapping gaps, but this base pattern provides the foundational framework for handling all transformation cases systematically and consistently.
 
-### Pattern 2: CodeableConcept Multi-Code Pattern
-
-The CodeableConcept pattern addresses the challenge of transforming FHIR CodeableConcept elements that may contain multiple codes, free text, or combinations of both. This pattern recognizes the tension between FHIR's flexibility in representing clinical concepts and OMOP's requirement for standardized, unambiguous concept identification. The approach provides systematic methodology for handling the complexity inherent in CodeableConcept structures while preserving clinical meaning and maintaining data quality standards.
+## Pattern 2: CodeableConcept Patterns
+The CodeableConcept patterns addresses the challenge of transforming FHIR CodeableConcept elements that may contain multiple codes, free text, or combinations of both. This pattern recognizes the tension between FHIR's flexibility in representing clinical concepts and OMOP's requirement for standardized, unambiguous concept identification. The approach provides systematic methodology for handling the complexity inherent in CodeableConcept structures while preserving clinical meaning and maintaining data quality standards.
 
 CodeableConcept elements in FHIR can contain multiple coding entries, each potentially representing the same clinical concept through different terminology systems or at different levels of granularity. This multiplicity creates opportunities for enhanced semantic representation but also introduces complexity in determining which code should serve as the primary mapping target for OMOP transformation. The pattern addresses this complexity through sophisticated assessment and prioritization logic that ensures consistent, reproducible transformation outcomes.
 
@@ -112,7 +109,7 @@ The vocabulary lookup phase applies standard methodology to identify correspondi
 
 Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern provides mechanisms for preserving this contextual information in appropriate OMOP fields, ensuring that clinical nuance is not lost during the transformation process.
 
-## Example: Mapping No Known Allergy CodeableConcept
+### Example: Mapping No Known Allergy CodeableConcept
 
 The transformation of negative assertion concepts demonstrates the importance of vocabulary-driven domain assignment in CodeableConcept processing. Consider an AllergyIntolerance resource that documents the absence of known allergies, representing a clinical concept that challenges traditional resource-to-domain mapping assumptions.
 
@@ -160,7 +157,7 @@ INSERT INTO observation (
 
 The transformation successfully preserves both the structured coded information and the free text context while ensuring appropriate domain assignment based on vocabulary semantics. This example illustrates the critical importance of vocabulary-driven transformation logic and the value of preserving contextual information that supplements coded clinical data.
 
-### Field Mapping Details
+#### Field Mapping Details
 
 | OMOP Field | Value | Source | Transformation Notes |
 |------------|--------|---------|---------------------|
@@ -179,7 +176,7 @@ Although prioritization was not required due to the single code scenario, the tr
 
 Concept relationship verification using the standard query pattern validated the concept's position within the vocabulary hierarchy, while domain classification logic demonstrated how OMOP vocabulary domain assignments take precedence over FHIR resource type expectations. The AllergyIntolerance resource type initially suggested a Condition domain mapping, but the vocabulary's assignment to the Observation domain guided the final table selection decision. Standard concept validation confirmed the S flag status, eliminating the need for concept relationship mapping and approving direct usage in the observation_concept_id field. This vocabulary-driven approach ensures semantic consistency within the OMOP ecosystem while preserving the clinical intent of the original FHIR data.
 
-## Alternative Scenario: Multiple Allergy Status Codes
+### Alternative CondeableConcept Scenario: Multiple Allergy Status Codes
 If the CodeableConcept contained both SNOMED and a local code:
 
 ```json
@@ -202,7 +199,7 @@ If the CodeableConcept contained both SNOMED and a local code:
 - **Result**: Same mapping to concept_id 4222295
 - **Local Code**: Preserved in observation_source_value as secondary
 
-### Scenario B: Related Allergy Concepts
+#### Related Allergy Concepts
 Similar concepts that might appear in allergy contexts:
 
 | SNOMED Code | Concept Name | OMOP Domain | Notes |
@@ -225,11 +222,8 @@ These "No Known Allergy" example demonstrates several critical aspects of FHIR C
 
 The transformation successfully maps a common clinical concept while revealing the importance of vocabulary-driven domain assignment in OMOP implementations. This pattern applies to many similar negative assertion concepts in clinical documentation, providing a template for handling absence-of-finding scenarios in FHIR to OMOP transformations.
 
-## Free Text in CodeableConcept Mapping
-
-Free text mapping addresses the transformation of unstructured text into Standard OMOP concepts. CodeableConcept with free-text descriptions lacking corresponding coded elements, require manual review or natural language processing to extract and standardize clinical concepts. This description provides an approach for converting text in FHIR CodeableConcept elements into OMOP-compatible structured data while preserving clinical meaning.
-
-According to FHIR specification, the `text` element represents "the concept as entered or chosen by the user, and which most closely represents the intended meaning." The text often matches the display value of associated codings but may contain user-specific terminology or local clinical language. When codings are marked with `coding.userSelected = true`, this indicates the clinician's preferred representation. When no coding is user-selected, the text element becomes the preferred source of clinical meaning for transformation.
+### Free Text in CodeableConcept Mapping
+CodeableConcept with free-text descriptions lacking corresponding coded elements, require manual review or natural language processing to extract and standardize clinical concepts. Free text mapping in this context addresses the transformation of unstructured text within a CodeableConcept element into Standard OMOP concepts. According to FHIR specification, the `text` element represents "the concept as entered or chosen by the user, and which most closely represents the intended meaning." The text often matches the display value of associated codings but may contain user-specific terminology or local clinical language. When codings are marked with `coding.userSelected = true`, this indicates the clinician's preferred representation. When no coding is user-selected, the text element becomes the preferred source of clinical meaning for transformation.
 
 FHIR permits text-only representations when no appropriate standardized code exists:
 
@@ -241,9 +235,9 @@ FHIR permits text-only representations when no appropriate standardized code exi
 
 These scenarios present the greatest transformation challenge, requiring manual mapping, comprehensive NLP analysis or explicit handling on OMOP as an unmapped source data. Unmapped content receives concept_id=0 with complete source text preservation in _source_value fields. Complex narratives may generate multiple OMOP records from single text sources, with temporal and contextual information influencing concept selection and date assignments.
 
-## CodeableConcept Free Text Mapping Examples
+#### CodeableConcept Free Text Mapping Examples
 
-### 1. Text with User-Selected Coding
+##### 1. Text with User-Selected Coding
 **Source Text**: "Type 2 diabetes"
 **Associated Coding**: SNOMED 44054006 with userSelected=true
 **Transformation**: Use coded concept (201826) while preserving text in source_value
@@ -271,7 +265,7 @@ INSERT INTO condition_occurrence (
 );
 ```
 
-### 2. Ambiguous Clinical Language
+##### 2. Ambiguous Clinical Language
 **Source Text**: "Patient has diabetes"
 **Challenge**: Unspecified diabetes type
 **Mapping Strategy**: Map to general diabetes concept with quality flag for specificity limitation
@@ -301,7 +295,7 @@ INSERT INTO condition_occurrence (
 );
 ```
 
-### 3. Medical Abbreviations
+##### 3. Medical Abbreviations
 **Source Text**: "Pt w/ h/o MI, now c/o SOB"
 **NLP Processing**: 
 - "h/o MI" → "history of myocardial infarction"
@@ -358,7 +352,7 @@ INSERT INTO observation (
 );
 ```
 
-### Example CodeableConcept Free Text Field Mapping Summary 
+#### Example CodeableConcept Free Text Field Mapping Summary 
 
 | Scenario | OMOP Field | Value | Transformation Notes |
 |----------|------------|-------|---------------------|
@@ -390,7 +384,6 @@ FHIR AllergyIntolerance resources contain coded elements in the `code` field tha
 The system analyzes the composite concept to determine whether it can be meaningfully separated into constituent parts: an observation concept representing the allergy type and a value concept representing the specific substance. This decomposition process examines the semantic structure of codes like "Allergy to [substance]" to identify patterns suitable for value-as-concept transformation. The analysis considers whether both components (allergy type and substance) have equivalent representations in OMOP standard vocabularies, ensuring that the clinical meaning remains intact through the transformation process.
 
 **Decision Point: Decomposition Available as OMOP Standard Concepts?**
-
 If the composite concept can be successfully decomposed into standard OMOP concepts for both the observation type and the substance value, the system proceeds with the value-as-concept approach. If decomposition is not possible or would result in loss of clinical meaning, the system routes to manual mapping alternatives.
 
 #### 3a: Apply Value as Concept
@@ -407,7 +400,6 @@ When automatic decomposition fails or results in unmappable components, manual d
 The decomposed concepts undergo validation against OHDSI Standardized Vocabularies to confirm that both the observation concept and value concept exist as Standard OMOP concepts. This critical validation step ensures that the mapped concepts upoholds the OMOP conventions for Standard concept alignment withtin each Domian (** See disccusion of OMOP Standard Concpets here**) and will integrate properly with OMOP-based analytics tools. The lookup process verifies concept status, domain assignment, and relationship mappings.
 
 **Decision Point: All Concepts Found in OMOP?**
-
 If both the observation concept and value concept are confirmed as standard OMOP concepts, the system proceeds to populate the appropriate OMOP domain table(s). If either concept is missing or non-standard, the system should identify vocabulary gaps and consider alternative mapping strategies.
 
 #### 5a: Populate Appropriate OMOP Domain
