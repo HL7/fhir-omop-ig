@@ -1,4 +1,4 @@
-# Condition and Probelm List Considerations
+# Condition & Problem List Resource Considerations
 ## Condition Start Date vs. Recorded Date
 When implementing FHIR-to-OMOP transformations, two temporal concepts require careful consideration due to their distinct semantic meanings and downstream analytical impact. Understanding these differences is crucial for health data professionals working on interoperability projects and clinical data warehousing initiatives.
 
