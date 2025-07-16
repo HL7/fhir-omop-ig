@@ -1,4 +1,4 @@
-# FHIR Person Resource Considerations
+# Person Resource Considerations
 
 ## Mapping Sex and Gender 
 FHIR to OMOP gender mapping requires attention to both technical precision and the evolving OHDSI conventions around gender and sex data representation. The key to successful implementation lies in establishing clear protocols that respect the OHDSI community's ratified conventions, maintaining comprehensive validation across both person and observation tables, and preparing for future standard evolution while ensuring current system reliability and accuracy. 
