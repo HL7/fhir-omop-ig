@@ -120,6 +120,22 @@ These selected studies offer practical, real-world examples of codes, data eleme
 - **Berman, L., Ostchega, Y., Giannini, J., Anandan, L. P., et al. (2024)**. *Application of a Data Quality Framework to Ductal Carcinoma In Situ Using Electronic Health Record Data From the All of Us Research Program.* JCO Clinical Cancer Informatics. [https://doi.org/10.1200/CCI.24.00052](https://doi.org/10.1200/CCI.24.00052)
   - [Data Supplement](https://ascopubs.org/doi/suppl/10.1200/CCI.24.00052)
 
+### Vulcan Real-World Data Implementation Guide  
+The [Vulcan Retrieval of Real World Data (RWD) for Clinical Research Implementation Guide (IG)](https://build.fhir.org/ig/HL7/vulcan-rwd/index.html) aims to facilitate the transmission of clinical data generated during routine patient care (Electronic Health Record data, EHR) for use as Real World Data (RWD) supporting clinical research. Traditionally, clinical trials rely on prospective data collection tailored to specific research questions and analytics. In contrast, data generated through routine healthcare operations are rarely aligned with secondary research requirements. The Vulcan RWD IG defines FHIR profiles suitable for use within EHR systems, facilitating the retrieval and alignment of relevant clinical data from RWD sources for clinical research and regulatory submissions.
+
+The Vulcan Real-World Data IG leverages the [FHIR International Patient Access (IPA)](https://build.fhir.org/ig/HL7/fhir-ipa/) IG to provide a foundational dataset and profiles necessary to address RWD use case requirements.
+
+## Vulcan RWD IG Studies from ClinicalTrials.gov
+
+1. [Acute Coronary Syndrome Study](https://build.fhir.org/ig/HL7/vulcan-rwd/acs.html#acute-coronary-syndrome-study), ClinicalTrials.gov ID: [NCT02190123](https://clinicaltrials.gov/ct2/show/NCT02190123)  
+2. [Anti-TNFa Treatment Study](https://build.fhir.org/ig/HL7/vulcan-rwd/anti-tnfa.html#anti-tnfa-treatment-study), ClinicalTrials.gov ID: [NCT03890445](https://clinicaltrials.gov/ct2/show/NCT03890445)  
+3. [Diabetes Study](https://build.fhir.org/ig/HL7/vulcan-rwd/diabetes.html#diabetes-study), ClinicalTrials.gov ID: [NCT05088265](https://clinicaltrials.gov/ct2/show/NCT05088265)  
+4. [COVID-19 Vaccine Effectiveness Study](https://build.fhir.org/ig/HL7/vulcan-rwd/covid.html#covid-19-vaccine-effectiveness-study), ClinicalTrials.gov ID: [NCT04848584](https://clinicaltrials.gov/ct2/show/NCT04848584)  
+
+These studies referenced in the Vulcan RWD IG specify the data elements required to identify, request, and retrieve relevant EHR data aligned with each study’s cohort definition and research parameters. Most data elements are derived from the IPA profiles, providing a standardized minimal dataset. The Vulcan RWD IG further supports flexibility to accommodate local, regional, or study-specific needs through extensions, as illustrated in the RWD Conceptual Application Model pictured below:
+
+
+
 ### References
 [1]	G. Hripcsak et al., “Observational Health Data Sciences and Informatics (OHDSI): Opportunities for Observational Researchers,” Stud. Health Technol. Inform., vol. 216, pp. 574–578, 2015.
 
