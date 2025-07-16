@@ -1,4 +1,4 @@
-# Immunization Considerations
+# Immunization Resource Considerations
 ## Terminology and Code Systems: CVX (Vaccines Administered)
 Aligned with the IPA Immunization profile recommendations, CVX is the reccomended terminology to use for vaccine administration records.  CVX provides a standardized coding system specifically designed for vaccines in healthcare data and is regularly updated to include new vaccines, including COVID-19 vaccines in recent versions.
 
