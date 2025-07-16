@@ -11,7 +11,7 @@ A primary driver for OHDSI today is the value proposition that data generated as
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>OHDSI Collaborators Worldwide</b></figcaption>
-<img src="OHDSI-Map-Oct2023.png" style="padding-top:0;padding-bottom:30px" width="800" alt="OHDSI Map of Collaborators"/>
+<img src="../OHDSI Collaborators July2025.png" style="padding-top:0;padding-bottom:30px" width="800" alt="OHDSI Map of Collaborators"/>
 </figure>
 {::options parse_block_html="true" /}
 	
