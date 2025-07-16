@@ -15,7 +15,7 @@ Leveraging a terminology server (e.g.: https://echidna.fhir.org) can facilitate 
 The OHDSI Athena website provides both access to request OHDSI Vocabulary downloads and a comprehensive searchable database that serves dual purposes for mapping activities. Implementers can use this resource to manually browse available vocabularies and identify codes that appropriately match source concepts to Standard OMOP concepts and also receive vocabulary updates when new versions of the OHDSI Stabdardized Vocabularies are published.  Acess to the OHDSI Standardized Vocabularies, whether via a FHIR API, downloads utilized in local systems or via manual interation with the Athena search UI is essential for validating mappings and resolving complex terminology translation challenges that arise during FHIR to OMOP transformation projects.
 
 ### Key Elements of FHIR Coded Data
-Coded data in FHIR resources minimally employ a pattern specififying a code and the coding system the code is derived from, and optional display and version attributes (see: Using Codes in Resources https://www.hl7.org/fhir/terminologies.html#4.1) 
+Coded data in FHIR resources minimally employ a pattern specififying a code and the coding system the code is derived from, and optional display and version attributes (see:   [Using Codes in Resources]([https://www.example.com](https://www.hl7.org/fhir/terminologies.html#4.1)) 
 
 * **Code**: The actual code from a standardized code system.
 * **System**: The code system from which the code is drawn (e.g., SNOMED CT, LOINC).
