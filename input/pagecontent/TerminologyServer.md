@@ -1,4 +1,4 @@
-# Terminology Server
+# Terminology Server API
 
 ## [ConceptMap/$translate](https://www.hl7.org/fhir/R5/conceptmap-operation-translate.html)
 
