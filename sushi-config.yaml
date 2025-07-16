@@ -63,8 +63,20 @@ pages:
 menu:
   Home: index.html
   Background: background.html
+  How to Use This Guide: howtousethisguide.html
   Mapping Concepts:
-    Coded Fields: codemappings.html
+    Coded Field Mapping Principles: codemappings.html
+    Code Mapping Patterns: CodeMappingPatterns.html
+  FHIR Resource Considerations:
+    General Considerations: ProfileGeneralConsiderations.html
+    Allergies & Intolerances:  AllergyIntoleranceCondierations.html
+    Conditions: ConditionConsiderations.html
+    Immunizations: ImmunizationConsiderations.html
+    Medication Requests: MedicationRequestConsiderations.html
+    Medication Statements:  MedicationStatementConsiderations.html
+    Observations: ObservationConsiderations.html
+    Person: PersonConsiderations.html
+    Procedures: ProcedureConsiderations.html
   Artifacts: artifacts.html
 
 #
