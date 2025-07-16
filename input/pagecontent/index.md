@@ -70,6 +70,59 @@ This IG utilizes the OMOP Common Data Model, v5.4.  At the time this document wa
 ## Use Cases
 The canonical use case employed is querying a FHIR-enabled data repository to retrieve records and load them into an OMOP data store.  This guide defines a set of logical models that represent the OMOP Common Data Model, v5.4.  It also provides mappings, defined as FHIR StructureMaps and ConceptMaps (hosted on a FHIR terminology server), between the International Patient Access FHIR and US Core Encounter and Procedure profiles and the OMOP data tables. 
 
+### NIH All of Us Research Program Overview
+
+The NIH's **All of Us Research Program** is a historic initiative aiming to collect and analyze data from one million or more individuals residing in the United States. Currently, the Program has enrolled over 849,000 participants. The primary goal of the initiative is to promote better health outcomes by empowering thousands of researchers with diverse, longitudinal data gathered from participants—80% of whom are traditionally underrepresented in biomedical research.
+
+#### Types of Data Collected
+
+The Program collects various data types from consented participants, including:
+
+- Electronic Health Record (EHR)
+- Bioassay
+- Demographic
+- Survey
+- Physical Measure
+- Physical Activity
+
+Additional data currently being linked to participant records include:
+
+- Mortality
+- Healthcare Claims
+- Residential History
+
+All collected data are maintained and curated by the **All of Us Data and Research Center (DRC)** and are accessible to researchers through the **All of Us Researcher Workbench**. The primary data standard and clinical data model utilized by the All of Us Research Program is OMOP.
+
+#### EHR Data Focus
+
+Given that EHR data represent the greatest demand for FHIR to OMOP mapping among the various All of Us data types, this use case specifically addresses EHR-sourced data. The All of Us Research Program leverages OMOP to standardize and structure its collected data, ensuring feasibility and facilitating researchers' ability to access and integrate data from diverse sources.
+
+The All of Us Program collaborates with approximately 50 Health Provider Organizations (HPOs) across the United States to recruit participants. These HPO partners extract participant EHR data, convert it into OMOP format, and submit 22 OMOP tables to the DRC on a quarterly basis.
+
+### Published Studies Using All of Us Data
+
+Studies were selected for this use case based on the following criteria:
+
+1. Predominant use of All of Us EHR data.
+2. Alignment of data with many FHIR resources outlined in the Implementation Guide (IG).
+3. Availability of supplementary materials in published articles, including:
+    - Code systems and value sets or specific codes from these systems.
+    - Demographic variables/data elements detailed either in supplements or articles.
+    - OMOP concept IDs.
+
+These selected studies offer practical, real-world examples of codes, data elements, and concept IDs. It is important to note that the examples may also incorporate additional codes and OMOP concept IDs as required.
+
+#### Selected Studies and Data Supplements:
+
+- **Renedo, D., Acosta, J. N., Sujijantarat, N., Antonios, J. P., et al. (2022)**. *Carotid Artery Disease Among Broadly Defined Underrepresented Groups: The All of Us Research Program.* Stroke, 53. [https://doi.org/10.1161/STROKEAHA.121.037554](https://doi.org/10.1161/STROKEAHA.121.037554)
+  - [Data Supplement](https://www.ahajournals.org/action/downloadSupplement?doi=10.1161%2FSTROKEAHA.121.037554&file=stroka121037554_suppl1.pdf)
+
+- **Khan, M. S., Carroll, R. J. (2022)**. *Inference-based correction of multi-site height and weight measurement data in the All of Us Research Program.* Journal of the American Medical Informatics Association, 29(4), 626–630. [https://doi.org/10.1093/jamia/ocab251](https://doi.org/10.1093/jamia/ocab251)
+  - [Data Supplement](https://academic.oup.com/jamia/article/29/4/626/6437121#supplementary-data) (additional OMOP concept IDs included in article text)
+
+- **Berman, L., Ostchega, Y., Giannini, J., Anandan, L. P., et al. (2024)**. *Application of a Data Quality Framework to Ductal Carcinoma In Situ Using Electronic Health Record Data From the All of Us Research Program.* JCO Clinical Cancer Informatics. [https://doi.org/10.1200/CCI.24.00052](https://doi.org/10.1200/CCI.24.00052)
+  - [Data Supplement](https://ascopubs.org/doi/suppl/10.1200/CCI.24.00052)
+
 ### References
 [1]	G. Hripcsak et al., “Observational Health Data Sciences and Informatics (OHDSI): Opportunities for Observational Researchers,” Stud. Health Technol. Inform., vol. 216, pp. 574–578, 2015.
 
