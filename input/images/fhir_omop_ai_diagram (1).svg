@@ -1,0 +1,177 @@
+<svg viewBox="0 0 1200 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="550" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2c3e50">
+    FHIR to OMOP Transformation for AI Training and Classification
+  </text>
+  
+  <!-- FHIR Data Sources Section -->
+  <g id="fhir-section">
+    <rect x="50" y="80" width="280" height="200" fill="#e8f4f8" stroke="#3498db" stroke-width="2" rx="10"/>
+    <text x="190" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">
+      FHIR Data Sources
+    </text>
+    
+    <!-- EHR Systems -->
+    <rect x="70" y="120" width="100" height="40" fill="#3498db" stroke="#2980b9" stroke-width="1" rx="5"/>
+    <text x="120" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">EHR</text>
+    <text x="120" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">Systems</text>
+    
+    <!-- Real-time Clinical Data -->
+    <rect x="190" y="120" width="120" height="40" fill="#3498db" stroke="#2980b9" stroke-width="1" rx="5"/>
+    <text x="250" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">Real-time Clinical</text>
+    <text x="250" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">Workflows</text>
+    
+    <!-- FHIR Resources -->
+    <text x="190" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2c3e50">
+      FHIR Resources:
+    </text>
+    <text x="80" y="205" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Prescriptions</text>
+    <text x="80" y="220" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Medication Administration</text>
+    <text x="80" y="235" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Patient Encounters</text>
+    <text x="80" y="250" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Single-message Resources</text>
+  </g>
+  
+  <!-- ETL Process Section -->
+  <g id="etl-section">
+    <rect x="380" y="80" width="200" height="200" fill="#fff2e6" stroke="#e67e22" stroke-width="2" rx="10"/>
+    <text x="480" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">
+      ETL Process
+    </text>
+    
+    <!-- Extract -->
+    <rect x="400" y="120" width="160" height="35" fill="#e67e22" stroke="#d35400" stroke-width="1" rx="5"/>
+    <text x="480" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+      EXTRACT
+    </text>
+    
+    <!-- Transform -->
+    <rect x="400" y="165" width="160" height="35" fill="#e67e22" stroke="#d35400" stroke-width="1" rx="5"/>
+    <text x="480" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+      TRANSFORM
+    </text>
+    
+    <!-- Load -->
+    <rect x="400" y="210" width="160" height="35" fill="#e67e22" stroke="#d35400" stroke-width="1" rx="5"/>
+    <text x="480" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+      LOAD
+    </text>
+    
+    <!-- Process Description -->
+    <text x="480" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#34495e">
+      Converts FHIR resources
+    </text>
+  </g>
+  
+  <!-- OMOP CDM Section -->
+  <g id="omop-section">
+    <rect x="630" y="80" width="280" height="200" fill="#e8f6f3" stroke="#27ae60" stroke-width="2" rx="10"/>
+    <text x="770" y="105" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">
+      OMOP Common Data Model
+    </text>
+    
+    <!-- Standardized Structure -->
+    <rect x="650" y="120" width="240" height="40" fill="#27ae60" stroke="#229954" stroke-width="1" rx="5"/>
+    <text x="770" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">Standardized, Structured Format</text>
+    <text x="770" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">for Large-scale Analysis</text>
+    
+    <!-- OMOP Tables -->
+    <text x="770" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2c3e50">
+      OMOP Tables:
+    </text>
+    <text x="660" y="205" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Patient visits</text>
+    <text x="660" y="220" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Medications</text>
+    <text x="660" y="235" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Diagnoses</text>
+    <text x="660" y="250" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Comprehensive patient data</text>
+  </g>
+  
+  <!-- AI Model Training Section -->
+  <g id="ai-training-section">
+    <rect x="630" y="320" width="280" height="160" fill="#f4ecf7" stroke="#8e44ad" stroke-width="2" rx="10"/>
+    <text x="770" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">
+      AI Model Training
+    </text>
+    
+    <!-- Training Process -->
+    <rect x="650" y="360" width="240" height="40" fill="#8e44ad" stroke="#7d3c98" stroke-width="1" rx="5"/>
+    <text x="770" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">Training on Historical</text>
+    <text x="770" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">OMOP Data</text>
+    
+    <!-- Model Capabilities -->
+    <text x="770" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2c3e50">
+      Model Capabilities:
+    </text>
+    <text x="660" y="445" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Clinical outcomes prediction</text>
+    <text x="660" y="460" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Drug safety analysis</text>
+  </g>
+  
+  <!-- Real-time Classification Section -->
+  <g id="classification-section">
+    <rect x="50" y="320" width="280" height="160" fill="#fdf2e9" stroke="#f39c12" stroke-width="2" rx="10"/>
+    <text x="190" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#2c3e50">
+      Real-time Classification
+    </text>
+    
+    <!-- Use Case Example -->
+    <rect x="70" y="360" width="240" height="55" fill="#f39c12" stroke="#e67e22" stroke-width="1" rx="5"/>
+    <text x="190" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+      Use Case Example:
+    </text>
+    <text x="190" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">
+      Medication Adherence
+    </text>
+    <text x="190" y="403" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="white">
+      Prediction
+    </text>
+    
+    <!-- Benefits -->
+    <text x="80" y="440" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Timely healthcare interventions</text>
+    <text x="80" y="455" font-family="Arial, sans-serif" font-size="11" fill="#34495e">• Real-time decision making</text>
+  </g>
+  
+  <!-- Arrows and Flow -->
+  
+  <!-- FHIR to ETL -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2c3e50"/>
+    </marker>
+  </defs>
+  
+  <!-- FHIR to ETL Arrow -->
+  <line x1="330" y1="180" x2="380" y2="180" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="355" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#000000">
+    Raw FHIR Data
+  </text>
+  
+  <!-- ETL to OMOP Arrow -->
+  <line x1="580" y1="180" x2="630" y2="180" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="605" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#000000">
+    Transformed Data
+  </text>
+  
+  <!-- OMOP to AI Training Arrow -->
+  <line x1="770" y1="280" x2="770" y2="320" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="800" y="305" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#000000">
+    Historical Data
+  </text>
+  
+  <!-- AI Model to Classification Arrow -->
+  <line x1="630" y1="400" x2="330" y2="400" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="480" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#000000">
+    Trained Model Applied
+  </text>
+  
+  <!-- ETL to Classification Arrow (Real-time flow) -->
+  <line x1="430" y1="280" x2="240" y2="320" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="320" y="295" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#000000">
+    Real-time Flow
+  </text>
+  
+  <!-- Footer -->
+  <text x="600" y="520" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7f8c8d">
+    FHIR to OMOP Transformation enables AI-driven healthcare decisions through standardized data processing
+  </text>
+</svg>
