@@ -15,12 +15,14 @@ A primary driver for OHDSI today is the value proposition that data generated as
 </figure>
 {::options parse_block_html="true" /}
 	
-The OHDSI community has experienced rapid growth and adoption of its work worldwide, totalling more than 3700 collaborators at the end of 2023.   Among its activities, OHDSI supports research collaboration via utilization of  
+The OHDSI community has experienced rapid growth and adoption of its work worldwide, totaling more than 4000 collaborators by 2024. Among its activities, OHDSI supports research collaboration via utilization of  
 
-- The OMOP Common Data Model and Standard Vocabularies
+- The OMOP Common Data Model and OHDSI Standardized Vocabularies
 - An open source stack of tools supporting analytics
 - Development of advanced Research and Data Science implementation Methods 
 - Clinical evidence generation and dissemination
+
+OHDSI’s evidence has been used in policy decisions around the world and has potentially affected hundreds of millions of patients.
 
 #### The OMOP CDM
 The OMOP Common Data Model (CDM) is the foundation of the OHDSI analytic technical infrastructure. Researchers in OHDSI actively use the OMOP Common Data Model as a means to standardize and align observational health data from a wide-variety of sources supporting evidence-generating analyses. As one of the foundational work-products of the OHDSI community, the OMOP CDM has a working group dedicated to its evolution supporting Real-World research use cases provided by OHDSI community members using Observational Data.  The OMOP CDM is actively maintained, supported and available in the public domain under an Apache 2.0 license. 
