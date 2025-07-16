@@ -72,7 +72,7 @@ The canonical use case employed is querying a FHIR-enabled data repository to re
 
 ### NIH All of Us Research Program 
 
-The NIH's [All of Us Research Program](https://allofus.nih.gov/)is a historic initiative aiming to collect and analyze data from one million or more individuals residing in the United States. Currently, the Program has enrolled over 849,000 participants. The primary goal of the initiative is to promote better health outcomes by empowering thousands of researchers with diverse, longitudinal data gathered from participants—80% of whom are traditionally underrepresented in biomedical research.
+The NIH's[All of Us Research Program](https://allofus.nih.gov/) is a historic initiative aiming to collect and analyze data from one million or more individuals residing in the United States. Currently, the Program has enrolled over 849,000 participants. The primary goal of the initiative is to promote better health outcomes by empowering thousands of researchers with diverse, longitudinal data gathered from participants—80% of whom are traditionally underrepresented in biomedical research.
 
 #### Types of Data Collected
 
