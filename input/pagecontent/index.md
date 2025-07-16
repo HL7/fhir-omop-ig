@@ -95,13 +95,10 @@ All collected data are maintained and curated by the [All of Us Data and Researc
 
 #### EHR Data Focus
 
-Given that EHR data represent the greatest demand for FHIR to OMOP mapping among the various All of Us data types, this use case specifically addresses EHR-sourced data. The All of Us Research Program leverages OMOP to standardize and structure its collected data, ensuring feasibility and facilitating researchers' ability to access and integrate data from diverse sources.
-
-The All of Us Program collaborates with approximately 50 Health Provider Organizations (HPOs) across the United States to recruit participants. These HPO partners extract participant EHR data, convert it into OMOP format, and submit 22 OMOP tables to the DRC on a quarterly basis.
+The All of Us Program collaborates with approximately 50 Health Provider Organizations (HPOs) across the United States to recruit participants. The All of Us Research Program leverages OMOP to standardize and structure its collected data, ensuring feasibility and facilitating researchers' ability to access and integrate data from diverse sources. These HPO partners extract participant EHR data, convert it into OMOP format, and submit 22 OMOP tables to the DRC on a quarterly basis. Given that EHR data represent the greatest demand for FHIR to OMOP mapping among the various All of Us data types, the All of Us program exemplifies real-world use cases for the utilization of EHR-sourced FHIR data transformed onto the OMOP CDM to generate evidence. 
 
 ### Published Studies Using All of Us Data
-
-Studies were selected for this use case based on the following criteria:
+Studies were selected as examples based on the following criteria:
 
 1. Predominant use of All of Us EHR data.
 2. Alignment of data with many FHIR resources outlined in the Implementation Guide (IG).
