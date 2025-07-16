@@ -1,4 +1,4 @@
-### Background
+### Introduction
 #### Background on OHDSI
 Observational Health Data Sciences and Informatics, or OHDSI is an international open-science community that aims to improve health by empowering the community to collaboratively generate the evidence that promotes better health decisions and better care. [1] OHDSI emerged as a result of the Observational Medical Outcomes Partnership (OMOP),a public-private partnership composed of members from industry, government, and academia,established to inform the appropriate use of observational healthcare databases for studying the effects of medical products, active from 2008 to 2013.[2] OMOP successfully achieved its aims to:
 
