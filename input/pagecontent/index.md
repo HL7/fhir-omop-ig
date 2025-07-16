@@ -70,9 +70,9 @@ This IG utilizes the OMOP Common Data Model, v5.4.  At the time this document wa
 ## Use Cases
 The canonical use case employed is querying a FHIR-enabled data repository to retrieve records and load them into an OMOP data store.  This guide defines a set of logical models that represent the OMOP Common Data Model, v5.4.  It also provides mappings, defined as FHIR StructureMaps and ConceptMaps (hosted on a FHIR terminology server), between the International Patient Access FHIR and US Core Encounter and Procedure profiles and the OMOP data tables. 
 
-### NIH All of Us Research Program Overview
+### NIH All of Us Research Program 
 
-The NIH's **All of Us Research Program** is a historic initiative aiming to collect and analyze data from one million or more individuals residing in the United States. Currently, the Program has enrolled over 849,000 participants. The primary goal of the initiative is to promote better health outcomes by empowering thousands of researchers with diverse, longitudinal data gathered from participants—80% of whom are traditionally underrepresented in biomedical research.
+The NIH's [All of Us Research Program]((https://allofus.nih.gov/)is a historic initiative aiming to collect and analyze data from one million or more individuals residing in the United States. Currently, the Program has enrolled over 849,000 participants. The primary goal of the initiative is to promote better health outcomes by empowering thousands of researchers with diverse, longitudinal data gathered from participants—80% of whom are traditionally underrepresented in biomedical research.
 
 #### Types of Data Collected
 
@@ -91,7 +91,7 @@ Additional data currently being linked to participant records include:
 - Healthcare Claims
 - Residential History
 
-All collected data are maintained and curated by the **All of Us Data and Research Center (DRC)** and are accessible to researchers through the **All of Us Researcher Workbench**. The primary data standard and clinical data model utilized by the All of Us Research Program is OMOP.
+All collected data are maintained and curated by the [All of Us Data and Research Center (DRC)](https://allofus.nih.gov/funding-and-program-partners/data-and-research-center) and are accessible to researchers through the [All of Us Researcher Workbench](https://www.researchallofus.org/data-tools/workbench/). The primary data standard and clinical data model utilized by the All of Us Research Program is OMOP.
 
 #### EHR Data Focus
 
