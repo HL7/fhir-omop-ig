@@ -32,7 +32,33 @@ pages:
   background.md:
     title: Background
   codemappings.md:
-    title: Coded Field Mapping
+    title: Coded Field Mapping Principles
+  CodeMappingPatterns.md:
+    title: FHIR to OMOP Code Mapping Patterns
+  TerminologyServer.md:
+    title: Terminology Server API Utilization
+  howtousethisguide.md:
+    title: How to Use This Guide
+  StrategiesBestPractices.md:
+    title: Transformation Strategies & Best Practices
+  ProfileGeneralConsiderations.md:
+    title: Resource & Profile Considerations
+  AllergyIntoleranceCondierations.md:
+    title: AllergyIntolerance Resource Considerations
+  ConditionConsiderations.md:
+    title: Condition & Problem List Resource Considerations
+  ImmunizationConsiderations.md:
+    title: Immunization Resource Considerations
+  MedicationRequestConsiderations.md:
+    title: MedicationRequest Resource Considerations
+  MedicationStatementConsiderations.md:
+    title: MedicationStatement Resource Considerations
+  ObservationConsiderations.md:
+    title: Observation Resource Considerations
+  PersonConsiderations.md:
+    title: Person Resource Considerations
+  ProcedureConsiderations.md:
+    title: Procedure Resource Considerations
 
 menu:
   Home: index.html
