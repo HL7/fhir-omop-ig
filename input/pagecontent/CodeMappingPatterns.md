@@ -2,7 +2,7 @@
 Mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations can follow distinct patterns.  In this Implementation Guide, we propose transformation patterns and guidance regarding: 
 
 * A base pattern that covers most simple code to concept transformation
-* A pattern applicable to maultiple CodeableConcepts scenarios
+* A pattern applicable to multiple CodeableConcepts scenarios
 * Value-as-concept map pattern
 
 ## FHIR to OMOP Base Mapping Pattern
