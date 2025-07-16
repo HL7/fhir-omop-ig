@@ -30,7 +30,7 @@ The OMOP Common Data Model (CDM) is the foundation of the OHDSI analytic technic
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>OMOP Common Data Model v5.4 [4]</b></figcaption>
-<img src="cdm54.png" width="800" style="padding-top:0;padding-bottom:30px" alt="The OMOP v5.4 Common Data Model"/>
+<img src="../images/cdm54.png" width="800" style="padding-top:0;padding-bottom:30px" alt="The OMOP v5.4 Common Data Model"/>
 </figure>
 {::options parse_block_html="true" /}
 
