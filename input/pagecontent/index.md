@@ -134,7 +134,12 @@ The Vulcan Real-World Data IG leverages the [FHIR International Patient Access (
 
 These studies referenced in the Vulcan RWD IG specify the data elements required to identify, request, and retrieve relevant EHR data aligned with each study’s cohort definition and research parameters. Most data elements are derived from the IPA profiles, providing a standardized minimal dataset. The Vulcan RWD IG further supports flexibility to accommodate local, regional, or study-specific needs through extensions, as illustrated in the RWD Conceptual Application Model pictured below:
 
-
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b>Vulcan RWD Conceptual Application</b></figcaption>
+<img src="../images/rwd_conceptual_application.png" style="padding-top:0;padding-bottom:30px" width="800" alt="Vulcan RWD Conceptual Application"/>
+</figure>
+{::options parse_block_html="true" /}
 
 ### References
 [1]	G. Hripcsak et al., “Observational Health Data Sciences and Informatics (OHDSI): Opportunities for Observational Researchers,” Stud. Health Technol. Inform., vol. 216, pp. 574–578, 2015.
