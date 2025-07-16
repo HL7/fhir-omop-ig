@@ -67,10 +67,10 @@ This IG is limited to a common core of EHR data as expressed in the Internationa
 
 This IG utilizes the OMOP Common Data Model, v5.4.  At the time this document was developed, v5.4 was the latest version of the OMOP CDM.  In 2022, a decision was made by the OHDSI community to cease development of v6.0 of the OMOP CDM, because v6.0 made the *_datetime fields mandatory rather than optional. This switch radically changed the assumptions related to exposure and outcome timing. Rather than move forward with v6.0, CDM v5.4 was designed and released with additions to the model that have been requested by the OHDSI community while retaining the date structure of medical events in v5.3 (the version preceding both v6.0 and v5.4.).  Detailed changes from CDM v5.3 to v 5.4 are available in the OMOP CDM GitHub documentation. New implementations are asked to transform data to CDM v5.4 until such time that the v6 series of the CDM is ready for mainstream use.[7]  As such, this Implementation Guide seeks to provide transformation specifications for the most commonly used version of the OMOP CDM at present and in the near-term future.
 
-### Use Cases
+## Use Cases
 The canonical use case employed is querying a FHIR-enabled data repository to retrieve records and load them into an OMOP data store.  This guide defines a set of logical models that represent the OMOP Common Data Model, v5.4.  It also provides mappings, defined as FHIR StructureMaps and ConceptMaps (hosted on a FHIR terminology server), between the International Patient Access FHIR and US Core Encounter and Procedure profiles and the OMOP data tables. 
 
-#### References
+### References
 [1]	G. Hripcsak et al., “Observational Health Data Sciences and Informatics (OHDSI): Opportunities for Observational Researchers,” Stud. Health Technol. Inform., vol. 216, pp. 574–578, 2015.
 
 [2]	“Observational Medical Outcomes Partnership (OMOP),” FNIH, May 10, 2023. https://fnih.org/observational-medical-outcomes-partnership-omop/ (accessed Dec. 08, 2023).
