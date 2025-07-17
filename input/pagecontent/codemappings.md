@@ -63,6 +63,111 @@ The mapping process further considers explicit primary designations within the F
 
 When all other factors remain equal, temporal precedence applies, selecting the first code encountered in the sequence. This first encountered rule provides consistent tie-breaking when multiple equally valid codes exist, maintains the original order of codes as provided by the source system, requires documentation when temporal precedence was the deciding factor for transparency and quality assurance, and ensures predictable behavior across all transformation instances.
 
+## Type Concepts in the OMOP Common Data Model
+
+**Type Concepts** are specialized concepts in the OMOP CDM that indicate the provenance of clinical data records. Type concepts enable researchers to filter data appropriately for specific analyses, such as excluding prescription orders when studying actual drug consumption. They help researchers understand the quality of FHIR resources transformed to OMOP data and limitations based on source system characteristics, account for potential biases inherent to different data collection methods, and perform source-specific analyses when needed.
+
+Type concepts help distinguish between different origins of the same type of clinical information. For example, a drug exposure record could originate from a pharmacy dispensing claim, an EHR prescription record, a medication administration record, or patient self-reported medication use. When implementing type concepts, it's important to choose the most specific and accurate type concept during ETL mapping while also considering research use cases expectations for the target datastore. 
+
+FHIR resources may contain indicators for the use of OMOP type concept target values in the semantics of a Code or CodeableConcept.  FHIR CodeableConcept elements that would need to be split to populate both a type concept and a standard concept in OMOP are as follows:
+
+### Example 1: FHIR MedicationRequest
+
+**FHIR CodeableConcept:**
+```json
+{
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/medicationrequest-category",
+          "code": "outpatient",
+          "display": "Outpatient"
+        }
+      ]
+    }
+  ],
+  "medicationCodeableConcept": {
+    "coding": [
+      {
+        "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+        "code": "197696",
+        "display": "Acetaminophen 325 MG Oral Tablet"
+      }
+    ]
+  }
+}
+```
+
+**OMOP Mapping:**
+- **drug_type_concept_id**: Maps to "EHR prescription" (because this is a MedicationRequest from an outpatient setting)
+- **drug_concept_id**: Maps to the RxNorm concept for Acetaminophen 325 MG Oral Tablet
+
+### Example 2: FHIR Condition
+
+**FHIR CodeableConcept:**
+```json
+{
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+          "code": "encounter-diagnosis",
+          "display": "Encounter Diagnosis"
+        }
+      ]
+    }
+  ],
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "233604007",
+        "display": "Pneumonia"
+      }
+    ]
+  }
+}
+```
+
+**OMOP Mapping:**
+- **condition_type_concept_id**: Maps to "EHR encounter diagnosis" (derived from the category indicating this was diagnosed during an encounter)
+- **condition_concept_id**: Maps to the SNOMED-CT concept for Pneumonia
+
+In both examples, the FHIR **category** or **context** information determines the **type concept** (provenance), while the actual clinical **code** determines the **standard concept** (what clinical entity it represents). This separation allows OMOP to maintain both the clinical meaning and the data source context, which is essential for proper analysis and interpretation of the data.
+
+### OMOP Domain and Type Concept Examples
+Type concepts are implemented through fields that follow a specific naming convention, with tables containing fields ending in `_TYPE_CONCEPT_ID` such as `drug_type_concept_id` and `condition_type_concept_id`. These type concepts should be populated during the ETL process based on the source system, and valid type concepts belong to the "Type Concept" domain and vocabulary within OMOP.
+
+Note the table below is only a partial list.  A complete listing of type concepts can be found in the [OHDSI Standardized Vocabularies](https://athena.ohdsi.org/search-terms/terms?domain=Type+Concept&standardConcept=Standard&page=1&pageSize=15&query=)   and a detailed explanation is available on the [ OHDSI Vocabulary wiki](https://github.com/OHDSI/Vocabulary-v5.0/wiki/Vocab.-TYPE_CONCEPT).
+
+| OMOP Domain | Field Name | Type Concept Examples | Description |
+|-------------|------------|----------------------|-------------|
+| **[Drug Exposure](https://ohdsi.github.io/CommonDataModel/cdm54.html#drug_exposure)** | `drug_type_concept_id` | EHR prescription | Prescription written by physician in electronic health record |
+| | | EHR administration record | Drug administered to patient (inpatient/outpatient) |
+| | | Pharmacy claim | Prescription filled at pharmacy (claims data) |
+| | | Patient self-report | Medication reported by patient during encounter |
+| **[Condition Occurrence](https://ohdsi.github.io/CommonDataModel/cdm54.html#condition_occurrence)** | `condition_type_concept_id` | EHR encounter diagnosis | Diagnosis recorded during clinical encounter |
+| | | EHR problem list | Condition documented in patient's problem list |
+| | | Claim primary diagnosis | Primary diagnosis from insurance claim |
+| | | Registry | Condition recorded in disease registry |
+| **[Procedure Occurrence](https://ohdsi.github.io/CommonDataModel/cdm54.html#procedure_occurrence)** | `procedure_type_concept_id` | EHR encounter record | Procedure documented during clinical visit |
+| | | EHR order | Procedure ordered by physician |
+| | | Claim primary procedure | Primary procedure from insurance claim |
+| | | Registry | Procedure recorded in clinical registry |
+| **[Visit Occurrence](https://ohdsi.github.io/CommonDataModel/cdm54.html#visit_occurrence)** | `visit_type_concept_id` | EHR encounter | Visit documented in electronic health record |
+| | | Claim | Visit information from insurance claim |
+| | | Registry | Visit recorded in clinical registry |
+| **[Measurement](https://ohdsi.github.io/CommonDataModel/cdm54.html#measurement)** | `measurement_type_concept_id` | EHR | Laboratory or vital sign measurement from EHR |
+| | | Claim | Measurement information from insurance claim |
+| | | Registry | Measurement from clinical registry or study |
+| | | Patient reported | Measurement reported by patient |
+| **[Observation](https://ohdsi.github.io/CommonDataModel/cdm54.html#observation)** | `observation_type_concept_id` | EHR | Clinical observation documented in EHR |
+| | | Claim | Observation information from insurance claim |
+| | | Survey | Data collected through patient survey |
+| | | Registry | Observation from clinical registry |
+
 ## Historical Code and Code System Transformations
 Healthcare data transformation frequently encounters historical coding systems that are no longer actively maintained or updated. These legacy codes present unique challenges during OMOP CDM implementation due to their deprecated status and complex mapping requirements. ICD-9 codes represent the most prominent example, having been largely replaced by ICD-10 in clinical settings. These codes commonly appear in legacy electronic health records, retrospective datasets, and clinical documentation predating modern coding system adoption.
 
