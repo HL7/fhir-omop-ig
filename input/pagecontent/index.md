@@ -85,21 +85,21 @@ This Implementation Guide was developed under the auspices of the HL7 FHIR to OM
 
 **Primary Authors**
 
-Davera Gabriel	Evidentli, Inc
-Jean Duteau	Dogwood Consulting
+Davera Gabriel, Evidentli, Inc
+Jean Duteau, Dogwood Consulting
 
 **Primary Editors**
 
-Adam Lee	University of North Carolina
-Guy Tsafnat	Evidentli, Inc
-Michael Van Treek	Evidentli, Inc
+Adam Lee, University of North Carolina
+Guy Tsafnat, Evidentli, Inc
+Michael Van Treek, Evidentli, Inc
 
 **Vulcan FHIR to OMOP Working Group Co-Leads**
 
-Davera Gabriel	Evidentli, Inc
-Catherine Diederich	Duke University
-Adam Lee	University of North Carolina
-Lukasz Kaczmarek	Roche
+Davera Gabriel, Evidentli, Inc
+Catherine Diederich, Duke University
+Adam Lee, University of North Carolina
+Lukasz Kaczmarek, Roche
 
 **Past project FHIR to OMOP transformation maps & technical implementation expertise contributed by**
 
