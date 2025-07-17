@@ -1,4 +1,4 @@
-#FHIR to OMOP Use Cases
+# FHIR to OMOP Use Cases
 The canonical use case employed is querying a FHIR-enabled data repository to retrieve records and load them into an OMOP data store.  This guide defines a set of logical models that represent the OMOP Common Data Model, v5.4.  It also provides mappings, defined as FHIR StructureMaps and ConceptMaps (hosted on a FHIR terminology server), between the International Patient Access FHIR and US Core Encounter and Procedure profiles and the OMOP data tables. 
 
 ## NIH All of Us Research Program 
