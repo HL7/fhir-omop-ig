@@ -85,9 +85,9 @@ The way a data model records time shapes ETL design, permissible analyses, and t
 Because OMOP treats the calendar day as the atomic temporal unit, nearly every *_date* column is stored as a SQL `DATE`. For example, `condition_start_date` captures when a diagnosis was first recorded, whereas `visit_start_date` and `visit_end_date` bracket an encounter. End‑date fields may be **NULL**—for chronic conditions, long‑term drug exposures, or any scenario where the source system never records cessation. Avoiding imputed end dates prevents false precision but requires ETL architects to document any necessary imputations for downstream transparency.
 
 ### OMOP Domain Requirements
-Some domains demand particular temporal fields. Table 1 summarises the expectations in core OMOP tables.
+Some domains demand particular temporal fields. The following table summarises the expectations in core OMOP tables.
 
-**Table 1 – Domain‑specific temporal fields in OMOP**
+**Domain‑specific temporal fields in OMOP**
 
 | Domain | Required Temporal Fields | Notes |
 |---|---|---|
