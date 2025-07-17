@@ -69,15 +69,20 @@ This IG utilizes the OMOP Common Data Model, v5.4.  At the time this document wa
 
 
 ### References
-[1]	G. Hripcsak et al., “Observational Health Data Sciences and Informatics (OHDSI): Opportunities for Observational Researchers,” Stud. Health Technol. Inform., vol. 216, pp. 574–578, 2015.
-[2]	“Observational Medical Outcomes Partnership (OMOP),” FNIH, May 10, 2023. https://fnih.org/observational-medical-outcomes-partnership-omop/ (accessed Dec. 08, 2023).
-[3]	“OMOP CDM Background.” https://ohdsi.github.io/CommonDataModel/background.html (accessed Dec. 08, 2023).
-[4]  G. Hripcsak, "State of the Community: Where have we been? Where are we going?," in OHDSI 2023 Global Symposium, Newark, NJ, 2023.
-[5]  E. Hall, G. Melton, P. Payne, D. Dorr and D. Vawdrey, "How Are Leading Research 
-      Institutions Engaging with Data Sharing Tools and Programs?," in AMIA 2023 Annual 
-      Symposium, Bethesda, MD, 2023.
-[6]	Health Level Seven, “Vulcan accelerator home.” https://confluence.hl7.org/display/VA (accessed Dec. 08, 2023).
-[7]	“OMOP Common Data Model.” https://ohdsi.github.io/CommonDataModel/index.html (accessed Dec. 08, 2023).
+
+[1] G. Hripcsak et al., "Observational Health Data Sciences and Informatics (OHDSI): Opportunities for Observational Researchers," *Stud. Health Technol. Inform.*, vol. 216, pp. 574–578, 2015.
+
+[2] "Observational Medical Outcomes Partnership (OMOP)," FNIH, May 10, 2023. https://fnih.org/observational-medical-outcomes-partnership-omop/ (accessed Dec. 08, 2023).
+
+[3] "OMOP CDM Background." https://ohdsi.github.io/CommonDataModel/background.html (accessed Dec. 08, 2023).
+
+[4] G. Hripcsak, "State of the Community: Where have we been? Where are we going?," in *OHDSI 2023 Global Symposium*, Newark, NJ, 2023.
+
+[5] E. Hall, G. Melton, P. Payne, D. Dorr and D. Vawdrey, "How Are Leading Research Institutions Engaging with Data Sharing Tools and Programs?," in *AMIA 2023 Annual Symposium*, Bethesda, MD, 2023.
+
+[6] Health Level Seven, "Vulcan accelerator home." https://confluence.hl7.org/display/VA (accessed Dec. 08, 2023).
+
+[7] "OMOP Common Data Model." https://ohdsi.github.io/CommonDataModel/index.html (accessed Dec. 08, 2023).
 
 ## Acknowledgements
 
