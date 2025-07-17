@@ -59,11 +59,17 @@ pages:
     title: Person Resource Considerations
   ProcedureConsiderations.md:
     title: Procedure Resource Considerations
+  UseCases.md:
+     title: Use Cases
+  F2OGeneralIssues.md:
+    title: General Issues
 
 menu:
   Home: index.html
   Background: background.html
+  Use Cases: UseCases.md
   How to Use This Guide: howtousethisguide.html
+  General Issues: F2OGeneralIssues.md
   Mapping Concepts:
     Coded Field Mapping Principles: codemappings.html
     Code Mapping Patterns: CodeMappingPatterns.html
