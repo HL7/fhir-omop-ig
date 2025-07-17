@@ -70,20 +70,69 @@ This IG utilizes the OMOP Common Data Model, v5.4.  At the time this document wa
 
 ### References
 [1]	G. Hripcsak et al., “Observational Health Data Sciences and Informatics (OHDSI): Opportunities for Observational Researchers,” Stud. Health Technol. Inform., vol. 216, pp. 574–578, 2015.
-
 [2]	“Observational Medical Outcomes Partnership (OMOP),” FNIH, May 10, 2023. https://fnih.org/observational-medical-outcomes-partnership-omop/ (accessed Dec. 08, 2023).
-
 [3]	“OMOP CDM Background.” https://ohdsi.github.io/CommonDataModel/background.html (accessed Dec. 08, 2023).
-
 [4]  G. Hripcsak, "State of the Community: Where have we been? Where are we going?," in OHDSI 2023 Global Symposium, Newark, NJ, 2023.
-
 [5]  E. Hall, G. Melton, P. Payne, D. Dorr and D. Vawdrey, "How Are Leading Research 
       Institutions Engaging with Data Sharing Tools and Programs?," in AMIA 2023 Annual 
       Symposium, Bethesda, MD, 2023.
-
 [6]	Health Level Seven, “Vulcan accelerator home.” https://confluence.hl7.org/display/VA (accessed Dec. 08, 2023).
-
 [7]	“OMOP Common Data Model.” https://ohdsi.github.io/CommonDataModel/index.html (accessed Dec. 08, 2023).
 
+## Acknowledgements
 
+This Implementation Guide was developed under the auspices of the HL7 FHIR to OMOP work group in collaboration with the OHDSI OMOP + FHIR working group.
+
+<div align="center">
+
+**Primary Authors**
+
+| Name | Organization |
+|------|-------------|
+| Davera Gabriel | Evidentli, Inc |
+| Jean Duteau | Dogwood Consulting |
+
+</div>
+
+<div align="center">
+
+**Primary Editors**
+
+| Name | Organization |
+|------|-------------|
+| Adam Lee | University of North Carolina |
+| Guy Tsafnat | Evidentli, Inc |
+| Michael Van Treek | Evidentli, Inc |
+
+</div>
+
+<div align="center">
+
+**Vulcan FHIR to OMOP Working Group Co-Leads**
+
+| Name | Organization |
+|------|-------------|
+| Davera Gabriel | Evidentli, Inc |
+| Catherine Diederich | Duke University |
+| Adam Lee | University of North Carolina |
+| Lukasz Kazmarek | Roche |
+
+</div>
+
+<div align="center">
+
+**Past project FHIR to OMOP transformation maps & technical implementation expertise contributed by**
+
+| Organization/Name | Details |
+|-------------------|---------|
+| CareEvolution, Inc | Ben Berk, Scott Favre |
+| Georgia Tech Research Institute (GTRI) | Myung Choi |
+| Evidentli, Inc | Guy Tsafnat, Michael Van Treek, Davera Gabriel |
+| FHIR-OMOP Oncology Use Case Subgroup | Qi Yang (IQVIA), May Terry (MITRE Corp) |
+| National Association of Community Health Centers (NACHC) | John Gresh (Curlew Consulting) |
+| Technische Universitat (TU) Dresden | Elisa Henke, Yuan Peng |
+
+</div>
+
+Throughout this project, more than 100 individuals from over 70 organizations—representing academia, government, industry, and data standards development—contributed their decades of experience in managing Real-World Data to support the best practices presented in this effort. We recognize that this guide establishes an important foundation, acknowledge that many opportunities for exploration and enhancement remain. We welcome your feedback and encourage continued collaboration to more fully realize the transformative potential that these two complementary standards can bring to advancing human health.
 
