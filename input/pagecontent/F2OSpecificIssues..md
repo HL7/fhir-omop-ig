@@ -6,10 +6,10 @@ The tension between the the two standards stems from FHIR's design for real-time
 ## Identifiers, De-identitification & Privacy
 Transforming FHIR resources to OMOP presents challenges in identifier management. FHIR resources utilize complex, non-integer identifiers that link discrete data across systems and support clinical workflows, while the OMOP CDM employs integer-based keys designed for de-identified research data with `person_id` serving as the primary linking mechanism across clinical domains. The core challenge is balancing OMOP's de-identification requirements with business needs for traceability and audit capabilities.
 
-## Identifier Management
+### Identifier Management
 FHIR and OMOP CDM represent different approaches to data identification due the underlying buiness requirements for each. In FHIR, identifiers provide reference information about source systems and support workflows and transactions between systems. In OMOP, identifiers establish relationships between tables using integer-based keys, with no fields containing patient identifiable information (PII) such as Medical Record Numbers, names, or addresses. Transformation between the two creates tension between competing requirements: maintaining data provenance for operational needs while preserving OMOP's de-identification principles. Many OMOP implementations reside within system architectures that have business requirements for re-identification supporting business and / or research scenarios, or other use cases where maintaining traceability from OMOP back to the FHIR source is needed.
 
-## Privacy and De-identification Considerations
+### Privacy and De-identification Considerations
 However, a primary concern when implementing FHIR to OMOP transformations that include raw identifiers directly from source systems is the potential compromise of de-identification processes. This is a cornerstone of OMOP's design for use in research and analytics. OMOP is not designed to support business identity management use cases.
 
 Using fields like `visit_source_value` to store FHIR identifiers could misrepresent their intended use as generated in source EHRs and compromise de-identification processes. A reccomended implementation aproach is to create a separate data source table that maps OMOP-generated IDs to the original FHIR identifiers. This accommodates the complexities of handling identifiers for retaining provenance and traceability without:
@@ -17,7 +17,7 @@ Using fields like `visit_source_value` to store FHIR identifiers could misrepres
 - Disrupting the OMOP schema
 - Violating de-identification protocols
 
-## Decision Framework for Identifier Management
+### Decision Framework for Identifier Management
 There is no single approach that can be uniformly applied to transformation of FHIR identifiers to OMOP. Rather, implementers must evaluate FHIR identifiers systematically using criteria relevant to the use case(s) an OMOP database must support:
 1. **Research Purpose**: What research the OMOP instance is intended to support
 2. **Identifier Role**: Purpose and role of the identifier in the FHIR resource
