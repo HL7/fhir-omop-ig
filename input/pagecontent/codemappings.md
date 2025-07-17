@@ -53,7 +53,7 @@ The hierarchy begins with foundational source vocabularies utilized by OMOP, whe
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>Code Prioritization Framework</b></figcaption>
-<img src="../images/code_prioritization_framework_restored.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="Code Prioritization Framework"/>
+<img src="code_prioritization_framework.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="Code Prioritization Framework"/>
 </figure>
 {::options parse_block_html="true" /}
 

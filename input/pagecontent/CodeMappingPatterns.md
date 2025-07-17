@@ -10,7 +10,7 @@ Mapping coded data from FHIR to OMOP requires evaluation of the concepts to be s
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>FHIR to OMOP Coded Data Base Mapping Pattern</b></figcaption>
-<img src="../images/fhir_omop_base_pattern.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Coded Data Base Mapping Pattern"/>
+<img src="fhir_omop_base_pattern.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Coded Data Base Mapping Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
 
@@ -97,7 +97,7 @@ CodeableConcept elements in FHIR can contain multiple coding entries, each poten
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>FHIR CodeableConcept to OMOP Pattern</b></figcaption>
-<img src="../images/codeable_concept_decision_tree.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR CodeableConcept to OMOP Pattern"/>
+<img src="codeable_concept_decision_tree.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR CodeableConcept to OMOP Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
 
@@ -373,7 +373,7 @@ Drug allergies represent a complex transformation challenge in FHIR-to-OMOP mapp
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>FHIR to OMOP Value as Concept Map Pattern</b></figcaption>
-<img src="../images/Value as concept map pattern (2).svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Value as Concept Map Pattern"/>
+<img src="value_as_concept_pattern.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Value as Concept Map Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
 

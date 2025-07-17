@@ -11,7 +11,7 @@ A primary driver for OHDSI today is the value proposition that data generated as
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>OHDSI Collaborators Worldwide</b></figcaption>
-<img src="../images/OHDSI Collaborators July2025.png" style="padding-top:0;padding-bottom:30px" width="800" alt="OHDSI Map of Collaborators"/>
+<img src="OHDSI_Collaborators_July2025.png" style="padding-top:0;padding-bottom:30px" width="800" alt="OHDSI Map of Collaborators"/>
 </figure>
 {::options parse_block_html="true" /}
 	
@@ -30,7 +30,7 @@ The OMOP Common Data Model (CDM) is the foundation of the OHDSI analytic technic
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>OMOP Common Data Model v5.4 [4]</b></figcaption>
-<img src="../images/cdm54.png" width="800" style="padding-top:0;padding-bottom:30px" alt="The OMOP v5.4 Common Data Model"/>
+<img src="cdm54.png" width="800" style="padding-top:0;padding-bottom:30px" alt="The OMOP v5.4 Common Data Model"/>
 </figure>
 {::options parse_block_html="true" /}
 

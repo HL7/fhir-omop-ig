@@ -24,7 +24,6 @@
 <artifact id="StructureMap/MedicationMap" key="StructureMap-MedicationMap" name="Mapping MedicationStatement resource to DrugExposure OMOP Domain"/>
 <artifact id="StructureMap/MeasurementMap" key="StructureMap-MeasurementMap" name="Mapping Observation resource to Measurement OMOP Domain"/>
 <artifact id="StructureMap/ObservationMap" key="StructureMap-ObservationMap" name="Mapping Observation resource to Observation OMOP Domain"/>
-<artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
 <artifact id="StructureMap/ProcedureMap" key="StructureMap-ProcedureMap" name="Mapping Procedure resource to Procedure Occurrence OMOP Domain"/>
 <artifact id="StructureDefinition/Measurement" key="StructureDefinition-Measurement" name="Measurement OMOP Table"/>
 <artifact id="StructureDefinition/NoteNLP" key="StructureDefinition-NoteNLP" name="Note NLP OMOP Table"/>
@@ -40,9 +39,22 @@
 <artifact id="StructureDefinition/VisitOccurrence" key="StructureDefinition-VisitOccurrence" name="Visit Occurrence OMOP Table"/>
 <page key="NA" name="(NA)"/>
 <page key="many" name="(many)"/>
+<page key="AllergyIntoleranceConsiderations" name="AllergyIntolerance Resource Considerations"/>
 <page key="artifacts" name="Artifacts Summary"/>
 <page key="background" name="Background"/>
-<page key="codemappings" name="Coded Field Mapping"/>
+<page key="codemappings" name="Coded Field Mapping Principles"/>
+<page key="ConditionConsiderations" name="Condition &amp; Problem List Resource Considerations"/>
+<page key="CodeMappingPatterns" name="FHIR to OMOP Code Mapping Patterns"/>
 <page key="index" name="Home"/>
+<page key="howtousethisguide" name="How to Use This Guide"/>
+<page key="ImmunizationConsiderations" name="Immunization Resource Considerations"/>
+<page key="MedicationRequestConsiderations" name="MedicationRequest Resource Considerations"/>
+<page key="MedicationStatementConsiderations" name="MedicationStatement Resource Considerations"/>
+<page key="ObservationConsiderations" name="Observation Resource Considerations"/>
+<page key="PersonConsiderations" name="Person Resource Considerations"/>
+<page key="ProcedureConsiderations" name="Procedure Resource Considerations"/>
+<page key="ProfileGeneralConsiderations" name="Resource &amp; Profile Considerations"/>
 <page key="toc" name="Table of Contents"/>
+<page key="TerminologyServer" name="Terminology Server API Utilization"/>
+<page key="StrategiesBestPractices" name="Transformation Strategies &amp; Best Practices"/>
 </specification>

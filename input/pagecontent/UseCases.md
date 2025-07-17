@@ -52,9 +52,9 @@ These selected studies offer practical, real-world examples of codes, data eleme
   - [Data Supplement](https://ascopubs.org/doi/suppl/10.1200/CCI.24.00052)
 
 ## Vulcan Real-World Data Implementation Guide  
-The [Vulcan Retrieval of Real World Data (RWD) for Clinical Research Implementation Guide (IG)](https://build.fhir.org/ig/HL7/vulcan-rwd/index.html) aims to facilitate the transmission of clinical data generated during routine patient care (Electronic Health Record data, EHR) for use as Real World Data (RWD) supporting clinical research. Traditionally, clinical trials rely on prospective data collection tailored to specific research questions and analytics. In contrast, data generated through routine healthcare operations are rarely aligned with secondary research requirements. The Vulcan RWD IG defines FHIR profiles suitable for use within EHR systems, facilitating the retrieval and alignment of relevant clinical data from RWD sources for clinical research and regulatory submissions.
+The [Vulcan Retrieval of Real World Data (RWD) for Clinical Research Implementation Guide (IG)](https://hl7.org/fhir/uv/vulcan-rwd/) aims to facilitate the transmission of clinical data generated during routine patient care (Electronic Health Record data, EHR) for use as Real World Data (RWD) supporting clinical research. Traditionally, clinical trials rely on prospective data collection tailored to specific research questions and analytics. In contrast, data generated through routine healthcare operations are rarely aligned with secondary research requirements. The Vulcan RWD IG defines FHIR profiles suitable for use within EHR systems, facilitating the retrieval and alignment of relevant clinical data from RWD sources for clinical research and regulatory submissions.
 
-The Vulcan Real-World Data IG leverages the [FHIR International Patient Access (IPA)](https://build.fhir.org/ig/HL7/fhir-ipa/) IG to provide a foundational dataset and profiles necessary to address RWD use case requirements.
+The Vulcan Real-World Data IG leverages the [FHIR International Patient Access (IPA)](https://hl7.org/fhir/uv/ipa/) IG to provide a foundational dataset and profiles necessary to address RWD use case requirements.
 
 ### Vulcan RWD IG Studies from ClinicalTrials.gov
 
@@ -68,7 +68,7 @@ These studies referenced in the Vulcan RWD IG specify the data elements required
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>Vulcan RWD Conceptual Application</b></figcaption>
-<img src="../images/rwd_conceptual_application.png" style="padding-top:0;padding-bottom:30px" width="800" alt="Vulcan RWD Conceptual Application"/>
+<img src="rwd_conceptual_application.png" style="padding-top:0;padding-bottom:30px" width="800" alt="Vulcan RWD Conceptual Application"/>
 </figure>
 {::options parse_block_html="true" /}
 
@@ -88,7 +88,7 @@ An example of this use case could involve a healthcare provider using an AI mode
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>FHIR to OMOP Transformation for AI Training and Classification</b></figcaption>
-<img src="../images/fhir_omop_ai_diagram (1).svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Transformation for AI Training and Classification"/>
+<img src="fhir_omop_ai_diagram.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Transformation for AI Training and Classification"/>
 </figure>
 {::options parse_block_html="true" /}
 

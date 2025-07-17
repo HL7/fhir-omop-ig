@@ -43,7 +43,7 @@ pages:
     title: Transformation Strategies & Best Practices
   ProfileGeneralConsiderations.md:
     title: Resource & Profile Considerations
-  AllergyIntoleranceCondierations.md:
+  AllergyIntoleranceConsiderations.md:
     title: AllergyIntolerance Resource Considerations
   ConditionConsiderations.md:
     title: Condition & Problem List Resource Considerations
@@ -69,7 +69,7 @@ menu:
     Code Mapping Patterns: CodeMappingPatterns.html
   FHIR Resource Considerations:
     General Considerations: ProfileGeneralConsiderations.html
-    Allergies & Intolerances:  AllergyIntoleranceCondierations.html
+    Allergies & Intolerances:  AllergyIntoleranceConsiderations.html
     Conditions: ConditionConsiderations.html
     Immunizations: ImmunizationConsiderations.html
     Medication Requests: MedicationRequestConsiderations.html
