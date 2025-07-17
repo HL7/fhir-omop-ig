@@ -83,7 +83,7 @@ This IG utilizes the OMOP Common Data Model, v5.4.  At the time this document wa
 
 This Implementation Guide was developed under the auspices of the HL7 FHIR to OMOP work group in collaboration with the OHDSI OMOP + FHIR working group.
 
-<div align="center">
+<div>
 
 **Primary Authors**
 
