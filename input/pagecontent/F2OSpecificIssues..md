@@ -20,33 +20,6 @@ A primary concern when implementing FHIR to OMOP transformations that include ra
 
 Implementers of FHIR to OMOP transformations must balance how an identifier presents in the source FHIR resource(s), the technical requirements and permissible use of OMOP per the CDM specification. This involves choosing how to manage identifiers based on the specific needs and system constraints of the implementation, while maintaining compliance with data privacy and usability standards.  More specifically, differing database systems such as Google BigQuery, AWS Redshift… have varying constraints on integer sizes. This may complicate storing FHIR identifiers directly as OMOP IDs. It can also be challenging to find a suitable place for these identifiers within the OMOP Common Data Model (CDM), which does not have a direct equivalent field specifically designed for business identifiers associated with encounters.
 
-An example of this type of challenge is apparent when evaluating the ‘encounter.identifier’ element in the FHIR Encounter resource.  This element captures a business identifier for the encounter, which in any source data may reflect a variety of identifiers such as medical record numbers, encounter IDs, or any unique values used by healthcare systems to track individual encounters. One solution would be to use `visit_occurrence_id`as a target in OMOP, as this is a unique identifier for each record in the `visit_occurrence` table aligned with the meaning of the data element in FHIR. However, in consideration for the need for traceability, data integrity, and compliance with de-identification standards, this primary key is typically generated in OMOP as a sequence to ensure anonymity and maintain referential integrity across the OMOP instance. Another solution would be to map FHIR `Encounter.identifier` to the OMOP`visit_source_value`a field that can hold the original value from the source data that describes the encounter type. However, depending on the convention used for generating this identifier in source upstream of FHIR, there are concerns regarding the appropriateness of using this field for identifiers, which are not descriptive values but unique business identifiers. Further, `visit_source_value` in OMOP often aligns more with descriptive elements in FHIR like `Encounter.period` or `Encounter.type`, which are codeable concepts in FHIR and not necessarily identifiers. 
-
-There could be limitations to the ability of fields in an OMOP database to store some identifiers, particularly GUIDs or more complex strings that exceed, for example, the varchar(50) character limit specified in `visit_source_value.`  Identifiers in source systems may have missing context resulting in ambiguous meanings such as reflected in the following
-
-  ```json
-       "identifier": [
-         {
-           "system": "https://hospital.makedata.ai",
-           "value": "b9d8ed9e-1b1a-4e30-9ee3-af66f4a61cff"
-         }
-       ]
-```
-
-Additionally, identifiers can be complex with nested elements:
-
-       ```xml
-       <identifier>
-         <use value="official" />
-         <system value="http://www.acmehosp.com/patients" />
-         <value value="44552" />
-         <period>
-           <start value="2003-05-03" />
-         </period>
-       </identifier>
-       ```
-These examples highlight the complexity and variability of identifiers in FHIR, emphasizing why a one-size-fits-all mapping in OMOP is not practical. As such we recommend an evaluation on a case-by-case basis of the available FHIR identifier elements and their meaning in the source system to determine an appropriate target in OMOP, adoption of a separate facility or extension table(s) with the express purpose of storing source identifiers or ignoring them in the transformation altogether. 
-
 ## Status and Intent Elements in FHIR Resources
 Many FHIR resources, like MedicationRequest or Procedure, have status fields indicating administrative or health care delivery process stages (e.g., planned, completed, in progress) or indicate the type of order represented (active, on-hold, cancelled...).  OMOP, on the other hand, represents concepts that are clinical facts, which implies that only completed activities should be mapped for accurate data analysis. This creates an expectation of specific context for the data being mapped. Careful consideration must be made when FHIR data resources also contain populated status and intent fields indicating a measurement, dispensing activity or care delivery service is planned, cancelled or in process.  Specifically, attention to and disposition of data based on these FHIR elements in a transformation should be consistent within a project or OMOP implementation.  There is a need to filter out incomplete or planned activities when transforming data to OMOP, especially for procedures and medications. Including such "yet-to-be-realized" data would misrepresent actual patient exposure, leading to inaccuracies in research.  This kind of filtering is documented in the FHIR to OMOP Unit test specifications, and should be applied to transofmrtaion pipelines so that the rules are applied consistently to incremental data ingress for as long as the OMOP instance is in use. 
 
