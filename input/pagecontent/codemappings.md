@@ -137,10 +137,81 @@ The preferred SNOMED CT mapping leads to OMOP concept ID 255573, establishing th
 
 Organizations utilizing data coded in historical coding systems should establish governance frameworks that include clinical terminology specialists and domain experts in historical code mapping decisions. Fallback strategies must address scenarios where historical codes cannot be mapped to modern equivalents, potentially utilizing generalized concepts when specific mappings are unavailable while clearly documenting these compromises. Regular review of available crosswalk resources, mapping tools and utilization of terminology servers ensures that transformation processes benefit from the most current and authoritative mapping information. Organizations should maintain flexibility in their mapping approaches, allowing for updates when improved crosswalks or mapping methodologies become available.
 
-## Source Value Preservation: A Best Practice
+### Multiple FHIR Reference Codings to OMOP 
+The transformation of FHIR resources to the OMOP CDM frequently presents scenarios where a single clinical concept on OMOP contains multiple codes within the FHIR resource structure.  This scenario introduces complexity in the mapping process because it requires determining which code (or codes) should be used to represent the concept in the OMOP CDM. The mapping workflow begins with comprehensive identification of all coding elements within the FHIR resource, specifically extracting codes from the CodeableConcept.coding array structure. Each code requires documentation of its associated coding system through the system URI, along with any explicit ranking or preference indicators present in the source data.
 
-Consistently preserving source values is a critical component of FHIR to OMOP transformation, ensuring data lineage, maintenance of incremental data stores, supports future remapping efforts, and enabling quality assurance validation procedures. This strategy accomodates vocabulary evolution and improved mapping algorithms which may require reprocessing of source data, making original value retention essential for long-term data management. 
+To ensure consistency and clinical validity implementers must apply selection logic identical to guidance provided for for CodeableConcepts. The hierarchy begins with standard vocabularies, where SNOMED CT, LOINC, and other OMOP-recognized terminologies take precedence over proprietary or legacy coding systems. Within this framework, clinical specificity serves as the secondary criterion, with more detailed diagnostic or procedural codes preferred over general classifications. The mapping process further considers explicit primary designations within the FHIR resource structure, where codes marked with primary indicators receive preference during selection. When all other factors remain equal, temporal precedence applies, selecting the first code encountered in the sequence. This systematic approach ensures reproducible results while maintaining the clinical intent of the original data.
 
-Source value fields must always preserve original codes exactly as provided in FHIR resources, maintaining character-for-character accuracy to ensure complete traceability back to the source system. This includes maintaining any formatting, spacing, or special characters present in the original codes, as these may carry semantic meaning or system-specific significance that could be relevant for future processing or validation efforts. Source identifier fields require population with OMOP concept_id values when source codes exist within the OHDSI Standardized Vocabularies, while unmapped codes are populated with a 0 to indicate their non-Standard OMOP concept status. The use of "0" for unmapped codes follows OMOP conventions and enables analytical queries to distinguish between successfully mapped and unmapped source data. This approach provides clear indication of OMOP CDM mapping conformance for each map implemented while maintaining the a record source codes and their OMOP representations when available. 
+Once the primary code is selected, the system should performs concept mapping to identify the corresponding Stndard OMOP concept_id. When direct mapping is unavailable, the system should map to the closest parent concept while maintaining detailed documentation of all mapping decisions for audit and quality assurance purposes.
 
-Future-proofing an OMOP datastore includes designing storage and documentation strategies that accommodate vocabulary evolution, improved mapping methodologies, and changing clinical terminology standards. A corollary best practice to source data preservation is completion of transformation lineage documentation, including mapping decisions, prioritization choices, and any manual interventions performed during the transformation process. These steps enable future data validation efforts, supports quality improvement initiatives, and provides the foundation for remapping activities when vocabulary updates or improved algorithms become available. 
+Consider the following scenario where FHIR data contains multiple coding systems representing the same clinical concept. When encountering a diagnosis with both ICD-10 and SNOMED CT codes in the coding array, the selection process prioritizes the SNOMED CT code as the preferred standard vocabulary:
+
+```json
+{
+  "code": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/sid/icd-10-cm",
+        "code": "E11.9",
+        "display": "Type 2 diabetes mellitus without complications"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "44054006",
+        "display": "Type 2 diabetes mellitus"
+      }
+    ]
+  }
+}
+```
+
+In this case, the system selects SNOMED CT code 44054006 for mapping to OMOP concept ID 201826, ensuring consistency with OMOP CDM preferences while maintaining the clinical accuracy of the original diagnosis.
+
+Another frequent situation involves multiple codes from the same coding system with varying specificity levels. When FHIR data includes both specific and general diagnostic codes, the system selects the more specific code to preserve detailed clinical information:
+
+```json
+{
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "44054006",
+        "display": "Type 2 diabetes mellitus"
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "11687002",
+        "display": "Diabetes mellitus"
+      }
+    ]
+  }
+}
+```
+
+This selection preserves the detailed clinical information while avoiding the loss of diagnostic precision during the mapping process, with the more specific code 44054006 taking precedence over the general term.
+
+The implementation also addresses scenarios where FHIR resources explicitly designate primary codes through metadata indicators. When the coding array contains multiple codes with one marked as primary, the selection process honors this designation:
+
+```json
+{
+  "code": {
+    "coding": [
+      {
+        "system": "http://snomed.info/sct",
+        "code": "44054006",
+        "display": "Type 2 diabetes mellitus",
+        "primary": true
+      },
+      {
+        "system": "http://snomed.info/sct",
+        "code": "11687002",
+        "display": "Diabetes mellitus"
+      }
+    ]
+  }
+}
+```
+
+This approach respects the clinical decision-making embedded in the source system while maintaining consistency with OMOP requirements, regardless of other prioritization factors.
+
+ 
