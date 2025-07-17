@@ -1,4 +1,4 @@
-# Issues when Transforming FHIR to OMOP
+# Common Challenges When Transforming FHIR to OMOP
 Aligning FHIR resources with the OMOP Common Data Model presents challenges due to differences in their data structures, scope, and intended purposes. The complexity increases because most observational data sources aren't natively generated as FHIR, meaning many FHIR resources have already undergone transformation before any OMOP conversion begins. This creates a need for pragmatic alignment approaches that preserve essential source data context for transactional use cases while achieving OMOP conformance for analytics. 
 
 The tension between the the two standards stems from FHIR's design for real-time clinical data exchange and workflow support versus OMOP's structure for research analytics and retrospective analysis with standardized terminology. This divergence means that poorly considered mappings can misrepresent data, particularly given OMOP's requirements for concept standardization and validated data quality procedures that must be carefully addressed when transforming patient records from FHIR format.
