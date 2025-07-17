@@ -34,7 +34,7 @@ All transformation patterns utilize a consistent API lookup approach that forms 
 
 1. Translate source code to concept ID: Utilise the [ConceptMap/$translate](TerminologyServer.md#conceptmap--translate) FHIR terminology server operation.
 2. Lookup concept properties: Utilise the [CodeSystem/$lookup](TerminologyServer.md#codesystem--lookup) FHIR terminology server operation.
-3. [If the concept is non-standard] Lookup the "Maps to" concept ID using the $lookup operation.
+3. If the concept is non-standard: Lookup the "Maps to" concept ID using the $lookup operation.
 
 The lookup analysis encompasses several critical components that ensure proper concept identification and validation. Implementers must verify OMOP concept existence to confirm that the source code has a corresponding representation in the OHDSI Standardized Vocabularies. The Standard concept status requires confirmation through the presence of the 'S' flag, indicating that the concept can be used directly in OMOP analytics without requiring additional concept relationship mapping. Vocabulary alignment validation ensures that the identified concept originates from the expected terminology system and maintains semantic consistency with the source data. Domain assignment determination identifies the appropriate OMOP domain table for storing the clinical information, which may differ from expectations based solely on FHIR resource type.
 
