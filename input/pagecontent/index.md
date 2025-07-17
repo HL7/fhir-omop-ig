@@ -111,12 +111,12 @@ This Implementation Guide was developed under the auspices of the HL7 FHIR to OM
 
 | Organization | Contributors |
 |-------------|-------------|
-| CareEvolution, Inc | Ben Berk <br> Scott Favre |
+| CareEvolution, Inc | Ben Berk<br>Scott Favre |
 | Georgia Tech Research Institute (GTRI) | Myung Choi |
-| Evidentli, Inc | Guy Tsafnat <br> Michael Van Treek <br> Davera Gabriel |
-| FHIR-OMOP Oncology Use Case Subgroup | Qi Yang (IQVIA) <br> May Terry (MITRE Corp) |
+| Evidentli, Inc | Guy Tsafnat<br>Michael Van Treek<br>Davera Gabriel |
+| FHIR-OMOP Oncology Use Case Subgroup | Qi Yang (IQVIA)<br>May Terry (MITRE Corp) |
 | National Association of Community Health Centers (NACHC) | John Gresh (Curlew Consulting) |
-| Technische Universitat (TU) Dresden | Elisa Henke <br> Yuan Peng |
+| Technische Universitat (TU) Dresden | Elisa Henke<br>Yuan Peng |
 
 Throughout this project, more than 100 individuals from over 70 organizations—representing academia, government, industry, and data standards development—contributed their decades of experience in managing Real-World Data to support the best practices presented in this effort. We recognize that this guide establishes an important foundation, acknowledge that many opportunities for exploration and enhancement remain. We welcome your feedback and encourage continued collaboration to more fully realize the transformative potential that these two complementary standards can bring to advancing human health.
 
