@@ -92,10 +92,6 @@ This Implementation Guide was developed under the auspices of the HL7 FHIR to OM
 | Davera Gabriel | Evidentli, Inc |
 | Jean Duteau | Dogwood Consulting |
 
-</div>
-
-<div align="center">
-
 **Primary Editors**
 
 | Name | Organization |
@@ -104,10 +100,6 @@ This Implementation Guide was developed under the auspices of the HL7 FHIR to OM
 | Guy Tsafnat | Evidentli, Inc |
 | Michael Van Treek | Evidentli, Inc |
 
-</div>
-
-<div align="center">
-
 **Vulcan FHIR to OMOP Working Group Co-Leads**
 
 | Name | Organization |
@@ -115,22 +107,18 @@ This Implementation Guide was developed under the auspices of the HL7 FHIR to OM
 | Davera Gabriel | Evidentli, Inc |
 | Catherine Diederich | Duke University |
 | Adam Lee | University of North Carolina |
-| Lukasz Kazmarek | Roche |
-
-</div>
-
-<div align="center">
+| Lukasz Kaczmarek | Roche |
 
 **Past project FHIR to OMOP transformation maps & technical implementation expertise contributed by**
 
-| Organization/Name | Details |
-|-------------------|---------|
-| CareEvolution, Inc | Ben Berk, Scott Favre |
+| Organization | Contributors |
+|-------------|-------------|
+| CareEvolution, Inc | Ben Berk <br/> Scott Favre |
 | Georgia Tech Research Institute (GTRI) | Myung Choi |
-| Evidentli, Inc | Guy Tsafnat, Michael Van Treek, Davera Gabriel |
-| FHIR-OMOP Oncology Use Case Subgroup | Qi Yang (IQVIA), May Terry (MITRE Corp) |
+| Evidentli, Inc | Guy Tsafnat <br/> Michael Van Treek <br/> Davera Gabriel |
+| FHIR-OMOP Oncology Use Case Subgroup | Qi Yang (IQVIA) <br/> May Terry (MITRE Corp) |
 | National Association of Community Health Centers (NACHC) | John Gresh (Curlew Consulting) |
-| Technische Universitat (TU) Dresden | Elisa Henke, Yuan Peng |
+| Technische Universitat (TU) Dresden | Elisa Henke <br/> Yuan Peng |
 
 </div>
 
