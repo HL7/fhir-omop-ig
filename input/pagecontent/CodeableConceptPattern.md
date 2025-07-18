@@ -5,7 +5,7 @@ CodeableConcept elements in FHIR can contain multiple coding entries, each poten
 
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b>FHIR CodeableConcept to OMOP Pattern</b></figcaption>
+<figcaption><b></b></figcaption>
 <img src="codeable_concept_decision_tree.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR CodeableConcept to OMOP Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
