@@ -31,18 +31,16 @@ pages:
     title: Introduction
   UseCases.md:
      title: Use Cases
-  howtousethisguide.md:
-    title: How to Use This Guide
   F2OGeneralIssues.md:
     title: Common Challenges When Transforming FHIR to OMOP
-  codemappings.md:
-    title: Coded Field Mapping Principles
-  CodeMappingPatterns.md:
-    title: FHIR to OMOP Code Mapping Patterns
   StrategiesBestPractices.md:
     title: Transformation Strategies & Best Practices
-  ProfileGeneralConsiderations.md:
-    title: Resource & Profile Considerations
+  codemappings.md:
+     title: Coded Field Mapping Principles
+  CodeMappingPatterns.md:
+     title: FHIR to OMOP Code Mapping Patterns
+  artifacts.md:
+    title: Technical Artifacts 
   TerminologyServer.md:
     title: Terminology Server API Utilization
   credits.md:
@@ -51,14 +49,13 @@ pages:
 menu:
   Introduction: index.html
   Use Cases: UseCases.html
-  How to Use This Guide: howtousethisguide.html
-  General Issues: F2OGeneralIssues.html
+  General Guidance:
+    Common Issues: F2OGeneralIssues.html
+    Best Practices: StrategiesBestPractices.md
   Mapping Concepts:
     Coded Field Mapping Principles: codemappings.html
     Code Mapping Patterns: CodeMappingPatterns.html
-  Mapping Considerations: 
-    Transformation Strategies: StrategiesBestPractices.html
-    General Considerations: ProfileGeneralConsiderations.html
+  Technical Artifacts: artifacts.html
   Terminology Server: TerminologyServer.html
   Acknowledgements: credits.html
 
