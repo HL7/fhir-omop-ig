@@ -1,4 +1,4 @@
-### Value-as-Concept Map Pattern
+### Value-as-Concept Mapping Pattern
 Drug allergies represent a complex transformation challenge in FHIR-to-OMOP mapping due to their composite nature. In FHIR, an AllergyIntolerance resource typically contains a coded element representing both the allergy type and the specific substance.  This is not aligned with OMOP's preference for decomposed, granular concept representation. The Value-as-Comcept Map pattern addresses the tension between FHIR's composite coding approach and OMOP's value-as-concept methodology, which separates the observation type (allergy classification) from the specific substance causing the reaction.
 
 #### Value as Concept Pattern Example: Drug Allergy
