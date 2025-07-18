@@ -1,8 +1,7 @@
-# FHIR Profile General Considerations
-## Handling Encounters and Contextual Data
+### Handling Encounters and Contextual Data
 In FHIR, procedures, medications, and other clinical actions are often linked to an encounter for context. OMOP has Visit Occurrence and Visit Detail tables that provide temporal and venue-specific clinical context.  However, inconsistencies in how encounters are represented across FHIR resources and systems present challenges to consistent data transformation. Mapping encounter data to OMOP’s visit_occurrence table and populating other domains with a visit_occurence_concept_id foreign key should be done wherever possible.  However, an evaluation of how consistent the source data are in representing encounters will determine whether there may be some flexibility required in a FHIR to OMOP transformation.
 
-## Data Absent Reason Elements 
+### Data Absent Reason Elements 
 For observations like labs or vital signs, capturing the reason for missing data can be clinically useful when the reason directly impacts care. Knowing that a lab was not completed because of a processing error clarifies whether the absence represents a true gap in care or simply a data issue. Reasons that are purely operational, such as “not applicable,” generally do not add research value and may be omitted if appropriate to the analysis.
 In medication data, reasons for discontinuation or non-use—such as adverse reactions, patient nonadherence, or contraindications—can inform research on medication safety, adherence, and treatment effectiveness. These reasons can be selectively included to support such studies. Routine logistical issues and administrative gaps are less likely to contribute meaningfully to OMOP analyses and can be excluded.
 

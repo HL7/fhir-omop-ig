@@ -28,61 +28,39 @@ extension:
 
 pages:
   index.md:
-    title: Home
-  background.md:
-    title: Background
+    title: Introduction
+  UseCases.md:
+     title: Use Cases
+  howtousethisguide.md:
+    title: How to Use This Guide
+  F2OGeneralIssues.md:
+    title: Common Challenges When Transforming FHIR to OMOP
   codemappings.md:
     title: Coded Field Mapping Principles
   CodeMappingPatterns.md:
     title: FHIR to OMOP Code Mapping Patterns
-  TerminologyServer.md:
-    title: Terminology Server API Utilization
-  howtousethisguide.md:
-    title: How to Use This Guide
   StrategiesBestPractices.md:
     title: Transformation Strategies & Best Practices
   ProfileGeneralConsiderations.md:
     title: Resource & Profile Considerations
-  AllergyIntoleranceConsiderations.md:
-    title: AllergyIntolerance Resource Considerations
-  ConditionConsiderations.md:
-    title: Condition & Problem List Resource Considerations
-  ImmunizationConsiderations.md:
-    title: Immunization Resource Considerations
-  MedicationRequestConsiderations.md:
-    title: MedicationRequest Resource Considerations
-  MedicationStatementConsiderations.md:
-    title: MedicationStatement Resource Considerations
-  ObservationConsiderations.md:
-    title: Observation Resource Considerations
-  PersonConsiderations.md:
-    title: Person Resource Considerations
-  ProcedureConsiderations.md:
-    title: Procedure Resource Considerations
-  UseCases.md:
-     title: Use Cases
-  F2OGeneralIssues.md:
-    title: General Issues
+  TerminologyServer.md:
+    title: Terminology Server API Utilization
+  credits.md:
+    title: Acknowledgements
 
 menu:
-  Home: index.html
-  Background: background.html
-  Use Cases: UseCases.md
+  Introduction: index.html
+  Use Cases: UseCases.html
   How to Use This Guide: howtousethisguide.html
-  General Issues: F2OGeneralIssues.md
+  General Issues: F2OGeneralIssues.html
   Mapping Concepts:
     Coded Field Mapping Principles: codemappings.html
     Code Mapping Patterns: CodeMappingPatterns.html
-  FHIR Resource Considerations:
+  Mapping Considerations: 
+    Transformation Strategies: StrategiesBestPractices.html
     General Considerations: ProfileGeneralConsiderations.html
-    Allergies & Intolerances:  AllergyIntoleranceConsiderations.html
-    Conditions: ConditionConsiderations.html
-    Immunizations: ImmunizationConsiderations.html
-    Medication Requests: MedicationRequestConsiderations.html
-    Medication Statements:  MedicationStatementConsiderations.html
-    Observations: ObservationConsiderations.html
-    Person: PersonConsiderations.html
-    Procedures: ProcedureConsiderations.html
+  Terminology Server: TerminologyServer.html
+  Acknowledgements: credits.html
   Artifacts: artifacts.html
 
 #

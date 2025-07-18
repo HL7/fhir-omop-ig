@@ -39,22 +39,17 @@
 <artifact id="StructureDefinition/VisitOccurrence" key="StructureDefinition-VisitOccurrence" name="Visit Occurrence OMOP Table"/>
 <page key="NA" name="(NA)"/>
 <page key="many" name="(many)"/>
-<page key="AllergyIntoleranceConsiderations" name="AllergyIntolerance Resource Considerations"/>
+<page key="credits" name="Acknowledgements"/>
 <page key="artifacts" name="Artifacts Summary"/>
 <page key="background" name="Background"/>
 <page key="codemappings" name="Coded Field Mapping Principles"/>
-<page key="ConditionConsiderations" name="Condition &amp; Problem List Resource Considerations"/>
+<page key="F2OGeneralIssues" name="Common Challenges When Transforming FHIR to OMOP"/>
 <page key="CodeMappingPatterns" name="FHIR to OMOP Code Mapping Patterns"/>
-<page key="index" name="Home"/>
 <page key="howtousethisguide" name="How to Use This Guide"/>
-<page key="ImmunizationConsiderations" name="Immunization Resource Considerations"/>
-<page key="MedicationRequestConsiderations" name="MedicationRequest Resource Considerations"/>
-<page key="MedicationStatementConsiderations" name="MedicationStatement Resource Considerations"/>
-<page key="ObservationConsiderations" name="Observation Resource Considerations"/>
-<page key="PersonConsiderations" name="Person Resource Considerations"/>
-<page key="ProcedureConsiderations" name="Procedure Resource Considerations"/>
+<page key="index" name="Introduction"/>
 <page key="ProfileGeneralConsiderations" name="Resource &amp; Profile Considerations"/>
 <page key="toc" name="Table of Contents"/>
 <page key="TerminologyServer" name="Terminology Server API Utilization"/>
 <page key="StrategiesBestPractices" name="Transformation Strategies &amp; Best Practices"/>
+<page key="UseCases" name="Use Cases"/>
 </specification>

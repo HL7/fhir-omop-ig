@@ -1,6 +1,4 @@
-# Terminology Server API
-
-## [ConceptMap/$translate](https://www.hl7.org/fhir/R5/conceptmap-operation-translate.html)
+### [ConceptMap/$translate](https://www.hl7.org/fhir/R5/conceptmap-operation-translate.html)
 
 Given a source code and system, e.g.:
 
@@ -71,7 +69,7 @@ curl 'https://echidna.fhir.org/r5/ConceptMap/$translate' \
 The resulting concept ID is `1567956`.
 
 
-## [CodeSystem/$lookup](https://www.hl7.org/fhir/R5/codesystem-operation-lookup.html)
+### [CodeSystem/$lookup](https://www.hl7.org/fhir/R5/codesystem-operation-lookup.html)
 
 Given a concept ID, e.g. `1567956` we can lookup its properties:
 

@@ -1,11 +1,10 @@
-# FHIR to OMOP Code Mapping Patterns
 Mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations can follow distinct patterns.  In this Implementation Guide, we propose transformation patterns and guidance regarding: 
 
 * A base pattern that covers most simple code to concept transformation
 * A pattern applicable to multiple CodeableConcepts scenarios
 * Value-as-concept map pattern
 
-## 1: Base Mapping Pattern
+### 1: Base Mapping Pattern
 
 {::options parse_block_html="false" /}
 <figure>
@@ -28,7 +27,7 @@ Non-standard concept handling addresses scenarios where source codes map to non-
 
 The final population phase applies the Standard OMOP Field Population Template to ensure consistent data storage across all transformation instances. This standardization supports reliable analytical processes while maintaining essential data lineage information for quality assurance and future enhancement efforts.
 
-### Example: Diabetes Condition Mapping
+#### Example: Diabetes Condition Mapping
 
 Consider a straightforward diabetes diagnosis represented in a FHIR Condition resource with a single SNOMED CT code. The source resource demonstrates the ideal scenario for base pattern transformation, containing clear coded information without ambiguity or complex relationships.
 
@@ -76,7 +75,7 @@ INSERT INTO condition_occurrence (
 
 This example demonstrates the straightforward application of the base pattern, showcasing direct vocabulary mapping, domain alignment, and comprehensive source preservation. The transformation maintains clinical accuracy while conforming to OMOP analytical requirements, providing a foundation for understanding more complex transformation scenarios.
 
-### Field Mapping Details
+#### Field Mapping Details
 
 | OMOP Field | Value | Source | Transformation Notes |
 |------------|--------|---------|---------------------|
@@ -89,7 +88,7 @@ This example demonstrates the straightforward application of the base pattern, s
 
 The example above represents a straightforward transformation scenario with a direct vocabulary match and domain alignment. Real-world implementations should prepare for more complex scenarios involving non-standard vocabularies, domain mismatches, and mapping gaps, but this base pattern provides the foundational framework for handling all transformation cases systematically and consistently.
 
-## Pattern 2: CodeableConcept Patterns
+### Pattern 2: CodeableConcept Patterns
 The CodeableConcept patterns addresses the challenge of transforming FHIR CodeableConcept elements that may contain multiple codes, free text, or combinations of both. This pattern recognizes the tension between FHIR's flexibility in representing clinical concepts and OMOP's requirement for standardized, unambiguous concept identification. The approach provides systematic methodology for handling the complexity inherent in CodeableConcept structures while preserving clinical meaning and maintaining data quality standards.
 
 CodeableConcept elements in FHIR can contain multiple coding entries, each potentially representing the same clinical concept through different terminology systems or at different levels of granularity. This multiplicity creates opportunities for enhanced semantic representation but also introduces complexity in determining which code should serve as the primary mapping target for OMOP transformation. The pattern addresses this complexity through sophisticated assessment and prioritization logic that ensures consistent, reproducible transformation outcomes.
@@ -109,7 +108,7 @@ The vocabulary lookup phase applies standard methodology to identify correspondi
 
 Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern provides mechanisms for preserving this contextual information in appropriate OMOP fields, ensuring that clinical nuance is not lost during the transformation process.
 
-### Example: Mapping No Known Allergy CodeableConcept
+#### Example: Mapping No Known Allergy CodeableConcept
 
 The transformation of negative assertion concepts demonstrates the importance of vocabulary-driven domain assignment in CodeableConcept processing. Consider an AllergyIntolerance resource that documents the absence of known allergies, representing a clinical concept that challenges traditional resource-to-domain mapping assumptions.
 
@@ -366,10 +365,10 @@ INSERT INTO observation (
 | | observation_concept_id | 4000045 | SOB mapped to dyspnea concept |
 | | qualifier_source_value | "HISTORY_OF", "PATIENT_COMPLAINT" | Temporal and clinical context preserved |
 
-## Value-as-Concept Map Pattern
+### Value-as-Concept Map Pattern
 Drug allergies represent a complex transformation challenge in FHIR-to-OMOP mapping due to their composite nature. In FHIR, an AllergyIntolerance resource typically contains a coded element representing both the allergy type and the specific substance.  This is not aligned with OMOP's preference for decomposed, granular concept representation. The Value-as-Comcept Map pattern addresses the tension between FHIR's composite coding approach and OMOP's value-as-concept methodology, which separates the observation type (allergy classification) from the specific substance causing the reaction.
 
-### Value as Concept Pattern Example: Drug Allergy
+#### Value as Concept Pattern Example: Drug Allergy
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>FHIR to OMOP Value as Concept Map Pattern</b></figcaption>
@@ -377,46 +376,46 @@ Drug allergies represent a complex transformation challenge in FHIR-to-OMOP mapp
 </figure>
 {::options parse_block_html="true" /}
 
-#### 1: FHIR AllergyIntolerance Input
+##### 1: FHIR AllergyIntolerance Input
 FHIR AllergyIntolerance resources contain coded elements in the `code` field that often represent composite concepts combining both the allergy type and the specific substance. For drug allergies, this typically appears as structured codes like "Allergy to benzylpenicillin" (SNOMED CT: 294930007), which contains both the allergic reaction classification and the specific pharmaceutical substance. This pattern assumes the presence of structured codes that can be semantically decomposed.  We are deliberately excluding free-text-only allergy descriptions in this example, as these pose an array of differnt mapping challenges.
 
-#### 2: Decompose for Mapping Analysis
+##### 2: Decompose for Mapping Analysis
 The system analyzes the composite concept to determine whether it can be meaningfully separated into constituent parts: an observation concept representing the allergy type and a value concept representing the specific substance. This decomposition process examines the semantic structure of codes like "Allergy to [substance]" to identify patterns suitable for value-as-concept transformation. The analysis considers whether both components (allergy type and substance) have equivalent representations in OMOP standard vocabularies, ensuring that the clinical meaning remains intact through the transformation process.
 
 **Decision Point: Decomposition Available as OMOP Standard Concepts?**
 If the composite concept can be successfully decomposed into standard OMOP concepts for both the observation type and the substance value, the system proceeds with the value-as-concept approach. If decomposition is not possible or would result in loss of clinical meaning, the system routes to manual mapping alternatives.
 
-#### 3a: Apply Value as Concept
+##### 3a: Apply Value as Concept
 When decomposition is successful, the system or ETL script applies the value-as-concept pattern by mapping the allergy type to `observation_concept_id` and the specific substance to `value_as_concept_id`. For example, "Allergy to benzylpenicillin" decomposes to:
 - **observation_concept_id**: 439224 ("Allergy to drug")
 - **value_as_concept_id**: 1728416 ("Penicillin G")
 
 This approach maintains the semantic relationship while enabling both general allergy queries and substance-specific analytics within the OMOP framework.
 
-#### 3b: Manual Mapping
+##### 3b: Manual Mapping
 When automatic decomposition fails or results in unmappable components, manual decomposition and mapping may be required to preserve clinical meaning while adhering to OMOP principles. This may involve identifying alternative standard concepts that capture the essential clinical information or creating source concept mappings that maintain traceability to the original FHIR data.
 
-#### 4: OMOP Vocabulary Lookup
+##### 4: OMOP Vocabulary Lookup
 The decomposed concepts undergo validation against OHDSI Standardized Vocabularies to confirm that both the observation concept and value concept exist as Standard OMOP concepts. This critical validation step ensures that the mapped concepts upoholds the OMOP conventions for Standard concept alignment withtin each Domian (** See disccusion of OMOP Standard Concpets here**) and will integrate properly with OMOP-based analytics tools. The lookup process verifies concept status, domain assignment, and relationship mappings.
 
 **Decision Point: All Concepts Found in OMOP?**
 If both the observation concept and value concept are confirmed as standard OMOP concepts, the system proceeds to populate the appropriate OMOP domain table(s). If either concept is missing or non-standard, the system should identify vocabulary gaps and consider alternative mapping strategies.
 
-#### 5a: Populate Appropriate OMOP Domain
+##### 5a: Populate Appropriate OMOP Domain
 When all concepts are successfully validated, the system populates the OMOP Observation domain using the value-as-concept pattern:
 - **concept_id**: 439224 (Allergy to drug) - assigned to Observation Domain
 - **value_as_concept_id**: 1728416 (Penicillin G)
 
-#### 5b: Identify Vocabulary Gap
+##### 5b: Identify Vocabulary Gap
 If mapping to OMOP Standard concepts mappings is not possible, the system should document missing concepts and consider local extensions for missing source concepts. This process maintains data completeness while clearly indicating limitations for OMOP-based analytics. The system then should preserve the original source values and creates mappings to concept_id=0, following OMOP best practices for handling unmapped data.
 
-#### 6: Optional: Handle Reactions
+##### 6: Optional: Handle Reactions
 For comprehensive allergy documentation, the system can create linked observations for allergic reactions using `observation_event_id` to maintain the relationship between the allergen and the specific reaction manifestations. This optional step enables detailed reaction tracking while preserving the primary allergy-substance relationship established through the value-as-concept pattern.
 
-#### 7: Map Quality Validation
+##### 7: Map Quality Validation
 The transformation process includes verification that clinical meaning is preserved and value concept alignment maintains semantic accuracy. This validation ensures that the decomposed representation accurately reflects the original clinical intent while conforming to OMOP analytical requirements.
 
-## Example Mapping: SNOMED 294930007
+### Example Mapping: SNOMED 294930007
 
 **Source FHIR AllergyIntolerance Resource**
 ```json
@@ -447,7 +446,7 @@ The transformation process includes verification that clinical meaning is preser
 }
 ```
 
-### Step-by-Step Value as Concept Transformation
+#### Step-by-Step Value as Concept Transformation
 
 **1: FHIR AllergyIntolerance Input**
 - **Resource Type**: AllergyIntolerance
@@ -531,7 +530,7 @@ INSERT INTO observation (
 );
 ```
 
-### Field Mapping Details
+#### Field Mapping Details
 
 | OMOP Field | Value | Source | Transformation Notes |
 |------------|-------|--------|---------------------|
