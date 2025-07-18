@@ -11,7 +11,7 @@ Future enhoncements to this guide or groups developing additional implementation
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b>FHIR to OMOP Coded Data Base Mapping Pattern</b></figcaption>
-<img src="fhir_omop_base_pattern.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Coded Data Base Mapping Pattern"/>
+<img src="fhir_omop_base_pattern.svg" style="padding-top:0;padding-bottom:30px" width="400" alt="FHIR to OMOP Coded Data Base Mapping Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
 
