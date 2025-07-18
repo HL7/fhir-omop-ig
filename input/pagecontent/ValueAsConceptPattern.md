@@ -48,7 +48,7 @@ For comprehensive allergy documentation, the system can create linked observatio
 ##### 7: Map Quality Validation
 The transformation process includes verification that clinical meaning is preserved and value concept alignment maintains semantic accuracy. This validation ensures that the decomposed representation accurately reflects the original clinical intent while conforming to OMOP analytical requirements.
 
-### Example Mapping: SNOMED 294930007
+### Example Mapping: Allergy to Benzylpenicillin
 
 **Source FHIR AllergyIntolerance Resource**
 ```json
