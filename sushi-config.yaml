@@ -43,7 +43,7 @@ pages:
     title: CodeableConcept Map Patterns
   ValueAsConceptPattern.md:
     title: Value-as-Concept Map Pattern
-  artifacts.md:
+  technical_artifacts.md:
     title: Technical Artifacts 
   TerminologyServer.md:
     title: Terminology Server API Utilization
@@ -61,7 +61,7 @@ menu:
     Code Mapping Base Pattern: CodeMappingBasePattern.html
     CodeableConcept Patterns: CodeableConceptPattern.html
     Value-as-Concept Pattern: ValueAsConceptPattern.html
-  Technical Artifacts: artifacts.html
+  Technical Artifacts: technical_artifacts.html
   Terminology Server: TerminologyServer.html
   Acknowledgements: credits.html
 

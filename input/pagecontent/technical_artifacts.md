@@ -37,6 +37,7 @@ The mappings are represented via FHIR StructureMaps and those StructureMaps are 
 * [MedicationStatement Mapping](StructureMap-MedicationMap.html)
 * [Observation to Measurement Mapping](StructureMap-MeasurementMap.html)
 * [Observation to Observation Mapping](StructureMap-ObservationMap.html)
+* [Person Mapping](StructureMap-PersonMap.html)
 * [Procedure Mapping](StructureMap-ProcedureMap.html)
 
 ### Technical Considerations
