@@ -4,7 +4,7 @@ Drug allergies represent a complex transformation challenge in FHIR-to-OMOP mapp
 #### Value as Concept Pattern Example: Drug Allergy
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b>FHIR to OMOP Value as Concept Map Pattern</b></figcaption>
+<figcaption><b></b></figcaption>
 <img src="value_as_concept_pattern.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Value as Concept Map Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
