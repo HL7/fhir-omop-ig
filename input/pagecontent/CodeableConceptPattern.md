@@ -85,7 +85,7 @@ Although prioritization was not required due to the single code scenario, the tr
 
 Concept relationship verification using the standard query pattern validated the concept's position within the vocabulary hierarchy, while domain classification logic demonstrated how OMOP vocabulary domain assignments take precedence over FHIR resource type expectations. The AllergyIntolerance resource type initially suggested a Condition domain mapping, but the vocabulary's assignment to the Observation domain guided the final table selection decision. Standard concept validation confirmed the S flag status, eliminating the need for concept relationship mapping and approving direct usage in the observation_concept_id field. This vocabulary-driven approach ensures semantic consistency within the OMOP ecosystem while preserving the clinical intent of the original FHIR data.
 
-### Alternative CondeableConcept Scenario: Multiple Allergy Status Codes
+### Alternative Scenario: Multiple Allergy Status Codes
 If the CodeableConcept contained both SNOMED and a local code:
 
 ```json
