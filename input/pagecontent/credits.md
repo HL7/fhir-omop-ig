@@ -1,4 +1,4 @@
-This Implementation Guide was developed under the auspices of the HL7 FHIR to OMOP work group in collaboration with the OHDSI OMOP + FHIR working group.
+This Implementation Guide was developed under the auspices of the [Vulcan](https://www.hl7vulcan.org/) FHIR to OMOP work group in collaboration with the OHDSI OMOP + FHIR working group.
 
 **Primary Authors**
 
