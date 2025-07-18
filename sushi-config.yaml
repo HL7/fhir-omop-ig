@@ -37,8 +37,12 @@ pages:
     title: Transformation Strategies & Best Practices
   codemappings.md:
      title: Coded Field Mapping Principles
-  CodeMappingPatterns.md:
+  CodeMappingBasePattern.md:
      title: FHIR to OMOP Code Mapping Patterns
+  CodeableConceptPattern.md:
+    title: CodeableConcept Map Patterns
+  ValueAsConceptPattern.md:
+    title: Value-as-Concept Map Pattern
   artifacts.md:
     title: Technical Artifacts 
   TerminologyServer.md:
@@ -54,7 +58,9 @@ menu:
     Best Practices: StrategiesBestPractices.html
   Mapping Concepts:
     Coded Field Mapping Principles: codemappings.html
-    Code Mapping Patterns: CodeMappingPatterns.html
+    Code Mapping Base Pattern: CodeMappingBasePattern.html
+    CodeableConcept Patterns: CodeableConceptPattern.html
+    Value-as-Concept Pattern: ValueAsConceptPattern.html
   Technical Artifacts: artifacts.html
   Terminology Server: TerminologyServer.html
   Acknowledgements: credits.html
