@@ -51,7 +51,7 @@ menu:
   Use Cases: UseCases.html
   General Guidance:
     Common Issues: F2OGeneralIssues.html
-    Best Practices: StrategiesBestPractices.md
+    Best Practices: StrategiesBestPractices.html
   Mapping Concepts:
     Coded Field Mapping Principles: codemappings.html
     Code Mapping Patterns: CodeMappingPatterns.html
