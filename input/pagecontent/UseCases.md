@@ -27,7 +27,7 @@ All collected data are maintained and curated by the [All of Us Data and Researc
 
 The All of Us Program collaborates with approximately 50 Health Provider Organizations (HPOs) across the United States to recruit participants. The All of Us Research Program leverages OMOP to standardize and structure its collected data, ensuring feasibility and facilitating researchers' ability to access and integrate data from diverse sources. These HPO partners extract participant EHR data, convert it into OMOP format, and submit 22 OMOP tables to the DRC on a quarterly basis. Given that EHR data represent the greatest demand for FHIR to OMOP mapping among the various All of Us data types, the All of Us program exemplifies real-world use cases for the utilization of EHR-sourced FHIR data transformed onto the OMOP CDM to generate evidence. 
 
-### Published Studies Using All of Us Data
+#### Published Studies Using All of Us Data
 Studies were selected as examples based on the following criteria:
 
 1. Predominant use of All of Us EHR data.
