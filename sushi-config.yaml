@@ -40,9 +40,9 @@ pages:
   CodeMappingBasePattern.md:
      title: FHIR to OMOP Code Mapping Patterns
   CodeableConceptPattern.md:
-    title: CodeableConcept Map Patterns
+    title: CodeableConcept Mapping Patterns
   ValueAsConceptPattern.md:
-    title: Value-as-Concept Map Pattern
+    title: Value-as-Concept Mapping Pattern
   technical_artifacts.md:
     title: Technical Artifacts 
   TerminologyServer.md:
