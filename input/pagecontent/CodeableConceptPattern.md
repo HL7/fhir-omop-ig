@@ -15,7 +15,7 @@ For CodeableConcepts containing only single structured codes, the process bypass
 
 The vocabulary lookup step applies standard methodology to identify corresponding OMOP concepts, focusing on domain assignment that may differ from FHIR resource type expectations. A consistent vocabulary-driven approach ensures that clinical concepts are stored in appropriate OMOP domains, even when this conflicts with structural assumptions based on FHIR resource categorization.
 
-Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern suggests preserving this contextual information in appropriate OMOP *source_value fields, ([discussed here](https://build.fhir.org/ig/HL7/fhir-omop-ig/StrategiesBestPractices.html#source-value-preservation)) ensuring that any clinical nuance is not lost during the transformation process.
+Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern suggests preserving this contextual information in appropriate OMOP *source_value fields, (a best practice [discussed here](https://build.fhir.org/ig/HL7/fhir-omop-ig/StrategiesBestPractices.html#source-value-preservation)) ensuring that any clinical nuance is not lost during the transformation process.
 
 #### Example: Mapping No Known Allergy CodeableConcept
 
