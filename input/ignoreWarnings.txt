@@ -4,6 +4,22 @@
 # (And include comments like this justifying why)
 # See https://github.com/FHIR/sample-ig/blob/master/input/ignoreWarnings.txt for examples
 
-Constraint failed: eld-20: %
+# 01 - Various FML functions that throw warnings
+Transform copy not checked yet
+Transform cast not checked yet
 
+# 02 - It is intended not to assign a variable
+The source statement doesn't assign a variable to the source - check that this is what is intended
+
+# 03 - This has been verified to be the actual FHIRPath expression needed to make the transform work.  The error is incorrect.
+The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/StructureDefinition/Person]
+
+# 04 - Deprecated value set is used in FHIR core
 Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
+
+# 05 - Codesystem is experimental but is used in IG
+Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
+
+# 06 - This warning is all on Logical Models and we are matching the names of the elements in the OMOP tables.
+Constraint failed: eld-20: 'The first component of the path should be UpperCamelCase.  Additional components (following a '.') should be lowerCamelCase.  If this syntax is not adhered to, code generation tools may be broken. Logical models may be less concerned about this implication.' (defined in http://hl7.org/fhir/StructureDefinition/ElementDefinition)
+

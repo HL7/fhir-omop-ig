@@ -21,7 +21,7 @@ This guide contains a set of logical models that describe the OMOP CDM.  By expr
 * [Observation Period](StructureDefinition-ObservationPeriod.html)
 * [Payer Plan Period](StructureDefinition-PayerPlanPeriod.html)
 * [Person](StructureDefinition-Person.html)
-* [Procedure Occurence](StructureDefinition-ProcedureOccurence.html)
+* [Procedure Occurrence](StructureDefinition-ProcedureOccurrence.html)
 * [Provider](StructureDefinition-Provider.html)
 * [Specimen](StructureDefinition-Specimen.html)
 * [Visit Detail](StructureDefinition-VisitDetail.html)

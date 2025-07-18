@@ -24,6 +24,7 @@
 <artifact id="StructureMap/MedicationMap" key="StructureMap-MedicationMap" name="Mapping MedicationStatement resource to DrugExposure OMOP Domain"/>
 <artifact id="StructureMap/MeasurementMap" key="StructureMap-MeasurementMap" name="Mapping Observation resource to Measurement OMOP Domain"/>
 <artifact id="StructureMap/ObservationMap" key="StructureMap-ObservationMap" name="Mapping Observation resource to Observation OMOP Domain"/>
+<artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
 <artifact id="StructureMap/ProcedureMap" key="StructureMap-ProcedureMap" name="Mapping Procedure resource to Procedure Occurrence OMOP Domain"/>
 <artifact id="StructureDefinition/Measurement" key="StructureDefinition-Measurement" name="Measurement OMOP Table"/>
 <artifact id="StructureDefinition/NoteNLP" key="StructureDefinition-NoteNLP" name="Note NLP OMOP Table"/>
@@ -41,7 +42,6 @@
 <page key="many" name="(many)"/>
 <page key="credits" name="Acknowledgements"/>
 <page key="artifacts" name="Artifacts Summary"/>
-<page key="background" name="Background"/>
 <page key="codemappings" name="Coded Field Mapping Principles"/>
 <page key="F2OGeneralIssues" name="Common Challenges When Transforming FHIR to OMOP"/>
 <page key="CodeMappingPatterns" name="FHIR to OMOP Code Mapping Patterns"/>
