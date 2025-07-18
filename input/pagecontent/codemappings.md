@@ -4,7 +4,7 @@ Unlike purely schema-to-schema transformations, transforming FHIR to OMOP requir
 Coded source data in FHIR refers to information represented using standardized code systems such as SNOMED CT, LOINC, RxNorm, and other established terminologies. When mapping these FHIR elements to OMOP, implementers must ensure that codes are appropriately translated into the OHDSI Standardized Vocabularies and that the resulting data aligns with the correct domain classifications within the OMOP model.
 
 #### Key Elements of FHIR Coded Data
-Coded data in FHIR resources minimally employ a pattern specifying a code and the coding system the code is derived from, and optional display and version attributes (see: [Using Codes in Resources](https://www.hl7.org/fhir/terminologies.html#4.1)) 
+Coded data in FHIR resources minimally employ a pattern specifying a code and the coding system the code is derived from, and optional display and version attributes (see: [FHIR Terminology, Using Codes in Resources](https://www.hl7.org/fhir/terminologies.html#4.1)) 
 
 * **Code**: The actual code from a standardized code system.
 * **System**: The code system from which the code is drawn (e.g., SNOMED CT, LOINC).
