@@ -1,7 +1,8 @@
 /// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ConditionMap'
 /// name = 'ConditionMap'
-/// title = 'Mapping Condition resource to Condition Occurrence and Condition Era OMOP Domain'
+/// title = 'Mapping Condition resource to Condition Occurrence OMOP Domain'
 /// status = 'draft'
+/// description = "This mapping maps FHIR Condition instances to OMOP Condition Occurence Table objects."
 
 uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias ConOccTable as target

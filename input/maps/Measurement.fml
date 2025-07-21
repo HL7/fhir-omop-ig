@@ -2,6 +2,7 @@
 /// name = 'MeasurementMap'
 /// title = 'Mapping Observation resource to Measurement  OMOP Domain'
 /// status = 'draft'
+/// description = "This mapping maps FHIR Observation instances that are considered measurements to OMOP Measurement Table objects.  Currently, this is done by considering the category code and mapping 'vital-signs' and 'laboratory' Observations."
 
 uses "http://hl7.org/fhir/StructureDefinition/Observation" alias Observation as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target

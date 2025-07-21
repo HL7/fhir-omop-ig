@@ -2,6 +2,7 @@
 /// name = 'ProcedureMap'
 /// title = 'Mapping Procedure resource to Procedure Occurrence OMOP Domain'
 /// status = 'draft'
+/// description = "This mapping maps FHIR Procedure instances to OMOP Procedure Occurrence Table objects."
 
 uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target

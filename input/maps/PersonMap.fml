@@ -2,6 +2,7 @@
 /// name = 'PersonMap'
 /// title = 'Mapping Patient resource to Person OMOP Domain'
 /// status = 'draft'
+/// description = "This mapping maps FHIR Patient instances to OMOP Person Table objects."
 
 uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Person" alias PersonTable as target

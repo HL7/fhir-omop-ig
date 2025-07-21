@@ -2,6 +2,7 @@
 /// name = 'MedicationMap'
 /// title = 'Mapping MedicationStatement resource to DrugExposure OMOP Domain'
 /// status = 'draft'
+/// description = "This mapping maps FHIR MedicationStatement instances to OMOP Drug Exposure Table objects.  NOTE: It does not map FHIR MedicationRequest instances although there is a discussion of those instances in the notes."
 
 uses "http://hl7.org/fhir/StructureDefinition/MedicationStatement" alias MedState as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugExpTable as target

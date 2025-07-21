@@ -3,7 +3,7 @@
 /// title = 'Mapping Allergy resource to Observation OMOP Domain'
 /// status = 'draft'
 
-/// description = "This mapping AllergyIntolerance FHIR instances to OMOP Observation Table objects."
+/// description = "This mapping maps FHIR AllergyIntolerance instances to OMOP Observation Table objects."
 
 uses "http://hl7.org/fhir/StructureDefinition/AllergyIntolerance" alias Allergy as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObservationTable as target
