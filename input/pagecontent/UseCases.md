@@ -86,7 +86,7 @@ An example of this use case could involve a healthcare provider using an AI mode
 
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b>FHIR to OMOP Transformation for AI Training and Classification</b></figcaption>
+<figcaption><b></b></figcaption>
 <img src="fhir_omop_ai_diagram.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Transformation for AI Training and Classification"/>
 </figure>
 {::options parse_block_html="true" /}
