@@ -2,6 +2,7 @@ The successful implementation of FHIR-to-OMOP transformations requires careful b
 
 ### ETL Documentation 
 FHIR-to-OMOP implementations benefit from comprehensive ETL documentation that specifies mapping choices and clearly articulates assumptions made during the transformation process. This documentation is a critical feature of implementations that scale over time, particularly when dealing with multiple source systems that may handle temporal data differently or have varying levels of data completeness. In any OMOP instance that is populated with a feed that has undergone a FHIR to OMOP transformation, the differences in purpose and structure of the underlying FHIR sources and the OMOP CDM dictate transformation choices that may need to be made to best serve the purpose of that specific OMOP instance. Aspects of ETL design rationale that should be documented include:
+
      * The limitations of certain mappings (e.g., MedicationRequest to drug_exposure).
      * Assumptions made during mapping (e.g., inferred exposure based on prescription data).
      * Guidance on when to filter data (e.g., removing planned procedures).
