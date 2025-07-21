@@ -144,13 +144,42 @@ Some domains demand particular temporal fields. The following table summarises 
 
 **Domain‑specific temporal fields in OMOP**
 
-| Domain | Required Temporal Fields | Notes |
-|---|---|---|
-| Condition | `condition_start_date` (required) / `condition_end_date` (optional) | Diagnosis date mandatory; end date often NULL for chronic illnesses. |
-| Drug Exposure | `drug_exposure_start_date` (required) / `drug_exposure_end_date` (optional) | Records prescription fill and, where known, supply duration. |
-| Procedure | `procedure_date` (required) | Exact date for surgical or diagnostic procedures. |
-| Visit Occurrence | `visit_start_date`, `visit_end_date` (both required) | Defines the encounter window. |
-| Measurement / Observation | `measurement_date` (required) | Day‑level precision generally adequate; hour‑level detail, if crucial, must be stored elsewhere. |
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Domain</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Required Temporal Fields</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Condition</td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_start_date</code> (required) / <code>condition_end_date</code> (optional)</td>
+      <td style="border: 1px solid #d0d7de;">Diagnosis date mandatory; end date often NULL for chronic illnesses.</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Drug Exposure</td>
+      <td style="border: 1px solid #d0d7de;"><code>drug_exposure_start_date</code> (required) / <code>drug_exposure_end_date</code> (optional)</td>
+      <td style="border: 1px solid #d0d7de;">Records prescription fill and, where known, supply duration.</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Procedure</td>
+      <td style="border: 1px solid #d0d7de;"><code>procedure_date</code> (required)</td>
+      <td style="border: 1px solid #d0d7de;">Exact date for surgical or diagnostic procedures.</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Visit Occurrence</td>
+      <td style="border: 1px solid #d0d7de;"><code>visit_start_date</code>, <code>visit_end_date</code> (both required)</td>
+      <td style="border: 1px solid #d0d7de;">Defines the encounter window.</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Measurement / Observation</td>
+      <td style="border: 1px solid #d0d7de;"><code>measurement_date</code> (required)</td>
+      <td style="border: 1px solid #d0d7de;">Day‑level precision generally adequate; hour‑level detail, if crucial, must be stored elsewhere.</td>
+    </tr>
+  </tbody>
+</table>
 
 #### Limitations and Intra‑Day Challenges
 The absence of sub‑day precision poses analytical hurdles. Intensive‑care interventions, rapid laboratory results, and overlapping medication administrations can occur within minutes; once converted to OMOP all such events collapse onto the same calendar day. Analysts must therefore supplement with auxiliary timestamp stores or infer ordering through other means. Likewise, **temporal ties**—multiple events stamped with the same date—demand caution in sequence analyses lest spurious causal relationships be inferred.
