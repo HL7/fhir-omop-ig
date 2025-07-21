@@ -401,7 +401,7 @@ curl 'https://echidna.fhir.org/r5/CodeSystem/$lookup' \
     }
   ]
 }
-
+```
 
 ### [ConceptMap/$translate](https://www.hl7.org/fhir/R5/conceptmap-operation-translate.html)
 
