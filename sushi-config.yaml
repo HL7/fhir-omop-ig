@@ -25,7 +25,8 @@ extension:
     valueInteger: 1
   - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-wg
     valueCode: brr
-
+parameters:
+  produce-jekyll-data: true
 pages:
   index.md:
     title: Introduction

@@ -42,14 +42,15 @@
 <page key="many" name="(many)"/>
 <page key="credits" name="Acknowledgements"/>
 <page key="artifacts" name="Artifacts Summary"/>
+<page key="CodeableConceptPattern" name="CodeableConcept Map Patterns"/>
 <page key="codemappings" name="Coded Field Mapping Principles"/>
 <page key="F2OGeneralIssues" name="Common Challenges When Transforming FHIR to OMOP"/>
-<page key="CodeMappingPatterns" name="FHIR to OMOP Code Mapping Patterns"/>
-<page key="howtousethisguide" name="How to Use This Guide"/>
+<page key="CodeMappingBasePattern" name="FHIR to OMOP Code Mapping Patterns"/>
 <page key="index" name="Introduction"/>
-<page key="ProfileGeneralConsiderations" name="Resource &amp; Profile Considerations"/>
 <page key="toc" name="Table of Contents"/>
+<page key="technical_artifacts" name="Technical Artifacts"/>
 <page key="TerminologyServer" name="Terminology Server API Utilization"/>
 <page key="StrategiesBestPractices" name="Transformation Strategies &amp; Best Practices"/>
 <page key="UseCases" name="Use Cases"/>
+<page key="ValueAsConceptPattern" name="Value-as-Concept Map Pattern"/>
 </specification>
