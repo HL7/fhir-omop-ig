@@ -70,7 +70,7 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
     </tr>
     <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">Lukasz Kazmarek</td>
-      <td style="border: 1px solid #d0d7de;">Roche</td>
+      <td style="border: 1px solid #d0d7de;">F. Hoffmann-La Roche AG</td>
     </tr>
   </tbody>
 </table>
