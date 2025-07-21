@@ -432,4 +432,4 @@ Throughout this project, more than 100 individuals from over 70 organizations—
   </tbody>
 </table>
 
-We recognize that this guide establishes an important foundation, and also acknowledge that many opportunities for additional data domains and use cases remain. Please eMail https://www.hl7vulcan.org/contact-us with questions or comments falling outside the established HL7 balloting process. We welcome your feedback and encourage continued collaborations to more fully realize the transformative potential that these two complementary standards can bring to advancing human health.
+We recognize that this guide establishes an important foundation, and also acknowledge that many opportunities for additional data domains and use cases remain. Please eMail the [Vulcan PMO](mailto:[email@domain.com](https://www.hl7vulcan.org/contact-us)) with questions or comments falling outside the established HL7 balloting process. We welcome your feedback and encourage continued collaborations to more fully realize the transformative potential that these two complementary standards can bring to advancing human health.
