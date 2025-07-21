@@ -333,15 +333,69 @@ INSERT INTO observation (
 
 #### Example CodeableConcept Free Text Field Mapping Summary 
 
-| Scenario | OMOP Field | Value | Transformation Notes |
-|----------|------------|-------|---------------------|
-| **User-Selected Coding** | condition_concept_id | 201826 | Direct mapping from userSelected SNOMED code |
-| | condition_source_concept_id | 201826 | Source code already standard |
-| | condition_source_value | "Type 2 diabetes" | Preserves user-entered text |
-| **Ambiguous Language** | condition_concept_id | 201820 | General diabetes concept due to ambiguity |
-| | condition_source_concept_id | 0 | No source coding available |
-| | qualifier_source_value | "LOW_SPECIFICITY" | Quality flag for clinical review |
-| **Medical Abbreviations** | condition_concept_id | 4329847 | MI mapped to standard concept |
-| | observation_concept_id | 4000045 | SOB mapped to dyspnea concept |
-| | qualifier_source_value | "HISTORY_OF", "PATIENT_COMPLAINT" | Temporal and clinical context preserved |
-
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Scenario</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Field</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Value</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Transformation Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">User-Selected Coding</td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">201826</td>
+      <td style="border: 1px solid #d0d7de;">Direct mapping from userSelected SNOMED code</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_source_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">201826</td>
+      <td style="border: 1px solid #d0d7de;">Source code already standard</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">"Type 2 diabetes"</td>
+      <td style="border: 1px solid #d0d7de;">Preserves user-entered text</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Ambiguous Language</td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">201820</td>
+      <td style="border: 1px solid #d0d7de;">General diabetes concept due to ambiguity</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_source_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">0</td>
+      <td style="border: 1px solid #d0d7de;">No source coding available</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>qualifier_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">"LOW_SPECIFICITY"</td>
+      <td style="border: 1px solid #d0d7de;">Quality flag for clinical review</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Medical Abbreviations</td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">4329847</td>
+      <td style="border: 1px solid #d0d7de;">MI mapped to standard concept</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">4000045</td>
+      <td style="border: 1px solid #d0d7de;">SOB mapped to dyspnea concept</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>qualifier_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">"HISTORY_OF", "PATIENT_COMPLAINT"</td>
+      <td style="border: 1px solid #d0d7de;">Temporal and clinical context preserved</td>
+    </tr>
+  </tbody>
+</table>
