@@ -5,8 +5,6 @@ FHIR Observation Categories serve as organizational tools within EHR systems, pr
 ## A Domain-Based Mapping Strategy
 OMOP's domain structure inherently categorizes data elements into logical groupings, with the Measurement domain handling quantitative clinical data and the Observation domain managing qualitative findings and contextual information. This existing structure effectively represents many FHIR categories without requiring explicit category mapping. At a high-level, mapping rules can be aligned with OMOP domains as reprsented in the table below However, the nuanced distinction between clinical observations and patient-reported data, or between routine clinical measurements and lifestyle assessments, may not be adequately preserved through domain assignment alone. 
 
-# FHIR to OMOP Mapping Documentation
-
 <style>
     table {
         border-collapse: collapse;
