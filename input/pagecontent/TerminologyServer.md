@@ -473,4 +473,3 @@ curl 'https://echidna.fhir.org/r5/ConceptMap/$translate' \
 
 The resulting concept ID is `1567956`.
 
-```
