@@ -3,7 +3,7 @@ Transforming FHIR Encounter resources to OMOP presents several unique challenges
 
 ## Identifier Mapping Challenges
 
-The transformation of FHIR `Encounter.identifier` elements exemplifies the complexity inherent in FHIR to OMOP mappings. These identifiers serve as business identifiers for encounters and may represent various types of unique values including medical record numbers, encounter IDs, or proprietary tracking identifiers used by healthcare systems. The challenge lies in determining the most appropriate target field in OMOP while maintaining data integrity and compliance standards.
+The transformation of FHIR `Encounter.identifier` elements exemplifies the complexity found in FHIR to OMOP mappings. Healthcare systems use hese identifiers for a variety of business use cases. Encounters ids may contain various types of unique values including medical record numbers, encounter IDs, or proprietary tracking identifiers, any of which may be used for patient re-identification, and thus present a risk to privacy requirements. The challenge lies in determining the most appropriate target field(s) in OMOP while maintaining data integrity and compliance standards.
 
 Two primary mapping approaches present themselves, each with distinct considerations:
 
@@ -13,7 +13,7 @@ Two primary mapping approaches present themselves, each with distinct considerat
 
 ## Technical and Structural Limitations
 
-Several technical constraints can impact the feasibility of identifier transformation:
+Several technical constraints can impact identifier transformation:
 
 **Data Type and Length Constraints**: OMOP database fields may have limitations that prevent the storage of certain identifier types. For example, the `visit_source_value` field's varchar(50) character limit may be insufficient for storing GUIDs or complex identifier strings that exceed this constraint.
 
@@ -47,7 +47,7 @@ Given the complexity and variability of identifier structures in FHIR, a standar
 
 **Case-by-Case Evaluation**: Conduct thorough analysis of available FHIR identifier elements and their semantic meaning within the source system context. This evaluation should inform the selection of appropriate target fields in OMOP while considering data integrity and compliance requirements.
 
-**Extension Table Implementation**: Consider developing separate facility or extension tables specifically designed to store source identifiers. This approach preserves identifier information while maintaining the integrity of core OMOP tables and provides flexibility for complex identifier structures.
+**Extension Table Implementation**: Consider developing separate, extension tables specifically designed to store source identifiers. This approach preserves identifier information while maintaining the integrity of core OMOP tables and provides flexibility for complex identifier structures.
 
 **Selective Transformation**: In some cases, the most appropriate approach may be to exclude certain identifiers from the transformation process altogether, particularly when they provide no analytical value or when technical constraints make their storage impractical.
 
