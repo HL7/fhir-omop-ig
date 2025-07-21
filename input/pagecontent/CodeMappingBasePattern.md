@@ -10,8 +10,8 @@ Future enhoncements to this guide or groups developing additional implementation
 
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b>FHIR to OMOP Coded Data Base Mapping Pattern</b></figcaption>
-<img src="fhir_omop_base_pattern.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Coded Data Base Mapping Pattern"/>
+<figcaption><b></b></figcaption>
+<img src="fhir_omop_base_pattern.svg" style="padding-top:0;padding-bottom:30px" width="400" alt="FHIR to OMOP Coded Data Base Mapping Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
 
@@ -79,13 +79,47 @@ This example demonstrates the straightforward application of the base pattern, s
 
 #### Field Mapping Details
 
-| OMOP Field | Value | Source | Transformation Notes |
-|------------|--------|---------|---------------------|
-| `condition_concept_id` | 201826 | OMOP vocabulary lookup | Standard concept from Step 2 |
-| `condition_source_value` | 44054006 | FHIR code.coding[0].code | Original source code preserved |
-| `condition_source_concept_id` | 201826 | Same as standard concept | Source code already standard |
-| `condition_start_date` | 2011-05-24 | FHIR onsetDateTime | Date extracted from FHIR |
-| `person_id` | [mapped_person_id] | FHIR subject reference | Patient reference resolution |
-
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Field</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Value</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Source</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Transformation Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>condition_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">201826</td>
+      <td style="border: 1px solid #d0d7de;">OMOP vocabulary lookup</td>
+      <td style="border: 1px solid #d0d7de;">Standard concept from Step 2</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>condition_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">44054006</td>
+      <td style="border: 1px solid #d0d7de;">FHIR code.coding[0].code</td>
+      <td style="border: 1px solid #d0d7de;">Original source code preserved</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>condition_source_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">201826</td>
+      <td style="border: 1px solid #d0d7de;">Same as standard concept</td>
+      <td style="border: 1px solid #d0d7de;">Source code already standard</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>condition_start_date</code></td>
+      <td style="border: 1px solid #d0d7de;">2011-05-24</td>
+      <td style="border: 1px solid #d0d7de;">FHIR onsetDateTime</td>
+      <td style="border: 1px solid #d0d7de;">Date extracted from FHIR</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>person_id</code></td>
+      <td style="border: 1px solid #d0d7de;">[mapped_person_id]</td>
+      <td style="border: 1px solid #d0d7de;">FHIR subject reference</td>
+      <td style="border: 1px solid #d0d7de;">Patient reference resolution</td>
+    </tr>
+  </tbody>
+</table>
 
 The example above represents a straightforward transformation scenario with a direct vocabulary match and domain alignment. Real-world implementations should prepare for more complex scenarios involving non-standard vocabularies, domain mismatches, and mapping gaps, but this base pattern provides the foundational framework for handling all transformation cases systematically and consistently.

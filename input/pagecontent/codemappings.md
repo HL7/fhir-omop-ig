@@ -4,7 +4,7 @@ Unlike purely schema-to-schema transformations, transforming FHIR to OMOP requir
 Coded source data in FHIR refers to information represented using standardized code systems such as SNOMED CT, LOINC, RxNorm, and other established terminologies. When mapping these FHIR elements to OMOP, implementers must ensure that codes are appropriately translated into the OHDSI Standardized Vocabularies and that the resulting data aligns with the correct domain classifications within the OMOP model.
 
 #### Key Elements of FHIR Coded Data
-Coded data in FHIR resources minimally employ a pattern specifying a code and the coding system the code is derived from, and optional display and version attributes (see: [Using Codes in Resources](https://www.hl7.org/fhir/terminologies.html#4.1)) 
+Coded data in FHIR resources minimally employ a pattern specifying a code and the coding system the code is derived from, and optional display and version attributes (see: [FHIR Terminology, Using Codes in Resources](https://www.hl7.org/fhir/terminologies.html#4.1)) 
 
 * **Code**: The actual code from a standardized code system.
 * **System**: The code system from which the code is drawn (e.g., SNOMED CT, LOINC).
@@ -13,20 +13,25 @@ Coded data in FHIR resources minimally employ a pattern specifying a code and th
 
 The code and system elements required in FHIR are also key search parameters when identifiying target concepts in the OHDSI Standardized Vocabularies. A FHIR Code System is represented in the OMOP CDM vocabulary table as a unique identifer (vocabulary_id) with an acompanying human-readable name (vocabulary_name).  A Code or Coding in FHIR is represented in the OMOP CDM concept table as a 'concept_code', which is linked to the vocabulary table via a vocabulary_id foreign key.  
 
+#### Mapping Complexity and Validation
+Ensuring valid mappings from different source coding systems requires careful attention to the nature of the relationships between source and target concepts. While some mappings represent true one-to-one relationships that can be transformed directly, many cases involve one-to-many relationships between a coded source and multiple OMOP target concepts. These target concepts may reside within a single domain or span multiple domains within the OMOP structure. 
+
+The absence of established mappings in the OHDSI Standardized Vocabularies significantly increases the risk of incorrect or ambiguous data translation. Such gaps require careful evaluation and potentially custom mapping and / or concept target development to maintain data integrity during the transformation process. 
+
 ### OMOP Domain Assignment Logic
 Domain assignment follows a vocabulary-driven approach that prioritizes semantic accuracy over structural assumptions based on FHIR resource types. This methodology recognizes that OMOP's domain organization may differ from FHIR's resource categorization, requiring careful attention to vocabulary-based domain assignments to ensure proper analytical representation. The primary consideration in domain assignment involves using the domain_id from the OMOP concept table as the domain assignment source. This vocabulary-driven approach ensures that clinical concepts from many source systems are stored in a uniform manner within the OMOP ecosystem.
 
 FHIR resource type considerations serve as secondary guidance when vocabulary domain assignments are ambiguous or when multiple valid domain options exist for a particular concept. This secondary role ensures that transformation logic can fall back to resource type expectations while maintaining the priority of vocabulary-driven domain assignment. Clinical context application becomes necessary when domain assignments conflict with expected clinical meaning, requiring implementer judgment to resolve semantic inconsistencies that may arise from vocabulary evolution or mapping edge cases.
 
 #### Impact of OMOP Standard Concepts & Domains
-The OMOP CDM is designed for large‑scale aggregation, whether in centralized repositories or distributed research networks. Its domain structure and Standardized Vocabularies allow data from heterogeneous sources—each with distinct schemas and code systems—to be normalized into a single analytic framework. Every concept is assigned a status of **Standard**, **Non‑Standard**, or **Classification**; only one Standard concept exists for each clinical idea within a domain, eliminating ambiguity and enabling cross‑site comparability. ([See this page for additional details on the OMOP Vocabulary Concept Structure](https://ohdsi.github.io/CommonDataModel/dataModelConventions.html#Concepts) )
+The OMOP CDM is designed for large‑scale aggregation, whether in centralized repositories or distributed research networks. Its domain structure and Standardized Vocabularies allow data from heterogeneous sources—each with distinct schemas and code systems—to be normalized into a single analytic framework. Every concept is assigned a status of **Standard**, **Non‑Standard**, or **Classification**; only one Standard concept exists for each clinical idea within a domain, eliminating ambiguity and enabling cross‑site comparability. (See: [OMOP Vocabulary Concept Structure](https://ohdsi.github.io/CommonDataModel/dataModelConventions.html#Concepts) for additional details)
 
-Because a single FHIR resource may contains multiple clinical ideas, each coded element must be evaluated independently. A FHIR Observation may yield Measurement, Condition Occurrence, or Procedure Occurrence records in OMOP, depending on the specific codes it carries. Terminologies commonly used in FHIR—such as LOINC, SNOMED CT, and RxNorm—frequently align with OMOP Standard concepts. In cases where no Standard mapping exists, particularly in cases such as HL7‑maintained value sets, or local codes, a extension concepts may be added to the OMOP concept table  with `concept_id` values of 2,000,000,000 (2 billion) or higher may be created. These “2-billionaires” IDs preserve information without loss and can be retired once the community adopts an official Standard concept. Regular vocabulary updates are therefore essential, both for pipelines ingesting new data and for legacy OMOP datastores. ([See this page for more information](https://ohdsi.github.io/CommonDataModel/customConcepts.html) ) 
+Because a single FHIR resource may contains multiple clinical ideas, each coded element must be evaluated independently. A FHIR Observation may yield Measurement, Condition Occurrence, or Procedure Occurrence records in OMOP, depending on the specific codes it carries. Terminologies commonly used in FHIR—such as LOINC, SNOMED CT, and RxNorm—frequently align with OMOP Standard concepts. In cases where no Standard mapping exists, particularly in cases such as HL7‑maintained value sets, or local codes, a extension concepts may be added to the OMOP concept table  with `concept_id` values of 2,000,000,000 (2 billion) or higher may be created. These “2-billionaires” IDs preserve information without loss and can be retired once the community adopts an official Standard concept. Regular vocabulary updates are therefore essential, both for pipelines ingesting new data and for legacy OMOP datastores. (See: [OMOP CDM: Custom Concepts](https://ohdsi.github.io/CommonDataModel/customConcepts.html) for more information) 
 
 ### Automated and Manual Concept Mapping Support
-Leveraging a FHIR terminology server (e.g.: https://echidna.fhir.org) can facilitate automated mapping processes, particularly for free text or non-standard codes, while producing consistent mapping results across transformation instances. This approach reduces manual intervention (and cost) while improving the reliability of code translation activities.
+Leveraging a FHIR terminology server (e.g.: [Echidna ](https://echidna.fhir.org)) can facilitate automated mapping processes, particularly for free text or non-standard codes, while producing consistent mapping results across transformation instances. This approach reduces manual intervention (and cost) while improving the reliability of code translation activities.
 
-The  [OHDSI Athena](https://athena.ohdsi.org/) website  provides both access to request OHDSI Vocabulary downloads and a comprehensive searchable database that serves dual purposes for mapping activities. Implementers can use this resource to manually browse available vocabularies and identify codes that appropriately match source concepts to Standard OMOP concepts and also receive vocabulary updates when new versions of the OHDSI Stabdardized Vocabularies are published.  Utilization of the OHDSI Standardized Vocabularies, whether via a FHIR API, downloads utilized in local systems or via manual interation with the Athena search UI is essential for validating mappings and resolving complex terminology translation challenges that arise during FHIR to OMOP transformation projects.
+The  [OHDSI Athena](https://athena.ohdsi.org/) website  provides both access to request OHDSI Vocabulary downloads and a comprehensive searchable database that serves dual purposes for mapping activities. Implementers can use this resource to manually browse available vocabularies and identify codes that appropriately match source concepts to Standard OMOP concepts and also receive vocabulary updates when new versions of the OHDSI Stabdardized Vocabularies are published.  Utilization of the OHDSI Standardized Vocabularies is essential for validating mappings and resolving complex terminology translation challenges that arise during FHIR to OMOP transformation.
 
 #### Standard OMOP Vocabulary API Lookup Methodology
 All transformation patterns utilize a consistent API lookup approach that forms the foundation for automated vocabulary validation and concept identification. The lookup process involves querying a FHIR terminology server hosting the OHDSI Stanbdardized Vocabularies, such as [Echidna](https://echidna.fhir.org) to identify matching concepts based on the source code and vocabulary system, followed by comprehensive analysis of the returned results.
@@ -35,14 +40,9 @@ All transformation patterns utilize a consistent API lookup approach that forms 
 2. Lookup concept properties: Utilise the [CodeSystem/$lookup](TerminologyServer.md#codesystem--lookup) FHIR terminology server operation.
 3. If the concept is non-standard: Lookup the "Maps to" concept ID using the $lookup operation.
 
-The lookup analysis encompasses several critical components that ensure proper concept identification and validation. Implementers must verify OMOP concept existence to confirm that the source code has a corresponding representation in the OHDSI Standardized Vocabularies. The Standard concept status requires confirmation through the presence of the 'S' flag, indicating that the concept can be used directly in OMOP analytics without requiring additional concept relationship mapping. Vocabulary alignment validation ensures that the identified concept originates from the expected terminology system and maintains semantic consistency with the source data. Domain assignment determination identifies the appropriate OMOP domain table for storing the clinical information, which may differ from expectations based solely on FHIR resource type.
+The lookup analysis encompasses several critical components that ensure proper concept identification and validation. Implementers must verify OMOP concept existence to confirm that the source code has a corresponding representation in the OHDSI Standardized Vocabularies. The Standard concept status requires confirmation through the presence of the 'S' flag, indicating that the concept can be used directly in OMOP analytics without requiring additional concept relationship mapping. Vocabulary alignment validation ensures that the identified concept originates from the expected terminology system and maintains semantic consistency with the source data. Domain assignment determination identifies the appropriate OMOP domain table for storing the clinical information, which may differ from expectations based solely on FHIR resource type. (See: [Terminology Server API Utilization](https://build.fhir.org/ig/HL7/fhir-omop-ig/TerminologyServer.html) for detailed examples.) 
 
 This systematic lookup methodology via an API provides a foundation for all subsequent mapping decisions and ensures consistent handling of vocabulary validation across different transformation patterns. The approach supports both automated processing and manual validation workflows, enabling implementers to maintain high data quality standards while achieving efficient transformation throughput.
-
-### Mapping Complexity and Validation
-Ensuring valid mappings from different source coding systems requires careful attention to the nature of the relationships between source and target concepts. While some mappings represent true one-to-one relationships that can be transformed directly, many cases involve one-to-many relationships between a coded source and multiple OMOP target concepts. These target concepts may reside within a single domain or span multiple domains within the OMOP structure. 
-
-The absence of established mappings in the OHDSI Standardized Vocabularies significantly increases the risk of incorrect or ambiguous data translation. Such gaps require careful evaluation and potentially custom mapping and / or concept target development to maintain data integrity during the transformation process. 
 
 ### Code Prioritization Framework
 When multiple codes are present for a single clinical concept, implementers must apply a systematic prioritization hierarchy across all transformation patterns to ensure consistency and clinical validity. This framework addresses the complex reality of multiple coding scenarios by establishing clear precedence rules that eliminate ambiguity in code selection while ensuring reproducible transformation outcomes.
@@ -141,31 +141,156 @@ Type concepts are implemented through fields that follow a specific naming conve
 
 Note the table below is only a partial list.  A complete listing of type concepts can be found in the [OHDSI Standardized Vocabularies](https://athena.ohdsi.org/search-terms/terms?domain=Type+Concept&standardConcept=Standard&page=1&pageSize=15&query=)   and a detailed explanation is available on the [ OHDSI Vocabulary wiki](https://github.com/OHDSI/Vocabulary-v5.0/wiki/Vocab.-TYPE_CONCEPT).
 
-| OMOP Domain | Field Name | Type Concept Examples | Description |
-|-------------|------------|----------------------|-------------|
-| **[Drug Exposure](https://ohdsi.github.io/CommonDataModel/cdm54.html#drug_exposure)** | `drug_type_concept_id` | EHR prescription | Prescription written by physician in electronic health record |
-| | | EHR administration record | Drug administered to patient (inpatient/outpatient) |
-| | | Pharmacy claim | Prescription filled at pharmacy (claims data) |
-| | | Patient self-report | Medication reported by patient during encounter |
-| **[Condition Occurrence](https://ohdsi.github.io/CommonDataModel/cdm54.html#condition_occurrence)** | `condition_type_concept_id` | EHR encounter diagnosis | Diagnosis recorded during clinical encounter |
-| | | EHR problem list | Condition documented in patient's problem list |
-| | | Claim primary diagnosis | Primary diagnosis from insurance claim |
-| | | Registry | Condition recorded in disease registry |
-| **[Procedure Occurrence](https://ohdsi.github.io/CommonDataModel/cdm54.html#procedure_occurrence)** | `procedure_type_concept_id` | EHR encounter record | Procedure documented during clinical visit |
-| | | EHR order | Procedure ordered by physician |
-| | | Claim primary procedure | Primary procedure from insurance claim |
-| | | Registry | Procedure recorded in clinical registry |
-| **[Visit Occurrence](https://ohdsi.github.io/CommonDataModel/cdm54.html#visit_occurrence)** | `visit_type_concept_id` | EHR encounter | Visit documented in electronic health record |
-| | | Claim | Visit information from insurance claim |
-| | | Registry | Visit recorded in clinical registry |
-| **[Measurement](https://ohdsi.github.io/CommonDataModel/cdm54.html#measurement)** | `measurement_type_concept_id` | EHR | Laboratory or vital sign measurement from EHR |
-| | | Claim | Measurement information from insurance claim |
-| | | Registry | Measurement from clinical registry or study |
-| | | Patient reported | Measurement reported by patient |
-| **[Observation](https://ohdsi.github.io/CommonDataModel/cdm54.html#observation)** | `observation_type_concept_id` | EHR | Clinical observation documented in EHR |
-| | | Claim | Observation information from insurance claim |
-| | | Survey | Data collected through patient survey |
-| | | Registry | Observation from clinical registry |
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Domain</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Field Name</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Type Concept Examples</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#drug_exposure">Drug Exposure</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>drug_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR prescription</td>
+      <td style="border: 1px solid #d0d7de;">Prescription written by physician in electronic health record</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">EHR administration record</td>
+      <td style="border: 1px solid #d0d7de;">Drug administered to patient (inpatient/outpatient)</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Pharmacy claim</td>
+      <td style="border: 1px solid #d0d7de;">Prescription filled at pharmacy (claims data)</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Patient self-report</td>
+      <td style="border: 1px solid #d0d7de;">Medication reported by patient during encounter</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#condition_occurrence">Condition Occurrence</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR encounter diagnosis</td>
+      <td style="border: 1px solid #d0d7de;">Diagnosis recorded during clinical encounter</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">EHR problem list</td>
+      <td style="border: 1px solid #d0d7de;">Condition documented in patient's problem list</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Claim primary diagnosis</td>
+      <td style="border: 1px solid #d0d7de;">Primary diagnosis from insurance claim</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Registry</td>
+      <td style="border: 1px solid #d0d7de;">Condition recorded in disease registry</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#procedure_occurrence">Procedure Occurrence</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>procedure_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR encounter record</td>
+      <td style="border: 1px solid #d0d7de;">Procedure documented during clinical visit</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">EHR order</td>
+      <td style="border: 1px solid #d0d7de;">Procedure ordered by physician</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Claim primary procedure</td>
+      <td style="border: 1px solid #d0d7de;">Primary procedure from insurance claim</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Registry</td>
+      <td style="border: 1px solid #d0d7de;">Procedure recorded in clinical registry</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#visit_occurrence">Visit Occurrence</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>visit_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR encounter</td>
+      <td style="border: 1px solid #d0d7de;">Visit documented in electronic health record</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Claim</td>
+      <td style="border: 1px solid #d0d7de;">Visit information from insurance claim</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Registry</td>
+      <td style="border: 1px solid #d0d7de;">Visit recorded in clinical registry</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#measurement">Measurement</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>measurement_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR</td>
+      <td style="border: 1px solid #d0d7de;">Laboratory or vital sign measurement from EHR</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Claim</td>
+      <td style="border: 1px solid #d0d7de;">Measurement information from insurance claim</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Registry</td>
+      <td style="border: 1px solid #d0d7de;">Measurement from clinical registry or study</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Patient reported</td>
+      <td style="border: 1px solid #d0d7de;">Measurement reported by patient</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#observation">Observation</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>observation_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR</td>
+      <td style="border: 1px solid #d0d7de;">Clinical observation documented in EHR</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Claim</td>
+      <td style="border: 1px solid #d0d7de;">Observation information from insurance claim</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Survey</td>
+      <td style="border: 1px solid #d0d7de;">Data collected through patient survey</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Registry</td>
+      <td style="border: 1px solid #d0d7de;">Observation from clinical registry</td>
+    </tr>
+  </tbody>
+</table>  
 
 ### Historical Code and Code System Transformations
 Healthcare data transformation frequently encounters historical coding systems that are no longer actively maintained or updated. These legacy codes present unique challenges during OMOP CDM implementation due to their deprecated status and complex mapping requirements. ICD-9 codes represent the most prominent example, having been largely replaced by ICD-10 in clinical settings. These codes commonly appear in legacy electronic health records, retrospective datasets, and clinical documentation predating modern coding system adoption.
@@ -238,7 +363,7 @@ Organizations utilizing data coded in historical coding systems should establish
 ### Multiple FHIR Reference Codings to OMOP 
 The transformation of FHIR resources to the OMOP CDM frequently presents scenarios where a single clinical concept on OMOP contains multiple codes within the FHIR resource structure.  This scenario introduces complexity in the mapping process because it requires determining which code (or codes) should be used to represent the concept in the OMOP CDM. The mapping workflow begins with comprehensive identification of all coding elements within the FHIR resource. Each code requires documentation of its associated coding system through the system URI, along with any explicit ranking or preference indicators present in the source data.
 
-To ensure consistency and clinical validity implementers must apply the Code Prioritization Framework logic outlined above. Once the primary code is selected, the system should perform concept mapping to identify the corresponding Stndard OMOP concept_id. When direct mapping is unavailable, the system should map to the closest parent concept while maintaining detailed documentation of all mapping decisions for audit and quality assurance purposes.
+To ensure consistency and clinical validity implementers must apply the [Code Prioritization Framework](https://build.fhir.org/ig/HL7/fhir-omop-ig/UseCases.html) logic outlined above. Once the primary code is selected, the system should perform concept mapping to identify the corresponding Stndard OMOP concept_id. When direct mapping is unavailable, the system should map to the closest parent concept while maintaining detailed documentation of all mapping decisions for audit and quality assurance purposes.
 
 Consider the following scenario where FHIR data contains multiple coding systems representing the same clinical concept. When encountering a diagnosis with both ICD-10 and SNOMED CT codes in the coding array, the selection process prioritizes the SNOMED CT code as the preferred standard vocabulary:
 

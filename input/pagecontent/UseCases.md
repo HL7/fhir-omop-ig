@@ -27,7 +27,7 @@ All collected data are maintained and curated by the [All of Us Data and Researc
 
 The All of Us Program collaborates with approximately 50 Health Provider Organizations (HPOs) across the United States to recruit participants. The All of Us Research Program leverages OMOP to standardize and structure its collected data, ensuring feasibility and facilitating researchers' ability to access and integrate data from diverse sources. These HPO partners extract participant EHR data, convert it into OMOP format, and submit 22 OMOP tables to the DRC on a quarterly basis. Given that EHR data represent the greatest demand for FHIR to OMOP mapping among the various All of Us data types, the All of Us program exemplifies real-world use cases for the utilization of EHR-sourced FHIR data transformed onto the OMOP CDM to generate evidence. 
 
-### Published Studies Using All of Us Data
+#### Published Studies Using All of Us Data
 Studies were selected as examples based on the following criteria:
 
 1. Predominant use of All of Us EHR data.
@@ -66,7 +66,7 @@ These studies referenced in the Vulcan RWD IG specify the data elements required
 
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b>Vulcan RWD Conceptual Application</b></figcaption>
+<figcaption><b></b></figcaption>
 <img src="rwd_conceptual_application.png" style="padding-top:0;padding-bottom:30px" width="800" alt="Vulcan RWD Conceptual Application"/>
 </figure>
 {::options parse_block_html="true" /}
@@ -74,7 +74,7 @@ These studies referenced in the Vulcan RWD IG specify the data elements required
 ### FHIR to OMOP Transformation for AI Training and Classification 
 The healthcare industry is increasingly leveraging Artificial Intelligence (AI) to extract actionable insights from clinical data. The OMOP Common Data Model is widely used for AI model training due to its robust, standardized structure designed to support large-scale data analysis, including clinical outcomes, drug safety, and efficacy research. However, FHIR (Fast Healthcare Interoperability Resources) is a newer, more flexible standard for health information exchange and is widely adopted for its ability to support real-time clinical workflows, such as through electronic health records (EHRs).
 
-While OMOP provides a reliable foundation for building AI models, FHIR's versatility and growing adoption present challenges when it comes to directly applying AI models trained on OMOP data. The key issue is that AI models typically require data in a highly structured format (such as OMOP), but FHIR resources are more granular and often transmitted in a fragmented or single-message form. This misalignment makes it difficult to directly use FHIR for training AI models, which is why a transformation from FHIR to OMOP is necessary.
+While OMOP provides a reliable foundation for building AI models, FHIR's versatility and growing adoption make it a popular choice for applying AI, which presents challenges when it comes to directly applying OMOP-trained AI models trained to FHIR data.  The key issue is that AI models typically require data in a highly structured format (such as OMOP), but FHIR resources are more granular and often transmitted in a fragmented or single-message form. This misalignment makes it difficult to directly use FHIR for training AI models, which is why a transformation from FHIR to OMOP is necessary.
 
 #### Solution: FHIR to OMOP Transformation 
 To bridge this gap, the use of Extract, Transform, Load (ETL) processes to convert FHIR data into OMOP format has emerged as a critical solution. By transforming FHIR resources—whether from a single message (such as a single patient encounter or medication prescription) or aggregated messages—into the standardized OMOP format, healthcare organizations can train AI models on OMOP data while leveraging real-time clinical data in FHIR for classification tasks.
@@ -86,7 +86,7 @@ An example of this use case could involve a healthcare provider using an AI mode
 
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b>FHIR to OMOP Transformation for AI Training and Classification</b></figcaption>
+<figcaption><b></b></figcaption>
 <img src="fhir_omop_ai_diagram.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Transformation for AI Training and Classification"/>
 </figure>
 {::options parse_block_html="true" /}

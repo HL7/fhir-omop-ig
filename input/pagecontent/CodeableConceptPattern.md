@@ -1,22 +1,21 @@
-### CodeableConcept Map Patterns
-The CodeableConcept patterns addresses the challenge of transforming FHIR CodeableConcept elements that may contain multiple codes, free text, or combinations of both. This pattern recognizes the tension between FHIR's flexibility in representing clinical concepts and OMOP's requirement for standardized, unambiguous concept identification. The approach provides systematic methodology for handling the complexity inherent in CodeableConcept structures while preserving clinical meaning and maintaining data quality standards.
+The CodeableConcept patterns addresses the challenge of transforming FHIR CodeableConcept elements that may contain multiple codes, free text, or combinations of both. This pattern recognizes the tension between FHIR's flexibility in representing clinical concepts and OMOP's requirement for standardized, unambiguous concept identification. It provides systematic methodology for handling the complexity thast may arise in CodeableConcept structures while preserving clinical meaning and maintaining data quality standards.
 
-CodeableConcept elements in FHIR can contain multiple coding entries, each potentially representing the same clinical concept through different terminology systems or at different levels of granularity. This multiplicity creates opportunities for enhanced semantic representation but also introduces complexity in determining which code should serve as the primary mapping target for OMOP transformation. The pattern addresses this complexity through sophisticated assessment and prioritization logic that ensures consistent, reproducible transformation outcomes.
+CodeableConcept elements in FHIR can contain multiple coding entries, each potentially representing the same clinical concept through different terminology systems or at different levels of granularity. This variety of input provides opportunities for enhanced semantic representation but can also create complexity when determining which code should serve as the primary mapping target for OMOP transformation. The pattern addresses this complexity through assessment and prioritization logic.
 
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b>FHIR CodeableConcept to OMOP Pattern</b></figcaption>
+<figcaption><b></b></figcaption>
 <img src="codeable_concept_decision_tree.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR CodeableConcept to OMOP Pattern"/>
 </figure>
 {::options parse_block_html="true" /}
 
-The transformation process begins with assessing code multiplicity within the CodeableConcept structure, determining whether multiple structured codes exist and evaluating their relationships to each other. When multiple codes are present, the system applies the Universal Code Prioritization Framework to select the most appropriate code for OMOP mapping, considering vocabulary precedence, clinical specificity, primary designations, and temporal factors.
+The transformation process begins with assessing code multiplicity within the CodeableConcept structure, determining whether multiple structured codes exist and evaluating their relationships to each other. When multiple codes are present, the system applies the [Code Prioritization Framework](https://build.fhir.org/ig/HL7/fhir-omop-ig/codemappings.html#code-prioritization-framework) to select the most appropriate code for OMOP mapping, considering vocabulary precedence, clinical specificity, primary designations, and temporal factors.
 
 For CodeableConcepts containing only single structured codes, the process bypasses complex prioritization logic and proceeds directly to vocabulary lookup and domain assignment. This streamlined approach recognizes that single codes represent the ideal scenario for FHIR-to-OMOP transformation, eliminating ambiguity while maintaining data integrity and processing efficiency.
 
-The vocabulary lookup phase applies standard methodology to identify corresponding OMOP concepts, with particular attention to domain assignment that may differ from FHIR resource type expectations. This vocabulary-driven approach ensures that clinical concepts are stored in semantically appropriate OMOP domains, even when this conflicts with structural assumptions based on FHIR resource categorization.
+The vocabulary lookup step applies standard methodology to identify corresponding OMOP concepts, focusing on domain assignment that may differ from FHIR resource type expectations. A consistent vocabulary-driven approach ensures that clinical concepts are stored in appropriate OMOP domains, even when this conflicts with structural assumptions based on FHIR resource categorization.
 
-Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern provides mechanisms for preserving this contextual information in appropriate OMOP fields, ensuring that clinical nuance is not lost during the transformation process.
+Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern suggests preserving this contextual information in appropriate OMOP *source_value fields, (a best practice [discussed here](https://build.fhir.org/ig/HL7/fhir-omop-ig/StrategiesBestPractices.html#source-value-preservation)) ensuring that any clinical nuance is not lost during the transformation process.
 
 #### Example: Mapping No Known Allergy CodeableConcept
 
@@ -68,14 +67,54 @@ The transformation successfully preserves both the structured coded information 
 
 #### Field Mapping Details
 
-| OMOP Field | Value | Source | Transformation Notes |
-|------------|--------|---------|---------------------|
-| `observation_concept_id` | 4222295 | SNOMED 716186003 | Standard OMOP concept for "No known allergy" |
-| `observation_source_value` | 716186003 | FHIR code.coding[0].code | Original SNOMED code preserved |
-| `observation_source_concept_id` | 4222295 | Same as standard | Source code already standard |
-| `observation_date` | 2023-01-15 | FHIR recordedDate | Date of allergy status documentation |
-| `qualifier_source_value` | NKA | FHIR code.text | Free text abbreviation preserved |
-| `value_as_concept_id` | NULL | Not applicable | No additional value needed for status assertion |
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Field</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Value</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Source</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Transformation Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">4222295</td>
+      <td style="border: 1px solid #d0d7de;">SNOMED 716186003</td>
+      <td style="border: 1px solid #d0d7de;">Standard OMOP concept for "No known allergy"</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>observation_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">716186003</td>
+      <td style="border: 1px solid #d0d7de;">FHIR code.coding[0].code</td>
+      <td style="border: 1px solid #d0d7de;">Original SNOMED code preserved</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>observation_source_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">4222295</td>
+      <td style="border: 1px solid #d0d7de;">Same as standard</td>
+      <td style="border: 1px solid #d0d7de;">Source code already standard</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>observation_date</code></td>
+      <td style="border: 1px solid #d0d7de;">2023-01-15</td>
+      <td style="border: 1px solid #d0d7de;">FHIR recordedDate</td>
+      <td style="border: 1px solid #d0d7de;">Date of allergy status documentation</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>qualifier_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">NKA</td>
+      <td style="border: 1px solid #d0d7de;">FHIR code.text</td>
+      <td style="border: 1px solid #d0d7de;">Free text abbreviation preserved</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>value_as_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">NULL</td>
+      <td style="border: 1px solid #d0d7de;">Not applicable</td>
+      <td style="border: 1px solid #d0d7de;">No additional value needed for status assertion</td>
+    </tr>
+  </tbody>
+</table>
 
 In this example, the transformation successfully followed the proposed pattern, beginning with identification of the CodeableConcept input containing a negative assertion concept for "No known allergy." Since only a single SNOMED CT code was present in the coding array, the system  can bypass the prioritization logic step. An OMOP vocabulary lookup located the concept with an unexpected domain revelation - the concept mapped to the Observation domain rather than the anticipated Condition domain based on the source IPA AllergyIntolerance profile. In this onstance, there a need to complete an additional stpe was elminiated, as a standard OMOP concept was found and could be used directly.
 
@@ -85,7 +124,7 @@ Although prioritization was not required due to the single code scenario, the tr
 
 Concept relationship verification using the standard query pattern validated the concept's position within the vocabulary hierarchy, while domain classification logic demonstrated how OMOP vocabulary domain assignments take precedence over FHIR resource type expectations. The AllergyIntolerance resource type initially suggested a Condition domain mapping, but the vocabulary's assignment to the Observation domain guided the final table selection decision. Standard concept validation confirmed the S flag status, eliminating the need for concept relationship mapping and approving direct usage in the observation_concept_id field. This vocabulary-driven approach ensures semantic consistency within the OMOP ecosystem while preserving the clinical intent of the original FHIR data.
 
-### Alternative CondeableConcept Scenario: Multiple Allergy Status Codes
+### Alternative Scenario: Multiple Allergy Status Codes
 If the CodeableConcept contained both SNOMED and a local code:
 
 ```json
@@ -111,12 +150,43 @@ If the CodeableConcept contained both SNOMED and a local code:
 #### Related Allergy Concepts
 Similar concepts that might appear in allergy contexts:
 
-| SNOMED Code | Concept Name | OMOP Domain | Notes |
-|-------------|--------------|-------------|-------|
-| 716186003 | No known allergy | Observation | Status assertion |
-| 429625007 | No known food allergy | Observation | Specific category |
-| 428607008 | No known environmental allergy | Observation | Environmental focus |
-| 409137002 | No known drug allergy | Observation | Medication-specific |
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">SNOMED Code</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Concept Name</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Domain</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>716186003</code></td>
+      <td style="border: 1px solid #d0d7de;">No known allergy</td>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Observation</td>
+      <td style="border: 1px solid #d0d7de;">Status assertion</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>429625007</code></td>
+      <td style="border: 1px solid #d0d7de;">No known food allergy</td>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Observation</td>
+      <td style="border: 1px solid #d0d7de;">Specific category</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>428607008</code></td>
+      <td style="border: 1px solid #d0d7de;">No known environmental allergy</td>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Observation</td>
+      <td style="border: 1px solid #d0d7de;">Environmental focus</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>409137002</code></td>
+      <td style="border: 1px solid #d0d7de;">No known drug allergy</td>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Observation</td>
+      <td style="border: 1px solid #d0d7de;">Medication-specific</td>
+    </tr>
+  </tbody>
+</table>
 
 All these concepts map to the Observation domain, maintaining consistency in OMOP representation. A concept-based domain mapping strategy is the fundamental consideration when OMOP vocabulary domain assignments differ from FHIR resource type expectations. 
 
@@ -131,7 +201,7 @@ These "No Known Allergy" example demonstrates several critical aspects of FHIR C
 
 The transformation successfully maps a common clinical concept while revealing the importance of vocabulary-driven domain assignment in OMOP implementations. This pattern applies to many similar negative assertion concepts in clinical documentation, providing a template for handling absence-of-finding scenarios in FHIR to OMOP transformations.
 
-### Free Text in CodeableConcept Mapping
+### Free Text in CodeableConcepts
 CodeableConcept with free-text descriptions lacking corresponding coded elements, require manual review or natural language processing to extract and standardize clinical concepts. Free text mapping in this context addresses the transformation of unstructured text within a CodeableConcept element into Standard OMOP concepts. According to FHIR specification, the `text` element represents "the concept as entered or chosen by the user, and which most closely represents the intended meaning." The text often matches the display value of associated codings but may contain user-specific terminology or local clinical language. When codings are marked with `coding.userSelected = true`, this indicates the clinician's preferred representation. When no coding is user-selected, the text element becomes the preferred source of clinical meaning for transformation.
 
 FHIR permits text-only representations when no appropriate standardized code exists:
@@ -263,15 +333,70 @@ INSERT INTO observation (
 
 #### Example CodeableConcept Free Text Field Mapping Summary 
 
-| Scenario | OMOP Field | Value | Transformation Notes |
-|----------|------------|-------|---------------------|
-| **User-Selected Coding** | condition_concept_id | 201826 | Direct mapping from userSelected SNOMED code |
-| | condition_source_concept_id | 201826 | Source code already standard |
-| | condition_source_value | "Type 2 diabetes" | Preserves user-entered text |
-| **Ambiguous Language** | condition_concept_id | 201820 | General diabetes concept due to ambiguity |
-| | condition_source_concept_id | 0 | No source coding available |
-| | qualifier_source_value | "LOW_SPECIFICITY" | Quality flag for clinical review |
-| **Medical Abbreviations** | condition_concept_id | 4329847 | MI mapped to standard concept |
-| | observation_concept_id | 4000045 | SOB mapped to dyspnea concept |
-| | qualifier_source_value | "HISTORY_OF", "PATIENT_COMPLAINT" | Temporal and clinical context preserved |
 
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Scenario</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Field</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Value</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Transformation Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">User-Selected Coding</td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">201826</td>
+      <td style="border: 1px solid #d0d7de;">Direct mapping from userSelected SNOMED code</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_source_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">201826</td>
+      <td style="border: 1px solid #d0d7de;">Source code already standard</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">"Type 2 diabetes"</td>
+      <td style="border: 1px solid #d0d7de;">Preserves user-entered text</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Ambiguous Language</td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">201820</td>
+      <td style="border: 1px solid #d0d7de;">General diabetes concept due to ambiguity</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_source_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">0</td>
+      <td style="border: 1px solid #d0d7de;">No source coding available</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>qualifier_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">"LOW_SPECIFICITY"</td>
+      <td style="border: 1px solid #d0d7de;">Quality flag for clinical review</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Medical Abbreviations</td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">4329847</td>
+      <td style="border: 1px solid #d0d7de;">MI mapped to standard concept</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">4000045</td>
+      <td style="border: 1px solid #d0d7de;">SOB mapped to dyspnea concept</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"><code>qualifier_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">"HISTORY_OF", "PATIENT_COMPLAINT"</td>
+      <td style="border: 1px solid #d0d7de;">Temporal and clinical context preserved</td>
+    </tr>
+  </tbody>
+</table>

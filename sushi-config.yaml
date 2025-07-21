@@ -7,7 +7,7 @@ id: hl7.fhir.uv.omop
 canonical: http://hl7.org/fhir/uv/omop
 name: FHIROMOP
 title: FHIR to OMOP FHIR IG
-description: An IG that provides the mappings and use cases for converting from FHIR to OMOP and from OMOP to FHIR.
+description: An IG that provides the mappings and use cases for converting from FHIR to OMOP.
 status: draft # draft | active | retired | unknown
 version: 0.1.0
 fhirVersion: 5.0.0 # https://www.hl7.org/fhir/valueset-FHIR-version.html
@@ -41,9 +41,9 @@ pages:
   CodeMappingBasePattern.md:
      title: FHIR to OMOP Code Mapping Patterns
   CodeableConceptPattern.md:
-    title: CodeableConcept Map Patterns
+    title: CodeableConcept Mapping Patterns
   ValueAsConceptPattern.md:
-    title: Value-as-Concept Map Pattern
+    title: Value-as-Concept Mapping Pattern
   technical_artifacts.md:
     title: Technical Artifacts 
   TerminologyServer.md:

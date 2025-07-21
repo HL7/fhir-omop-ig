@@ -28,11 +28,37 @@ There is no single approach that can be uniformly applied to transformation of F
 
 Based on this evaluation, implementers should categorize FHIR identifiers into one of three handling approaches:
 
-| Strategy | Use Case | Implementation Approach | Key Considerations |
-|----------|----------|------------------------|-------------------|
-| **Direct Mapping** | Identifiers that can be safely transformed to OMOP integer keys without privacy concerns | Transform directly to OMOP integer-based keys | • Database system constraints on integer sizes<br>• Identifier format compatibility<br>• No PII risk<br>• Suitable for system-generated sequence numbers |
-| **External Storage** | Identifiers needed for traceability but inappropriate for direct OMOP inclusion | Create separate mapping tables linking OMOP-generated IDs to original FHIR identifiers | • Maintains de-identification principles<br>• Requires access controls and audit trails<br>• Supports bidirectional mapping verification<br>• Preserves data provenance |
-| **Exclusion** | Identifiers containing PII or serving no research purpose | Exclude from transformation entirely | • Medical record numbers<br>• Patient names<br>• Other PII-containing identifiers<br>• No research value |
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Strategy</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Use Case</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Implementation Approach</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Key Considerations</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Direct Mapping</td>
+      <td style="border: 1px solid #d0d7de;">Identifiers that can be safely transformed to OMOP integer keys without privacy concerns</td>
+      <td style="border: 1px solid #d0d7de;">Transform directly to OMOP integer-based keys</td>
+      <td style="border: 1px solid #d0d7de;">• Database system constraints on integer sizes<br>• Identifier format compatibility<br>• No PII risk<br>• Suitable for system-generated sequence numbers</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">External Storage</td>
+      <td style="border: 1px solid #d0d7de;">Identifiers needed for traceability but inappropriate for direct OMOP inclusion</td>
+      <td style="border: 1px solid #d0d7de;">Create separate mapping tables linking OMOP-generated IDs to original FHIR identifiers</td>
+      <td style="border: 1px solid #d0d7de;">• Maintains de-identification principles<br>• Requires access controls and audit trails<br>• Supports bidirectional mapping verification<br>• Preserves data provenance</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Exclusion</td>
+      <td style="border: 1px solid #d0d7de;">Identifiers containing PII or serving no research purpose</td>
+      <td style="border: 1px solid #d0d7de;">Exclude from transformation entirely</td>
+      <td style="border: 1px solid #d0d7de;">• Medical record numbers<br>• Patient names<br>• Other PII-containing identifiers<br>• No research value</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Status and Intent Elements in FHIR Resources
 Many FHIR resources, like MedicationRequest or Procedure, have status fields indicating administrative or health care delivery process stages (e.g., planned, completed, in progress) or indicate the type of order represented (active, on-hold, cancelled...).  OMOP, on the other hand, represents concepts that are clinical facts, which implies that only completed activities should be mapped for accurate data analysis. This creates an expectation of specific context for the data being mapped. Careful consideration must be made when FHIR data resources also contain populated status and intent fields indicating a measurement, dispensing activity or care delivery service is planned, cancelled or in process.  Specifically, attention to and disposition of data based on these FHIR elements in a transformation should be consistent within a project or OMOP implementation.  There is a need to filter out incomplete or planned activities when transforming data to OMOP, especially for procedures and medications. Including such "yet-to-be-realized" data would misrepresent actual patient exposure, leading to inaccuracies in research.  This kind of filtering is documented in the FHIR to OMOP Unit test specifications, and should be applied to transofmrtaion pipelines so that the rules are applied consistently to incremental data ingress for as long as the OMOP instance is in use. 
@@ -56,13 +82,43 @@ When implementing an HL7 FHIR to OMOP transformation using a FHIR Implementation
 
 **Comparison Table: FHIR vs OMOP Flavors of Null**
 
-| Aspect | HL7 FHIR | OMOP CDM |
-| :---- | :---- | :---- |
-| **Representation of null** | data-absent-reason extension | NULL in SQL or concept ID \= 0 |
-| **Granularity of nulls** | Fine-grained (unknown, not-applicable, masked, etc.) | Implicit; often lacks detailed flavor semantics |
-| **Standard terminology** | Uses codes like unknown, not-asked, etc. | No standard codes; often relies on documentation or conventions |
-| **Handling missing values** | Structured via extensions or empty elements with context | Fields left NULL or set to 0 (no matching concept) |
-| **ETL challenge** | Requires preserving semantic meaning during mapping | Requires selecting appropriate mapping logic per use case |
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Aspect</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">HL7 FHIR</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP CDM</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Representation of null</td>
+      <td style="border: 1px solid #d0d7de;">data-absent-reason extension</td>
+      <td style="border: 1px solid #d0d7de;">NULL in SQL or concept ID = 0</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Granularity of nulls</td>
+      <td style="border: 1px solid #d0d7de;">Fine-grained (unknown, not-applicable, masked, etc.)</td>
+      <td style="border: 1px solid #d0d7de;">Implicit; often lacks detailed flavor semantics</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Standard terminology</td>
+      <td style="border: 1px solid #d0d7de;">Uses codes like unknown, not-asked, etc.</td>
+      <td style="border: 1px solid #d0d7de;">No standard codes; often relies on documentation or conventions</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Handling missing values</td>
+      <td style="border: 1px solid #d0d7de;">Structured via extensions or empty elements with context</td>
+      <td style="border: 1px solid #d0d7de;">Fields left NULL or set to 0 (no matching concept)</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">ETL challenge</td>
+      <td style="border: 1px solid #d0d7de;">Requires preserving semantic meaning during mapping</td>
+      <td style="border: 1px solid #d0d7de;">Requires selecting appropriate mapping logic per use case</td>
+    </tr>
+  </tbody>
+</table>
 
 In short, FHIR provides a more expressive mechanism to convey the *reason* for missing data, while OMOP assumes nulls are more operational or structural. Mapping between them in a FHIR-to-OMOP ETL process requires deliberate rules to preserve clinical meaning without overfitting to the destination model.
 
@@ -88,13 +144,42 @@ Some domains demand particular temporal fields. The following table summarises 
 
 **Domain‑specific temporal fields in OMOP**
 
-| Domain | Required Temporal Fields | Notes |
-|---|---|---|
-| Condition | `condition_start_date` (required) / `condition_end_date` (optional) | Diagnosis date mandatory; end date often NULL for chronic illnesses. |
-| Drug Exposure | `drug_exposure_start_date` (required) / `drug_exposure_end_date` (optional) | Records prescription fill and, where known, supply duration. |
-| Procedure | `procedure_date` (required) | Exact date for surgical or diagnostic procedures. |
-| Visit Occurrence | `visit_start_date`, `visit_end_date` (both required) | Defines the encounter window. |
-| Measurement / Observation | `measurement_date` (required) | Day‑level precision generally adequate; hour‑level detail, if crucial, must be stored elsewhere. |
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Domain</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Required Temporal Fields</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Condition</td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_start_date</code> (required) / <code>condition_end_date</code> (optional)</td>
+      <td style="border: 1px solid #d0d7de;">Diagnosis date mandatory; end date often NULL for chronic illnesses.</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Drug Exposure</td>
+      <td style="border: 1px solid #d0d7de;"><code>drug_exposure_start_date</code> (required) / <code>drug_exposure_end_date</code> (optional)</td>
+      <td style="border: 1px solid #d0d7de;">Records prescription fill and, where known, supply duration.</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Procedure</td>
+      <td style="border: 1px solid #d0d7de;"><code>procedure_date</code> (required)</td>
+      <td style="border: 1px solid #d0d7de;">Exact date for surgical or diagnostic procedures.</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Visit Occurrence</td>
+      <td style="border: 1px solid #d0d7de;"><code>visit_start_date</code>, <code>visit_end_date</code> (both required)</td>
+      <td style="border: 1px solid #d0d7de;">Defines the encounter window.</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Measurement / Observation</td>
+      <td style="border: 1px solid #d0d7de;"><code>measurement_date</code> (required)</td>
+      <td style="border: 1px solid #d0d7de;">Day‑level precision generally adequate; hour‑level detail, if crucial, must be stored elsewhere.</td>
+    </tr>
+  </tbody>
+</table>
 
 #### Limitations and Intra‑Day Challenges
 The absence of sub‑day precision poses analytical hurdles. Intensive‑care interventions, rapid laboratory results, and overlapping medication administrations can occur within minutes; once converted to OMOP all such events collapse onto the same calendar day. Analysts must therefore supplement with auxiliary timestamp stores or infer ordering through other means. Likewise, **temporal ties**—multiple events stamped with the same date—demand caution in sequence analyses lest spurious causal relationships be inferred.

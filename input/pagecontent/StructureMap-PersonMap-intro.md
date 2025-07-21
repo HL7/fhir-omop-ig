@@ -1,7 +1,7 @@
 # Person Resource Considerations
 
 ## Mapping Sex and Gender 
-FHIR to OMOP gender mapping requires attention to both technical precision and the evolving OHDSI conventions around gender and sex data representation. The key to successful implementation lies in establishing clear protocols that respect the OHDSI community's ratified conventions, maintaining comprehensive validation across both person and observation tables, and preparing for future standard evolution while ensuring current system reliability and accuracy. 
+FHIR to OMOP gender mapping requires attention to both technical precision and the evolving OHDSI conventions around gender and sex data representation. The key to successful implementation lies in establishing clear protocols that respect the OHDSI community's ratified conventions, maintaining comprehensive validation across both Person and Observation domain tables, and preparing for future standard evolution while ensuring current system reliability and accuracy. 
 
 ## Understanding Both Standards
 ### FHIR Gender Implementation
@@ -27,11 +27,7 @@ The mandatory nature of this field ensures every person record contains gender i
 **Important OHDSI Convention Update**: The OHDSI community has recognized that the term "gender_concept_id" is outdated and should more accurately be "sex_concept_id" to reflect biological sex rather than gender identity. However, due to the significant development effort required to change this field name across all OMOP implementations and package dependencies, this update will be implemented in the next major release of the OMOP Common Data Model.
 
 ## OHDSI Gender Identity Convention
-### Current State and Future Plans
-The OHDSI community has established important conventions regarding gender-related data storage in the OMOP Common Data Model that directly impact FHIR to OMOP mapping strategies.
-
-### Gender vs. Sex Terminology
-The current `gender_concept_id` field in the OMOP person table represents a legacy naming convention that causes conceptual confusion. The OHDSI community acknowledges that this field more accurately represents biological sex rather than gender identity. The preferred term should be `sex_concept_id` to reflect this distinction properly.
+The OHDSI community has established important conventions regarding gender-related data storage in the OMOP Common Data Model that directly impact FHIR to OMOP mapping strategies. The current `gender_concept_id` field in the OMOP person table represents a legacy naming convention that causes conceptual confusion. The OHDSI community acknowledges that this field more accurately represents biological sex rather than gender identity. The preferred term should be `sex_concept_id` to reflect this distinction properly.
 
 **Implementation Timeline**: Due to the substantial development effort required to rename this field across all OMOP implementations, packages, and dependent systems, this change will be implemented in the next major release of the OMOP Common Data Model. Until then, implementers should understand that `gender_concept_id` conceptually represents biological sex.
 
@@ -72,17 +68,37 @@ Given the OHDSI conventions, the mapping strategy must differentiate between bio
 ### Direct Value Mapping
 The core mapping process follows these direct transformations:
 
-**FHIR "male" → OMOP Concept ID 8507**
-This represents the most straightforward mapping case, where explicit male identification in FHIR translates directly to the OMOP male concept.
-
-**FHIR "female" → OMOP Concept ID 8532**
-Female gender identification follows the same direct mapping approach, ensuring consistency across both standards.
-
-**FHIR "other" → OMOP Concept ID 44814653**
-This mapping accommodates diverse gender identities that fall outside traditional binary classifications, providing inclusive representation in OMOP.
-
-**FHIR "unknown" → OMOP Concept ID 8551**
-When gender information is explicitly marked as unknown in FHIR, this maps to the corresponding unknown concept in OMOP.
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">FHIR Gender Value</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Concept ID</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">"male"</td>
+      <td style="border: 1px solid #d0d7de;"><code>8507</code></td>
+      <td style="border: 1px solid #d0d7de;">This represents the most straightforward mapping case, where explicit male identification in FHIR translates directly to the OMOP male concept.</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">"female"</td>
+      <td style="border: 1px solid #d0d7de;"><code>8532</code></td>
+      <td style="border: 1px solid #d0d7de;">Female gender identification follows the same direct mapping approach, ensuring consistency across both standards.</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">"other"</td>
+      <td style="border: 1px solid #d0d7de;"><code>44814653</code></td>
+      <td style="border: 1px solid #d0d7de;">This mapping accommodates diverse gender identities that fall outside traditional binary classifications, providing inclusive representation in OMOP.</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">"unknown"</td>
+      <td style="border: 1px solid #d0d7de;"><code>8551</code></td>
+      <td style="border: 1px solid #d0d7de;">When gender information is explicitly marked as unknown in FHIR, this maps to the corresponding unknown concept in OMOP.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Handling Null and Missing Values
 The most complex aspect of FHIR to OMOP gender mapping involves managing absent gender information. Since OMOP requires a gender_concept_id for every person record, implementers must establish clear protocols for null value handling.
@@ -93,13 +109,13 @@ The most complex aspect of FHIR to OMOP gender mapping involves managing absent 
 
 ## Advanced Considerations
 ### HL7 Gender Harmony Project Integration
-The HL7 Gender Harmony Project introduces sophisticated gender and sex categorization that extends beyond traditional binary representations. Implementation teams should prepare for enhanced gender concepts including:
+The HL7 Gender Harmony Project produced a [FHIR implementation Guide](https://build.fhir.org/ig/HL7/fhir-gender-harmony/fhirgenderharmony.html)  that introduces sophisticated gender and sex categorization that extends beyond traditional binary representations. Implementation teams should prepare for enhanced gender concepts including:
 
 - **Recorded Sex or Gender (RSG)**: The sex or gender recorded in official documents
 - **Sex for Clinical Use (SFCU)**: Clinically relevant sex information for treatment decisions
 - **Gender Identity**: Personal gender identification separate from biological sex
 
-These concepts will require vocabulary extensions and updated mapping protocols as standards evolve.
+These concepts will require OMOP vocabulary extensions and updated mapping protocols as standards evolve.
 
 ### Jurisdictional Compliance
 Different healthcare jurisdictions may have specific requirements for gender data representation. Implementation teams must consider:
