@@ -186,7 +186,7 @@ The mappings are represented via FHIR StructureMaps and those StructureMaps are 
 * [Condition Mapping](StructureMap-ConditionMap.html)
 * [Encounter/Visit Mapping](StructureMap-EncounterVisitMap.html)
 * [Immunization Mapping](StructureMap-ImmunizationMap.html)
-* [MedicationStatement Mapping](StructureMap-MedicationMap.html)
+* [Medication Mapping](StructureMap-MedicationMap.html)
 * [Observation to Measurement Mapping](StructureMap-MeasurementMap.html)
 * [Observation to Observation Mapping](StructureMap-ObservationMap.html)
 * [Person Mapping](StructureMap-PersonMap.html)
