@@ -192,6 +192,12 @@ The mappings are represented via FHIR StructureMaps and those StructureMaps are 
 * [Person Mapping](StructureMap-PersonMap.html)
 * [Procedure Mapping](StructureMap-ProcedureMap.html)
 
+### FHIR and OMOP 2025 Connectathon Validation Package
+Created to support the Vulcan July 2025 Connectathon, [this Jupyter notebook ](https://colab.research.google.com/drive/1OfAW4D3kDym1WK-QRdpwJVwtHHs9kijy) provides basic syntax and specification validation of FHIR JSON and OMOP CSV data for the Vulcan FHIR->OMOP Connectathon. The notebook can be run as-is from within Google Colab (with a Google account) or downloaded and run locally. Upload your FHIR JSON or OMOP CSVs into the colab temporary directory and update the paths accordingly.
+
+** 1. Validate FHIR ** (HL7 FHIR Validator) FHIR for FHIR->OMOP testing must be valid FHIR R4 syntax for the IPA (https://build.fhir.org/ig/HL7/fhir-ipa/) Profile.
+** 2. Validate OMOP **  (OHDSI Data Quality Dashboard - Subset) OMOP resulting from FHIR->OMOP conversion must be valid OMOP CDMv5.4. A subset of 100 OHDSI Data Quality Dashboard tests are implemented here to validate tables, columns, concepts, and a set of completeness and plausibility checks.
+
 ### Technical Considerations
 The following tables provide some technical information about the guide.
 
