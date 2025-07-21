@@ -120,7 +120,7 @@ We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and
 We also recognize the exceptional contributions of the leaders from the four FHIR - OMOP subgroups that preceded the formation of the Vulcan IG project. These dedicated teams explored critical concepts and established foundational principles that were integrated into this implementation guide.
 
 ### Data Harmonization Subgroup
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
@@ -140,7 +140,7 @@ We also recognize the exceptional contributions of the leaders from the four FHI
 </table>
 
 ### Terminology Subgroup
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
@@ -160,7 +160,7 @@ We also recognize the exceptional contributions of the leaders from the four FHI
 </table>
 
 ### Oncology Use Case Subgroup
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
@@ -180,7 +180,7 @@ We also recognize the exceptional contributions of the leaders from the four FHI
 </table>
 
 ### Digital Quality Measures Use Case
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
