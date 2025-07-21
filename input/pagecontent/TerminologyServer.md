@@ -3,7 +3,8 @@ A FHIR terminology server operates as a specialized collection of functions buil
 FHIR terminology servers, like [Echidna](https://echidna.fhir.org/) serve as bridge infrastructure that enable automated transformation between FHIR data sources and the OMOP CDM. Core functionality for FHIR to OMOP transformation centers on concept lookup and translation operations. The Echidna server examples below enable systems to resolve FHIR-encoded clinical concepts to their corresponding OMOP standard concepts, retrieve concept relationships necessary for accurate domain assignment, and access the hierarchical mappings required for proper OMOP vocabulary integration. 
 
 
-### [CodeSystem/$lookup](https://www.hl7.org/fhir/R5/codesystem-operation-lookup.html)
+### CodeSystem $Lookup Operation
+[CodeSystem/$lookup](https://www.hl7.org/fhir/R5/codesystem-operation-lookup.html)
 
 Given a concept ID, e.g. `1567956` we can lookup its properties:
 
@@ -403,7 +404,8 @@ curl 'https://echidna.fhir.org/r5/CodeSystem/$lookup' \
 }
 ```
 
-### [ConceptMap/$translate](https://www.hl7.org/fhir/R5/conceptmap-operation-translate.html)
+### ConceptMap $translate Operation 
+[ConceptMap/$translate](https://www.hl7.org/fhir/R5/conceptmap-operation-translate.html)
 
 Given a source code and system, e.g.:
 
