@@ -1,6 +1,4 @@
-This Implementation Guide was developed under the auspices of the [Vulcan](https://www.hl7vulcan.org/) FHIR to OMOP work group in collaboration with the OHDSI OMOP + FHIR working group. We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and leadership made this project possible. Dr. Chute not only conceived and initiated this effort by proposing it to the Vulcan Steering Committee, but also provided unwavering executive sponsorship and representation throughout the entire project lifecycle.
-
-We recognize that this guide establishes an important foundation, and also acknowledge that many opportunities for additional data domains and use cases remain. Please eMail https://www.hl7vulcan.org/contact-us with questions or comments falling outside the established HL7 balloting process. We welcome your feedback and encourage continued collaborations to more fully realize the transformative potential that these two complementary standards can bring to advancing human health.
+This Implementation Guide was developed under the auspices of the [Vulcan](https://www.hl7vulcan.org/) FHIR to OMOP work group in collaboration with the OHDSI OMOP + FHIR working group. We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and leadership made this project possible. Dr. Chute not only conceived and initiated this effort by proposing it to the Vulcan Steering Committee, but also provided unwavering executive sponsorship and representation throughout the entire project lifecycle. We also want to recognize the efforts of Vulcan PMO Director, Filippo Napoli Whose skill and dedication were invaluable in helping us achieve this critical project milestone.  
 
 ## Primary Authors
 
@@ -433,4 +431,4 @@ Throughout this project, more than 100 individuals from over 70 organizations—
   </tbody>
 </table>
 
-
+We recognize that this guide establishes an important foundation, and also acknowledge that many opportunities for additional data domains and use cases remain. Please eMail https://www.hl7vulcan.org/contact-us with questions or comments falling outside the established HL7 balloting process. We welcome your feedback and encourage continued collaborations to more fully realize the transformative potential that these two complementary standards can bring to advancing human health.
