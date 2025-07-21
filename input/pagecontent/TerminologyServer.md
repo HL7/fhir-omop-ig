@@ -4,9 +4,7 @@ FHIR terminology servers, like [Echidna](https://echidna.fhir.org/) serve as bri
 
 
 ### CodeSystem $Lookup Operation
-[CodeSystem/$lookup](https://www.hl7.org/fhir/R5/codesystem-operation-lookup.html)
-
-Given a concept ID, e.g. `1567956` we can lookup its properties:
+The FHIR [CodeSystem/$lookup](https://www.hl7.org/fhir/R5/codesystem-operation-lookup.html) provides additional information about a concept.  Given a concept ID, e.g. `1567956` we can lookup its properties:
 
 **Request:**
 
@@ -405,9 +403,7 @@ curl 'https://echidna.fhir.org/r5/CodeSystem/$lookup' \
 ```
 
 ### ConceptMap $translate Operation 
-[ConceptMap/$translate](https://www.hl7.org/fhir/R5/conceptmap-operation-translate.html)
-
-Given a source code and system, e.g.:
+The FHIR [ConceptMap/$translate](https://www.hl7.org/fhir/R5/conceptmap-operation-translate.html) operation will provide the cross-walk from a source system to OMOP that's stored in a ConceptMap Resource.  Given a source code and system, e.g.:
 
 ```json
 {
