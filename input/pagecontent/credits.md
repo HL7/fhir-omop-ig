@@ -111,9 +111,99 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
   </tbody>
 </table>
 
+We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and leadership made this project possible. Dr. Chute not only conceived and initiated this effort by proposing it to the Vulcan Steering Committee, but also provided unwavering executive sponsorship and representation throughout the entire project lifecycle.
+
+We also recognize the exceptional contributions of the leaders from the four OMOP + FHIR subgroups that preceded the formation of the Vulcan IG project. These dedicated teams explored critical concepts and established foundational principles that were seamlessly integrated into this implementation guide.
+
+## Subgroup Leaders
+
+### Data Harmonization Subgroup
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Organization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;">Ben Smith</td>
+      <td style="border: 1px solid #d0d7de;">Principia, Inc</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Guy Tsafnant</td>
+      <td style="border: 1px solid #d0d7de;">Evidentli, Inc</td>
+    </tr>
+  </tbody>
+</table>
+
+### Terminology Subgroup
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Organization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;">Davera Gabriel</td>
+      <td style="border: 1px solid #d0d7de;">Johns Hopkins University</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Grahame Grieve</td>
+      <td style="border: 1px solid #d0d7de;">Health Intersections, Inc</td>
+    </tr>
+  </tbody>
+</table>
+
+### Oncology Use Case Subgroup
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Organization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;">May Terry</td>
+      <td style="border: 1px solid #d0d7de;">MITRE Corporation</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Qi Yang</td>
+      <td style="border: 1px solid #d0d7de;">IQVIA, INC</td>
+    </tr>
+  </tbody>
+</table>
+
+### Digital Quality Measures Use Case
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Organization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;">Floyd Eisenberg</td>
+      <td style="border: 1px solid #d0d7de;">iParsimony, LLC</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Ben Hamlin</td>
+      <td style="border: 1px solid #d0d7de;">National Committee for Quality Assurance</td>
+    </tr>
+  </tbody>
+</table>
+
+## Connectathon Participants
+
+We are deeply appreciative of the participants in the July 2025 Vulcan Virtual Connectathon, whose valuable testing and feedback on the technical artifacts significantly enhanced this implementation guide:
+
 ## Academic
 
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto%;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
@@ -179,7 +269,7 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
 
 ## Government
 
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto%;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
@@ -225,7 +315,7 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
 
 ## Industry
 
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto%;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
