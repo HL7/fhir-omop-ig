@@ -134,7 +134,7 @@ We also recognize the exceptional contributions of the leaders from the four OMO
       <td style="border: 1px solid #d0d7de;">Principia, Inc</td>
     </tr>
     <tr style="background-color: #f6f8fa;">
-      <td style="border: 1px solid #d0d7de;">Guy Tsafnant</td>
+      <td style="border: 1px solid #d0d7de;">Guy Tsafnat</td>
       <td style="border: 1px solid #d0d7de;">Evidentli, Inc</td>
     </tr>
   </tbody>
