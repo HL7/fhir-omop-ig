@@ -116,7 +116,7 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
 
 We also recognize the exceptional contributions of the leaders from the four OMOP + FHIR subgroups that preceded the formation of the Vulcan IG project. These dedicated teams explored critical concepts and established foundational principles that were seamlessly integrated into this implementation guide.
 
-## Subgroup Leaders
+## OMOP + FHIR Subgroup Leaders
 
 ### Data Harmonization Subgroup
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
