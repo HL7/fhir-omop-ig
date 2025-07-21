@@ -12,14 +12,47 @@ While CVX serves as the preferred terminology, we reccomend maintaining flexibil
 ### Dual-Table Approach Based on Data Completeness
 To determine the appropriate OMOP domain for immunization records, employ a data-driven approach 
 
-| **Mapping Criteria** | **Drug Exposure Table** | **Observation Table** |
-|:---------------------|:------------------------|:---------------------|
-| **Primary Use Case** | Well-documented immunizations with complete administration details | Incomplete or patient-reported immunizations |
-| **Data Requirements** | • Specific administration dates<br>• Vaccine details and specifications<br>• Confirmed administration documentation | • Missing administration dates<br>• Patient-reported vaccines<br>• Minimal or incomplete documentation |
-| **Data Quality Level** | High-quality, verifiable immunization records | Preserved data with documented limitations |
-| **OMOP Compliance** | Meets completeness requirements for drug exposure records | Maintains OMOP guidance for incomplete/self-reported data |
-| **Clinical Utility** | Suitable for clinical analysis and quality measures | Reference data with clear quality indicators |
-| **Traceability** | Full documentation trail available | Limited documentation with quality flags |
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Mapping Criteria</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Drug Exposure Table</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Observation Table</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Primary Use Case</td>
+      <td style="border: 1px solid #d0d7de;">Well-documented immunizations with complete administration details</td>
+      <td style="border: 1px solid #d0d7de;">Incomplete or patient-reported immunizations</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Data Requirements</td>
+      <td style="border: 1px solid #d0d7de;">• Specific administration dates<br>• Vaccine details and specifications<br>• Confirmed administration documentation</td>
+      <td style="border: 1px solid #d0d7de;">• Missing administration dates<br>• Patient-reported vaccines<br>• Minimal or incomplete documentation</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Data Quality Level</td>
+      <td style="border: 1px solid #d0d7de;">High-quality, verifiable immunization records</td>
+      <td style="border: 1px solid #d0d7de;">Preserved data with documented limitations</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">OMOP Compliance</td>
+      <td style="border: 1px solid #d0d7de;">Meets completeness requirements for drug exposure records</td>
+      <td style="border: 1px solid #d0d7de;">Maintains OMOP guidance for incomplete/self-reported data</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Clinical Utility</td>
+      <td style="border: 1px solid #d0d7de;">Suitable for clinical analysis and quality measures</td>
+      <td style="border: 1px solid #d0d7de;">Reference data with clear quality indicators</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Traceability</td>
+      <td style="border: 1px solid #d0d7de;">Full documentation trail available</td>
+      <td style="border: 1px solid #d0d7de;">Limited documentation with quality flags</td>
+    </tr>
+  </tbody>
+</table>
 
 This dual-table approach addresses data quality concerns by:
 - Maintaining clear distinctions between documented and self-reported immunizations
