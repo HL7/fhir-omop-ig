@@ -28,11 +28,37 @@ There is no single approach that can be uniformly applied to transformation of F
 
 Based on this evaluation, implementers should categorize FHIR identifiers into one of three handling approaches:
 
-| Strategy | Use Case | Implementation Approach | Key Considerations |
-|----------|----------|------------------------|-------------------|
-| **Direct Mapping** | Identifiers that can be safely transformed to OMOP integer keys without privacy concerns | Transform directly to OMOP integer-based keys | • Database system constraints on integer sizes<br>• Identifier format compatibility<br>• No PII risk<br>• Suitable for system-generated sequence numbers |
-| **External Storage** | Identifiers needed for traceability but inappropriate for direct OMOP inclusion | Create separate mapping tables linking OMOP-generated IDs to original FHIR identifiers | • Maintains de-identification principles<br>• Requires access controls and audit trails<br>• Supports bidirectional mapping verification<br>• Preserves data provenance |
-| **Exclusion** | Identifiers containing PII or serving no research purpose | Exclude from transformation entirely | • Medical record numbers<br>• Patient names<br>• Other PII-containing identifiers<br>• No research value |
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Strategy</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Use Case</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Implementation Approach</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Key Considerations</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Direct Mapping</td>
+      <td style="border: 1px solid #d0d7de;">Identifiers that can be safely transformed to OMOP integer keys without privacy concerns</td>
+      <td style="border: 1px solid #d0d7de;">Transform directly to OMOP integer-based keys</td>
+      <td style="border: 1px solid #d0d7de;">• Database system constraints on integer sizes<br>• Identifier format compatibility<br>• No PII risk<br>• Suitable for system-generated sequence numbers</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">External Storage</td>
+      <td style="border: 1px solid #d0d7de;">Identifiers needed for traceability but inappropriate for direct OMOP inclusion</td>
+      <td style="border: 1px solid #d0d7de;">Create separate mapping tables linking OMOP-generated IDs to original FHIR identifiers</td>
+      <td style="border: 1px solid #d0d7de;">• Maintains de-identification principles<br>• Requires access controls and audit trails<br>• Supports bidirectional mapping verification<br>• Preserves data provenance</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Exclusion</td>
+      <td style="border: 1px solid #d0d7de;">Identifiers containing PII or serving no research purpose</td>
+      <td style="border: 1px solid #d0d7de;">Exclude from transformation entirely</td>
+      <td style="border: 1px solid #d0d7de;">• Medical record numbers<br>• Patient names<br>• Other PII-containing identifiers<br>• No research value</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Status and Intent Elements in FHIR Resources
 Many FHIR resources, like MedicationRequest or Procedure, have status fields indicating administrative or health care delivery process stages (e.g., planned, completed, in progress) or indicate the type of order represented (active, on-hold, cancelled...).  OMOP, on the other hand, represents concepts that are clinical facts, which implies that only completed activities should be mapped for accurate data analysis. This creates an expectation of specific context for the data being mapped. Careful consideration must be made when FHIR data resources also contain populated status and intent fields indicating a measurement, dispensing activity or care delivery service is planned, cancelled or in process.  Specifically, attention to and disposition of data based on these FHIR elements in a transformation should be consistent within a project or OMOP implementation.  There is a need to filter out incomplete or planned activities when transforming data to OMOP, especially for procedures and medications. Including such "yet-to-be-realized" data would misrepresent actual patient exposure, leading to inaccuracies in research.  This kind of filtering is documented in the FHIR to OMOP Unit test specifications, and should be applied to transofmrtaion pipelines so that the rules are applied consistently to incremental data ingress for as long as the OMOP instance is in use. 
