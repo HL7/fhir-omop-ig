@@ -66,7 +66,7 @@ These studies referenced in the Vulcan RWD IG specify the data elements required
 
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b>Vulcan RWD Conceptual Application</b></figcaption>
+<figcaption><b></b></figcaption>
 <img src="rwd_conceptual_application.png" style="padding-top:0;padding-bottom:30px" width="800" alt="Vulcan RWD Conceptual Application"/>
 </figure>
 {::options parse_block_html="true" /}
