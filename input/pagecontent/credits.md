@@ -2,7 +2,7 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
 
 ## Primary Authors
 
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
@@ -20,10 +20,9 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
     </tr>
   </tbody>
 </table>
-
 ## Primary Editors
 
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
@@ -48,7 +47,7 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
 
 ## Vulcan FHIR to OMOP Working Group Co-Leads
 
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
@@ -77,7 +76,7 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
 
 ## Past project FHIR to OMOP transformation maps & technical implementation expertise contributed by
 
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
   <thead>
     <tr style="background-color: #f6f8fa;">
       <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Organization</th>
