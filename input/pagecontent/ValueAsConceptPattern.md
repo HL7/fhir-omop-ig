@@ -143,13 +143,47 @@ INSERT INTO observation (
 
 #### Field Mapping Details
 
-| OMOP Field | Value | Source | Transformation Notes |
-|------------|-------|--------|---------------------|
-| observation_concept_id | 439224 | Decomposed from SNOMED 294930007 | Standard concept for "Allergy to drug" |
-| value_as_concept_id | 1728416 | Decomposed from SNOMED 294930007 | Standard concept for "Penicillin G" |
-| observation_source_value | 294930007 | FHIR code.coding[0].code | Original composite SNOMED code preserved |
-| value_source_value | benzylpenicillin | FHIR code.coding[0].display | Substance component preserved |
-| observation_date | 2024-03-15 | FHIR recordedDate | Date of allergy documentation |
-
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Field</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Value</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Source</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Transformation Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">439224</td>
+      <td style="border: 1px solid #d0d7de;">Decomposed from SNOMED 294930007</td>
+      <td style="border: 1px solid #d0d7de;">Standard concept for "Allergy to drug"</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>value_as_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">1728416</td>
+      <td style="border: 1px solid #d0d7de;">Decomposed from SNOMED 294930007</td>
+      <td style="border: 1px solid #d0d7de;">Standard concept for "Penicillin G"</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>observation_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">294930007</td>
+      <td style="border: 1px solid #d0d7de;">FHIR code.coding[0].code</td>
+      <td style="border: 1px solid #d0d7de;">Original composite SNOMED code preserved</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>value_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">benzylpenicillin</td>
+      <td style="border: 1px solid #d0d7de;">FHIR code.coding[0].display</td>
+      <td style="border: 1px solid #d0d7de;">Substance component preserved</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>observation_date</code></td>
+      <td style="border: 1px solid #d0d7de;">2024-03-15</td>
+      <td style="border: 1px solid #d0d7de;">FHIR recordedDate</td>
+      <td style="border: 1px solid #d0d7de;">Date of allergy documentation</td>
+    </tr>
+  </tbody>
+</table>
 
 
