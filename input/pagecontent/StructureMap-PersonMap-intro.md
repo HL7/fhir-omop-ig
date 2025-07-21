@@ -68,17 +68,37 @@ Given the OHDSI conventions, the mapping strategy must differentiate between bio
 ### Direct Value Mapping
 The core mapping process follows these direct transformations:
 
-**FHIR "male" → OMOP Concept ID 8507**
-This represents the most straightforward mapping case, where explicit male identification in FHIR translates directly to the OMOP male concept.
-
-**FHIR "female" → OMOP Concept ID 8532**
-Female gender identification follows the same direct mapping approach, ensuring consistency across both standards.
-
-**FHIR "other" → OMOP Concept ID 44814653**
-This mapping accommodates diverse gender identities that fall outside traditional binary classifications, providing inclusive representation in OMOP.
-
-**FHIR "unknown" → OMOP Concept ID 8551**
-When gender information is explicitly marked as unknown in FHIR, this maps to the corresponding unknown concept in OMOP.
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">FHIR Gender Value</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Concept ID</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">"male"</td>
+      <td style="border: 1px solid #d0d7de;"><code>8507</code></td>
+      <td style="border: 1px solid #d0d7de;">This represents the most straightforward mapping case, where explicit male identification in FHIR translates directly to the OMOP male concept.</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">"female"</td>
+      <td style="border: 1px solid #d0d7de;"><code>8532</code></td>
+      <td style="border: 1px solid #d0d7de;">Female gender identification follows the same direct mapping approach, ensuring consistency across both standards.</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">"other"</td>
+      <td style="border: 1px solid #d0d7de;"><code>44814653</code></td>
+      <td style="border: 1px solid #d0d7de;">This mapping accommodates diverse gender identities that fall outside traditional binary classifications, providing inclusive representation in OMOP.</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">"unknown"</td>
+      <td style="border: 1px solid #d0d7de;"><code>8551</code></td>
+      <td style="border: 1px solid #d0d7de;">When gender information is explicitly marked as unknown in FHIR, this maps to the corresponding unknown concept in OMOP.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Handling Null and Missing Values
 The most complex aspect of FHIR to OMOP gender mapping involves managing absent gender information. Since OMOP requires a gender_concept_id for every person record, implementers must establish clear protocols for null value handling.
