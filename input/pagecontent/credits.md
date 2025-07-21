@@ -197,9 +197,9 @@ We also recognize the exceptional contributions of the leaders from the four FHI
   </tbody>
 </table>
 
-## Connectathon Participants
+## 2025 Vulcan Virtual Connectathon
 
-We are deeply appreciative of the participants in the July 2025 Vulcan Virtual Connectathon, whose valuable testing and feedback on the technical artifacts significantly enhanced this implementation guide:
+We are deeply appreciative of all the participants in the July 2025 Connectathon, whose valuable testing and feedback on the technical artifacts significantly accellerated the development of this implementation guide. We especially appreciate the contributions of **Ben Berk** and **Scott Favre** of CareEvolution who conceived and created the FHIR and OMOP Validation package for the Connectathon, and a persisting resource to the Community at-large. 
 
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
   <tbody>
