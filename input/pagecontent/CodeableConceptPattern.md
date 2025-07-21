@@ -67,14 +67,54 @@ The transformation successfully preserves both the structured coded information 
 
 #### Field Mapping Details
 
-| OMOP Field | Value | Source | Transformation Notes |
-|------------|--------|---------|---------------------|
-| `observation_concept_id` | 4222295 | SNOMED 716186003 | Standard OMOP concept for "No known allergy" |
-| `observation_source_value` | 716186003 | FHIR code.coding[0].code | Original SNOMED code preserved |
-| `observation_source_concept_id` | 4222295 | Same as standard | Source code already standard |
-| `observation_date` | 2023-01-15 | FHIR recordedDate | Date of allergy status documentation |
-| `qualifier_source_value` | NKA | FHIR code.text | Free text abbreviation preserved |
-| `value_as_concept_id` | NULL | Not applicable | No additional value needed for status assertion |
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Field</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Value</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Source</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Transformation Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">4222295</td>
+      <td style="border: 1px solid #d0d7de;">SNOMED 716186003</td>
+      <td style="border: 1px solid #d0d7de;">Standard OMOP concept for "No known allergy"</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>observation_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">716186003</td>
+      <td style="border: 1px solid #d0d7de;">FHIR code.coding[0].code</td>
+      <td style="border: 1px solid #d0d7de;">Original SNOMED code preserved</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>observation_source_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">4222295</td>
+      <td style="border: 1px solid #d0d7de;">Same as standard</td>
+      <td style="border: 1px solid #d0d7de;">Source code already standard</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>observation_date</code></td>
+      <td style="border: 1px solid #d0d7de;">2023-01-15</td>
+      <td style="border: 1px solid #d0d7de;">FHIR recordedDate</td>
+      <td style="border: 1px solid #d0d7de;">Date of allergy status documentation</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>qualifier_source_value</code></td>
+      <td style="border: 1px solid #d0d7de;">NKA</td>
+      <td style="border: 1px solid #d0d7de;">FHIR code.text</td>
+      <td style="border: 1px solid #d0d7de;">Free text abbreviation preserved</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>value_as_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">NULL</td>
+      <td style="border: 1px solid #d0d7de;">Not applicable</td>
+      <td style="border: 1px solid #d0d7de;">No additional value needed for status assertion</td>
+    </tr>
+  </tbody>
+</table>
 
 In this example, the transformation successfully followed the proposed pattern, beginning with identification of the CodeableConcept input containing a negative assertion concept for "No known allergy." Since only a single SNOMED CT code was present in the coding array, the system  can bypass the prioritization logic step. An OMOP vocabulary lookup located the concept with an unexpected domain revelation - the concept mapped to the Observation domain rather than the anticipated Condition domain based on the source IPA AllergyIntolerance profile. In this onstance, there a need to complete an additional stpe was elminiated, as a standard OMOP concept was found and could be used directly.
 
