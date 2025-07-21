@@ -1,5 +1,5 @@
 # Condition & Problem List Resource Considerations
-Please note: a Condition use case is provided in the ** [Free Text in CodeableConcept](https://build.fhir.org/ig/HL7/fhir-omop-ig/CodeableConceptPattern.html#free-text-in-codeableconcepts) ** pattern section of this IG.  
+Please note: a Condition use case is provided in the [Free Text in CodeableConcept](https://build.fhir.org/ig/HL7/fhir-omop-ig/CodeableConceptPattern.html#free-text-in-codeableconcepts)  code mapping pattern section of this IG.  
 
 ## Condition Start Date vs. Recorded Date
 When implementing FHIR-to-OMOP transformations, two temporal concepts require careful consideration due to their distinct semantic meanings and downstream impact to analyses. Understanding these differences is crucial for implementers working on interoperability projects and clinical data warehousing initiatives.
