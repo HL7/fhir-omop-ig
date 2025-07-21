@@ -1,6 +1,6 @@
 # AllergyIntolerance Resource Considerations
 Mapping FHIR Allergy and Intolerance resources to OMOP present unique challenges that require consideration of data granularity, standardization, and preservation of clinical relationships.
-**Note:** The AllergyIntolerance resource serves as a use case example in the CodeableConcept (**insert link**) and Value as Concept mapping (**insert link**) patterns. The principles and patterns are described there in more detail.
+**Note:** The AllergyIntolerance resource serves as a use case example in the [CodeableConcept](https://build.fhir.org/ig/HL7/fhir-omop-ig/CodeableConceptPattern.html) and [Value as Concept](https://build.fhir.org/ig/HL7/fhir-omop-ig/ValueAsConceptPattern.html) mapping patterns. The principles and patterns are described there in more detail.
 
 ## Allergy Mapping Examples
 ### No Known Allergies: CodeableConcept Pattern
