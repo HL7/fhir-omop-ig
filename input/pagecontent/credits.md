@@ -1,4 +1,4 @@
-This Implementation Guide was developed under the auspices of the [Vulcan](https://www.hl7vulcan.org/) FHIR to OMOP work group in collaboration with the OHDSI OMOP + FHIR working group. We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and leadership made this project possible. Dr. Chute not only conceived and initiated this effort by proposing it to the Vulcan Steering Committee, but also provided unwavering executive sponsorship and representation throughout the entire project lifecycle. We also want to recognize the efforts of Vulcan PMO Director, Filippo Napoli Whose skill and dedication were invaluable in helping us achieve this critical project milestone.  
+This Implementation Guide was developed under the auspices of the [Vulcan](https://www.hl7vulcan.org/) FHIR to OMOP work group in collaboration with the OHDSI OMOP + FHIR working group. We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and leadership made this project possible. Dr. Chute not only conceived and initiated this effort by proposing it to the Vulcan Steering Committee, but also provided unwavering executive sponsorship and representation throughout the entire project lifecycle. We also want to recognize the efforts of Vulcan PMO Director, ** Filippo Napoli ** Whose skill and dedication were invaluable in helping us achieve this critical project milestone.  
 
 ## Primary Authors
 
@@ -114,9 +114,9 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
 
 
 
-We also recognize the exceptional contributions of the leaders from the four OMOP + FHIR subgroups that preceded the formation of the Vulcan IG project. These dedicated teams explored critical concepts and established foundational principles that were seamlessly integrated into this implementation guide.
+We also recognize the exceptional contributions of the leaders from the four FHIR - OMOP subgroups that preceded the formation of the Vulcan IG project. These dedicated teams explored critical concepts and established foundational principles that were integrated into this implementation guide.
 
-## OMOP + FHIR Subgroup Leaders
+## FHIR - OMOP Collaboration Subgroup Leaders
 
 ### Data Harmonization Subgroup
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
