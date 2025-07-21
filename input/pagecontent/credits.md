@@ -22,6 +22,7 @@ We recognize that this guide establishes an important foundation, and also ackno
     </tr>
   </tbody>
 </table>
+
 ## Primary Editors
 
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
