@@ -82,13 +82,43 @@ When implementing an HL7 FHIR to OMOP transformation using a FHIR Implementation
 
 **Comparison Table: FHIR vs OMOP Flavors of Null**
 
-| Aspect | HL7 FHIR | OMOP CDM |
-| :---- | :---- | :---- |
-| **Representation of null** | data-absent-reason extension | NULL in SQL or concept ID \= 0 |
-| **Granularity of nulls** | Fine-grained (unknown, not-applicable, masked, etc.) | Implicit; often lacks detailed flavor semantics |
-| **Standard terminology** | Uses codes like unknown, not-asked, etc. | No standard codes; often relies on documentation or conventions |
-| **Handling missing values** | Structured via extensions or empty elements with context | Fields left NULL or set to 0 (no matching concept) |
-| **ETL challenge** | Requires preserving semantic meaning during mapping | Requires selecting appropriate mapping logic per use case |
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Aspect</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">HL7 FHIR</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP CDM</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Representation of null</td>
+      <td style="border: 1px solid #d0d7de;">data-absent-reason extension</td>
+      <td style="border: 1px solid #d0d7de;">NULL in SQL or concept ID = 0</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Granularity of nulls</td>
+      <td style="border: 1px solid #d0d7de;">Fine-grained (unknown, not-applicable, masked, etc.)</td>
+      <td style="border: 1px solid #d0d7de;">Implicit; often lacks detailed flavor semantics</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Standard terminology</td>
+      <td style="border: 1px solid #d0d7de;">Uses codes like unknown, not-asked, etc.</td>
+      <td style="border: 1px solid #d0d7de;">No standard codes; often relies on documentation or conventions</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Handling missing values</td>
+      <td style="border: 1px solid #d0d7de;">Structured via extensions or empty elements with context</td>
+      <td style="border: 1px solid #d0d7de;">Fields left NULL or set to 0 (no matching concept)</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">ETL challenge</td>
+      <td style="border: 1px solid #d0d7de;">Requires preserving semantic meaning during mapping</td>
+      <td style="border: 1px solid #d0d7de;">Requires selecting appropriate mapping logic per use case</td>
+    </tr>
+  </tbody>
+</table>
 
 In short, FHIR provides a more expressive mechanism to convey the *reason* for missing data, while OMOP assumes nulls are more operational or structural. Mapping between them in a FHIR-to-OMOP ETL process requires deliberate rules to preserve clinical meaning without overfitting to the destination model.
 
