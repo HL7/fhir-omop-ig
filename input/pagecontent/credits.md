@@ -1,4 +1,6 @@
-This Implementation Guide was developed under the auspices of the [Vulcan](https://www.hl7vulcan.org/) FHIR to OMOP work group in collaboration with the OHDSI OMOP + FHIR working group. Throughout this project, more than 100 individuals from over 70 organizations—representing academia, government, industry, and data standards development—contributed their decades of experience in managing Real-World Data to support the best practices proposed. We recognize that this guide establishes an important foundation, and also acknowledge that many opportunities for additional data domains and use cases remain. Please eMail https://www.hl7vulcan.org/contact-us with questions or comments falling outside the established HL7 balloting process. We welcome your feedback and encourage continued collaborations to more fully realize the transformative potential that these two complementary standards can bring to advancing human health.
+This Implementation Guide was developed under the auspices of the [Vulcan](https://www.hl7vulcan.org/) FHIR to OMOP work group in collaboration with the OHDSI OMOP + FHIR working group. We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and leadership made this project possible. Dr. Chute not only conceived and initiated this effort by proposing it to the Vulcan Steering Committee, but also provided unwavering executive sponsorship and representation throughout the entire project lifecycle.
+
+We recognize that this guide establishes an important foundation, and also acknowledge that many opportunities for additional data domains and use cases remain. Please eMail https://www.hl7vulcan.org/contact-us with questions or comments falling outside the established HL7 balloting process. We welcome your feedback and encourage continued collaborations to more fully realize the transformative potential that these two complementary standards can bring to advancing human health.
 
 ## Primary Authors
 
@@ -111,7 +113,7 @@ This Implementation Guide was developed under the auspices of the [Vulcan](https
   </tbody>
 </table>
 
-We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and leadership made this project possible. Dr. Chute not only conceived and initiated this effort by proposing it to the Vulcan Steering Committee, but also provided unwavering executive sponsorship and representation throughout the entire project lifecycle.
+
 
 We also recognize the exceptional contributions of the leaders from the four OMOP + FHIR subgroups that preceded the formation of the Vulcan IG project. These dedicated teams explored critical concepts and established foundational principles that were seamlessly integrated into this implementation guide.
 
@@ -201,20 +203,45 @@ We also recognize the exceptional contributions of the leaders from the four OMO
 
 We are deeply appreciative of the participants in the July 2025 Vulcan Virtual Connectathon, whose valuable testing and feedback on the technical artifacts significantly enhanced this implementation guide:
 
-| Column 1 | Column 2 |
-|----------|----------|
-| Rebecca Baker | Abderrazek Boufahja |
-| Benjamin Berk | Myung Choi |
-| Indraneel Dasari | Jean Duteau |
-| Scott Favre | Davera Gabriel |
-| Youngmi Han | Adam Lee |
-| Prasanth Nannapaneni | Filippo Napoli |
-| Chris Roeder | Will Roddy |
-| Guy Tsafnat | Michael Van Treeck |
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;">Rebecca Baker</td>
+      <td style="border: 1px solid #d0d7de;">Abderrazek Boufahja</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Benjamin Berk</td>
+      <td style="border: 1px solid #d0d7de;">Myung Choi</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;">Indraneel Dasari</td>
+      <td style="border: 1px solid #d0d7de;">Jean Duteau</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Scott Favre</td>
+      <td style="border: 1px solid #d0d7de;">Davera Gabriel</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;">Youngmi Han</td>
+      <td style="border: 1px solid #d0d7de;">Adam Lee</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Prasanth Nannapaneni</td>
+      <td style="border: 1px solid #d0d7de;">Filippo Napoli</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;">Chris Roeder</td>
+      <td style="border: 1px solid #d0d7de;">Will Roddy</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Guy Tsafnat</td>
+      <td style="border: 1px solid #d0d7de;">Michael Van Treeck</td>
+    </tr>
+  </tbody>
+</table>
 
 
-Working group participants that took active roles in discussions leading to generation of the narrative and technical artifacts presented in this IG: 
-
+Throughout this project, more than 100 individuals from over 70 organizations—representing academia, government, industry, and data standards development—contributed their decades of experience in managing Real-World Data to support the best practices proposed. Working group participants that took active roles in discussions leading to generation of the narrative and technical artifacts presented in this IG: 
 
 ## Academic
 
