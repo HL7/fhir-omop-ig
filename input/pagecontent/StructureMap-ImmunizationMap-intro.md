@@ -26,10 +26,11 @@ This dual-table approach addresses data quality concerns by:
 - Enabling OMOP users to differentiate data quality levels for analysis purposes
 - Supporting quality measures that rely on documented drug exposures while preserving incomplete data for reference
 
-## Evaluating Immunization Status
+## Evaluating Resource Immunization Status Element
 Healthcare organizations implementing FHIR to OMOP transformations face a critical decision when handling immunization data: how to appropriately manage the mandatory status field required by the FHIR IPA Implementation Guide. The recommended approach focuses on **including only immunizations with "completed" or "in progress" status** in the OMOP database. This strategy addresses the challenge arising when attempting to map FHIR's "not done" status to OMOP's existing field structures. Early attempts to preserve "not done" statuses by mapping them to fields like "stop reason" created significant risks for data misinterpretation, as these fields serve different clinical purposes than indicating an immunization was never administered.
 
 The filtering approach during transformation ensures that only clinically meaningful immunization records enter the OMOP database. Each included immunization must contain the mandatory FHIR elements: status, vaccine code, patient reference, and administration date. By excluding "not done" records, organizations maintain the clinical accuracy of their OMOP data while supporting reliable analytics and research outcomes.
+
 Implementation teams discovered that forcing "not done" statuses into inappropriate OMOP fields could lead to false positives in clinical research and quality measurement activities. The stop reason field, originally designed to capture why ongoing treatments were discontinued, carries different semantic meaning than a planned immunization that was never initiated. This misalignment posed risks for downstream analytics, clinical decision support systems, and population health management activities that rely on accurate immunization status information.
 
 For use cases requiring data reflecting all statuses, excluded records can be preserved by mapping to a targets typically in the Observation Domain such as: "Measles mumps and rubella vaccination not done" (concept_id: 36713255). This approach balances the need for data integrity with transparency requirements, allowing for future analysis while preventing contamination of the primary analytical dataset.
