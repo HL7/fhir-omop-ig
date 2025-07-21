@@ -79,7 +79,7 @@ This IG utilizes the OMOP Common Data Model, v5.4. At the time this document was
 
 [5] E. Hall, G. Melton, P. Payne, D. Dorr and D. Vawdrey, "How Are Leading Research Institutions Engaging with Data Sharing Tools and Programs?," in *AMIA 2023 Annual Symposium*, Bethesda, MD, 2023.
 
-[6] Tsafnat G, Dunscombe R, Gabriel D, Grieve G, Reich C. Converge or Collide? Making Sense of a Plethora of Open Data Standards in Health Care. J Med Internet Res. 2024 Apr 9;26:e55779. doi: 10.2196/55779. PMID: 38593431; PMCID: PMC11040436.
+[6] Tsafnat G, Dunscombe R, Gabriel D, Grieve G, Reich C. Converge or Collide? Making Sense of a Plethora of Open Data Standards in Health Care. J Med Internet Res. 2024 Apr 9;26:e55779. https://www.jmir.org/2024/1/e55779
 
 [7] Health Level Seven, "Vulcan accelerator home." https://confluence.hl7.org/display/VA (accessed Dec. 08, 2023).
 
