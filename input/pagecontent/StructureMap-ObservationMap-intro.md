@@ -87,54 +87,6 @@ FHIR Observation resources support multiple value types (Quantity, CodeableConce
   </tbody>
 </table>
 
-Keep in mind that the domain-based guidelines outlined above serve as one of many approaches to consider, with recognition that specific edge cases will require detailed concept-based mapping decisions during implementation.
-
-## Value Type Mapping Specifications
-
-FHIR Observation resources support multiple value types (Quantity, CodeableConcept, string, Boolean), requiring careful consideration for OMOP field assignments. The following mapping strategy addresses this complexity through type-specific field assignments.
-
-<table>
-    <thead>
-        <tr>
-            <th>FHIR Value Type</th>
-            <th>Target OMOP Field</th>
-            <th>Primary Table</th>
-            <th>Description</th>
-            <th>Examples</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Quantity (Numeric)</td>
-            <td><code>value_as_number</code></td>
-            <td>Measurement</td>
-            <td>Preserves quantitative nature of clinical measurements while maintaining data integrity</td>
-            <td>Laboratory test results, vital sign measurements, dosage amounts</td>
-        </tr>
-        <tr>
-            <td>CodeableConcept</td>
-            <td><code>value_as_concept_id</code></td>
-            <td>Measurement/Observation</td>
-            <td>Ensures semantic consistency and enables standardized clinical queries using standardized terminologies</td>
-            <td>SNOMED CT codes, LOINC codes, ICD-10 codes</td>
-        </tr>
-        <tr>
-            <td>String/Text</td>
-            <td><code>value_as_string</code></td>
-            <td>Measurement/Observation</td>
-            <td>Maintains descriptive clinical information that cannot be effectively represented through numeric or coded values</td>
-            <td>Patient-reported descriptions, free-text observations, clinical notes</td>
-        </tr>
-        <tr>
-            <td>Boolean</td>
-            <td><code>value_as_concept_id</code></td>
-            <td>Measurement/Observation</td>
-            <td>Typically mapped to standardized Yes/No concepts in OMOP vocabulary</td>
-            <td>Presence/absence indicators, binary clinical assessments</td>
-        </tr>
-    </tbody>
-</table>
-
 Implementation teams should note that FHIR's expressiveness often exceeds OMOP's structural capacity, requiring careful evaluation of value types that may need adaptation or exclusion if they cannot be effectively represented in the target OMOP model.
 
 ## Unit Handling and Standardization
