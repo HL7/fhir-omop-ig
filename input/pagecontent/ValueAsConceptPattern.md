@@ -143,6 +143,7 @@ INSERT INTO observation (
 
 #### Field Mapping Details
 
+
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
   <thead>
     <tr style="background-color: #f6f8fa;">
