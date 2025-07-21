@@ -141,31 +141,156 @@ Type concepts are implemented through fields that follow a specific naming conve
 
 Note the table below is only a partial list.  A complete listing of type concepts can be found in the [OHDSI Standardized Vocabularies](https://athena.ohdsi.org/search-terms/terms?domain=Type+Concept&standardConcept=Standard&page=1&pageSize=15&query=)   and a detailed explanation is available on the [ OHDSI Vocabulary wiki](https://github.com/OHDSI/Vocabulary-v5.0/wiki/Vocab.-TYPE_CONCEPT).
 
-| OMOP Domain | Field Name | Type Concept Examples | Description |
-|-------------|------------|----------------------|-------------|
-| **[Drug Exposure](https://ohdsi.github.io/CommonDataModel/cdm54.html#drug_exposure)** | `drug_type_concept_id` | EHR prescription | Prescription written by physician in electronic health record |
-| | | EHR administration record | Drug administered to patient (inpatient/outpatient) |
-| | | Pharmacy claim | Prescription filled at pharmacy (claims data) |
-| | | Patient self-report | Medication reported by patient during encounter |
-| **[Condition Occurrence](https://ohdsi.github.io/CommonDataModel/cdm54.html#condition_occurrence)** | `condition_type_concept_id` | EHR encounter diagnosis | Diagnosis recorded during clinical encounter |
-| | | EHR problem list | Condition documented in patient's problem list |
-| | | Claim primary diagnosis | Primary diagnosis from insurance claim |
-| | | Registry | Condition recorded in disease registry |
-| **[Procedure Occurrence](https://ohdsi.github.io/CommonDataModel/cdm54.html#procedure_occurrence)** | `procedure_type_concept_id` | EHR encounter record | Procedure documented during clinical visit |
-| | | EHR order | Procedure ordered by physician |
-| | | Claim primary procedure | Primary procedure from insurance claim |
-| | | Registry | Procedure recorded in clinical registry |
-| **[Visit Occurrence](https://ohdsi.github.io/CommonDataModel/cdm54.html#visit_occurrence)** | `visit_type_concept_id` | EHR encounter | Visit documented in electronic health record |
-| | | Claim | Visit information from insurance claim |
-| | | Registry | Visit recorded in clinical registry |
-| **[Measurement](https://ohdsi.github.io/CommonDataModel/cdm54.html#measurement)** | `measurement_type_concept_id` | EHR | Laboratory or vital sign measurement from EHR |
-| | | Claim | Measurement information from insurance claim |
-| | | Registry | Measurement from clinical registry or study |
-| | | Patient reported | Measurement reported by patient |
-| **[Observation](https://ohdsi.github.io/CommonDataModel/cdm54.html#observation)** | `observation_type_concept_id` | EHR | Clinical observation documented in EHR |
-| | | Claim | Observation information from insurance claim |
-| | | Survey | Data collected through patient survey |
-| | | Registry | Observation from clinical registry |
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Domain</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Field Name</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Type Concept Examples</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#drug_exposure">Drug Exposure</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>drug_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR prescription</td>
+      <td style="border: 1px solid #d0d7de;">Prescription written by physician in electronic health record</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">EHR administration record</td>
+      <td style="border: 1px solid #d0d7de;">Drug administered to patient (inpatient/outpatient)</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Pharmacy claim</td>
+      <td style="border: 1px solid #d0d7de;">Prescription filled at pharmacy (claims data)</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Patient self-report</td>
+      <td style="border: 1px solid #d0d7de;">Medication reported by patient during encounter</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#condition_occurrence">Condition Occurrence</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>condition_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR encounter diagnosis</td>
+      <td style="border: 1px solid #d0d7de;">Diagnosis recorded during clinical encounter</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">EHR problem list</td>
+      <td style="border: 1px solid #d0d7de;">Condition documented in patient's problem list</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Claim primary diagnosis</td>
+      <td style="border: 1px solid #d0d7de;">Primary diagnosis from insurance claim</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Registry</td>
+      <td style="border: 1px solid #d0d7de;">Condition recorded in disease registry</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#procedure_occurrence">Procedure Occurrence</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>procedure_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR encounter record</td>
+      <td style="border: 1px solid #d0d7de;">Procedure documented during clinical visit</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">EHR order</td>
+      <td style="border: 1px solid #d0d7de;">Procedure ordered by physician</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Claim primary procedure</td>
+      <td style="border: 1px solid #d0d7de;">Primary procedure from insurance claim</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Registry</td>
+      <td style="border: 1px solid #d0d7de;">Procedure recorded in clinical registry</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#visit_occurrence">Visit Occurrence</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>visit_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR encounter</td>
+      <td style="border: 1px solid #d0d7de;">Visit documented in electronic health record</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Claim</td>
+      <td style="border: 1px solid #d0d7de;">Visit information from insurance claim</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Registry</td>
+      <td style="border: 1px solid #d0d7de;">Visit recorded in clinical registry</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#measurement">Measurement</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>measurement_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR</td>
+      <td style="border: 1px solid #d0d7de;">Laboratory or vital sign measurement from EHR</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Claim</td>
+      <td style="border: 1px solid #d0d7de;">Measurement information from insurance claim</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Registry</td>
+      <td style="border: 1px solid #d0d7de;">Measurement from clinical registry or study</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Patient reported</td>
+      <td style="border: 1px solid #d0d7de;">Measurement reported by patient</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de; font-weight: bold;"><a href="https://ohdsi.github.io/CommonDataModel/cdm54.html#observation">Observation</a></td>
+      <td style="border: 1px solid #d0d7de;"><code>observation_type_concept_id</code></td>
+      <td style="border: 1px solid #d0d7de;">EHR</td>
+      <td style="border: 1px solid #d0d7de;">Clinical observation documented in EHR</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Claim</td>
+      <td style="border: 1px solid #d0d7de;">Observation information from insurance claim</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Survey</td>
+      <td style="border: 1px solid #d0d7de;">Data collected through patient survey</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;"></td>
+      <td style="border: 1px solid #d0d7de;">Registry</td>
+      <td style="border: 1px solid #d0d7de;">Observation from clinical registry</td>
+    </tr>
+  </tbody>
+</table>  
 
 ### Historical Code and Code System Transformations
 Healthcare data transformation frequently encounters historical coding systems that are no longer actively maintained or updated. These legacy codes present unique challenges during OMOP CDM implementation due to their deprecated status and complex mapping requirements. ICD-9 codes represent the most prominent example, having been largely replaced by ICD-10 in clinical settings. These codes commonly appear in legacy electronic health records, retrospective datasets, and clinical documentation predating modern coding system adoption.
