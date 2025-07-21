@@ -150,12 +150,43 @@ If the CodeableConcept contained both SNOMED and a local code:
 #### Related Allergy Concepts
 Similar concepts that might appear in allergy contexts:
 
-| SNOMED Code | Concept Name | OMOP Domain | Notes |
-|-------------|--------------|-------------|-------|
-| 716186003 | No known allergy | Observation | Status assertion |
-| 429625007 | No known food allergy | Observation | Specific category |
-| 428607008 | No known environmental allergy | Observation | Environmental focus |
-| 409137002 | No known drug allergy | Observation | Medication-specific |
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">SNOMED Code</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Concept Name</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">OMOP Domain</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>716186003</code></td>
+      <td style="border: 1px solid #d0d7de;">No known allergy</td>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Observation</td>
+      <td style="border: 1px solid #d0d7de;">Status assertion</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>429625007</code></td>
+      <td style="border: 1px solid #d0d7de;">No known food allergy</td>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Observation</td>
+      <td style="border: 1px solid #d0d7de;">Specific category</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #d0d7de;"><code>428607008</code></td>
+      <td style="border: 1px solid #d0d7de;">No known environmental allergy</td>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Observation</td>
+      <td style="border: 1px solid #d0d7de;">Environmental focus</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;"><code>409137002</code></td>
+      <td style="border: 1px solid #d0d7de;">No known drug allergy</td>
+      <td style="border: 1px solid #d0d7de; font-weight: bold;">Observation</td>
+      <td style="border: 1px solid #d0d7de;">Medication-specific</td>
+    </tr>
+  </tbody>
+</table>
 
 All these concepts map to the Observation domain, maintaining consistency in OMOP representation. A concept-based domain mapping strategy is the fundamental consideration when OMOP vocabulary domain assignments differ from FHIR resource type expectations. 
 
