@@ -3,7 +3,7 @@
 Aligned with the IPA Immunization profile recommendations, CVX is the reccomended terminology to use for vaccine administration records.  CVX provides a standardized coding system specifically designed for vaccines in healthcare data and is regularly updated to include new vaccines, including COVID-19 vaccines in recent versions.
 
 ### Terminology Flexibility
-While CVX serves as the preferred terminology, we reccomend maintaiing flexibility to accommodate alternative coding systems commonly found in real-world data sources. This flexibility ensures that the mapping can effectively handle variations in source data coding practices across different healthcare organizations and systems. The IPA profile's "example binding" for immunization terminology allows for the inclusion of other code systems such as:
+While CVX serves as the preferred terminology, we reccomend maintaining flexibility to accommodate alternative coding systems commonly found in real-world data sources. This flexibility ensures that the mapping can effectively handle variations in source data coding practices across different healthcare organizations and systems. The IPA profile's "example binding" for immunization terminology allows for the inclusion of other code systems such as:
 - CPT (Common Procedural Terminology) codes
 - Other locally used immunization coding systems
 - Legacy coding systems from source data
@@ -13,7 +13,7 @@ While CVX serves as the preferred terminology, we reccomend maintaiing flexibili
 To determine the appropriate OMOP domain for immunization records, employ a data-driven approach 
 
 | **Mapping Criteria** | **Drug Exposure Table** | **Observation Table** |
-|---------------------|-------------------------|----------------------|
+|:---------------------|:------------------------|:---------------------|
 | **Primary Use Case** | Well-documented immunizations with complete administration details | Incomplete or patient-reported immunizations |
 | **Data Requirements** | • Specific administration dates<br>• Vaccine details and specifications<br>• Confirmed administration documentation | • Missing administration dates<br>• Patient-reported vaccines<br>• Minimal or incomplete documentation |
 | **Data Quality Level** | High-quality, verifiable immunization records | Preserved data with documented limitations |
