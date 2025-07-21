@@ -24,11 +24,12 @@ The "value as concept" mapping pattern to OMOP addresses scenarios where an obse
 ## Mapping Allergic Reactions
 
 When allergy data FHIR resouces includes specific reactions (e.g., rash, anaphylaxis), two records should be created: 
-**Primary Allergy Record**
+
+**1: Primary Allergy Record**
 - `observation_concept_id`: "Allergy to Drug"
 - `value_as_concept_id`: Specific allergen (e.g., "Penicillin G")
 
-**Reaction Record**
+**2: Reaction Record**
 - `observation_concept_id`: "Allergic Reaction to Drug"
 - `value_as_concept_id`: Specific reaction (e.g., "Rash")
 
