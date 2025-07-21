@@ -1,7 +1,7 @@
 # Person Resource Considerations
 
 ## Mapping Sex and Gender 
-FHIR to OMOP gender mapping requires attention to both technical precision and the evolving OHDSI conventions around gender and sex data representation. The key to successful implementation lies in establishing clear protocols that respect the OHDSI community's ratified conventions, maintaining comprehensive validation across both person and observation tables, and preparing for future standard evolution while ensuring current system reliability and accuracy. 
+FHIR to OMOP gender mapping requires attention to both technical precision and the evolving OHDSI conventions around gender and sex data representation. The key to successful implementation lies in establishing clear protocols that respect the OHDSI community's ratified conventions, maintaining comprehensive validation across both Person and Observation domain tables, and preparing for future standard evolution while ensuring current system reliability and accuracy. 
 
 ## Understanding Both Standards
 ### FHIR Gender Implementation
@@ -93,13 +93,13 @@ The most complex aspect of FHIR to OMOP gender mapping involves managing absent 
 
 ## Advanced Considerations
 ### HL7 Gender Harmony Project Integration
-The HL7 Gender Harmony Project introduces sophisticated gender and sex categorization that extends beyond traditional binary representations. Implementation teams should prepare for enhanced gender concepts including:
+The HL7 Gender Harmony Project produced a [FHIR implementation Guide](https://build.fhir.org/ig/HL7/fhir-gender-harmony/fhirgenderharmony.html)  that introduces sophisticated gender and sex categorization that extends beyond traditional binary representations. Implementation teams should prepare for enhanced gender concepts including:
 
 - **Recorded Sex or Gender (RSG)**: The sex or gender recorded in official documents
 - **Sex for Clinical Use (SFCU)**: Clinically relevant sex information for treatment decisions
 - **Gender Identity**: Personal gender identification separate from biological sex
 
-These concepts will require vocabulary extensions and updated mapping protocols as standards evolve.
+These concepts will require OMOP vocabulary extensions and updated mapping protocols as standards evolve.
 
 ### Jurisdictional Compliance
 Different healthcare jurisdictions may have specific requirements for gender data representation. Implementation teams must consider:
