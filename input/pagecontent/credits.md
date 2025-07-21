@@ -201,6 +201,21 @@ We also recognize the exceptional contributions of the leaders from the four OMO
 
 We are deeply appreciative of the participants in the July 2025 Vulcan Virtual Connectathon, whose valuable testing and feedback on the technical artifacts significantly enhanced this implementation guide:
 
+| Column 1 | Column 2 |
+|----------|----------|
+| Rebecca Baker | Abderrazek Boufahja |
+| Benjamin Berk | Myung Choi |
+| Indraneel Dasari | Jean Duteau |
+| Scott Favre | Davera Gabriel |
+| Youngmi Han | Adam Lee |
+| Prasanth Nannapaneni | Filippo Napoli |
+| Chris Roeder | Will Roddy |
+| Guy Tsafnat | Michael Van Treeck |
+
+
+Working group participants that took active roles in discussions leading to generation of the narrative and technical artifacts presented in this IG: 
+
+
 ## Academic
 
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto%;">
