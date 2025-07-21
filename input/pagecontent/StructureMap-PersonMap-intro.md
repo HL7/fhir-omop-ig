@@ -27,11 +27,7 @@ The mandatory nature of this field ensures every person record contains gender i
 **Important OHDSI Convention Update**: The OHDSI community has recognized that the term "gender_concept_id" is outdated and should more accurately be "sex_concept_id" to reflect biological sex rather than gender identity. However, due to the significant development effort required to change this field name across all OMOP implementations and package dependencies, this update will be implemented in the next major release of the OMOP Common Data Model.
 
 ## OHDSI Gender Identity Convention
-### Current State and Future Plans
-The OHDSI community has established important conventions regarding gender-related data storage in the OMOP Common Data Model that directly impact FHIR to OMOP mapping strategies.
-
-### Gender vs. Sex Terminology
-The current `gender_concept_id` field in the OMOP person table represents a legacy naming convention that causes conceptual confusion. The OHDSI community acknowledges that this field more accurately represents biological sex rather than gender identity. The preferred term should be `sex_concept_id` to reflect this distinction properly.
+The OHDSI community has established important conventions regarding gender-related data storage in the OMOP Common Data Model that directly impact FHIR to OMOP mapping strategies. The current `gender_concept_id` field in the OMOP person table represents a legacy naming convention that causes conceptual confusion. The OHDSI community acknowledges that this field more accurately represents biological sex rather than gender identity. The preferred term should be `sex_concept_id` to reflect this distinction properly.
 
 **Implementation Timeline**: Due to the substantial development effort required to rename this field across all OMOP implementations, packages, and dependent systems, this change will be implemented in the next major release of the OMOP Common Data Model. Until then, implementers should understand that `gender_concept_id` conceptually represents biological sex.
 
