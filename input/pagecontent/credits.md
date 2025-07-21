@@ -240,7 +240,7 @@ We are deeply appreciative of the participants in the July 2025 Vulcan Virtual C
 </table>
 
 
-Throughout this project, more than 100 individuals from over 70 organizations—representing academia, government, industry, and data standards development—contributed their decades of experience in managing Real-World Data to support the best practices proposed. Working group participants that took active roles in discussions leading to generation of the narrative and technical artifacts presented in this IG: 
+Throughout this project, more than 100 individuals from over 70 organizations—representing academia, government, industry, and data standards development—contributed their decades of experience in managing Real-World Data to support the best practices proposed. Working group participants that took active roles in discussions leading to generation of the narrative and technical artifacts presented in this IG include: 
 
 ## Academic
 
