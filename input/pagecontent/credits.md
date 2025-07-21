@@ -238,10 +238,10 @@ We are deeply appreciative of all the participants in the July 2025 Connectathon
   </tbody>
 </table>
 
-
+## Working Group Calls
 Throughout this project, more than 100 individuals from over 70 organizations—representing academia, government, industry, and data standards development—contributed their decades of experience in managing Real-World Data to support the best practices proposed. Working group participants that took active roles in discussions leading to generation of the narrative and technical artifacts presented in this IG include: 
 
-## Academic Organizations
+### Academic Organizations
 
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto%;">
   <thead>
@@ -307,7 +307,7 @@ Throughout this project, more than 100 individuals from over 70 organizations—
 </table>
 
 
-## Government Organizations
+### Government Organizations
 
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto%;">
   <thead>
@@ -353,7 +353,7 @@ Throughout this project, more than 100 individuals from over 70 organizations—
 </table>
 
 
-## Industry Organizations
+### Industry Organizations
 
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto%;">
   <thead>
