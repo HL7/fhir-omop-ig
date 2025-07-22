@@ -429,6 +429,10 @@ Throughout this project, more than 100 individuals from over 70 organizations, r
       <td style="border: 1px solid #d0d7de;">May Terry</td>
       <td style="border: 1px solid #d0d7de;">MITRE Corporation</td>
     </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Thomas White</td>
+      <td style="border: 1px solid #d0d7de;">MedStar Health</td>
+    </tr>
   </tbody>
 </table>
 
