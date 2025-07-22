@@ -4,7 +4,7 @@ FHIR terminology servers, like [Echidna](https://echidna.fhir.org/) serve as bri
 
 
 ### CodeSystem $Lookup Operation
-The FHIR [CodeSystem/$lookup](https://www.hl7.org/fhir/R5/codesystem-operation-lookup.html) provides additional information about a concept.  Given a concept ID, e.g. `1567956` we can lookup its properties:
+The FHIR [CodeSystem/$lookup](https://echidna.fhir.org/#tag/codesystem/post/r5/CodeSystem/$lookup) provides additional information about a concept.  Given a concept ID, e.g. `1567956` we can lookup its properties:
 
 **Request:**
 
