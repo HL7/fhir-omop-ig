@@ -71,7 +71,7 @@ We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and
       <td style="border: 1px solid #d0d7de;">University of North Carolina</td>
     </tr>
     <tr style="background-color: #f6f8fa;">
-      <td style="border: 1px solid #d0d7de;">Lukasz Kazmarek</td>
+      <td style="border: 1px solid #d0d7de;">Lukasz Kaczmarek</td>
       <td style="border: 1px solid #d0d7de;">F. Hoffmann-La Roche AG</td>
     </tr>
   </tbody>
