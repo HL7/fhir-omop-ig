@@ -273,6 +273,10 @@ Throughout this project, more than 100 individuals from over 70 organizations, r
       <td style="border: 1px solid #d0d7de;">Stephanie Hong</td>
       <td style="border: 1px solid #d0d7de;">Johns Hopkins University</td>
     </tr>
+      <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Andrew Kanter</td>
+      <td style="border: 1px solid #d0d7de;">Columbia University</td>
+    </tr>
     <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">Bryan Laraway</td>
       <td style="border: 1px solid #d0d7de;">University of North Carolina</td>
@@ -302,8 +306,12 @@ Throughout this project, more than 100 individuals from over 70 organizations, r
       <td style="border: 1px solid #d0d7de;">University of North Carolina</td>
     </tr>
     <tr>
-      <td style="border: 1px solid #d0d7de;">Dr. Asif Syed</td>
+      <td style="border: 1px solid #d0d7de;">Asif Syed</td>
       <td style="border: 1px solid #d0d7de;">MD Anderson Cancer Center</td>
+    </tr>
+      <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Xiaohan Zhang</td>
+      <td style="border: 1px solid #d0d7de;">Johns Hopkins University</td>
     </tr>
   </tbody>
 </table>
@@ -351,6 +359,7 @@ Throughout this project, more than 100 individuals from over 70 organizations, r
       <td style="border: 1px solid #d0d7de;">Sonya Zhan</td>
       <td style="border: 1px solid #d0d7de;">US Centers for Disease Control</td>
     </tr>
+  
   </tbody>
 </table>
 
