@@ -174,7 +174,7 @@ This guide contains a set of logical models that describe the OMOP CDM.  By expr
                <a href="StructureDefinition-VisitOccurrence.html"
                   title="StructureDefinition/VisitOccurrence">Visit Occurrence OMOP Table</a>
             </td>
-            <td>{{{ site.data.StructureDefinition-VisitOccurrence.description | markdownify}}</td>
+            <td>{{ site.data.StructureDefinition-VisitOccurrence.description | markdownify}}</td>
          </tr>
       </tbody>
    </table>
