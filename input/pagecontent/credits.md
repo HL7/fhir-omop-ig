@@ -42,7 +42,7 @@ We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and
       <td style="border: 1px solid #d0d7de;">Evidentli, Inc</td>
     </tr>
     <tr>
-      <td style="border: 1px solid #d0d7de;">Michael Van Treek</td>
+      <td style="border: 1px solid #d0d7de;">Michael Van Treeck</td>
       <td style="border: 1px solid #d0d7de;">Evidentli, Inc</td>
     </tr>
   </tbody>
@@ -97,7 +97,7 @@ We extend our heartfelt gratitude to **Dr. Christopher Chute**, whose vision and
     </tr>
     <tr>
       <td style="border: 1px solid #d0d7de;">Evidentli, Inc</td>
-      <td style="border: 1px solid #d0d7de;">Guy Tsafnat<br>Michael Van Treek<br>Davera Gabriel</td>
+      <td style="border: 1px solid #d0d7de;">Guy Tsafnat<br>Michael Van Treeck<br>Davera Gabriel</td>
     </tr>
     <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">FHIR-OMOP Oncology Use Case Subgroup</td>
