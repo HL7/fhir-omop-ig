@@ -12,7 +12,7 @@ Transform cast not checked yet
 The source statement doesn't assign a variable to the source - check that this is what is intended
 
 # 03 - This has been verified to be the actual FHIRPath expression needed to make the transform work.  The error is incorrect.
-The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/StructureDefinition/Person]
+The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/StructureDefinition/Person] (@char 1)
 
 # 04 - Deprecated value set is used in FHIR core
 Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0

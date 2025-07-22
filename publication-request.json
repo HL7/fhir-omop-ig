@@ -1,0 +1,14 @@
+{
+  "package-id" : "hl7.fhir.uv.omop",
+  "version" : "1.0.0-ballot",
+  "path" : "http://hl7.org/fhir/uv/omop/2025Sep",
+  "status" : "ballot",
+  "sequence" : "INFORMATIVE",
+  "mode": "working",
+  "first": true,
+  "desc" : "This is the first ballot of the informative release of FHIR OMOP.",
+  "title": "Vulcan FHIR to OMOP FHIR Implementation Guide",
+  "introduction": "This IG provides details on how to map from a selected set of FHIR resources to OMOP data tables.",
+  "ci-build": "http://build.fhir.org/ig/HL7/fhir-omop",
+  "category": "research"
+}
