@@ -403,7 +403,7 @@ curl 'https://echidna.fhir.org/r5/CodeSystem/$lookup' \
 ```
 
 ### ConceptMap $translate Operation 
-The FHIR [ConceptMap/$translate](https://www.hl7.org/fhir/R5/conceptmap-operation-translate.html) operation will provide the cross-walk from a source system to OMOP that's stored in a ConceptMap Resource.  Given a source code and system, e.g.:
+The FHIR [ConceptMap/$translate](https://echidna.fhir.org/#tag/conceptmap/post/r5/ConceptMap/$translate) operation will provide the cross-walk from a source system to OMOP that's stored in a ConceptMap Resource.  Given a source code and system, e.g.:
 
 ```json
 {
