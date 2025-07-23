@@ -3,7 +3,7 @@
   "version" : "1.0.0-ballot",
   "path" : "http://hl7.org/fhir/uv/omop/2025Sep",
   "status" : "ballot",
-  "sequence" : "INFORMATIVE",
+  "sequence" : "INFORMATIVE 1",
   "mode": "working",
   "first": true,
   "desc" : "This is the first ballot of the informative release of FHIR OMOP.",
