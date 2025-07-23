@@ -64,6 +64,11 @@ menu:
     Value-as-Concept Pattern: ValueAsConceptPattern.html
   Technical Artifacts: technical_artifacts.html
   Terminology Server: TerminologyServer.html
+  Support:
+    Discussion Forum: https://chat.fhir.org/#narrow/stream/286658-omop-.2B-fhir
+    Project Page: https://confluence.hl7.org/spaces/VA/pages/325451879/FHIR+to+OMOP+2025
+    Specification Dashboard: https://jira.hl7.org/secure/Dashboard.jspa?selectPageId=17809
+    Propose a Change: https://jira.hl7.org/secure/CreateIssueDetails!init.jspa?pid=10405&amp;issuetype=10600&amp;customfield_11302=FHIR-omop
   Acknowledgements: credits.html
 
 #
