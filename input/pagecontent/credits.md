@@ -386,6 +386,10 @@ Throughout this project, more than 100 individuals from over 70 organizations, r
       <td style="border: 1px solid #d0d7de;">John Gresh</td>
       <td style="border: 1px solid #d0d7de;">Curlew Consulting</td>
     </tr>
+     <tr>
+      <td style="border: 1px solid #d0d7de;">Sabyasachi Gupta</td>
+      <td style="border: 1px solid #d0d7de;">Apexon</td>
+    </tr>
     <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">Mike Hamidi</td>
       <td style="border: 1px solid #d0d7de;">Walmart Healthcare Research Institute</td>
