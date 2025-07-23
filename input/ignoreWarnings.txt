@@ -4,20 +4,21 @@
 # (And include comments like this justifying why)
 # See https://github.com/FHIR/sample-ig/blob/master/input/ignoreWarnings.txt for examples
 
-# 01 - Various FML functions that throw warnings
+# 01 - Various FML functions that are valid but the validator does not currently check them
 Transform copy not checked yet
 Transform cast not checked yet
 
 # 02 - It is intended not to assign a variable
 The source statement doesn't assign a variable to the source - check that this is what is intended
 
-# 03 - This has been verified to be the actual FHIRPath expression needed to make the transform work.  The error is incorrect.
+# 03 - This has been verified to be the actual FHIRPath expression needed to make the transform work.  The error is incorrect - see https://chat.fhir.org/#narrow/channel/379173-FHIR-Mapping-Language/topic/.E2.9C.94.20evaluate.20transform.3F
+
 The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/StructureDefinition/Person] (@char 1)
 
-# 04 - Deprecated value set is used in FHIR core
+# 04 - Deprecated value set that is used in FHIR core
 Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
 
-# 05 - Codesystem is experimental but is used in IG
+# 05 - Codesystem is experimental but is used in Implementation Guide resource
 Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.0.0
 
 # 06 - This warning is all on Logical Models and we are matching the names of the elements in the OMOP tables.
