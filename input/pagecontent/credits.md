@@ -386,59 +386,59 @@ Throughout this project, more than 100 individuals from over 70 organizations, r
       <td style="border: 1px solid #d0d7de;">John Gresh</td>
       <td style="border: 1px solid #d0d7de;">Curlew Consulting</td>
     </tr>
-     <tr>
+     <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">Sabyasachi Gupta</td>
       <td style="border: 1px solid #d0d7de;">Apexon</td>
     </tr>
-    <tr style="background-color: #f6f8fa;">
+    <tr>
       <td style="border: 1px solid #d0d7de;">Mike Hamidi</td>
       <td style="border: 1px solid #d0d7de;">Walmart Healthcare Research Institute</td>
     </tr>
-    <tr>
+    <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">Ben Hamlin</td>
       <td style="border: 1px solid #d0d7de;">National Committee for Quality Assurance</td>
     </tr>
-    <tr style="background-color: #f6f8fa;">
+    <tr>
       <td style="border: 1px solid #d0d7de;">Amro Hassan</td>
       <td style="border: 1px solid #d0d7de;">Alliance Chicago</td>
     </tr>
-    <tr>
+    <tr style="background-color: #f6f8fa;">>
       <td style="border: 1px solid #d0d7de;">Lukasz Kaczmarek</td>
       <td style="border: 1px solid #d0d7de;">F. Hoffmann-La Roche AG</td>
     </tr>
-    <tr style="background-color: #f6f8fa;">
+    <tr>
       <td style="border: 1px solid #d0d7de;">Sergey Krikov</td>
       <td style="border: 1px solid #d0d7de;">Parexel</td>
     </tr>
-    <tr>
+    <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">Nareesa Mohammed-Rajput, MD</td>
       <td style="border: 1px solid #d0d7de;">MITRE Corporation</td>
     </tr>
-    <tr style="background-color: #f6f8fa;">
+    <tr>
       <td style="border: 1px solid #d0d7de;">Henry Ogoe</td>
       <td style="border: 1px solid #d0d7de;">Publicis Sapient</td>
     </tr>
-    <tr>
+    <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">Ann Phillips</td>
       <td style="border: 1px solid #d0d7de;">Intelligent Medical Objects</td>
     </tr>
-    <tr style="background-color: #f6f8fa;">
+    <tr>
       <td style="border: 1px solid #d0d7de;">Christian Reich</td>
       <td style="border: 1px solid #d0d7de;">Odysseus Data Services</td>
     </tr>
-    <tr>
+    <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">Sebastian van Sandijk</td>
       <td style="border: 1px solid #d0d7de;">Odysseus Data Services</td>
     </tr>
-    <tr style="background-color: #f6f8fa;">
+    <tr>
       <td style="border: 1px solid #d0d7de;">Hayden Spence</td>
       <td style="border: 1px solid #d0d7de;">Aptive Resources</td>
     </tr>
-    <tr>
+    <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">Thomas Stone</td>
       <td style="border: 1px solid #d0d7de;">F. Hoffmann-La Roche AG</td>
     </tr>
-    <tr style="background-color: #f6f8fa;">
+    <tr>
       <td style="border: 1px solid #d0d7de;">May Terry</td>
       <td style="border: 1px solid #d0d7de;">MITRE Corporation</td>
     </tr>
