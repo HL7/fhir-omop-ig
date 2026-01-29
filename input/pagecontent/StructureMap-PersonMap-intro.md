@@ -1,11 +1,11 @@
-# Person Resource Considerations
+# Patient Resource Considerations
 
 ## Mapping Sex and Gender 
 FHIR to OMOP gender mapping requires attention to both technical precision and the evolving OHDSI conventions around gender and sex data representation. The key to successful implementation lies in establishing clear protocols that respect the OHDSI community's ratified conventions, maintaining comprehensive validation across both Person and Observation domain tables, and preparing for future standard evolution while ensuring current system reliability and accuracy. 
 
 ## Understanding Both Standards
 ### FHIR Gender Implementation
-FHIR implements gender as a CodeableConcept within the Person resource, providing flexibility in representation while maintaining standardization. The gender field accepts four primary values:
+FHIR implements gender as a CodeableConcept within the Patient resource, providing flexibility in representation while maintaining standardization. The gender field accepts four primary values:
 
 - **male**: Represents male gender identity
 - **female**: Represents female gender identity  
