@@ -9,10 +9,10 @@ name: FHIROMOP
 title: FHIR to OMOP FHIR IG
 description: An IG that provides the mappings and use cases for converting from FHIR to OMOP.
 status: active # draft | active | retired | unknown
-version: 1.0.0-ballot
+version: 1.0.0
 fhirVersion: 5.0.0 # https://www.hl7.org/fhir/valueset-FHIR-version.html
 copyrightYear: 2023+
-releaseLabel: INFORMATIVE 1 - Ballot
+releaseLabel: INFORMATIVE 1
 license: CC0-1.0 # https://www.hl7.org/fhir/valueset-spdx-license.html
 jurisdiction: http://unstats.un.org/unsd/methods/m49/m49.htm#001 "World" # https://www.hl7.org/fhir/valueset-jurisdiction.html
 publisher:
