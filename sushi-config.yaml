@@ -30,6 +30,8 @@ parameters:
 pages:
   index.md:
     title: Introduction
+  the-omop-cdm.md:
+    title: OMOP CDM
   UseCases.md:
      title: Use Cases
   F2OGeneralIssues.md:
@@ -53,6 +55,7 @@ pages:
 
 menu:
   Introduction: index.html
+    OMOP CDM: the-omop-cdm.html
   Use Cases: UseCases.html
   General Guidance:
     Common Issues: F2OGeneralIssues.html
