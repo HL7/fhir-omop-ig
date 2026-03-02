@@ -9,13 +9,13 @@ CodeableConcept elements in FHIR can contain multiple coding entries, each poten
 </figure>
 {::options parse_block_html="true" /}
 
-The transformation process begins with assessing code multiplicity within the CodeableConcept structure, determining whether multiple structured codes exist and evaluating their relationships to each other. When multiple codes are present, the system applies the [Code Prioritization Framework](https://build.fhir.org/ig/HL7/fhir-omop-ig/codemappings.html#code-prioritization-framework) to select the most appropriate code for OMOP mapping, considering vocabulary precedence, clinical specificity, primary designations, and temporal factors.
+The transformation process begins with assessing code multiplicity within the CodeableConcept structure, determining whether multiple structured codes exist and evaluating their relationships to each other. When multiple codes are present, the system applies the [Code Prioritization Framework](codemappings.html#code-prioritization-framework) to select the most appropriate code for OMOP mapping, considering vocabulary precedence, clinical specificity, primary designations, and temporal factors.
 
 For CodeableConcepts containing only single structured codes, the process bypasses complex prioritization logic and proceeds directly to vocabulary lookup and domain assignment. This streamlined approach recognizes that single codes represent the ideal scenario for FHIR-to-OMOP transformation, eliminating ambiguity while maintaining data integrity and processing efficiency.
 
 The vocabulary lookup step applies standard methodology to identify corresponding OMOP concepts, focusing on domain assignment that may differ from FHIR resource type expectations. A consistent vocabulary-driven approach ensures that clinical concepts are stored in appropriate OMOP domains, even when this conflicts with structural assumptions based on FHIR resource categorization.
 
-Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern suggests preserving this contextual information in appropriate OMOP *source_value fields, (a best practice [discussed here](https://build.fhir.org/ig/HL7/fhir-omop-ig/StrategiesBestPractices.html#source-value-preservation)) ensuring that any clinical nuance is not lost during the transformation process.
+Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern suggests preserving this contextual information in appropriate OMOP *source_value fields, (a best practice [discussed here](StrategiesBestPractices.html#source-value-preservation)) ensuring that any clinical nuance is not lost during the transformation process.
 
 #### Example: Mapping No Known Allergy CodeableConcept
 
