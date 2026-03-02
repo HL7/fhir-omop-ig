@@ -57,10 +57,10 @@ The Vulcan Real-World Data IG leverages the [FHIR International Patient Access (
 
 #### Vulcan RWD IG Studies from ClinicalTrials.gov
 
-1. [Acute Coronary Syndrome Study](https://build.fhir.org/ig/HL7/vulcan-rwd/acs.html#acute-coronary-syndrome-study), ClinicalTrials.gov ID: [NCT02190123](https://clinicaltrials.gov/ct2/show/NCT02190123)  
-2. [Anti-TNFa Treatment Study](https://build.fhir.org/ig/HL7/vulcan-rwd/anti-tnfa.html#anti-tnfa-treatment-study), ClinicalTrials.gov ID: [NCT03890445](https://clinicaltrials.gov/ct2/show/NCT03890445)  
-3. [Diabetes Study](https://build.fhir.org/ig/HL7/vulcan-rwd/diabetes.html#diabetes-study), ClinicalTrials.gov ID: [NCT05088265](https://clinicaltrials.gov/ct2/show/NCT05088265)  
-4. [COVID-19 Vaccine Effectiveness Study](https://build.fhir.org/ig/HL7/vulcan-rwd/covid.html#covid-19-vaccine-effectiveness-study), ClinicalTrials.gov ID: [NCT04848584](https://clinicaltrials.gov/ct2/show/NCT04848584)  
+1. [Acute Coronary Syndrome Study](https://hl7.org/fhir/uv/vulcan-rwd/acs.html#acute-coronary-syndrome-study), ClinicalTrials.gov ID: [NCT02190123](https://clinicaltrials.gov/ct2/show/NCT02190123)  
+2. [Anti-TNFa Treatment Study](https://hl7.org/fhir/uv/vulcan-rwd/anti-tnfa.html#anti-tnfa-treatment-study), ClinicalTrials.gov ID: [NCT03890445](https://clinicaltrials.gov/ct2/show/NCT03890445)  
+3. [Diabetes Study](https://hl7.org/fhir/uv/vulcan-rwd/diabetes.html#diabetes-study), ClinicalTrials.gov ID: [NCT05088265](https://clinicaltrials.gov/ct2/show/NCT05088265)  
+4. [COVID-19 Vaccine Effectiveness Study](https://hl7.org/fhir/uv/vulcan-rwd/covid.html#covid-19-vaccine-effectiveness-study), ClinicalTrials.gov ID: [NCT04848584](https://clinicaltrials.gov/ct2/show/NCT04848584)  
 
 These studies referenced in the Vulcan RWD IG specify the data elements required to identify, request, and retrieve relevant EHR data aligned with each study’s cohort definition and research parameters. Most data elements are derived from the IPA profiles, providing a standardized minimal dataset. The Vulcan RWD IG further supports flexibility to accommodate local, regional, or study-specific needs through extensions, as illustrated in the RWD Conceptual Application Model pictured below:
 

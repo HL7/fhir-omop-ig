@@ -109,7 +109,7 @@ The most complex aspect of FHIR to OMOP gender mapping involves managing absent 
 
 ## Advanced Considerations
 ### HL7 Gender Harmony Project Integration
-The HL7 Gender Harmony Project produced a [FHIR implementation Guide](https://build.fhir.org/ig/HL7/fhir-gender-harmony/fhirgenderharmony.html)  that introduces sophisticated gender and sex categorization that extends beyond traditional binary representations. Implementation teams should prepare for enhanced gender concepts including:
+The HL7 Gender Harmony Project produced a [FHIR implementation Guide](https://hl7.org/xprod/ig/uv/gender-harmony/)  that introduces sophisticated gender and sex categorization that extends beyond traditional binary representations. Implementation teams should prepare for enhanced gender concepts including:
 
 - **Recorded Sex or Gender (RSG)**: The sex or gender recorded in official documents
 - **Sex for Clinical Use (SFCU)**: Clinically relevant sex information for treatment decisions
