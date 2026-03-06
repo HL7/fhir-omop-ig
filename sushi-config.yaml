@@ -55,7 +55,7 @@ pages:
 
 menu:
   Introduction: index.html
-    OMOP CDM: the-omop-cdm.html
+  OMOP CDM: the-omop-cdm.html
   Use Cases: UseCases.html
   General Guidance:
     Common Issues: F2OGeneralIssues.html
