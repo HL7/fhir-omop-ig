@@ -15,7 +15,9 @@ For CodeableConcepts containing only single structured codes, the process bypass
 
 The vocabulary lookup step applies standard methodology to identify corresponding OMOP concepts, focusing on domain assignment that may differ from FHIR resource type expectations. A consistent vocabulary-driven approach ensures that clinical concepts are stored in appropriate OMOP domains, even when this conflicts with structural assumptions based on FHIR resource categorization.
 
-Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern suggests preserving this contextual information in appropriate OMOP *source_value fields, (a best practice [discussed here](StrategiesBestPractices.html#source-value-preservation)) ensuring that any clinical nuance is not lost during the transformation process.
+Context preservation becomes particularly important in CodeableConcept transformation, as free text elements may contain valuable clinical information that supplements or clarifies the coded representations. The pattern suggests preserving this contextual information in appropriate OMOP `_source_value` fields (a best practice [discussed here](StrategiesBestPractices.html#source-value-preservation)), ensuring that any clinical nuance is not lost during the transformation process.
+
+> **Note on `qualifier_source_value`:** The OMOP CDM defines `qualifier_source_value` to hold the verbatim source representation of a qualifier as it appeared in the originating system. It is not defined by CDM documentation or Themis convention as a general-purpose metadata or tag column. Individual implementations may choose to use this field for site-specific purposes, but this IG does not establish or prescribe that usage.
 
 #### Example: Mapping No Known Allergy CodeableConcept
 
@@ -41,6 +43,7 @@ The transformation of negative assertion concepts demonstrates the importance of
   "recordedDate": "2023-01-15"
 }
 ```
+
 The CodeableConcept contains a single SNOMED CT code representing a standardized approach to expressing the absence of known allergies, supplemented by free text that provides additional clinical context. Vocabulary lookup reveals that SNOMED CT code 716186003 maps to OMOP concept_id 4222295, but critically, this concept resides in the Observation domain rather than the Condition domain that might be expected based on the AllergyIntolerance resource type.
 
 This domain assignment reflects OMOP's semantic organization, where negative assertions about clinical conditions are typically modeled as observations rather than conditions themselves. The vocabulary-driven domain assignment takes precedence over resource type expectations, demonstrating the importance of semantic accuracy in OMOP transformation processes.
@@ -52,18 +55,18 @@ INSERT INTO observation (
     observation_concept_id,
     observation_date,
     observation_source_value,
-    qualifier_source_value
+    value_as_concept_id
 ) VALUES (
     [generated_id],
     [mapped_person_id],
     4222295,              -- No known allergy concept
     '2023-01-15',
-    '716186003',         -- Source preservation
-    'NKA'                -- Free text context preserved
+    '716186003',         -- Source code preservation
+    NULL                 -- No additional value needed for status assertion
 );
 ```
 
-The transformation successfully preserves both the structured coded information and the free text context while ensuring appropriate domain assignment based on vocabulary semantics. This example illustrates the critical importance of vocabulary-driven transformation logic and the value of preserving contextual information that supplements coded clinical data.
+The transformation successfully preserves the structured coded information while ensuring appropriate domain assignment based on vocabulary semantics. This example illustrates the critical importance of vocabulary-driven transformation logic. Free text elements such as the "NKA" abbreviation in `code.text` may contain valuable clinical context; implementers should refer to the [Source Value Preservation](StrategiesBestPractices.html#source-value-preservation) guidance for recommended approaches to capturing this information within CDM-conformant fields.
 
 #### Field Mapping Details
 
@@ -102,12 +105,6 @@ The transformation successfully preserves both the structured coded information 
       <td style="border: 1px solid #d0d7de;">Date of allergy status documentation</td>
     </tr>
     <tr>
-      <td style="border: 1px solid #d0d7de;"><code>qualifier_source_value</code></td>
-      <td style="border: 1px solid #d0d7de;">NKA</td>
-      <td style="border: 1px solid #d0d7de;">FHIR code.text</td>
-      <td style="border: 1px solid #d0d7de;">Free text abbreviation preserved</td>
-    </tr>
-    <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;"><code>value_as_concept_id</code></td>
       <td style="border: 1px solid #d0d7de;">NULL</td>
       <td style="border: 1px solid #d0d7de;">Not applicable</td>
@@ -116,9 +113,9 @@ The transformation successfully preserves both the structured coded information 
   </tbody>
 </table>
 
-In this example, the transformation successfully followed the proposed pattern, beginning with identification of the CodeableConcept input containing a negative assertion concept for "No known allergy." Since only a single SNOMED CT code was present in the coding array, the system  can bypass the prioritization logic step. An OMOP vocabulary lookup located the concept with an unexpected domain revelation - the concept mapped to the Observation domain rather than the anticipated Condition domain based on the source IPA AllergyIntolerance profile. In this onstance, there a need to complete an additional stpe was elminiated, as a standard OMOP concept was found and could be used directly.
+In this example, the transformation successfully followed the proposed pattern, beginning with identification of the CodeableConcept input containing a negative assertion concept for "No known allergy." Since only a single SNOMED CT code was present in the coding array, the system can bypass the prioritization logic step. An OMOP vocabulary lookup located the concept with an unexpected domain revelation — the concept mapped to the Observation domain rather than the anticipated Condition domain based on the source IPA AllergyIntolerance profile. In this instance, the need to complete an additional step was eliminated, as a standard OMOP concept was found and could be used directly.
 
-The transformation revealed several key insights about handling negative assertion concepts in OMOP. The vocabulary domain assignment took precedence over FHIR resource type expectations, demonstrating that OMOP's semantic organization may differ from FHIR's resource categorization. This required routing the data to the observation table instead of condition_occurrence, while preserving the clinical context through the qualifier_source_value field containing the "NKA" abbreviation.
+The transformation revealed several key insights about handling negative assertion concepts in OMOP. The vocabulary domain assignment took precedence over FHIR resource type expectations, demonstrating that OMOP's semantic organization may differ from FHIR's resource categorization. This required routing the data to the observation table instead of condition_occurrence.
 
 Although prioritization was not required due to the single code scenario, the transformation validated adherence to the established hierarchy. SNOMED was confirmed as the highest priority standard vocabulary, and the concept's standard status (S flag) allowed for direct usage without additional relationship mapping. As the text provided is an exact match to the preferred term in SNOMED, "No known allergy (situation)" with the SNOMED situational concept effectively capturing the clinical meaning of a negative assertion about allergy status is appropriately accepted.
 
@@ -149,7 +146,6 @@ If the CodeableConcept contained both SNOMED and a local code:
 
 #### Related Allergy Concepts
 Similar concepts that might appear in allergy contexts:
-
 
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
   <thead>
@@ -188,16 +184,16 @@ Similar concepts that might appear in allergy contexts:
   </tbody>
 </table>
 
-All these concepts map to the Observation domain, maintaining consistency in OMOP representation. A concept-based domain mapping strategy is the fundamental consideration when OMOP vocabulary domain assignments differ from FHIR resource type expectations. 
+All these concepts map to the Observation domain, maintaining consistency in OMOP representation. A concept-based domain mapping strategy is the fundamental consideration when OMOP vocabulary domain assignments differ from FHIR resource type expectations.
 
-The "absence of" semantics in these examples must be maintained in the target OMOP representation, ensuring that negative assertions remain clearly identifiable for clinical and research purposes. This preservation is critical because negative assertions significantly impact analytics queries - researchers must understand when "no known allergy" represents confirmed absence versus lack of documentation. Implementing robust temporal validity tracking becomes essential, as the timing of negative assertions affects their clinical relevance and validity periods. If manual mapping or hard-coded ETL processes are employed in FHIR to OMOP concpet mapping, clinical review processes must validate that OMOP representations accurately reflect the original clinical meaning, especially for concepts as are present in these examples that challenge traditional condition-versus-observation boundaries. Completeness checking ensures that all allergy status information is captured appropriately, while consistency monitoring tracks domain assignment patterns for similar concepts to identify potential mapping inconsistencies or opportunities for standardization across the implementation.
+The "absence of" semantics in these examples must be maintained in the target OMOP representation, ensuring that negative assertions remain clearly identifiable for clinical and research purposes. This preservation is critical because negative assertions significantly impact analytics queries — researchers must understand when "no known allergy" represents confirmed absence versus lack of documentation. Implementing robust temporal validity tracking becomes essential, as the timing of negative assertions affects their clinical relevance and validity periods. If manual mapping or hard-coded ETL processes are employed in FHIR to OMOP concept mapping, clinical review processes must validate that OMOP representations accurately reflect the original clinical meaning, especially for concepts such as those present in these examples that challenge traditional condition-versus-observation boundaries. Completeness checking ensures that all allergy status information is captured appropriately, while consistency monitoring tracks domain assignment patterns for similar concepts to identify potential mapping inconsistencies or opportunities for standardization across the implementation.
 
-These "No Known Allergy" example demonstrates several critical aspects of FHIR CodeableConcept to OMOP transformation:
+These "No Known Allergy" examples demonstrate several critical aspects of FHIR CodeableConcept to OMOP transformation:
 
 1. **Domain Complexity**: OMOP vocabulary domain assignment may differ from FHIR resource type expectations
 2. **Negative Assertions**: Absence-of-condition concepts require special consideration in clinical data mapping
 3. **Table Selection**: Proper OMOP table selection depends on vocabulary domain, not source resource type
-4. **Context Preservation**: Free text elements provide valuable clinical context that should be preserved
+4. **Context Preservation**: Free text elements provide valuable clinical context that should be preserved in CDM-conformant fields
 
 The transformation successfully maps a common clinical concept while revealing the importance of vocabulary-driven domain assignment in OMOP implementations. This pattern applies to many similar negative assertion concepts in clinical documentation, providing a template for handling absence-of-finding scenarios in FHIR to OMOP transformations.
 
@@ -212,7 +208,7 @@ FHIR permits text-only representations when no appropriate standardized code exi
 }
 ```
 
-These scenarios present the greatest transformation challenge, requiring manual mapping, comprehensive NLP analysis or explicit handling on OMOP as an unmapped source data. Unmapped content receives concept_id=0 with complete source text preservation in _source_value fields. Complex narratives may generate multiple OMOP records from single text sources, with temporal and contextual information influencing concept selection and date assignments.
+These scenarios present the greatest transformation challenge, requiring manual mapping, comprehensive NLP analysis or explicit handling in OMOP as unmapped source data. Unmapped content receives concept_id=0 with complete source text preservation in `_source_value` fields. Complex narratives may generate multiple OMOP records from single text sources, with temporal and contextual information influencing concept selection and date assignments.
 
 #### CodeableConcept Free Text Mapping Examples
 
@@ -247,7 +243,7 @@ INSERT INTO condition_occurrence (
 ##### 2. Ambiguous Clinical Language
 **Source Text**: "Patient has diabetes"
 **Challenge**: Unspecified diabetes type
-**Mapping Strategy**: Map to general diabetes concept with quality flag for specificity limitation
+**Mapping Strategy**: Map to general diabetes concept; implementers may apply site-specific data quality tracking outside of standard CDM fields
 
 *OMOP Condition Record:*
 ```sql
@@ -259,8 +255,7 @@ INSERT INTO condition_occurrence (
     condition_start_datetime,
     condition_type_concept_id,
     condition_source_value,
-    condition_source_concept_id,
-    qualifier_source_value
+    condition_source_concept_id
 ) VALUES (
     12346,                                     -- condition_occurrence_id
     67890,                                     -- person_id
@@ -269,14 +264,13 @@ INSERT INTO condition_occurrence (
     '2024-03-15T10:30:00',                    -- condition_start_datetime
     32817,                                     -- condition_type_concept_id (EHR)
     'Patient has diabetes',                    -- condition_source_value (original text)
-    0,                                         -- condition_source_concept_id (unmapped source)
-    'LOW_SPECIFICITY'                          -- qualifier_source_value (quality flag)
+    0                                          -- condition_source_concept_id (unmapped source)
 );
 ```
 
 ##### 3. Medical Abbreviations
 **Source Text**: "Pt w/ h/o MI, now c/o SOB"
-**NLP Processing**: 
+**NLP Processing**:
 - "h/o MI" → "history of myocardial infarction"
 - "c/o SOB" → "complains of shortness of breath"
 **Result**: Two distinct condition records
@@ -291,8 +285,7 @@ INSERT INTO condition_occurrence (
     condition_start_datetime,
     condition_type_concept_id,
     condition_source_value,
-    condition_source_concept_id,
-    qualifier_source_value
+    condition_source_concept_id
 ) VALUES (
     12347,                                     -- condition_occurrence_id
     67890,                                     -- person_id
@@ -301,8 +294,7 @@ INSERT INTO condition_occurrence (
     '2024-03-15T10:30:00',                    -- condition_start_datetime
     32817,                                     -- condition_type_concept_id (EHR)
     'h/o MI',                                  -- condition_source_value (original abbreviation)
-    0,                                         -- condition_source_concept_id (unmapped source)
-    'HISTORY_OF'                               -- qualifier_source_value (temporal qualifier)
+    0                                          -- condition_source_concept_id (unmapped source)
 );
 ```
 
@@ -316,8 +308,7 @@ INSERT INTO observation (
     observation_datetime,
     observation_type_concept_id,
     observation_source_value,
-    observation_source_concept_id,
-    qualifier_source_value
+    observation_source_concept_id
 ) VALUES (
     54321,                                     -- observation_id
     67890,                                     -- person_id
@@ -326,13 +317,11 @@ INSERT INTO observation (
     '2024-03-15T10:30:00',                    -- observation_datetime
     32817,                                     -- observation_type_concept_id (EHR)
     'c/o SOB',                                -- observation_source_value (original abbreviation)
-    0,                                         -- observation_source_concept_id (unmapped source)
-    'PATIENT_COMPLAINT'                        -- qualifier_source_value (clinical context)
+    0                                          -- observation_source_concept_id (unmapped source)
 );
 ```
 
-#### Example CodeableConcept Free Text Field Mapping Summary 
-
+#### Example CodeableConcept Free Text Field Mapping Summary
 
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
   <thead>
@@ -375,12 +364,6 @@ INSERT INTO observation (
       <td style="border: 1px solid #d0d7de;">No source coding available</td>
     </tr>
     <tr style="background-color: #f6f8fa;">
-      <td style="border: 1px solid #d0d7de;"></td>
-      <td style="border: 1px solid #d0d7de;"><code>qualifier_source_value</code></td>
-      <td style="border: 1px solid #d0d7de;">"LOW_SPECIFICITY"</td>
-      <td style="border: 1px solid #d0d7de;">Quality flag for clinical review</td>
-    </tr>
-    <tr>
       <td style="border: 1px solid #d0d7de; font-weight: bold;">Medical Abbreviations</td>
       <td style="border: 1px solid #d0d7de;"><code>condition_concept_id</code></td>
       <td style="border: 1px solid #d0d7de;">4329847</td>
@@ -391,12 +374,6 @@ INSERT INTO observation (
       <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
       <td style="border: 1px solid #d0d7de;">4000045</td>
       <td style="border: 1px solid #d0d7de;">SOB mapped to dyspnea concept</td>
-    </tr>
-    <tr>
-      <td style="border: 1px solid #d0d7de;"></td>
-      <td style="border: 1px solid #d0d7de;"><code>qualifier_source_value</code></td>
-      <td style="border: 1px solid #d0d7de;">"HISTORY_OF", "PATIENT_COMPLAINT"</td>
-      <td style="border: 1px solid #d0d7de;">Temporal and clinical context preserved</td>
     </tr>
   </tbody>
 </table>
