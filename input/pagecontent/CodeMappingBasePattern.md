@@ -6,7 +6,7 @@ Mapping coded data from FHIR to OMOP requires evaluation of the concepts to be s
 
 Future enhoncements to this guide or groups developing additional implementation guides may discover and codify additional code mapping patterns.
 
-### 1: Base Mapping Pattern
+### Base Mapping Pattern
 
 {::options parse_block_html="false" /}
 <figure>
