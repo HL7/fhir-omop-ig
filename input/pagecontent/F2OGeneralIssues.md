@@ -110,12 +110,75 @@ handling approaches:
 > compromise de-identification. See Section 3.1.2 for further discussion.
 
 #### Privacy and De-identification Considerations
-However, a primary concern when implementing FHIR to OMOP transformations that include raw identifiers directly from source systems is the potential compromise of de-identification processes. This is a cornerstone of OMOP's design for use in research and analytics. OMOP is not designed to support business identity management use cases.
+A primary concern when implementing FHIR to OMOP transformations is the potential compromise of de-identification when identifier data from source FHIR resources is carried forward into OMOP. This concern applies primarily — but not exclusively — to FHIR **business identifiers** (`Resource.identifier`), as these commonly carry externally-assigned values that may constitute or enable derivation of PII (e.g., medical record numbers, facility encounter IDs, insurance member numbers). OMOP is not designed to support business identity management use cases, and its de-identification model is a cornerstone of its design for research and analytics.
 
-Using fields like `visit_source_value` to store FHIR identifiers could misrepresent their intended use as generated in source EHRs and compromise de-identification processes. A reccomended implementation aproach is to create a separate data source table that maps OMOP-generated IDs to the original FHIR identifiers. This accommodates the complexities of handling identifiers for retaining provenance and traceability without:
-- Compromising de-identification and usability standards
+FHIR **logical identifiers** (`Resource.id`) are server-generated and are generally less directly PII-bearing. However, depending on the implementation, logical IDs may be set to values that mirror business identifiers (e.g., some FHIR servers expose a patient MRN as the `Patient.id`). Implementers should verify the nature of logical ID values in their specific source environment before assuming they are safe to carry forward in any form.
+
+##### Why `_source_value` Fields Are Not Appropriate for FHIR Identifier Storage
+
+A pattern sometimes seen in FHIR-to-OMOP implementations is mapping FHIR business identifiers directly to OMOP `_source_value` fields (e.g., mapping `Encounter.identifier` to `visit_source_value`). This approach is **not recommended** for several reasons:
+
+1. **Semantic mismatch**: OMOP `_source_value` fields are designed to hold a human-readable or
+   coded representation of the clinical concept from the source system — for example, the
+   encounter type code or description as it appeared in the source EHR. They are not designed
+   to hold business identifier strings such as encounter IDs or UUIDs.
+
+2. **De-identification risk**: FHIR business identifiers (`Resource.identifier`) frequently
+   contain or are directly traceable to PII. Storing them in `_source_value` fields — which are
+   commonly retained in OMOP databases used for research — may compromise the de-identification
+   of the dataset.
+
+3. **Format constraints**: OMOP `_source_value` fields are typically `VARCHAR(50)`. FHIR
+   business identifiers may exceed this length, particularly when they contain GUIDs, fully
+   qualified system URIs, or composite identifier values.
+
+4. **Multiple values**: A single FHIR resource may carry multiple business identifiers from
+   different assigning systems. OMOP's single `_source_value` field cannot represent this
+   multiplicity without lossy concatenation.
+
+##### Recommended Approach: External Mapping Table
+
+The recommended approach for preserving traceability from OMOP records back to their FHIR source is to maintain a **separate external mapping table** outside the core OMOP schema. This table links OMOP-generated integer IDs to the originating FHIR resource information without introducing identifier data into the OMOP tables themselves.
+
+A minimal mapping table structure might record:
+
+- The OMOP table and generated ID (e.g., `visit_occurrence_id = 10042`)
+- The FHIR resource type and logical identifier (e.g., `Encounter/abc-123`) — this is the
+  **logical identifier** (`ResourceType/Resource.id`), which is the FHIR primary key
+- Optionally, selected FHIR **business identifiers** (`Encounter.identifier`) where retention
+  is justified and compliant with de-identification requirements, held under appropriate
+  access controls
+
+This approach accommodates the complexities of identifier handling for provenance and
+traceability without:
+
+- Compromising OMOP de-identification and usability standards
 - Disrupting the OMOP schema
 - Violating de-identification protocols
+- Misrepresenting the semantics of OMOP fields
+
+##### De-identification Assessment by Identifier Type
+
+The following table summarizes the de-identification risk profile and recommended handling for
+each FHIR identifier type:
+
+| FHIR Identifier Type | FHIR Element | De-identification Risk | Recommended Handling |
+|---|---|---|---|
+| **Logical identifier** | `Resource.id` | Generally lower — server-generated; typically not PII, but verify against source implementation | Use as the traceability key in an external mapping table; do not store directly in OMOP primary key or `_source_value` fields |
+| **Business identifier** | `Resource.identifier` | Higher — frequently contains MRNs, encounter numbers, insurance IDs, or other externally-assigned values that may constitute PII | Evaluate each identifier system individually using the framework in Section 3.1.1; store in external mapping table under access controls, or exclude entirely if PII risk cannot be managed |
+
+##### Compliance Considerations
+
+Implementers should conduct a formal privacy and regulatory assessment before deciding how to handle any FHIR identifier data in an OMOP implementation. Relevant frameworks include:
+
+- **HIPAA Safe Harbor and Expert Determination methods** (where applicable), which define which
+  types of identifiers must be removed to achieve de-identification
+- **Institutional data governance policies** regarding linkage tables and re-identification risk
+- **GDPR or other applicable privacy regulations** in non-US contexts
+
+The key principle is that OMOP databases intended for research should not contain data elements that enable re-identification of individuals — whether through direct PII or through linkage to
+external datasets. FHIR business identifiers pose a higher risk on this dimension and require careful evaluation.
+
 
 #### Decision Framework for Identifier Management
 There is no single approach that can be uniformly applied to transformation of FHIR identifiers to OMOP. Rather, implementers must evaluate FHIR identifiers systematically using criteria relevant to the use case(s) an OMOP database must support:
