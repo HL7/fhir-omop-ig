@@ -62,7 +62,7 @@ menu:
   General Guidance:
     Common Issues: F2OGeneralIssues.html
     Best Practices: StrategiesBestPractices.html
-    Understanding FHIR Modifier Extensions: FHIRModifierExtensions.md
+    Understanding FHIR Modifier Extensions: FHIRModifierExtensions.html
   Mapping Concepts:
     Coded Field Mapping Principles: codemappings.html
     Code Mapping Base Pattern: CodeMappingBasePattern.html
