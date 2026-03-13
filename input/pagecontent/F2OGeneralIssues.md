@@ -6,7 +6,108 @@ The tension between the the two standards stems from FHIR's design for real-time
 Transforming FHIR resources to OMOP presents challenges in identifier management. FHIR resources utilize complex, non-integer identifiers that link discrete data across systems and support clinical workflows, while the OMOP CDM employs integer-based keys designed for de-identified research data with `person_id` serving as the primary linking mechanism across clinical domains. The core challenge is balancing OMOP's de-identification requirements with business needs for traceability and audit capabilities.
 
 #### Identifier Management
-FHIR and OMOP CDM represent different approaches to data identification due the underlying buiness requirements for each. In FHIR, identifiers provide reference information about source systems and support workflows and transactions between systems. In OMOP, identifiers establish relationships between tables using integer-based keys, with no fields containing patient identifiable information (PII) such as Medical Record Numbers, names, or addresses. Transformation between the two creates tension between competing requirements: maintaining data provenance for operational needs while preserving OMOP's de-identification principles. Many OMOP implementations reside within system architectures that have business requirements for re-identification supporting business and / or research scenarios, or other use cases where maintaining traceability from OMOP back to the FHIR source is needed.
+
+###### Understanding FHIR Identifier Types
+
+FHIR resources carry two fundamentally different types of identifiers that serve distinct purposes and must be handled separately when transforming to OMOP. Conflating them is a common source of implementation errors.
+
+| FHIR Element | Term Used in This IG | Role |
+ |---|---|---|
+| `Resource.id` | **Logical identifier** | Server-assigned primary key for the resource instance. Combined with the resource type, it forms the canonical FHIR address (e.g., `Encounter/abc-123`). Used by FHIR to locate and dereference the resource via RESTful APIs. Logical identifiers may change if a resource is migrated to a different server. |
+| `Resource.identifier` | **Business identifier** | One or more data elements of type `Identifier` carried *on* the resource. Represent externally-assigned identifiers such as medical record numbers, encounter numbers, or accession numbers. These identify the real-world entity the resource describes, persist across systems, and may come from multiple different assigning authorities. FHIR itself does not use business identifiers to locate or resolve resources — they are data, not addresses. |
+
+See the FHIR specification's authoritative reference:
+[Resource Identification — Logical vs. Business Identifiers](https://hl7.org/fhir/R4/resource.html#identification)
+
+Throughout this IG, the terms **"logical identifier"** and **"business identifier"** are used explicitly to indicate which FHIR field is being discussed. The unqualified term "identifier" is avoided where it would be ambiguous.
+
+---
+
+FHIR and OMOP CDM represent different approaches to data identification due to the underlying
+business requirements for each.
+
+In FHIR, **logical identifiers** (`Resource.id`) function as the RESTful primary key for each
+resource instance on a given server. **Business identifiers** (`Resource.identifier`) carry
+externally-assigned identification data — such as facility-assigned encounter numbers or
+medical record numbers — and are simply data elements on the resource. A single resource may
+carry multiple business identifiers from different assigning systems.
+
+In OMOP, identifiers establish relationships between tables using integer-based keys, with no
+fields intended to contain patient identifiable information (PII) such as medical record numbers,
+names, or addresses. Transformation between FHIR and OMOP creates tension between competing
+requirements: maintaining data provenance for operational needs while preserving OMOP's
+de-identification principles.
+
+Many OMOP implementations reside within system architectures that have business requirements
+for re-identification, audit capabilities, or other use cases where maintaining traceability
+from OMOP back to the FHIR source is needed.
+
+---
+
+###### Deriving OMOP Primary Keys from FHIR Source Data
+
+When implementers need to derive OMOP integer primary keys (e.g., `visit_occurrence_id`,
+`condition_occurrence_id`) from FHIR source data, the FHIR **logical identifier** (`Resource.id`
+combined with the resource type) is the more semantically appropriate FHIR field to consider.
+The FHIR logical identifier is the server-assigned primary key for that resource instance and
+most closely parallels the role of an OMOP `_id` field.
+
+**Important caveats for this approach:**
+
+- FHIR logical identifiers are strings (up to 64 characters; often UUIDs or other non-numeric
+  formats) and cannot be stored directly as OMOP integers. A transformation step is required,
+  such as consistent hashing or surrogate key generation.
+- FHIR logical identifiers are server-scoped and **may change** if a resource is migrated to a
+  different FHIR server, which can create instability in ETL pipelines that ingest data from
+  multiple sources or over time.
+- OMOP implementations most commonly use auto-generated integer sequences for `_id` fields,
+  independent of any FHIR identifier.
+
+For these reasons, maintaining a **separate external mapping table** (linking OMOP-generated IDs
+to originating FHIR logical identifiers — `[ResourceType]/[Resource.id]`) remains the recommended
+general approach for traceability. See the Decision Framework below.
+
+**FHIR business identifiers** (`Resource.identifier`) are **not** appropriate sources for OMOP
+primary key derivation. They are externally-assigned data elements, not the FHIR system's primary
+key. In addition, they frequently contain PII and have variable format and length that may not
+be compatible with OMOP integer key fields.
+
+---
+
+###### Decision Framework for Identifier Management
+
+There is no single approach that can be uniformly applied to transformation of FHIR identifiers
+to OMOP. Rather, implementers must evaluate FHIR identifiers systematically using criteria
+relevant to the use case(s) an OMOP database must support. The first step is always to determine
+**which type of FHIR identifier** is being considered.
+
+**Evaluation criteria:**
+
+1. **Identifier type**: Is this a FHIR logical identifier (`Resource.id`) or a business
+   identifier (`Resource.identifier`)? These require different handling strategies.
+2. **Research purpose**: What research the OMOP instance is intended to support.
+3. **Identifier role**: Purpose and role of the identifier in the source system.
+4. **Clinical significance**: Whether the identifier may inform clinical facts in the
+   observational data store.
+5. **Format constraints**: Length and format of the identifier.
+6. **Privacy assessment**: Whether the identifier contains or enables derivation of PII.
+7. **Technical feasibility**: Whether the identifier can be safely stored within OMOP constraints.
+8. **Compliance impact**: What regulatory obligations identifier retention creates.
+
+Based on this evaluation, implementers should categorize FHIR identifiers into one of three
+handling approaches:
+
+| Strategy | Applicable Identifier Type | Use Case | Implementation Approach | Key Considerations |
+|---|---|---|---|---|
+| **Surrogate Key Mapping** | Logical identifier (`Resource.id`) | When traceability from OMOP records back to specific FHIR resource instances is required | Generate OMOP integer primary keys using auto-increment or sequences; maintain a separate external mapping table linking `[ResourceType]/[Resource.id]` to the OMOP-generated ID | • FHIR logical IDs are strings and must be transformed; direct integer mapping is not possible for UUID-format IDs • Logical IDs may change on server migration — design the mapping table accordingly • No PII risk for server-generated logical IDs, but verify for any implementation that uses business IDs as logical IDs |
+| **External Storage** | Business identifier (`Resource.identifier`) | Business identifiers needed for traceability but inappropriate for direct OMOP inclusion | Create separate mapping tables linking OMOP-generated IDs to original FHIR business identifiers | • Maintains de-identification principles • Requires access controls and audit trails • Supports bidirectional mapping verification • Preserves data provenance • Business identifiers frequently contain PII (MRNs, etc.) and must be handled accordingly |
+| **Exclusion** | Business identifier (`Resource.identifier`) | Identifiers containing PII or serving no research purpose | Exclude from transformation entirely | • Medical record numbers • Patient names or contact information embedded in identifier values • Other PII-containing identifiers • Identifiers with no research value |
+
+> **Note:** Using OMOP `_source_value` fields (e.g., `visit_source_value`) to store FHIR
+> business identifiers is **not recommended**. These fields are intended to hold source system
+> descriptions or coded values for the clinical concept, not business identifier strings.
+> Repurposing them for identifier storage misrepresents their intended function and may
+> compromise de-identification. See Section 3.1.2 for further discussion.
 
 #### Privacy and De-identification Considerations
 However, a primary concern when implementing FHIR to OMOP transformations that include raw identifiers directly from source systems is the potential compromise of de-identification processes. This is a cornerstone of OMOP's design for use in research and analytics. OMOP is not designed to support business identity management use cases.
