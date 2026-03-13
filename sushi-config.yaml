@@ -38,6 +38,8 @@ pages:
     title: Common Challenges When Transforming FHIR to OMOP
   StrategiesBestPractices.md:
     title: Transformation Strategies & Best Practices
+  FHIRModifierExtensions.md:
+    title: Understanding FHIR Modifier Extensions
   codemappings.md:
      title: Coded Field Mapping Principles
   CodeMappingBasePattern.md:
@@ -60,6 +62,7 @@ menu:
   General Guidance:
     Common Issues: F2OGeneralIssues.html
     Best Practices: StrategiesBestPractices.html
+    Understanding FHIR Modifier Extensions: FHIRModifierExtensions.md
   Mapping Concepts:
     Coded Field Mapping Principles: codemappings.html
     Code Mapping Base Pattern: CodeMappingBasePattern.html
