@@ -51,19 +51,20 @@ These selected studies offer practical, real-world examples of codes, data eleme
   - [Data Supplement](https://ascopubs.org/doi/suppl/10.1200/CCI.24.00052)
 
 ### Vulcan Real-World Data Implementation Guide
+The Vulcan Retrieval of Real World Data (RWD) for Clinical Research Implementation Guide (IG) aims to facilitate the transmission of clinical data generated during routine patient care (Electronic Health Record data, EHR) for use as Real World Data (RWD) supporting clinical research. Traditionally, clinical trials rely on prospective data collection tailored to specific research questions and analytics. In contrast, data generated through routine healthcare operations are rarely aligned with secondary research requirements. The Vulcan RWD IG defines FHIR profiles suitable for use within EHR systems, facilitating the retrieval and alignment of relevant clinical data from RWD sources for clinical research and regulatory submissions.
 
-The **Vulcan Retrieval of Real World Data (RWD) for Clinical Research Implementation Guide (IG)** aims to facilitate the transmission of clinical data generated during routine patient care (Electronic Health Record data, EHR) for use as Real World Data (RWD) supporting clinical research. Traditionally, clinical trials rely on prospective data collection tailored to specific research questions and analytics. In contrast, data generated through routine healthcare operations are rarely aligned with secondary research requirements. The Vulcan RWD IG defines FHIR profiles suitable for use within EHR systems, facilitating the retrieval and alignment of relevant clinical data from RWD sources for clinical research and regulatory submissions.
-
-The Vulcan RWD IG takes an iterative, use-case-driven approach — defining FHIR building blocks for EHR-based RWD research — providing proof-of-concept guidance toward addressing RWD use case requirements. The FHIR to OMOP IG aims to support the aspirational use case envisioned by the Vulcan RWD IG, and this work is intended to complement and advance that ongoing effort. The Vulcan RWD IG leverages the **FHIR International Patient Access (IPA)** IG to provide a foundational dataset and profiles that inform this work.
+The Vulcan Real-World Data IG leverages the FHIR International Patient Access (IPA) IG to provide a foundational dataset and profiles necessary to address RWD use case requirements.
 
 ### Vulcan RWD IG Studies from ClinicalTrials.gov
 
-1. **Acute Coronary Syndrome Study**, ClinicalTrials.gov ID: **NCT02190123**
-2. **Anti-TNFa Treatment Study**, ClinicalTrials.gov ID: **NCT03890445**
-3. **Diabetes Study**, ClinicalTrials.gov ID: **NCT05088265**
-4. **COVID-19 Vaccine Effectiveness Study**, ClinicalTrials.gov ID: **NCT04848584**
+During the development of the Vulcan RWD IG, the following real-world clinical research studies from ClinicalTrials.gov were used as representative use cases to identify and scope the data elements most commonly required for clinical research. These studies are referenced here as illustrative background context — they informed the scoping decisions of the Vulcan RWD IG and, by extension, the prioritization of FHIR data elements relevant to this FHIR to OMOP IG. They are not presented as studies that were operationally conducted using the Vulcan RWD IG.
 
-These studies referenced in the Vulcan RWD IG specify the data elements required to identify, request, and retrieve relevant EHR data aligned with each study's cohort definition and research parameters. Most data elements are derived from the IPA profiles, providing a standardized minimal dataset. The Vulcan RWD IG further supports flexibility to accommodate local, regional, or study-specific needs through extensions, as illustrated in the RWD Conceptual Application Model pictured below:
+1. Acute Coronary Syndrome Study, ClinicalTrials.gov ID: NCT02190123
+2. Anti-TNFa Treatment Study, ClinicalTrials.gov ID: NCT03890445
+3. Diabetes Study, ClinicalTrials.gov ID: NCT05088265
+4. COVID-19 Vaccine Effectiveness Study, ClinicalTrials.gov ID: NCT04848584
+
+These studies specify the data elements required to identify, request, and retrieve relevant EHR data aligned with each study's cohort definition and research parameters. Most data elements are derived from the IPA profiles, providing a standardized minimal dataset. The Vulcan RWD IG further supports flexibility to accommodate local, regional, or study-specific needs through extensions, as illustrated in the RWD Conceptual Application Model pictured below:
 
 {::options parse_block_html="false" /}
 <figure>
