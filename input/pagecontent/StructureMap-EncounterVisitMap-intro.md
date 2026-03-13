@@ -1,18 +1,73 @@
 # Considerations for Transforming Encounter Resources
 Transforming FHIR Encounter resources to OMOP presents several unique challenges that require careful consideration of data semantics, structural differences, and compliance requirements. The mapping decisions made during this transformation process can significantly impact data integrity, traceability, and analytical capabilities in the target OMOP database.
 
-## Identifier Mapping Challenges
+## Identifier Handling for Visit Occurrence
+This section addresses identifier mapping considerations specific to the `Encounter` → `visit_occurrence` transformation. For the general framework governing all identifier handling across resource types, see [Section 3.1.1 — Identifier Management](F2OGeneralIssues.html#identifier-management) and [Section 3.1.2 — Privacy and De-identification Considerations](F2OGeneralIssues.html#privacy-and-de-identitification-considerations).
 
-The transformation of FHIR `Encounter.identifier` elements exemplifies the complexity found in FHIR to OMOP mappings. Healthcare systems use hese identifiers for a variety of business use cases. Encounters ids may contain various types of unique values including medical record numbers, encounter IDs, or proprietary tracking identifiers, any of which may be used for patient re-identification, and thus present a risk to privacy requirements. The challenge lies in determining the most appropriate target field(s) in OMOP while maintaining data integrity and compliance standards.
+### Background: FHIR Encounter Identifier Types
 
-Two primary mapping approaches present themselves, each with distinct considerations:
+The FHIR `Encounter` resource exposes two distinct identifier mechanisms that must not be conflated when mapping to OMOP:
 
-**Primary Key Mapping Approach**: One potential solution involves mapping to the `visit_occurrence_id` field in OMOP, which serves as the unique identifier for each record in the `visit_occurrence` table. This approach aligns semantically with the identifier's purpose in FHIR. However, this field is typically generated as a sequence in OMOP implementations to ensure anonymity and maintain referential integrity across the database instance. This practice supports de-identification requirements and compliance standards but may compromise direct traceability to source systems.
+| FHIR Element | Identifier Type | Description |
+|---|---|---|
+| `Encounter.id` | **Logical identifier** | The server-assigned primary key for this resource instance. Together with the resource type, it forms the canonical FHIR address: `Encounter/[id]`. Used by FHIR systems to locate and dereference the resource via RESTful APIs. |
+| `Encounter.identifier` | **Business identifier** | One or more externally-assigned identifiers carried as data on the resource — for example, a hospital encounter number, a visit account number, or an admissions ID. These identify the real-world encounter event and may be assigned by multiple systems. They are data elements, not the FHIR system's addressing mechanism. |
 
-**Source Value Mapping Approach**: An alternative approach maps FHIR `Encounter.identifier` to the OMOP `visit_source_value` field, which is designed to hold original values from source data describing the encounter type. This approach preserves the original identifier value but raises concerns about semantic appropriateness. The `visit_source_value` field typically aligns with descriptive FHIR elements such as `Encounter.period` or `Encounter.type`, which represent codeable concepts rather than unique business identifiers.
+See the FHIR specification:
+[Resource Identification — Logical vs. Business Identifiers](https://hl7.org/fhir/R4/resource.html#identification)
 
-## Technical and Structural Limitations
+### Mapping to `visit_occurrence_id`
 
+The `visit_occurrence_id` is the OMOP-generated integer primary key for each record in the `visit_occurrence` table. It is the mechanism by which other OMOP tables (e.g.,`condition_occurrence`, `procedure_occurrence`) link clinical events back to their associated visit.
+
+**OMOP `visit_occurrence_id` should be generated as an auto-incremented integer sequence**, independent of any FHIR identifier value. FHIR logical identifiers (`Encounter.id`) are strings (often UUIDs or other non-numeric formats) and cannot be used directly as OMOP integer keys. FHIR business identifiers (`Encounter.identifier`) are externally-assigned data elements and are likewise not appropriate sources for OMOP primary key values.
+
+If traceability from a `visit_occurrence` record back to its originating FHIR `Encounter` resource is required, this should be maintained in a **separate external mapping table** outside the core OMOP schema. This table should record the OMOP-generated `visit_occurrence_id` alongside the FHIR **logical identifier** for the source resource (i.e., `Encounter/[Encounter.id]`), which is the most stable and semantically correct FHIR reference for this purpose.
+
+**Example mapping table entry:**
+| omop_table | omop_id | fhir_resource_reference | notes |
+|---|---|---|---|
+| `visit_occurrence` | `10042` | `Encounter/abc-123` | Logical identifier — FHIR primary key |
+
+If selected FHIR business identifiers (`Encounter.identifier`) must also be retained for operational traceability, they may be stored in this same external table under appropriate access controls, subject to de-identification assessment (see Section 3.1.2).
+
+### Mapping to `visit_source_value`
+
+`visit_source_value` is intended to hold a human-readable or coded representation of the **encounter type or classification** as it appeared in the source EHR — for example, the source system's code or description for inpatient, outpatient, emergency, etc.
+
+**This field is not appropriate for storing FHIR identifier values.**
+
+Mapping `Encounter.identifier` (a FHIR business identifier) to `visit_source_value` is a commonly seen but incorrect pattern for two reasons:
+
+1. **Semantic mismatch**: `visit_source_value` represents source terminology for the encounter type, not an encounter identity value. Storing an encounter ID here misrepresents the field's
+ purpose and may cause downstream analytic confusion.
+2. **De-identification risk**: FHIR business identifiers (`Encounter.identifier`) may contain or be traceable to PII. `visit_source_value` is commonly retained in research-facing OMOP  databases, creating a de-identification risk.
+
+The appropriate sources for `visit_source_value` are `Encounter.type`, `Encounter.class`, or equivalent source system classification fields, not `Encounter.identifier`.
+
+### Mapping Summary Table
+
+| OMOP Field | Appropriate FHIR Source | Notes |
+|---|---|---|
+| `visit_occurrence_id` | Auto-generated integer sequence | Do not derive from `Encounter.id` (logical identifier) or `Encounter.identifier` (business identifier) directly |
+| `visit_source_value` | `Encounter.type` or `Encounter.class` (source code/display) | **Not** `Encounter.identifier`; see explanation above |
+| *(external mapping table)* | `Encounter.id` (logical identifier) — referenced as `Encounter/[id]` | Preferred FHIR field for traceability back to source resource; maintain outside OMOP schema |
+| *(external mapping table, conditional)* | `Encounter.identifier` (business identifier) | May be retained in external mapping table only; subject to de-identification assessment; not appropriate in core OMOP fields |
+
+
+### Considerations for Multi-System Environments
+
+In environments where FHIR data is aggregated from multiple source systems, the same real-world encounter may appear as multiple `Encounter` resources with different FHIR logical identifiers
+(`Encounter.id`) on different servers. In these cases:
+
+- FHIR **business identifiers** (`Encounter.identifier`) — particularly when carrying a consistent facility-assigned encounter number — may provide a more stable basis for matching
+  and deduplicating `visit_occurrence` records across sources than the logical identifier.
+- However, this use (matching and deduplication) is distinct from identifier storage in OMOP fields, and the matched record should still be assigned a single OMOP-generated `visit_occurrence_id`.
+- The external mapping table should in this case record all source FHIR logical identifiers that contributed to a single `visit_occurrence` record, to preserve full provenance.
+
+For general guidance on identifier evaluation criteria and handling strategies, refer to the Decision Framework in [Section 3.1.1](F2OGeneralIssues.html#decision-framework-for-identifier-management).
+
+### Technical and Structural Limitations
 Several technical constraints can impact identifier transformation:
 
 **Data Type and Length Constraints**: OMOP database fields may have limitations that prevent the storage of certain identifier types. For example, the `visit_source_value` field's varchar(50) character limit may be insufficient for storing GUIDs or complex identifier strings that exceed this constraint.
@@ -42,7 +97,6 @@ Several technical constraints can impact identifier transformation:
 ```
 
 ## Transformation Strategies
-
 Given the complexity and variability of identifier structures in FHIR, a standardized one-size-fits-all mapping approach to OMOP is not practical. Implementation teams should consider the following strategies:
 
 **Case-by-Case Evaluation**: Conduct thorough analysis of available FHIR identifier elements and their semantic meaning within the source system context. This evaluation should inform the selection of appropriate target fields in OMOP while considering data integrity and compliance requirements.
