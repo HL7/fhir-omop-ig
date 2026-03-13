@@ -50,7 +50,7 @@ Modifier extensions are placed in the `modifierExtension` element, which is synt
 ]
 ```
 
-> **ℹ NOTE:** The structural distinction between `extension` and `modifierExtension` is the primary machine-readable signal that a system MUST NOT ignore the data in this element. ETL pipelines that generically process or discard all extension data without distinguishing the element name will silently bypass this critical signal.
+> **NOTE:** The structural distinction between `extension` and `modifierExtension` is the primary machine-readable signal that a system MUST NOT ignore the data in this element. ETL pipelines that generically process or discard all extension data without distinguishing the element name will silently bypass this critical signal.
 
 ---
 
@@ -58,7 +58,7 @@ Modifier extensions are placed in the `modifierExtension` element, which is synt
 
 The FHIR specification imposes normative obligations — using RFC 2119 language of SHALL, SHOULD, and MUST — on any system that processes FHIR resources. These obligations apply to ETL pipelines consuming FHIR data to populate OMOP. The authoritative source for these requirements is the [FHIR Extensibility page](https://hl7.org/fhir/R5/extensibility.html).
 
-> **✔ FHIR SPEC REQUIREMENT:** *"Implementations SHALL ensure that they do not process data containing unrecognized modifier extensions."* — FHIR Specification, Extensibility (R4/R5)
+> **FHIR SPEC REQUIREMENT:** *"Implementations SHALL ensure that they do not process data containing unrecognized modifier extensions."* — FHIR Specification, Extensibility (R4/R5)
 
 When a modifier extension is encountered, a processing system SHALL choose one of the following strategies:
 
@@ -73,7 +73,7 @@ Additional normative guidance from the specification:
 - Where a modifier extension appears on a backbone element child rather than the resource root, a system may choose to process the resource while excluding the affected element — treating it as absent — provided the processing can safely function with incomplete data.
 - The human-readable narrative of a FHIR resource SHALL reflect any modifying information, making the narrative a safe fallback for rendering purposes.
 
-> **⚠ MISINTERPRETATION RISK:** An OMOP ETL pipeline that reads FHIR resources without inspecting the `modifierExtension` element at both the resource root and all backbone element levels is non-compliant with the FHIR specification and is at significant risk of ingesting clinically inverted or otherwise meaningless data into the OMOP CDM.
+> **MISINTERPRETATION RISK:** An OMOP ETL pipeline that reads FHIR resources without inspecting the `modifierExtension` element at both the resource root and all backbone element levels is non-compliant with the FHIR specification and is at significant risk of ingesting clinically inverted or otherwise meaningless data into the OMOP CDM.
 
 ---
 
@@ -126,7 +126,7 @@ This is not a prescription for oxycodone. The `modifierExtension` with `valueBoo
 
 #### OMOP Misinterpretation Risk
 
-> **⚠ MISINTERPRETATION RISK:** An ETL that maps all active MedicationRequests with `intent=order` to `drug_exposure` or `drug_era` records will ingest this as a legitimate opioid prescription. This corrupts cohort definitions, drug utilization analyses, pharmacovigilance studies, and any clinical decision support built on OMOP data.
+> **MISINTERPRETATION RISK:** An ETL that maps all active MedicationRequests with `intent=order` to `drug_exposure` or `drug_era` records will ingest this as a legitimate opioid prescription. This corrupts cohort definitions, drug utilization analyses, pharmacovigilance studies, and any clinical decision support built on OMOP data.
 
 #### Correct ETL Disposition
 
@@ -165,7 +165,7 @@ This Condition resource is not asserting that the patient has breast cancer. The
 
 #### OMOP Misinterpretation Risk
 
-> **⚠ MISINTERPRETATION RISK:** An ETL mapping SNOMED Condition codes to `condition_occurrence` will create a record asserting the patient has malignant neoplasm of breast. This false positive causes the patient to appear in cancer cohorts, inflates cancer prevalence statistics, corrupts comorbidity flags, and affects risk-adjustment models.
+> **MISINTERPRETATION RISK:** An ETL mapping SNOMED Condition codes to `condition_occurrence` will create a record asserting the patient has malignant neoplasm of breast. This false positive causes the patient to appear in cancer cohorts, inflates cancer prevalence statistics, corrupts comorbidity flags, and affects risk-adjustment models.
 
 #### Correct ETL Disposition
 
@@ -205,7 +205,7 @@ The patient record is valid. The contact John Smith is listed for record-keeping
 
 #### OMOP Misinterpretation Risk
 
-> **⚠ MISINTERPRETATION RISK:** Any ETL or downstream application that extracts this contact and uses it for outreach, consent verification, or enrollment screening may contact this individual inappropriately, violating patient wishes and creating legal or regulatory exposure.
+> **MISINTERPRETATION RISK:** Any ETL or downstream application that extracts this contact and uses it for outreach, consent verification, or enrollment screening may contact this individual inappropriately, violating patient wishes and creating legal or regulatory exposure.
 
 #### Correct ETL Disposition
 
@@ -252,7 +252,7 @@ The systolic reading (142 mmHg) is valid. The diastolic component carries a modi
 
 #### OMOP Misinterpretation Risk
 
-> **⚠ MISINTERPRETATION RISK:** Mapping both components to OMOP `measurement` records without detecting the modifier extension stores an unreliable diastolic reading as a confirmed clinical fact. Blood pressure analyses, cardiovascular risk models, and hypertension phenotyping algorithms are silently corrupted. Paired systolic/diastolic analyses are particularly affected.
+> **MISINTERPRETATION RISK:** Mapping both components to OMOP `measurement` records without detecting the modifier extension stores an unreliable diastolic reading as a confirmed clinical fact. Blood pressure analyses, cardiovascular risk models, and hypertension phenotyping algorithms are silently corrupted. Paired systolic/diastolic analyses are particularly affected.
 
 #### Correct ETL Disposition
 
@@ -297,7 +297,7 @@ The appendectomy was completed and performed by the attending surgeon. The resid
 
 #### OMOP Misinterpretation Risk
 
-> **⚠ MISINTERPRETATION RISK:** An ETL mapping all listed performers to `provider_id` in `procedure_occurrence` incorrectly attributes the appendectomy to the resident physician, corrupting provider performance analytics, surgical outcome studies, and quality metrics.
+> **MISINTERPRETATION RISK:** An ETL mapping all listed performers to `provider_id` in `procedure_occurrence` incorrectly attributes the appendectomy to the resident physician, corrupting provider performance analytics, surgical outcome studies, and quality metrics.
 
 #### Correct ETL Disposition
 
@@ -426,7 +426,7 @@ The FHIR specification is explicit: a system encountering an unrecognized modifi
 4. Once the extension is understood and its disposition determined, add it to the registry and re-process quarantined records.
 5. Track quarantine rates by source system and extension URL over time as a data quality metric.
 
-> **⚙ IMPLEMENTATION TIP:** Consider maintaining a quarantine table alongside the OMOP instance, capturing: `resource_type`, `resource_id`, `source_system`, `modifier_extension_url`, `modifier_extension_value`, `date_quarantined`, `review_status`, `reviewer_notes`. This supports both audit compliance and systematic resolution of novel modifier extensions.
+> **IMPLEMENTATION TIP:** Consider maintaining a quarantine table alongside the OMOP instance, capturing: `resource_type`, `resource_id`, `source_system`, `modifier_extension_url`, `modifier_extension_value`, `date_quarantined`, `review_status`, `reviewer_notes`. This supports both audit compliance and systematic resolution of novel modifier extensions.
 
 ### Provenance Tracking in OMOP
 
@@ -496,7 +496,7 @@ When consuming FHIR data via the [Bulk Data Access API](https://hl7.org/fhir/uv/
 
 The presence of a modifier extension is not an indication of a data quality problem in the source FHIR system. Modifier extensions are a legitimate, specified FHIR mechanism for communicating important clinical context that the standard resource structure cannot express. The FHIR specification explicitly provides for their use in circumstances where standard elements are insufficient. Treating modifier extensions as anomalies to be filtered without inspection is the incorrect response — and is precisely the behavior the specification prohibits.
 
-> **ℹ NOTE:** The correct framing: a modifier extension is a signal that the source system is communicating something clinically important. The ETL's responsibility is to understand that signal, apply the appropriate disposition, and document the decision — not to eliminate the signal.
+> **NOTE:** The correct framing: a modifier extension is a signal that the source system is communicating something clinically important. The ETL's responsibility is to understand that signal, apply the appropriate disposition, and document the decision — not to eliminate the signal.
 
 ---
 
