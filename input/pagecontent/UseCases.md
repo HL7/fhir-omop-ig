@@ -81,8 +81,23 @@ To bridge this gap, the use of Extract, Transform, Load (ETL) processes to conve
 
 The transformation enables AI models trained on the OMOP CDM to be applied to clinical data captured in FHIR, ensuring that AI predictions are made based on consistent, normalized data. This makes it possible for even single-message FHIR resources (like a patient’s admission record or a medication order) to be compatible with pre-existing, trained models, which are often designed to analyze more comprehensive patient data typically found in OMOP.
 
-#### FHIR to OMOP Transformation for AI: Classification of Medication Adherence  
-An example of this use case could involve a healthcare provider using an AI model to predict medication adherence for patients. The AI model is trained on historical clinical data stored in the OMOP format, which contains detailed, structured information about patient visits, medications, diagnoses, and more. The healthcare provider collects patient data in real-time via FHIR resources, such as prescriptions and medication refills, which are stored in their EHR system.
+#### **Note:** This document describes a target use case and conceptual framework. The AI classification capability outlined below represents the intended outcome of this work and is contingent on successfully implementing the FHIR-to-OMOP ETL transformation described herein. It has not yet been fully implemented.
+
+The healthcare industry is increasingly leveraging Artificial Intelligence (AI) to extract actionable insights from clinical data. The OMOP Common Data Model is widely used for AI model training due to its robust, standardized structure designed to support large-scale data analysis, including clinical outcomes, drug safety, and efficacy research. However, FHIR (Fast Healthcare Interoperability Resources) is a newer, more flexible standard for health information exchange and is widely adopted for its ability to support real-time clinical workflows, such as through electronic health records (EHRs).
+
+While OMOP provides a reliable foundation for building AI models, FHIR's versatility and growing adoption make it a popular choice for applying AI, which presents challenges when it comes to directly applying OMOP-trained AI models to FHIR data. The key issue is that AI models typically require data in a highly structured format (such as OMOP), but FHIR resources are more granular and often transmitted in a fragmented or single-message form. This misalignment makes it difficult to directly use FHIR for training AI models, which is why a transformation from FHIR to OMOP is necessary.
+
+#### Goal: FHIR to OMOP Transformation
+
+**The goal of this work is to** bridge this gap through the use of Extract, Transform, Load (ETL) processes to convert FHIR data into OMOP format. By transforming FHIR resources — whether from a single message (such as a single patient encounter or medication prescription) or aggregated messages — into the standardized OMOP format, healthcare organizations would be positioned to train AI models on OMOP data while leveraging real-time clinical data in FHIR for classification tasks.
+
+Once implemented, this transformation would enable AI models trained on the OMOP CDM to be applied to clinical data captured in FHIR, ensuring that AI predictions are made based on consistent, normalized data. This would make it possible for even single-message FHIR resources (like a patient's admission record or a medication order) to be compatible with pre-existing, trained models, which are often designed to analyze more comprehensive patient data typically found in OMOP.
+
+#### Target Use Case: Classification of Medication Adherence
+
+The following is an illustrative example of the type of AI application this work is intended to support. **This use case has not yet been implemented; it represents the envisioned end state once the FHIR-to-OMOP transformation is in place.**
+
+A healthcare provider could use an AI model to predict medication adherence for patients. The AI model would be trained on historical clinical data stored in the OMOP format, which contains detailed, structured information about patient visits, medications, diagnoses, and more. The healthcare provider would collect patient data in real-time via FHIR resources, such as prescriptions and medication refills, stored in their EHR system.
 
 {::options parse_block_html="false" /}
 <figure>
@@ -91,11 +106,17 @@ An example of this use case could involve a healthcare provider using an AI mode
 </figure>
 {::options parse_block_html="true" /}
 
-Through the ETL process, the FHIR resources (prescription orders, medication administration records, etc.) are transformed into the OMOP CDM format, ensuring compatibility with the trained model. Once transformed, the model can be applied to real-time data to predict whether a patient is likely to adhere to their prescribed medication regimen. The output of the model can be classified based on this prediction and used to guide healthcare interventions.
+Through the ETL process, the FHIR resources (prescription orders, medication administration records, etc.) would be transformed into the OMOP CDM format, ensuring compatibility with the trained model. Once transformed, the model would be applied to real-time data to predict whether a patient is likely to adhere to their prescribed medication regimen. The output of the model would then be classified based on this prediction and used to guide healthcare interventions.
 
-1. **Interoperability**: The ETL process ensures that data from different sources (FHIR-based real-time clinical workflows and OMOP-based AI model training) are seamlessly integrated, overcoming the limitations of both standards.  
-2. **AI Model Training on OMOP**: By training AI models on the comprehensive OMOP CDM, healthcare organizations can leverage a rich, structured dataset that supports large-scale, high-quality analysis.  
-3. **Real-Time Decision Making**: Even though the model is trained on OMOP data, FHIR data can be continuously ingested, transformed, and classified in real-time, enabling timely healthcare interventions.  
-4. **Flexibility**: Single-message FHIR resources, which are often captured in fragmented clinical settings (e.g., one patient visit), can be made compatible with the complex models designed for aggregated datasets, extending the utility of FHIR for AI applications.
+#### Intended Benefits
 
-The FHIR to OMOP transformation enables healthcare organizations to leverage real-time clinical data in FHIR format with pre-trained AI models that rely on the OMOP CDM. Through ETL processes, even fragmented or single-message FHIR resources can be made compatible with AI models trained on more comprehensive datasets, fostering more effective AI-driven healthcare decisions and interventions.
+The following benefits are expected to be realized upon successful implementation of the FHIR-to-OMOP transformation:
+
+- **Interoperability:** The ETL process would ensure that data from different sources (FHIR-based real-time clinical workflows and OMOP-based AI model training) are seamlessly integrated, overcoming the limitations of both standards.
+- **AI Model Training on OMOP:** By training AI models on the comprehensive OMOP CDM, healthcare organizations would be able to leverage a rich, structured dataset that supports large-scale, high-quality analysis.
+- **Real-Time Decision Making:** Once implemented, FHIR data would be continuously ingested, transformed, and classified in real-time, enabling timely healthcare interventions even though the underlying model is trained on OMOP data.
+- **Flexibility:** Single-message FHIR resources, which are often captured in fragmented clinical settings (e.g., one patient visit), would be made compatible with complex models designed for aggregated datasets, extending the utility of FHIR for AI applications.
+
+#### Summary
+
+The FHIR-to-OMOP transformation is the **foundational objective** of this work. Achieving this transformation is what would enable healthcare organizations to apply real-time FHIR-based clinical data to pre-trained AI models that rely on the OMOP CDM. Through ETL processes, even fragmented or single-message FHIR resources would be made compatible with AI models trained on more comprehensive datasets — fostering more effective AI-driven healthcare decisions and interventions. **This capability remains a target state; progress toward implementation is ongoing.**
