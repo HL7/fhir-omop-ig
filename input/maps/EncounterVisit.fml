@@ -9,35 +9,33 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence" alias Vis
 
 group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
 
-	//src.id as id -> tgt.visit_occurrence_id = cast(id, "integer");
-	
-	//src.subject as s -> tgt then {
-	//	s.identifier as sid -> tgt then {
-	//		sid.value as a -> tgt.person_id = a;
-	//	};
-	//};
+    // OMOP Visit Occurrence ID would be a map from FHIR ID to an external key
+    src.id as id -> tgt.visit_source_value = id, tgt.visit_occurrence_id = 1;
+
+    // OMOP Person ID would be a map from the FHIR Encounter Subject reference to an external key
+    src.subject as s -> tgt.person_id = 1;
 	
 	src.class as s -> tgt then {
 		s.coding as sc -> tgt then {
-			sc.code as a-> tgt.visit_concept_id = a, tgt.visit_source_value = a, tgt.visit_source_concept_id = a;
+			sc.code as a -> tgt.visit_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterClass', 'code'), tgt.visit_source_value = a;
 		};
 	};
 	
 	src.actualPeriod as s -> tgt then {
-		s.start as std -> tgt.visit_start_date = cast(std, "date"), tgt.visit_start_datetime = std;
-		s.end as ed -> tgt.visit_end_date = cast(ed, "date"), tgt.visit_end_datetime = ed;
+		s.start as std -> tgt.visit_start_date = (src.actualPeriod.start.toString().substring(0,10)), tgt.visit_start_datetime = std;
+		s.end as ed -> tgt.visit_end_date = (src.actualPeriod.end.toString().substring(0,10)), tgt.visit_end_datetime = ed;
 	};
 
 	src.admission as s -> tgt then {
 		s.admitSource as sa -> tgt then {
 			sa.coding as sc -> tgt then {
-				sc.code as code -> tgt.admitted_from_concept_id = code, tgt.admitted_from_source_value = code;
+				sc.code as code -> tgt.admitted_from_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterAdmitSource', 'code'), tgt.admitted_from_source_value = code;
 			};
 		};
 	
 		s.dischargeDisposition as sd -> tgt then {
 			sd.coding as sc -> tgt then {
-				sc.code as code -> tgt.discharged_to_concept_id = code, tgt.discharged_to_source_value = code;
+				sc.code as code -> tgt.discharged_to_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterDischargeDisposition', 'code'), tgt.discharged_to_source_value = code;
 			};
 		};
 	};
