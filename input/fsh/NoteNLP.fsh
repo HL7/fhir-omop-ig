@@ -6,7 +6,7 @@ Title: "Note NLP OMOP Table"
 Description: "The NOTE_NLP table encodes all output of NLP on clinical notes. Each row represents a single extracted term from a note."
 
 * note_nlp_id 1..1 code "Note NLP Identifier" ""
-* note_id 1..1 Reference(Note) "Note" "This is the NOTE_ID for the NOTE record the NLP record is associated to."
+* note_id 1..1 integer "Note" "This is the NOTE_ID for the NOTE record the NLP record is associated to."
 * section_concept_id 0..1 code "Section" ""
 * snippet 0..1 string "Snippet" "A small window of text surrounding the term"
 * offset 0..1 string "Offset" "Character offset of the extracted term in the input note"

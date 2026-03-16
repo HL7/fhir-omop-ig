@@ -6,7 +6,7 @@ Title: "Payer Plan Period OMOP Table"
 Description: "The PAYER_PLAN_PERIOD table captures details of the period of time that a Person is continuously enrolled under a specific health Plan benefit structure from a given Payer. Each Person receiving healthcare is typically covered by a health benefit plan, which pays for (fully or partially), or directly provides, the care. These benefit plans are provided by payers, such as health insurances or state or government agencies. In each plan the details of the health benefits are defined for the Person or her family, and the health benefit Plan might change over time typically with increasing utilization (reaching certain cost thresholds such as deductibles), plan availability and purchasing choices of the Person. The unique combinations of Payer organizations, health benefit Plans and time periods in which they are valid for a Person are recorded in this table."
 
 * payer_plan_period_id 1..1 code "Payer Plan Period Identifier" ""
-* person_id 1..1 Reference(Person) "Person" "The Person covered by the Plan."
+* person_id 1..1 integer "Person" "The Person covered by the Plan."
 * payer_plan_period_start_date 1..1 date  "Payer Plan Period Start Date" "Start date of Plan coverage."
 * payer_plan_period_end_date 1..1 date "Payer Plan Period End Date" "End date of Plan coverage."
 * payer_concept_id 0..1 code "Payer" "This field represents the organization who reimburses the provider which administers care to the Person."

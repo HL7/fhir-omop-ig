@@ -6,7 +6,7 @@ Title: "Specimen OMOP Table"
 Description: "The specimen domain contains the records identifying biological samples from a person."
 
 * specimen_id 1..1 code "Specimen Identifier" ""
-* person_id 1..1 Reference(Person) "Person" "The person from whom the specimen is collected."
+* person_id 1..1 integer "Person" "The person from whom the specimen is collected."
 * specimen_concept_id 1..1  code "Specimen" ""
 * specimen_type_concept_id 1..1 code "Specimen Type" ""
 * specimen_date 1..1 date "Specimen Date" "The date the specimen was collected."

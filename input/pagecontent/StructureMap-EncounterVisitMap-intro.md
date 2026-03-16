@@ -2,7 +2,7 @@
 Transforming FHIR Encounter resources to OMOP presents several unique challenges that require careful consideration of data semantics, structural differences, and compliance requirements. The mapping decisions made during this transformation process can significantly impact data integrity, traceability, and analytical capabilities in the target OMOP database.
 
 ## Identifier Handling for Visit Occurrence
-This section addresses identifier mapping considerations specific to the `Encounter` → `visit_occurrence` transformation. For the general framework governing all identifier handling across resource types, see [Section 3.1.1 — Identifier Management](F2OGeneralIssues.html#identifier-management) and [Section 3.1.2 — Privacy and De-identification Considerations](F2OGeneralIssues.html#privacy-and-de-identitification-considerations).
+This section addresses identifier mapping considerations specific to the `Encounter` → `visit_occurrence` transformation. For the general framework governing all identifier handling across resource types, see [Section 3.1.1 — Identifier Management](F2OGeneralIssues.html#identifier-management) and [Section 3.1.2 — Privacy and De-identification Considerations](F2OGeneralIssues.html#privacy-and-de-identification-considerations).
 
 ### Background: FHIR Encounter Identifier Types
 

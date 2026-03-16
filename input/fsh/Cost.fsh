@@ -8,9 +8,9 @@ Description: "The COST table captures records containing the cost of any medical
 Each record in the cost table account for the amount of money transacted for the clinical event. So, the COST table may be used to represent both receivables (charges) and payments (paid), each transaction type represented by its COST_CONCEPT_ID. The COST_TYPE_CONCEPT_ID field will use concepts in the Standardized Vocabularies to designate the source (provenance) of the cost data. A reference to the health plan information in the PAYER_PLAN_PERIOD table is stored in the record for information used for the adjudication system to determine the persons benefit for the clinical event."
 
 * cost_id 1..1 code "Cost Identifier" ""
-//* cost_event_id 1..1 Reference(CostEvent)
+//* cost_event_id 1..1 integer
 * cost_event_id 1..1 integer "Cost Event Identifier" ""
-//* cost_domain_id 1..1 Reference(CostDomain)
+//* cost_domain_id 1..1 integer
 * cost_domain_id 1..1 string "Cost Domain Identifier" ""
 * cost_type_concept_id 1..1 code "Cost Type" ""
 * currency_concept_id 0..1 code "Currency" ""
@@ -25,7 +25,7 @@ Each record in the cost table account for the amount of money transacted for the
 * paid_by_primary 0..1 integer "Paid by Primary" ""
 * paid_ingredient_cost 0..1 integer "Paid Ingredent Cost" ""
 * paid_dispensing_fee 0..1 integer "Paid Dispensing Fee" ""
-* payer_plan_period_id 0..1 Reference(PayerPlanPeriod) "Payer Plan Period" ""
+* payer_plan_period_id 0..1 integer "Payer Plan Period" ""
 * amount_allowed 0..1 integer "Amount Allowed" ""
 * revenue_code_concept_id 0..1 code "Revenue Code" ""
 * revenue_code_source_value 0..1 string "Revenue Code Source Value" "Revenue codes are a method to charge for a class of procedures and conditions in the U.S. hospital system."

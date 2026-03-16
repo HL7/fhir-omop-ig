@@ -10,7 +10,7 @@ Description: "The PROVIDER table contains a list of uniquely identified healthca
 * npi	0..1	string "National Provider Identifier" "This is the National Provider Number issued to health care providers in the US by the Centers for Medicare and Medicaid Services (CMS)."
 * dea	0..1	string	"Drug Enforcement Administration Identifer" "This is the identifier issued by the DEA, a US federal agency, that allows a provider to write prescriptions for controlled substances."
 * specialty_concept_id	0..1 code	"Specialty" "This field either represents the most common specialty that occurs in the data or the most specific concept that represents all specialties listed, should the provider have more than one. This includes physician specialties such as internal medicine, emergency medicine, etc. and allied health professionals such as nurses, midwives, and pharmacists."
-* care_site_id 0..1	Reference(CareSite) "Care Site" "This is the location that the provider primarily practices in."
+* care_site_id 0..1	integer "Care Site" "This is the location that the provider primarily practices in."
 * year_of_birth 0..1	integer	"Year of Birth" ""
 * gender_concept_id	0..1	code	"Gender" "This field represents the recorded gender of the provider in the source data."
 * provider_source_value	0..1	string	"Provider Identifier Source Value" "Use this field to link back to providers in the source data. This is typically used for error checking of ETL logic."

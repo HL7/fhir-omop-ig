@@ -10,10 +10,10 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence" alias Vis
 group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
 
     // OMOP Visit Occurrence ID would be a map from FHIR ID to an external key
-    src.id as id -> tgt.visit_source_value = id, tgt.visit_occurrence_id = 1;
+    src.id as id -> tgt.visit_occurrence_id = 1;
 
     // OMOP Person ID would be a map from the FHIR Encounter Subject reference to an external key
-    src.subject as s -> tgt.person_id = 1;
+    src.subject -> tgt.person_id = 1;
 	
 	src.class as s -> tgt then {
 		s.coding as sc -> tgt then {
