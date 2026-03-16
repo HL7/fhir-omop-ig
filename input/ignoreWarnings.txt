@@ -14,6 +14,7 @@ The source statement doesn't assign a variable to the source - check that this i
 # 03 - This has been verified to be the actual FHIRPath expression needed to make the transform work.  The error is incorrect - see https://chat.fhir.org/#narrow/channel/379173-FHIR-Mapping-Language/topic/.E2.9C.94.20evaluate.20transform.3F
 
 The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/StructureDefinition/Person] (@char 1)
+The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence] (@char 1)
 
 # 04 - Deprecated value set that is used in FHIR core
 Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
@@ -26,3 +27,10 @@ Constraint failed: eld-20: 'The first component of the path should be UpperCamel
 
 # 07 - We do not have any conformance clauses in this informative guide - all uses of conformance verbs are examplar
 The html source contains the word 'SHALL' but it is not in a text phrase marked as a conformance clause%
+
+# 08 - We are providing example concept maps and the FHIR resources do not have required bindings and neither do the OMOP bindings
+The source variable does not have a required binding, so this concept map can't be checked
+The target variable does not have a required binding, so this concept map can't be checked
+
+# 09 - We are mapping to OHDSI terminology and this is a known limitation
+The Target Code System https://fhir-terminology.ohdsi.org is not fully defined and populated, and no targetScope is specified, so the target code checking will not be performed

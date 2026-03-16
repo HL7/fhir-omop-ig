@@ -2,10 +2,14 @@ Instance: EncounterClass
 InstanceOf: ConceptMap
 Description: "An example mapping of FHIR Encounter class codes to OMOP concept ids"
 Usage: #definition
+* title = "Encounter Class codes to OMOP"
+* name = "EncounterClassOMOPMapping"
 * status = #active
 * experimental = true
 
 * group
+  * source = "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+  * target = "https://fhir-terminology.ohdsi.org"
   * element[+]
     * code = #IMP
     * target
@@ -24,6 +28,7 @@ Usage: #definition
       * code = #262
       * display = "Emergency Room and Inpatient Visit"
       * relationship = #source-is-broader-than-target
+      * comment = "The source code does not necessarily mean that the patient has moved to an inpatient visit"
   * element[+]
     * code = #EMER
     * target
@@ -47,10 +52,14 @@ Instance: EncounterAdmitSource
 InstanceOf: ConceptMap
 Usage: #definition
 Description: "An example mapping of FHIR Encounter admission source codes to OMOP concept ids"
+* title = "Encounter Admission Source codes to OMOP"
+* name = "EncounterAdmitSourceOMOPMapping"
 * status = #active
 * experimental = true
 
 * group
+  * source = "http://terminology.hl7.org/CodeSystem/admit-source"
+  * target = "https://fhir-terminology.ohdsi.org"
   * element[+]
     * code = #hosp-trans
     * target
@@ -69,6 +78,7 @@ Description: "An example mapping of FHIR Encounter admission source codes to OMO
       * code = #8756
       * display = "Outpatient Hospital"
       * relationship = #source-is-broader-than-target
+      * comment = "The source code implies any outpatient facility and not just a hospital"
   * element[+]
     * code = #born
     * target
@@ -99,6 +109,7 @@ Description: "An example mapping of FHIR Encounter admission source codes to OMO
       * code = #8971
       * display = "Inpatient Psychiatric Facility"
       * relationship = #source-is-broader-than-target
+      * comment = "The source code does not imply an inpatient facility"
   * element[+]
     * code = #rehab
     * target
@@ -113,10 +124,14 @@ Instance: EncounterDischargeDisposition
 InstanceOf: ConceptMap
 Description: "An example mapping of FHIR Encounter discharge disposition codes to OMOP concept ids"
 Usage: #definition
+* title = "Encounter Discharge Disposition codes to OMOP"
+* name = "EncounterDischargeDispositionOMOPMapping"
 * status = #active
 * experimental = true
 
 * group
+  * source = "http://terminology.hl7.org/CodeSystem/discharge-disposition"
+  * target = "https://fhir-terminology.ohdsi.org"
   * element[+]
     * code = #home
     * target
@@ -147,6 +162,7 @@ Usage: #definition
       * code = #38004277
       * display = "Long Term Care Hospital"
       * relationship = #source-is-broader-than-target
+      * comment = "The source code does not imply a hospital but any long term care facility"
   * element[+]
     * code = #aadvice
     * target
@@ -165,12 +181,14 @@ Usage: #definition
       * code = #8971
       * display = "Inpatient Psychiatric Facility"
       * relationship = #source-is-broader-than-target
+      * comment = "The source code does not imply an inpatient facility"
   * element[+]
     * code = #rehab
     * target
       * code = #32266
       * display = "Clinic-Outpatient Rehab Facility (ORF)"
       * relationship = #source-is-broader-than-target
+      * comment = "The source code does not imply an outpatient facility"
   * element[+]
     * code = #snf
     * target
