@@ -6,6 +6,7 @@
 <artifactPageExtension value="-definitions"/>
 <artifactPageExtension value="-examples"/>
 <artifactPageExtension value="-mappings"/>
+<artifact id="ConceptMap/GenderClass" key="ConceptMap-GenderClass" name="AdministrativeGender codes to OMOP"/>
 <artifact id="ConceptMap/AllergyType" key="ConceptMap-AllergyType" name="AllergyIntolerance allergy category codes to OMOP"/>
 <artifact id="ConceptMap/IntoleranceType" key="ConceptMap-IntoleranceType" name="AllergyIntolerance intolerance category codes to OMOP"/>
 <artifact id="ConceptMap/AllergySubstanceType" key="ConceptMap-AllergySubstanceType" name="AllergyIntolerance substance codes to OMOP"/>
@@ -24,6 +25,9 @@
 <artifact id="StructureDefinition/EpisodeEvent" key="StructureDefinition-EpisodeEvent" name="Episode Event OMOP Table"/>
 <artifact id="StructureDefinition/Episode" key="StructureDefinition-Episode" name="Episode OMOP Table"/>
 <artifact id="StructureDefinition/FactRelationship" key="StructureDefinition-FactRelationship" name="Fact Relationship OMOP Table"/>
+<artifact id="ConceptMap/ImmunizationSource" key="ConceptMap-ImmunizationSource" name="Immunization information source codes to OMOP"/>
+<artifact id="ConceptMap/ImmunizationRoute" key="ConceptMap-ImmunizationRoute" name="Immunization route codes to OMOP"/>
+<artifact id="ConceptMap/ImmunizationVaccine" key="ConceptMap-ImmunizationVaccine" name="Immunization vaccine codes to OMOP"/>
 <artifact id="StructureDefinition/Location" key="StructureDefinition-Location" name="Location OMOP Table"/>
 <artifact id="StructureMap/AllergyMap" key="StructureMap-AllergyMap" name="Mapping Allergy resource to Observation OMOP Domain"/>
 <artifact id="StructureMap/ConditionMap" key="StructureMap-ConditionMap" name="Mapping Condition resource to Condition Occurrence OMOP Domain"/>

@@ -9,46 +9,42 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugEx
 
 group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
 
-	//src.id as id -> tgt.drug_exposure_id = cast(id, "integer");
+    // OMOP Drug Exposure ID would be a map from FHIR ID to an external key
+    src.id  -> tgt.drug_exposure_id = 1;
+
+    // OMOP Person ID would be a map from the FHIR Immunization Patient reference to an external key
+    src.patient -> tgt.person_id = 1;
+
+    // OMOP Visit Occurrence ID would be a map from the FHIR Immunization Encounter reference to an external key
+    src.encounter -> tgt.visit_occurrence_id = 1;
+
 	src.vaccineCode as s -> tgt then {
-		s.coding as sc -> tgt then {
-			sc.code -> tgt.drug_concept_id, tgt.drug_source_value, tgt.drug_source_concept_id;
+		s.coding first as sc -> tgt then {
+			sc.code as c -> tgt.drug_concept_id = translate(c, 'http://hl7.org/fhir/uv/omop/ConceptMap/ImmunizationVaccine', 'code'), tgt.drug_source_value = c;
 		};
 	};
 	
-	//src.patient as s -> tgt then {
-	//	s.identifier as sid -> tgt then {
-	//		sid.value as a -> tgt.person_id = a;
-	//	};
-	//};
-	
 	src.doseQuantity as s -> tgt then {
-		s.value as s -> tgt.quantity = cast(s, "decimal");
-		s.code as s -> tgt.dose_unit_source_value = cast(s, "string");
+		s.value as s -> tgt.quantity = s;
 	};
 	
 	src.route as s -> tgt then {
-		s.text as s -> tgt.route_source_value = cast(s, "string");
 		s.coding as sc -> tgt then {
-			sc.code -> tgt.route_concept_id, tgt.route_source_value;
+			sc.code as c -> tgt.route_concept_id = translate(c, 'http://hl7.org/fhir/uv/omop/ConceptMap/ImmunizationRoute', 'code'), tgt.route_source_value = c;
 		};
 	};
-	
-	src.occurrence : dateTime as odt -> tgt.drug_exposure_start_date = cast(odt, "date"), tgt.drug_exposure_start_datetime = odt, tgt.drug_exposure_end_date = cast(odt, "date"), tgt.drug_exposure_end_datetime = odt;
-	
-	//src.encounter as s -> tgt then {
-	//	s.identifier as sid -> tgt then {
-	//		sid.value as a -> tgt.visit_occurrence_id = a;
-	//	};
-	//};
-	
-	src.lotNumber as s -> tgt.lot_number = cast(s, "string");
+    
+	src where(src.informationSource.empty()) -> tgt.drug_type_concept_id = 32818 "emptysource";
 
-    //src.performer as s -> tgt then {
-	//	s.actor as sa -> tgt then {
-	//		sa.identifier as sid -> tgt then {
-	//			sid.value as b -> tgt.provider_id = b;
-	//		};
-	//	};
-	//};
+    src.informationSource as s -> tgt then {
+        s.concept as concept -> tgt then {
+            concept.coding as sc -> tgt then {
+                sc.code as c -> tgt.drug_type_concept_id = translate(c, 'http://hl7.org/fhir/uv/omop/ConceptMap/ImmunizationSource', 'code');
+            };
+        };
+    };
+	
+	src.occurrence : dateTime as odt -> tgt.drug_exposure_start_date = (src.occurrence.toString().substring(0,10)), tgt.drug_exposure_start_datetime = odt, tgt.drug_exposure_end_date = (src.occurrence.toString().substring(0,10)), tgt.drug_exposure_end_datetime = odt;
+	
+	src.lotNumber as s -> tgt.lot_number;
 }

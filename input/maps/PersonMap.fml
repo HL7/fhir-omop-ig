@@ -12,8 +12,10 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Person" alias PersonTable 
 group Person(source src: Patient, target tgt : PersonTable) {
 	 // OMOP person ID would be a map from FHIR ID to an external key
     src.id as id -> tgt.person_source_value = id, tgt.person_id = 1;
+
 	src.gender as gender -> tgt.gender_concept_id = translate(gender, 'http://hl7.org/fhir/uv/omop/ConceptMap/GenderClass', 'code'), tgt.gender_source_value = gender;
-	src where(src.gender.empty()) -> tgt.gender_concept_id = 0, tgt.gender_source_value = "unknown" "no_gender";
+	src where(src.gender.empty()) -> tgt.gender_concept_id = 0, tgt.gender_source_value = "unknown" "nogender";
+
 	src.birthDate as bdSrc -> tgt.birth_datetime = bdSrc, 
 		tgt.year_of_birth = (src.birthDate.toString().substring(0,4)), 
 		tgt.month_of_birth = (src.birthDate.toString().substring(5,2)), 
