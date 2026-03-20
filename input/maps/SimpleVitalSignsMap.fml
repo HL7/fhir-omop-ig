@@ -1,0 +1,40 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/SimpleVitalSignsMap'
+/// name = 'SimpleVitalSignsMap'
+/// title = 'Mapping Vital Ssigns resource to Measurement  OMOP Domain'
+/// status = 'draft'
+/// description = "This mapping maps simple FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."
+
+uses "http://hl7.org/fhir/StructureDefinition/vitalsigns" alias VitalSigns as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
+
+group Measures(source src : VitalSigns, target tgt : MeasureTable) {
+    src where ('vital-signs' | 'laboratory' ).supersetOf(VitalSigns.category.coding.code) then { 
+        src.code as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.system where('http://loinc.org') then {
+                    sc.code as a where (a in ('85354-9' | '8480-6' | '8462-4' | '8478-0').not()) -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/VitalSignsCodes', 'code');
+                    sc.display as display -> tgt.measurement_concept_id = display;
+                };               
+            };
+        };
+
+        src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
+        src.effective : Period as s -> tgt then {
+            s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = cast(eps, "date");
+        };
+    src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
+    
+    src.value : Quantity as s -> tgt then {
+        s.value as a -> tgt.value_as_number = a;
+        s.unit as b -> tgt.unit_concept_id = b;
+    };
+    src.value : CodeableConcept as s  -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as a -> tgt.value_as_concept_id = a;
+            };
+        };
+    src.value : string as b -> tgt.value_source_value = b;
+    src.interpretation as c -> tgt.value_as_concept_id = c;
+    src.note  as d -> tgt.measurement_source_value = d;
+    } "OnlyMeasures";
+};
