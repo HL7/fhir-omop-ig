@@ -27,7 +27,7 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
 
     src.clinicalStatus as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc.code as a -> tgt.condition_status_concept_id = a, tgt.condition_status_source_value = a;
+            sc.code as a -> tgt.condition_status_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionStatusConcepts', 'code'), tgt.condition_status_source_value = a;
         };
     };
 

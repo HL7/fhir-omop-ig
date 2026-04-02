@@ -34,3 +34,22 @@ Usage: #definition
       * code = #443392
       * display = "Malignant neoplastic disease"
       * relationship = #equivalent
+
+Instance: ConditionStatusConcepts
+InstanceOf: ConceptMap
+Description: "An example mapping of FHIR condition status codes to OMOP concept ids"
+Usage: #definition
+* title = "Condition status codes to OMOP"
+* name = "ConditionStatusOMOPMapping"
+* status = #active
+* experimental = true
+
+* group
+  * source = "http://terminology.hl7.org/CodeSystem/condition-clinical"
+  * target = "https://fhir-terminology.ohdsi.org"
+  * element[+]
+    * code = #resolved
+    * target
+      * code = #32906
+      * display = "Resolved condition"
+      * relationship = #equivalent 
