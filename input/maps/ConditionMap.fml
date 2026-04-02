@@ -17,6 +17,7 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
             sc.code as a -> tgt.condition_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code');
+            sc.display as d -> tgt.condition_source_value = d;
         };
     };
     
@@ -32,22 +33,7 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
 
     src.encounter -> tgt.visit_occurrence_id = 1;
 
-    src.evidence as s -> tgt then {
-        s.concept as sc -> tgt then {
-            sc.coding as sci -> tgt then {
-                sci.code as a -> tgt.condition_source_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code');
-                sci.display as b -> tgt.condition_source_value = b;
-            };
-        };
-        
-    };
-    src as s where(s.evidence.concept.empty()) then {
-        s.evidence as e -> tgt then {
-            e.reference as r -> tgt then {
-                r.display -> tgt.condition_source_value = d;
-            };
-        };
-    } "conditionsourcevalue";
+
 
     src.category -> tgt.condition_type_concept_id = 32817 "default";
 };
