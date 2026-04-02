@@ -34,6 +34,42 @@ Usage: #definition
       * code = #443392
       * display = "Malignant neoplastic disease"
       * relationship = #equivalent
+  * element[+]
+    * code = #87628006
+    * target
+      * code = #432545
+      * display = "Bacterial infectious disease"
+      * relationship = #equivalent
+  * element[+]
+    * code = #368009
+    * target
+      * code = #4281749
+      * display = "Heart valve disorder"
+      * relationship = #equivalent
+  * element[+]
+    * code = #254637007
+    * target
+      * code = #4115276
+      * display = "Non-small cell lung cancer"
+      * relationship = #equivalent
+  * element[+]
+    * code = #18099001
+    * target
+      * code = #437580
+      * display = "Retropharyngeal abscess"
+      * relationship = #equivalent
+  * element[+]
+    * code = #422504002
+    * target
+      * code = #4310996
+      * display = "Ischemic stroke"
+      * relationship = #equivalent
+  * element[+]
+    * code = #312824007
+    * target
+      * code = #4195970
+      * display = "Family history of cancer of colon"
+      * relationship = #equivalent
 
 Instance: ConditionStatusConcepts
 InstanceOf: ConceptMap
