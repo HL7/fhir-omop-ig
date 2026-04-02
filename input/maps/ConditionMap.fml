@@ -1,0 +1,53 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ConditionMap'
+/// name = 'ConditionMap'
+/// title = 'Mapping Condition resource to Condition Occurrence OMOP Domain'
+/// status = 'draft'
+/// description = "This mapping maps FHIR Condition instances to OMOP Condition Occurence Table objects."
+
+uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias ConOccTable as target
+
+group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     {
+    // OMOP Condition ID would be a map from FHIR ID to an external key
+    src.id as id -> tgt.condition_occurrence_id = 1;
+    
+    // OMOP Person ID would be a map from the FHIR Condition subject reference to an external key
+    src.subject -> tgt.person_id = 1;
+
+    src.code as s -> tgt then {
+        s.coding as sc -> tgt then {
+            sc.code as a -> tgt.condition_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code');
+        };
+    };
+    
+    src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"dateTime"), tgt.condition_start_date = rd;
+    src.onset : dateTime as osd -> tgt.condition_start_datetime = osd, tgt.condition_start_date = cast(osd, "date");
+    src.abatement : dateTime as abdt -> tgt.condition_end_datetime = adt, tgt.condition_end_date = cast(abdt, "date");
+
+    src.clinicalStatus as s -> tgt then {
+        s.coding as sc -> tgt then {
+            sc.code as a -> tgt.condition_status_concept_id = a, tgt.condition_status_source_value = a;
+        };
+    };
+
+    src.encounter -> tgt.visit_occurrence_id = 1;
+
+    src.evidence as s -> tgt then {
+        s.concept as sc -> tgt then {
+            sc.coding as sci -> tgt then {
+                sci.code as a -> tgt.condition_source_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code');
+                sci.display as b -> tgt.condition_source_value = b;
+            };
+        };
+        
+    };
+    src as s where(s.evidence.concept.empty()) then {
+        s.evidence as e -> tgt then {
+            e.reference as r -> tgt then {
+                r.display -> tgt.condition_source_value = d;
+            };
+        };
+    } "conditionsourcevalue";
+
+    src.category -> tgt.condition_type_concept_id = 32817 "default";
+};
