@@ -1,15 +1,15 @@
 A FHIR terminology server operates as a specialized collection of functions built upon FHIR CodeSystem, ValueSet, and ConceptMap resources, specifically designed to support the complex terminology requirements inherent in transforming FHIR resources into OMOP-compliant data. (See: [FHIR Terminology Service, Basic Concepts](https://hl7.org/fhir/R5/terminology-service.html#concepts)) This greatly reduces the need for implementation teams and ETL developers to be experts in source terminologies and cross-terminology relationships to OMOP concept targets essential for compliant OMOP data normalization. Further, utilization of a terminology server greatly reduces the need for manual mapping labor and provides more consistent and uniform mapping results. 
 
-FHIR terminology servers, like [Echidna](https://echidna.fhir.org/) serve as bridge infrastructure that enable automated transformation between FHIR data sources and the OMOP CDM. Core functionality for FHIR to OMOP transformation centers on concept lookup and translation operations. The Echidna server examples below enable systems to resolve FHIR-encoded clinical concepts to their corresponding OMOP standard concepts, retrieve concept relationships necessary for accurate domain assignment, and access the hierarchical mappings required for proper OMOP vocabulary integration. 
+FHIR terminology servers serve as bridge infrastructure that enable automated transformation between FHIR data sources and the OMOP CDM. Core functionality for FHIR to OMOP transformation centers on concept lookup and translation operations. The examples below enable systems to resolve FHIR-encoded clinical concepts to their corresponding OMOP standard concepts, retrieve concept relationships necessary for accurate domain assignment, and access the hierarchical mappings required for proper OMOP vocabulary integration. 
 
 
 ### CodeSystem $Lookup Operation
-The FHIR [CodeSystem/$lookup](https://echidna.fhir.org/#tag/codesystem/post/r5/CodeSystem/$lookup) provides additional information about a concept.  Given a concept ID, e.g. `1567956` we can lookup its properties:
+The FHIR [CodeSystem/$lookup](https://hl7.org/fhir/codesystem-operation-lookup.html) provides additional information about a concept.  Given a concept ID, e.g. `1567956` we can lookup its properties:
 
 **Request:**
 
 ```shell
-curl 'https://echidna.fhir.org/r5/CodeSystem/$lookup' \
+curl 'https://tx.fhir.org/r5/CodeSystem/$lookup' \
   --request POST \
   --header 'Content-Type: application/json' \
   --data '{
@@ -130,7 +130,7 @@ The value for this property is the concept ID which can be looked up separately:
 **Request:**
 
 ```shell
-curl 'https://echidna.fhir.org/r5/CodeSystem/$lookup' \
+curl 'https://tx.fhir.org/r5/CodeSystem/$lookup' \
   --request POST \
   --header 'Content-Type: application/json' \
   --data '{
@@ -403,7 +403,7 @@ curl 'https://echidna.fhir.org/r5/CodeSystem/$lookup' \
 ```
 
 ### ConceptMap $translate Operation 
-The FHIR [ConceptMap/$translate](https://echidna.fhir.org/#tag/conceptmap/post/r5/ConceptMap/$translate) operation will provide the cross-walk from a source system to OMOP that's stored in a ConceptMap Resource.  Given a source code and system, e.g.:
+The FHIR [ConceptMap/$translate](https://hl7.org/fhir/conceptmap-operation-translate.html) operation will provide the cross-walk from a source system to OMOP that's stored in a ConceptMap Resource.  Given a source code and system, e.g.:
 
 ```json
 {
@@ -417,7 +417,7 @@ we can translate to the corresponding OMOP concept ID by using the "translate" o
 **Request:**
 
 ```shell
-curl 'https://echidna.fhir.org/r5/ConceptMap/$translate' \
+curl 'https://tx.fhir.org/r5/ConceptMap/$translate' \
   --request POST \
   --header 'Content-Type: application/json' \
   --data '{
