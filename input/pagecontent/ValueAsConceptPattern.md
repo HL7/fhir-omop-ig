@@ -9,7 +9,7 @@ Utilizing an OMOP datastore, this mapping pattern enables comprehensive populati
 </figure>
 {::options parse_block_html="true" /}
 
-The transformation process begins with analyzing FHIR AllergyIntolerance resources containing composite concepts that combine allergy classification and specific substance identification. Drug allergies exemplify this through structured codes like "Allergy to benzylpenicillin" (SNOMED CT: 294930007), which inherently contains both the allergic reaction type and pharmaceutical substance. This approach assumes structured codes amenable to semantic decomposition, deliberately excluding free-text-only descriptions that present distinct mapping challenges.
+The transformation process begins with analyzing FHIR AllergyIntolerance resources containing composite concepts that combine allergy classification and specific substance identification. Drug allergies exemplify this through structured codes like "Allergy to benzylpenicillin" (SNOMED CT: 294499007), which inherently contains both the allergic reaction type and pharmaceutical substance. This approach assumes structured codes amenable to semantic decomposition, deliberately excluding free-text-only descriptions that present distinct mapping challenges.
 
 ##### Step 1: Composite Concept Analysis 
 The system evaluates whether composite concepts can be meaningfully separated into constituent components: an observation concept representing the allergy classification and a value concept representing the specific substance. This decomposition process examines semantic structures within codes following "Allergy to [substance]" patterns to identify candidates suitable for value-as-concept transformation while preserving clinical meaning.
