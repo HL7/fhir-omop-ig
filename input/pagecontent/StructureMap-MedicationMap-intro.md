@@ -53,3 +53,5 @@ The OMOP CDM focuses exclusively on events that occur to the patient, meaning ac
 
 #### Dosage Change Considerations
 When medication dosages change during a treatment period, the mapping should end the first record and create a new record with the updated quantity. This approach ensures that each drug_exposure record represents a consistent dosage regimen, providing accurate temporal and quantitative information for analysis. The drug_type_concept_id should remain consistent across these records unless the nature of the data source changes.
+
+### Mapping 

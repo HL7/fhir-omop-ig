@@ -145,3 +145,5 @@ Monitor Gender Harmony Project developments for vocabulary updates, particularly
 - Maintain flexibility in mapping logic to accommodate new concepts
 - Engage with OHDSI community discussions on gender identity best practices
 - Prepare for potential additional gender identity observation concepts
+
+### Mapping 

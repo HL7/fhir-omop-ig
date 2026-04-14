@@ -106,3 +106,5 @@ Given the complexity and variability of identifier structures in FHIR, a standar
 **Selective Transformation**: In some cases, the most appropriate approach may be to exclude certain identifiers from the transformation process altogether, particularly when they provide no analytical value or when technical constraints make their storage impractical.
 
 The decision regarding which approach to adopt should be based on the specific requirements of the implementation, including analytical use cases, compliance requirements, and the technical capabilities of the target system. Each approach presents trade-offs between data preservation, system performance, and analytical utility that must be carefully weighed in the context of the overall transformation strategy.
+
+### Mapping 

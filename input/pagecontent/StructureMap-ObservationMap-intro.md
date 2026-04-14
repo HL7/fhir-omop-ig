@@ -88,3 +88,4 @@ FHIR Observation resources support multiple value types (Quantity, CodeableConce
 
 Implementation teams should note that FHIR's expressiveness often exceeds OMOP's structural capacity, requiring careful evaluation of value types that may need adaptation or exclusion if they cannot be effectively represented in the target OMOP model.
 
+### Mapping 

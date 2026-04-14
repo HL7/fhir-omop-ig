@@ -40,3 +40,4 @@ Temporal discrepancies between onset and documentation dates might reveal intere
 | **Onset (condition start) date** | Clinical-research studies, outcomes analyses, temporal cohort definitions | Reflecting biological and clinical reality |
 | **Recorded (entry) date** | Data-governance metrics, ETL validation, documentation-pattern reviews, regulatory-compliance audits | Understanding and optimizing operational processes |
 
+### Mapping 

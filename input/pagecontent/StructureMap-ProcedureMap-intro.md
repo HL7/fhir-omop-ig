@@ -14,3 +14,5 @@ Only completed procedures should be mapped to the OMOP procedure_occurrence tabl
 
 ### Procedure Type Classification
 The procedure type should be mapped to procedure_type_concept_id based on the healthcare setting context, such as inpatient surgery or outpatient diagnostic procedures. This classification helps differentiate care settings and supports research into distinctions between venues of care delivery.
+
+### Mapping 

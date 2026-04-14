@@ -38,3 +38,5 @@ To maintain the clinical relationship between allergies and their reactions:
 
 1. **Use observation_event_id**: Set the `observation_event_id` in the reaction record to reference the `observation_id` of the primary allergy record
 2. **Alternative Linking**: For tables without event linking fields, utilize the OMOP `fact_relationship` table to establish connections between related clinical facts
+
+### Mapping 
