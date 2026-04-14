@@ -45,7 +45,7 @@ The value-as-concept pattern supports analytical capabilities that extend beyond
     "coding": [
       {
         "system": "http://snomed.info/sct",
-        "code": "294930007",
+        "code": "294499007",
         "display": "Allergy to benzylpenicillin"
       }
     ]
@@ -63,7 +63,7 @@ The value-as-concept pattern supports analytical capabilities that extend beyond
 - **Resource Type**: AllergyIntolerance
 - **Coded Element**: code.coding[0]
 - **Source System**: SNOMED CT (http://snomed.info/sct)
-- **Composite Concept**: 294930007 ("Allergy to benzylpenicillin")
+- **Composite Concept**: 294499007 ("Allergy to benzylpenicillin")
 - **Clinical Meaning**: Drug allergy with specific pharmaceutical substance
 
 **2: Decompose for Mapping Analysis**
@@ -135,7 +135,7 @@ INSERT INTO observation (
     '2024-03-15T00:00:00',            -- observation_datetime
     32817,                             -- observation_type_concept_id (EHR)
     1728416,                           -- value_as_concept_id (Penicillin G)
-    '294930007',                       -- observation_source_value
+    '294499007',                       -- observation_source_value
     4222295,                           -- observation_source_concept_id
     'benzylpenicillin'                 -- value_source_value
 );
@@ -157,18 +157,18 @@ INSERT INTO observation (
     <tr>
       <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
       <td style="border: 1px solid #d0d7de;">439224</td>
-      <td style="border: 1px solid #d0d7de;">Decomposed from SNOMED 294930007</td>
+      <td style="border: 1px solid #d0d7de;">Decomposed from SNOMED 294499007</td>
       <td style="border: 1px solid #d0d7de;">Standard concept for "Allergy to drug"</td>
     </tr>
     <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;"><code>value_as_concept_id</code></td>
       <td style="border: 1px solid #d0d7de;">1728416</td>
-      <td style="border: 1px solid #d0d7de;">Decomposed from SNOMED 294930007</td>
+      <td style="border: 1px solid #d0d7de;">Decomposed from SNOMED 294499007</td>
       <td style="border: 1px solid #d0d7de;">Standard concept for "Penicillin G"</td>
     </tr>
     <tr>
       <td style="border: 1px solid #d0d7de;"><code>observation_source_value</code></td>
-      <td style="border: 1px solid #d0d7de;">294930007</td>
+      <td style="border: 1px solid #d0d7de;">294499007</td>
       <td style="border: 1px solid #d0d7de;">FHIR code.coding[0].code</td>
       <td style="border: 1px solid #d0d7de;">Original composite SNOMED code preserved</td>
     </tr>

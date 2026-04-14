@@ -16,6 +16,8 @@ The source statement doesn't assign a variable to the source - check that this i
 The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/StructureDefinition/Person] (@char 1)
 The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence] (@char 1)
 The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/StructureDefinition/Observation] (@char 1)
+The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure] (@char 1)
+
 
 # 04 - Deprecated value set that is used in FHIR core
 Reference to deprecated ValueSet http://hl7.org/fhir/ValueSet/jurisdiction|5.0.0
@@ -36,5 +38,16 @@ The target variable does not have a required binding, so this concept map can't 
 # 09 - We are mapping to OHDSI terminology and this is a known limitation
 The Target Code System https://fhir-terminology.ohdsi.org is not fully defined and populated, and no targetScope is specified, so the target code checking will not be performed
 
-# 10 - One of our example mapped code systems is RxNorm and this is a known limitation
+# 10 - These are example code systems we are using in our ConceptMaps and this is a known limitation
 The Source Code System http://www.nlm.nih.gov/research/umls/rxnorm is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
+The Source Code System http://hl7.org/fhir/sid/cvx is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
+The Source Code System http://loinc.org is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
+The Source Code System http://snomed.info/sct is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
+
+# 11 - We are okay with the path not being validated as we are explicitly calling these groups
+Group systolicTable parameter comp has no type, so the paths cannot be validated
+Group diastolicTable parameter comp has no type, so the paths cannot be validated
+
+# 12 - The elements are just slices of the root element so this is okay
+The target path src.component refers to the path Observation.component which could be a reference to multiple elements (Observation.component, Observation.component:SystolicBP, Observation.component:DiastolicBP). No further checking can be performed
+The target path s.coding refers to the path Observation.code.coding which could be a reference to multiple elements (Observation.code.coding, Observation.code.coding:BPCode). No further checking can be performed

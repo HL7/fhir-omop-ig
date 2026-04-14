@@ -10,9 +10,12 @@
 <artifact id="ConceptMap/AllergyType" key="ConceptMap-AllergyType" name="AllergyIntolerance allergy category codes to OMOP"/>
 <artifact id="ConceptMap/IntoleranceType" key="ConceptMap-IntoleranceType" name="AllergyIntolerance intolerance category codes to OMOP"/>
 <artifact id="ConceptMap/AllergySubstanceType" key="ConceptMap-AllergySubstanceType" name="AllergyIntolerance substance codes to OMOP"/>
+<artifact id="ConceptMap/BloodPressureCodes" key="ConceptMap-BloodPressureCodes" name="Blood Pressure codes to OMOP"/>
 <artifact id="StructureDefinition/CareSite" key="StructureDefinition-CareSite" name="CareSite OMOP Table"/>
+<artifact id="ConceptMap/ConditionConcepts" key="ConceptMap-ConditionConcepts" name="Clinical Findings codes to OMOP"/>
 <artifact id="StructureDefinition/ConditionEra" key="StructureDefinition-ConditionEra" name="Condition Era OMOP Table"/>
 <artifact id="StructureDefinition/ConditionOccurrence" key="StructureDefinition-ConditionOccurrence" name="Condition Occurrence OMOP Table"/>
+<artifact id="ConceptMap/ConditionStatusConcepts" key="ConceptMap-ConditionStatusConcepts" name="Condition status codes to OMOP"/>
 <artifact id="StructureDefinition/Cost" key="StructureDefinition-Cost" name="Cost OMOP Table"/>
 <artifact id="StructureDefinition/Death" key="StructureDefinition-Death" name="Death OMOP Table"/>
 <artifact id="StructureDefinition/DeviceExposure" key="StructureDefinition-DeviceExposure" name="Device Exposure OMOP Table"/>
@@ -30,6 +33,7 @@
 <artifact id="ConceptMap/ImmunizationVaccine" key="ConceptMap-ImmunizationVaccine" name="Immunization vaccine codes to OMOP"/>
 <artifact id="StructureDefinition/Location" key="StructureDefinition-Location" name="Location OMOP Table"/>
 <artifact id="StructureMap/AllergyMap" key="StructureMap-AllergyMap" name="Mapping Allergy resource to Observation OMOP Domain"/>
+<artifact id="StructureMap/BloodPressureVitalSignsMap" key="StructureMap-BloodPressureVitalSignsMap" name="Mapping Blood Pressure Vital Signs resource to Measurement OMOP Domain"/>
 <artifact id="StructureMap/ConditionMap" key="StructureMap-ConditionMap" name="Mapping Condition resource to Condition Occurrence OMOP Domain"/>
 <artifact id="StructureMap/EncounterVisitMap" key="StructureMap-EncounterVisitMap" name="Mapping Encounter resource to VisitOccurrence OMOP Domain"/>
 <artifact id="StructureMap/ImmunizationMap" key="StructureMap-ImmunizationMap" name="Mapping Immunization resource to Drug Exposure OMOP Domain"/>
@@ -38,6 +42,7 @@
 <artifact id="StructureMap/ObservationMap" key="StructureMap-ObservationMap" name="Mapping Observation resource to Observation OMOP Domain"/>
 <artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
 <artifact id="StructureMap/ProcedureMap" key="StructureMap-ProcedureMap" name="Mapping Procedure resource to Procedure Occurrence OMOP Domain"/>
+<artifact id="StructureMap/SimpleVitalSignsMap" key="StructureMap-SimpleVitalSignsMap" name="Mapping Vital Ssigns resource to Measurement OMOP Domain"/>
 <artifact id="StructureDefinition/Measurement" key="StructureDefinition-Measurement" name="Measurement OMOP Table"/>
 <artifact id="StructureDefinition/NoteNLP" key="StructureDefinition-NoteNLP" name="Note NLP OMOP Table"/>
 <artifact id="StructureDefinition/Note" key="StructureDefinition-Note" name="Note OMOP Table"/>
@@ -50,6 +55,7 @@
 <artifact id="StructureDefinition/Specimen" key="StructureDefinition-Specimen" name="Specimen OMOP Table"/>
 <artifact id="StructureDefinition/VisitDetail" key="StructureDefinition-VisitDetail" name="Visit Detail OMOP Table"/>
 <artifact id="StructureDefinition/VisitOccurrence" key="StructureDefinition-VisitOccurrence" name="Visit Occurrence OMOP Table"/>
+<artifact id="ConceptMap/VitalSignsCodes" key="ConceptMap-VitalSignsCodes" name="VitalSign codes to OMOP"/>
 <page key="NA" name="(NA)"/>
 <page key="many" name="(many)"/>
 <page key="credits" name="Acknowledgements"/>
