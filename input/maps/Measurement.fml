@@ -9,45 +9,39 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias Measure
 
 group Measures(source src : Observation, target tgt : MeasureTable) {
     src where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) then { 
-        //src.id as id -> tgt.measurement_id = cast(id, "integer");
+        src.id as id -> tgt.measurement_id = 1;
+
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
                 sc.code as a -> tgt.measurement_concept_id = a;
             };
-        };
-        //src.subject as s -> tgt then {
-		//s.identifier as sid -> tgt then {
-		//	sid.value as a -> tgt.person_id = a;
-		//};
-		//};
-        //src.encounter as s -> tgt then {
-		//    s.identifier as sid -> tgt then {
-		//    	sid.value as b -> tgt.visit_occurrence_id = b;
-		//};
-		//};
+        } "MeasurementConcept";
+
+        src.subject -> tgt.person_id = 1;
+        src.encounter ->  tgt.visit_occurrence_id = 1;
+
         src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
         src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), tgt.measurement_date = cast(einst, "date");
         src.effective : Period as s -> tgt then {
             s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = cast(eps, "date");
-        };
-    src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
+        } "MeasurementDate";
+        src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
         
-    //src.performer as s -> tgt then {
-	//	s.identifier as sid -> tgt then {
-	//		sid.value as b -> tgt.provider_id = b;
-	//	};
-	//};
-    src.value : Quantity as s -> tgt then {
-        s.value as a -> tgt.value_as_number = a;
-        s.unit as b -> tgt.unit_concept_id = b;
-    };
-    src.value : CodeableConcept as s  -> tgt then {
+        src.category -> tgt.measurement_type_concept_id = 32817 "EHR";
+        src.performer -> tgt.provider_id = 1;
+        
+        src.value : Quantity as s -> tgt then {
+            s.value as a -> tgt.value_as_number = a;
+            s.unit as b -> tgt.unit_concept_id = b;
+        } "QuantityValue";
+        src.value : CodeableConcept as s  -> tgt then {
             s.coding as sc -> tgt then {
                 sc.code as a -> tgt.value_as_concept_id = a;
             };
-        };
-    src.value : string as b -> tgt.value_source_value = b;
-    src.interpretation as c -> tgt.value_as_concept_id = c;
-    src.note  as d -> tgt.measurement_source_value = d; // complex notes should be in note table
+        } "CodeableConceptValue";
+        
+        src.value : string as b -> tgt.value_source_value = b;
+        src.interpretation as c -> tgt.value_as_concept_id = c;
+        src.note  as d -> tgt.measurement_source_value = d; // complex notes should be in note table
     } "OnlyMeasures";
 };
