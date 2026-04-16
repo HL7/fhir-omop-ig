@@ -39,9 +39,6 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
                 sc.code as a -> tgt.value_as_concept_id = a;
             };
         } "CodeableConceptValue";
-        
         src.value : string as b -> tgt.value_source_value = b;
-        src.interpretation as c -> tgt.value_as_concept_id = c;
-        src.note  as d -> tgt.measurement_source_value = d; // complex notes should be in note table
     } "OnlyMeasures";
 };
