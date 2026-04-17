@@ -396,7 +396,7 @@ Throughout this project, more than 100 individuals from over 70 organizations, r
     </tr>
     <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;">Ben Hamlin</td>
-      <td style="border: 1px solid #d0d7de;">National Committee for Quality Assurance</td>
+      <td style="border: 1px solid #d0d7de;">IPRO</td>
     </tr>
     <tr>
       <td style="border: 1px solid #d0d7de;">Amro Hassan</td>
