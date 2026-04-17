@@ -48,6 +48,8 @@ pages:
     title: CodeableConcept Mapping Patterns
   ValueAsConceptPattern.md:
     title: Value-as-Concept Mapping Pattern
+  RaceAndEthnicity.md:
+     title: Populating Race and Ethnicity
   technical_artifacts.md:
     title: Technical Artifacts 
   TerminologyServer.md:
@@ -68,6 +70,7 @@ menu:
     Code Mapping Base Pattern: CodeMappingBasePattern.html
     CodeableConcept Patterns: CodeableConceptPattern.html
     Value-as-Concept Pattern: ValueAsConceptPattern.html
+    Populating Race and Ethnicity: RaceAndEthnicity.html
   Technical Artifacts: technical_artifacts.html
   Terminology Server: TerminologyServer.html
   Support:
