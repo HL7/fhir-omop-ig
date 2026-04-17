@@ -4,6 +4,13 @@ This Implementation Guide establishes a standards-based, community-consensus fou
 
 The IG focuses exclusively on the FHIR-to-OMOP direction. Prior community work has extensively addressed OMOP-to-FHIR transformation — enabling FHIR API access to existing OMOP repositories — and that direction is covered by other specifications being defined in various HL7 international realms. The gap addressed here is the reverse: moving data that originates on FHIR servers into OMOP-compliant datastores for observational research. The project team generated new guidance only where existing community resources were unavailable, and drew as much as possible from maps and patterns developed in real-world implementations.
 
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b>FHIR sources and CDM are defined outside of this IG. This IG defines the transformations between them </b></figcaption>
+<img src="F2OIG.png" style="padding-top:0;padding-bottom:30px" width="800" alt="Scope of the FHIR to OMOP Implementation Guide"/>
+</figure>
+{::options parse_block_html="true" /}
+
 ## Why Harmonization Between FHIR and OMOP Matters
 
 Health care interoperability suffers from what has been described as the *interoperability paradox*: more standards lead to less interoperability, because each additional standard creates new pairs of systems that cannot communicate without a transformation layer between them [6]. FHIR and OMOP are both open, widely adopted, community-maintained standards, each dominant in its respective domain, and both are likely to remain dominant for the foreseeable future. The practical consequence is that any organization operating across clinical exchange and observational research needs to move data between them routinely. Without a shared transformation specification, every organization doing so solves the problem locally, producing as many FHIR-to-OMOP mappings as there are organizations — each with its own assumptions, omissions, and edge-case handling. Systematic harmonization between standards, in contrast, reduces or eliminates information loss during transformation and allows communities that share data across the FHIR–OMOP boundary to compare analytic results meaningfully [6].
