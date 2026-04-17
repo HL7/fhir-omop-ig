@@ -447,4 +447,6 @@ The implementation also addresses scenarios where FHIR resources explicitly desi
 
 This approach respects the clinical decision-making embedded in the source system while maintaining consistency with OMOP requirements, regardless of other prioritization factors.
 
+The patterns described in this section address the selection of a single preferred code from among multiple codings provided in a FHIR resource. They do not address the distinct situation in which the selected source code itself resolves to more than one Standard OMOP concept within a single domain on lookup against the OHDSI Standardized Vocabularies. That situation reflects a vocabulary-content condition rather than a FHIR-to-OMOP selection decision, and is outside the scope of this IG; implementers encountering it should follow the reporting pathway described in [Reporting Vocabulary Anomalies to the OHDSI Vocabulary Working Group](#reporting-vocabulary-anomalies-to-the-ohdsi-vocabulary-working-group) rather than introduce a local workaround in ETL logic.
+
  
