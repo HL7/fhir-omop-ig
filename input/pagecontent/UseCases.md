@@ -104,7 +104,7 @@ A healthcare provider could use an AI model to predict medication adherence for 
 {::options parse_block_html="false" /}
 <figure>
 <figcaption><b></b></figcaption>
-<img src="fhir_omop_ai_diagram.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Transformation for AI Training and Classification"/>
+<img src="fhir-omop-ig-ai-downstream.jpg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Transformation for AI Training and Classification"/>
 </figure>
 {::options parse_block_html="true" /}
 
