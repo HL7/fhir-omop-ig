@@ -57,41 +57,7 @@ The IG is deliberately *not* scoped to:
 - Remediation of content-level issues in the OHDSI Standardized Vocabularies, which are addressed through the OHDSI Vocabulary Working Group's community contribution process; or
 - Replacement of any component of either parent standard.
 
-## Background on OHDSI
 
-Observational Health Data Sciences and Informatics, or OHDSI, is an international open-science community that aims to improve health by empowering the community to collaboratively generate the evidence that promotes better health decisions and better care [1]. OHDSI emerged from the Observational Medical Outcomes Partnership (OMOP), a public-private partnership active from 2008 to 2013 composed of members from industry, government, and academia, established to inform the appropriate use of observational healthcare databases for studying the effects of medical products [2]. OMOP successfully achieved its aims to conduct methodological research evaluating the performance of analytical methods, develop tools for transforming and analyzing disparate data sources, and establish a shared resource for the broader research community [3].
-
-A primary driver for OHDSI today is the value proposition that data generated as a by-product of care delivery can be analyzed to produce real-world evidence, which in turn can be disseminated across healthcare systems to inform clinical practice.
-
-**OHDSI Collaborators Worldwide**
-
-
-{::options parse_block_html="false" /}
-<figure>
-<figcaption><b>OHDSI Collaborators Worldwide</b></figcaption>
-<img src="OHDSI_Collaborators_July2025.png" style="padding-top:0;padding-bottom:30px" width="800" alt="OHDSI Map of Collaborators"/>
-</figure>
-{::options parse_block_html="true" /}
-
-The OHDSI community has experienced rapid growth and adoption of its work worldwide, totaling more than 4,000 collaborators by 2024. Among its activities, OHDSI supports research collaboration via the OMOP Common Data Model and OHDSI Standardized Vocabularies, an open source stack of tools supporting analytics, development of advanced research and data-science implementation methods, and clinical evidence generation and dissemination. OHDSI's evidence has been used in policy decisions around the world and has potentially affected hundreds of millions of patients.
-
-## Role of the Vulcan FHIR Accelerator
-
-The unique strategic strength the Vulcan community brings to this effort is through its diverse membership, with representation from international academic, commercial, payor, and government organizations. Projects of interest to Vulcan link clinical care to clinical research and must be unique in bridging existing gaps, strategically connect stakeholders, create high-value collaborations, maximize available resources, and deliver integrated tools and solutions [7]. All of these criteria pertain to the OMOP + FHIR collaboration, but specifically, the Vulcan project as originally scoped is focused on a unique high-value work product: a canonical set of mappings from FHIR to OMOP for core EMR data most commonly used by Vulcan members. In the Vulcan project, identification of, comparison of, and enhancement of prior work served as the means to develop standard OMOP transformations scoped to highly available EHR data on FHIR. In this way, the process maximizes the effectiveness of the Vulcan resource investment and is of strategic importance to the international research community. In the FHIR-to-OMOP project, Vulcan serves as a coordinating body, a strategic consolidator of effort, and a use-case mediator, maximizing value to the broadest possible research constituency.
-
-## References
-
-[1] G. Hripcsak et al., "Observational Health Data Sciences and Informatics (OHDSI): Opportunities for Observational Researchers," *Stud. Health Technol. Inform.*, vol. 216, pp. 574–578, 2015.
-
-[2] "Observational Medical Outcomes Partnership (OMOP)," FNIH, May 10, 2023. https://fnih.org/observational-medical-outcomes-partnership-omop/ (accessed Dec. 08, 2023).
-
-[3] "OMOP CDM Background." https://ohdsi.github.io/CommonDataModel/background.html (accessed Dec. 08, 2023).
-
-[4] G. Hripcsak, "State of the Community: Where have we been? Where are we going?," in *OHDSI 2023 Global Symposium*, Newark, NJ, 2023.
-
-[5] E. Hall, G. Melton, P. Payne, D. Dorr and D. Vawdrey, "How Are Leading Research Institutions Engaging with Data Sharing Tools and Programs?," in *AMIA 2023 Annual Symposium*, Bethesda, MD, 2023.
-
-[6] Tsafnat G, Dunscombe R, Gabriel D, Grieve G, Reich C. Converge or Collide? Making Sense of a Plethora of Open Data Standards in Health Care. *J Med Internet Res.* 2024 Apr 9;26:e55779. https://www.jmir.org/2024/1/e55779
 
 [7] Health Level Seven, "Vulcan accelerator home." https://confluence.hl7.org/display/VA (accessed Dec. 08, 2023).
 
