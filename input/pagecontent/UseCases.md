@@ -135,6 +135,7 @@ Many healthcare organizations have developed predictive models (clinical risk sc
 <img src="fhir_omop_realtime_dss_conceptual.jpg" style="padding-top:0;padding-bottom:30px" width="800" alt="Real-Time Single-Patient FHIR to OMOP Conversion"/>
 </figure>
 {::options parse_block_html="true" /}
+
 #### Scope as raised by the community
 
 The community input that motivated this section describes a transformation profile with the following characteristics:
