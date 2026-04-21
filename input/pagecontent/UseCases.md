@@ -129,6 +129,12 @@ The FHIR-to-OMOP transformation is the **foundational objective** of this work. 
 
 Many healthcare organizations have developed predictive models (clinical risk scores, early warning systems, medication adherence classifiers, readmission models, and comparable tools) using historical OMOP CDM data drawn from their research data warehouses. Operationalizing these models in routine clinical care requires converting individual patient data from the live EHR, typically exposed as FHIR, into the OMOP representation that the model expects at the moment a prediction is needed. This is a distinct transformation profile from the bulk, warehouse-scale conversions for which existing enterprise tooling (for example, Epic Clarity based ETL or site-specific batch pipelines) is designed and optimized.
 
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b></b></figcaption>
+<img src="fhir_omop_realtime_dss_conceptual.jpg" style="padding-top:0;padding-bottom:30px" width="800" alt="Real-Time Single-Patient FHIR to OMOP Conversion"/>
+</figure>
+{::options parse_block_html="true" /}
 #### Scope as raised by the community
 
 The community input that motivated this section describes a transformation profile with the following characteristics:
