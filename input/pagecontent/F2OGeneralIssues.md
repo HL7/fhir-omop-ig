@@ -2,12 +2,12 @@ Aligning FHIR resources with the OMOP Common Data Model presents challenges due 
 
 The tension between the the two standards stems from FHIR's design for real-time clinical data exchange and workflow support versus OMOP's structure for research analytics and retrospective analysis with standardized terminology. This divergence means that poorly considered mappings can misrepresent data, particularly given OMOP's requirements for concept standardization and validated data quality procedures that must be carefully addressed when transforming patient records from FHIR format.
 
-### Identifiers, De-identitification & Privacy
+### Identifiers, De-identification & Privacy
 Transforming FHIR resources to OMOP presents challenges in identifier management. FHIR resources utilize complex, non-integer identifiers that link discrete data across systems and support clinical workflows, while the OMOP CDM employs integer-based keys designed for de-identified research data with `person_id` serving as the primary linking mechanism across clinical domains. The core challenge is balancing OMOP's de-identification requirements with business needs for traceability and audit capabilities.
 
 #### Identifier Management
 
-###### Understanding FHIR Identifier Types
+##### Understanding FHIR Identifier Types
 
 FHIR resources carry two fundamentally different types of identifiers that serve distinct purposes and must be handled separately when transforming to OMOP. Conflating them is a common source of implementation errors.
 
@@ -44,7 +44,7 @@ from OMOP back to the FHIR source is needed.
 
 ---
 
-###### Deriving OMOP Primary Keys from FHIR Source Data
+##### Deriving OMOP Primary Keys from FHIR Source Data
 
 When implementers need to derive OMOP integer primary keys (e.g., `visit_occurrence_id`,
 `condition_occurrence_id`) from FHIR source data, the FHIR **logical identifier** (`Resource.id`
@@ -74,7 +74,7 @@ be compatible with OMOP integer key fields.
 
 ---
 
-###### Decision Framework for Identifier Management
+##### Decision Framework for Identifier Management
 
 There is no single approach that can be uniformly applied to transformation of FHIR identifiers
 to OMOP. Rather, implementers must evaluate FHIR identifiers systematically using criteria

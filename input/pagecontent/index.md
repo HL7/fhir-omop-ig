@@ -1,4 +1,4 @@
-## This Implementation Guide
+### This Implementation Guide
 
 This Implementation Guide establishes a standards-based, community-consensus foundation for transforming FHIR data into the OMOP Common Data Model (CDM). It exists because organizations that need to use both standards — to exchange health data through FHIR and to analyze it through OMOP — have until now had to build and maintain FHIR-to-OMOP transformations independently, producing inconsistent, difficult-to-maintain pipelines that vary from one institution to the next and that frequently diverge in ways that compromise downstream research comparability. By publishing a shared set of transformation principles, mapping patterns, technical artifacts, and best practices, this IG aims to reduce the per-implementation cost and effort of building these pipelines, increase the speed with which new organizations can bring FHIR-sourced data into OMOP, and improve the quality and consistency of the data that results. The guide is deliberately scoped as a *primer* for FHIR-to-OMOP implementers: it codifies patterns that are already known to work, points implementers to the right OHDSI and HL7 resources for issues that fall outside its scope, and provides a stable base onto which more specialized downstream IGs can build.
 
@@ -13,13 +13,13 @@ The IG focuses exclusively on the FHIR-to-OMOP direction. Prior community work h
 
 The IG specifies the middle column: the transformation principles, mapping patterns, and technical artifacts that convert a common core of FHIR resources into OMOP CDM v5.4 tables. FHIR source profiles on the left and OMOP target tables on the right are inputs and outputs of the transformation, not defined by this IG. Downstream consumers of the resulting OMOP data — including observational research, data quality assessment, and AI/ML model training — depend on the transformation layer being trustworthy and reproducible, but are outside the IG's scope.
 
-## Why Harmonization Between FHIR and OMOP Matters
+### Why Harmonization Between FHIR and OMOP Matters
 
 Health care interoperability suffers from what has been described as the *interoperability paradox*: more standards lead to less interoperability, because each additional standard creates new pairs of systems that cannot communicate without a transformation layer between them [6]. FHIR and OMOP are both open, widely adopted, community-maintained standards, each dominant in its respective domain, and both are likely to remain dominant for the foreseeable future. The practical consequence is that any organization operating across clinical exchange and observational research needs to move data between them routinely. Without a shared transformation specification, every organization doing so solves the problem locally, producing as many FHIR-to-OMOP mappings as there are organizations — each with its own assumptions, omissions, and edge-case handling. Systematic harmonization between standards, in contrast, reduces or eliminates information loss during transformation and allows communities that share data across the FHIR–OMOP boundary to compare analytic results meaningfully [6].
 
 This IG is an application of that harmonization principle to the specific FHIR-to-OMOP pairing. It is not an attempt to replace either standard, nor to suggest that one is superior to the other; both are essential, and the IG treats them as complementary rather than competing specifications.
 
-## FHIR and OMOP: Different Purposes, Different Designs
+### FHIR and OMOP: Different Purposes, Different Designs
 
 FHIR and OMOP were designed to serve fundamentally different use cases, and understanding those differences is essential to understanding what this IG can and cannot do. Tsafnat and colleagues [6] describe three distinct domains of health care data, each with its own design requirements:
 
@@ -33,7 +33,7 @@ OMOP is positioned squarely in the *longitudinal analysis* domain. Its relationa
 
 Neither design is deficient. Each standard is well-suited to the domain for which it was built. But the designs are not symmetric, and transformations between them cannot be.
 
-## Implications for FHIR-to-OMOP Transformation
+### Implications for FHIR-to-OMOP Transformation
 
 The asymmetry between the two standards has direct, practical consequences for what a FHIR-to-OMOP transformation can achieve. Tsafnat and colleagues [6] identify four categories of information loss that occur when transforming data between standards with different design purposes, and all four are routinely encountered in FHIR-to-OMOP work:
 
@@ -44,7 +44,7 @@ The asymmetry between the two standards has direct, practical consequences for w
 
 These four loss types explain, concretely, why this IG does not — and cannot — provide a one-to-one, lossless map from every FHIR Resource to an OMOP table and Standard concept. Rather than pretend otherwise, the IG explicitly names these losses where they occur, recommends patterns that minimize them, and requires implementers to document the choices they make so that downstream analysts can interpret the resulting OMOP data correctly. Transformation decisions in this IG favor preserving the clinical meaning of the source data and the analytic utility of the target data over mechanical one-to-one correspondence.
 
-## Scope of This Implementation Guide
+### Scope of This Implementation Guide
 
 This IG is limited to a common core of EHR data as expressed in the International Patient Access (IPA) IG profile(s). Beyond these core EHR elements, the project team identified a community need to include Encounter and Procedure information to achieve the goal of creating a foundational resource supporting observational research. The IG therefore incorporates the Encounter and Procedures profiles from the US Core FHIR IG (STU7 Sequence) within its scope.
 

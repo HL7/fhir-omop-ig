@@ -180,6 +180,7 @@ This guide contains a set of logical models that describe the OMOP CDM.  By expr
    </table>
 
 ### Structure Maps
+
 The mappings are represented via FHIR StructureMaps and those StructureMaps are presented using the [FHIR Mapping Language](https://hl7.org/fhir/mapping-language.html).  There do not exist mappings for all FHIR resources to all OMOP tables, but rather a select few.  The mappings were chosen from the resources that were profiled by the International Patient Access IG along with Encounter and Procedure which were deemed to be important to map.  For each mapping, there are considerations listed along with the mapping itself.
 
 * [Allergy Mapping](StructureMap-AllergyMap.html)

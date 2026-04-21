@@ -9,24 +9,26 @@ Utilizing an OMOP datastore, this mapping pattern enables comprehensive populati
 </figure>
 {::options parse_block_html="true" /}
 
+### Pattern Transformation Process
+
 The transformation process begins with analyzing FHIR AllergyIntolerance resources containing composite concepts that combine allergy classification and specific substance identification. Drug allergies exemplify this through structured codes like "Allergy to benzylpenicillin" (SNOMED CT: 294499007), which inherently contains both the allergic reaction type and pharmaceutical substance. This approach assumes structured codes amenable to semantic decomposition, deliberately excluding free-text-only descriptions that present distinct mapping challenges.
 
-##### Step 1: Composite Concept Analysis 
+**Step 1: Composite Concept Analysis**
 The system evaluates whether composite concepts can be meaningfully separated into constituent components: an observation concept representing the allergy classification and a value concept representing the specific substance. This decomposition process examines semantic structures within codes following "Allergy to [substance]" patterns to identify candidates suitable for value-as-concept transformation while preserving clinical meaning.
-##### Step 2: Decomposition Feasibility 
+**Step 2: Decomposition Feasibility**
 Assessment When composite concepts can be successfully decomposed into standard OMOP concepts for both observation type and substance value, the system proceeds with the value-as-concept approach. If decomposition proves impossible or would compromise clinical meaning, the process routes to alternative mapping strategies.
-##### Steps 3a & 3b: Target Concept Assignment
+**Steps 3a & 3b: Target Concept Assignment**
 Mapping Implementation Successful decomposition enables the system to apply the value-as-concept pattern by mapping allergy classifications to observation_concept_id and specific substances to value_as_concept_id. For example, "Allergy to benzylpenicillin" decomposes to observation_concept_id: 439224 ("Allergy to drug") and value_as_concept_id: 1728416 ("Penicillin G"). When automatic decomposition fails, manual mapping preserves clinical meaning while maintaining traceability to original FHIR data.
-##### Step 4: OMOP Vocabulary Validation 
+**Step 4: OMOP Vocabulary Validation**
 The decomposed concepts undergo validation against OHDSI Standardized Vocabularies to confirm existence as Standard OMOP concepts. This validation ensures mapped concepts uphold OMOP conventions and integrate properly with analytics tools, verifying concept status, domain assignment, and relationship mappings.
-##### Step 5: Domain Population and Gap Management 
+**Step 5: Domain Population and Gap Management**
 When concepts are successfully validated, the system populates the OMOP Observation domain using the value-as-concept pattern. When a `Maps to` or `Maps to value` relationship is not available for the source concept (see *Handling vocabulary gaps* in Step 4), the corresponding `_concept_id` is set to `0`, the original source values are preserved, and the gap is reported to the OHDSI vocabulary team for future remediation.
-##### Step 6: Optional Enhancement and Validation 
+**Step 6: Optional Enhancement and Validation**
 For comprehensive data represntation, the system can create linked observations for allergic reactions using observation_event_id to maintain relationships between allergens and reaction manifestations. The transformation process concludes with verification that clinical meaning is preserved and value concept alignment maintains semantic accuracy, ensuring decomposed representations accurately reflect original clinical intent while conforming to OMOP analytical requirements.
 
 The value-as-concept pattern supports analytical capabilities that extend beyond simple direct concept mapping approaches. This pattern demonstrates several strong points in a FHIR-to-OMOP data transformation. The decomposition step supports alignment with the OMOP CDM and detailed analytics by separating a composite clinical concept into analytically useful atomic components while preserving source semantics. Using the target observation concept (439224 - "Allergy to drug") in a analytics database enables population-level allergy surveillance, while splitting-out the value concept (1728416 - "Penicillin G") supports medication-specific contraindication checking. 
 
-### Example Mapping: Allergy to Benzylpenicillin
+#### Example Mapping: Allergy to Benzylpenicillin
 
 **Source FHIR AllergyIntolerance Resource**
 ```json

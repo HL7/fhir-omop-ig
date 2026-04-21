@@ -19,7 +19,7 @@ Context preservation becomes particularly important in CodeableConcept transform
 
 > **Note on `qualifier_source_value`:** The OMOP CDM defines `qualifier_source_value` to hold the verbatim source representation of a qualifier as it appeared in the originating system. It is not defined by CDM documentation or Themis convention as a general-purpose metadata or tag column. Individual implementations may choose to use this field for site-specific purposes, but this IG does not establish or prescribe that usage.
 
-#### Example: Mapping No Known Allergy CodeableConcept
+### Example: Mapping No Known Allergy CodeableConcept
 
 The transformation of negative assertion concepts demonstrates the importance of vocabulary-driven domain assignment in CodeableConcept processing. Consider an AllergyIntolerance resource that documents the absence of known allergies, representing a clinical concept that challenges traditional resource-to-domain mapping assumptions.
 
