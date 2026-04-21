@@ -131,7 +131,7 @@ Many healthcare organizations have developed predictive models (clinical risk sc
 
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b></b></figcaption>
+<figcaption><b>Real-Time Single-Patient FHIR to OMOP Conversion</b></figcaption>
 <img src="fhir_omop_realtime_dss_conceptual.jpg" style="padding-top:0;padding-bottom:30px" width="800" alt="Real-Time Single-Patient FHIR to OMOP Conversion"/>
 </figure>
 {::options parse_block_html="true" /}
