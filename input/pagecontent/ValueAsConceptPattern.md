@@ -20,7 +20,7 @@ Mapping Implementation Successful decomposition enables the system to apply the 
 ##### Step 4: OMOP Vocabulary Validation 
 The decomposed concepts undergo validation against OHDSI Standardized Vocabularies to confirm existence as Standard OMOP concepts. This validation ensures mapped concepts uphold OMOP conventions and integrate properly with analytics tools, verifying concept status, domain assignment, and relationship mappings.
 ##### Step 5: Domain Population and Gap Management 
-When concepts are successfully validated, the system populates the OMOP Observation domain using the value-as-concept pattern. If mapping to OMOP Standard concepts is not possible, the system documents missing concepts, preserves original source values, and creates mappings to concept_id=0, following OMOP best practices for unmapped data.
+When concepts are successfully validated, the system populates the OMOP Observation domain using the value-as-concept pattern. When a `Maps to` or `Maps to value` relationship is not available for the source concept (see *Handling vocabulary gaps* in Step 4), the corresponding `_concept_id` is set to `0`, the original source values are preserved, and the gap is reported to the OHDSI vocabulary team for future remediation.
 ##### Step 6: Optional Enhancement and Validation 
 For comprehensive data represntation, the system can create linked observations for allergic reactions using observation_event_id to maintain relationships between allergens and reaction manifestations. The transformation process concludes with verification that clinical meaning is preserved and value concept alignment maintains semantic accuracy, ensuring decomposed representations accurately reflect original clinical intent while conforming to OMOP analytical requirements.
 
@@ -73,44 +73,87 @@ The value-as-concept pattern supports analytical capabilities that extend beyond
 - **Decision**: Decomposition possible with standard OMOP concepts
 
 **3a: Apply Value as Concept**
-- **Observation Component**: "Allergy to drug" → OMOP concept lookup required
-- **Value Component**: "benzylpenicillin" → OMOP concept lookup required
-- **Pattern Applied**: Value-as-concept methodology
-- **Semantic Preservation**: Clinical meaning maintained through decomposition
+* **Observation Component**: "Allergy to drug", resolved via `concept_relationship.Maps to` from the source concept
+* **Value Component**: "benzylpenicillin", resolved via `concept_relationship.Maps to value` from the source concept
+* **Pattern Applied**: Value-as-concept methodology
+* **Semantic Preservation**: Clinical meaning maintained through decomposition
 
 **4: OMOP Vocabulary Lookup**
 
-*Observation Concept Query:*
+The observation and value concepts are derived deterministically from the source concept using the OMOP `concept_relationship` table. This is the authoritative method recommended by the OHDSI vocabulary team and produces reproducible results across implementations.
+
+*Step 4a: Resolve the source concept*
+
+Locate the source concept in the OMOP `concept` table using `concept_code` and `vocabulary_id`, taken directly from `code.coding[].code` and `code.coding[].system` on the FHIR resource.
+
 ```sql
-SELECT concept_id, concept_name, domain_id, vocabulary_id, standard_concept
-FROM concept
-WHERE concept_name LIKE '%Allergy to drug%'
-  AND vocabulary_id = 'SNOMED'
-  AND standard_concept = 'S';
+SELECT concept_id        AS source_concept_id,
+       concept_name,
+       vocabulary_id,
+       standard_concept,
+       invalid_reason
+FROM   concept
+WHERE  concept_code  = '294930007'
+  AND  vocabulary_id = 'SNOMED';
 ```
 
-*Query Results - Observation Concept:*
-- **concept_id**: 439224
-- **concept_name**: Allergy to drug
-- **domain_id**: Observation
-- **vocabulary_id**: SNOMED
-- **standard_concept**: S
+*Result:* `source_concept_id = 4222295` ("Allergy to benzylpenicillin", non-standard SNOMED concept). This value is used to populate `observation_source_concept_id`.
 
-*Value Concept Query:*
+*Step 4b: Derive `observation_concept_id` via the `Maps to` relationship*
+
 ```sql
-SELECT concept_id, concept_name, domain_id, vocabulary_id, standard_concept
-FROM concept
-WHERE concept_name LIKE '%Penicillin G%'
-  AND vocabulary_id IN ('RxNorm', 'SNOMED')
-  AND standard_concept = 'S';
+SELECT cr.concept_id_2 AS observation_concept_id,
+       c2.concept_name,
+       c2.domain_id,
+       c2.standard_concept
+FROM   concept_relationship cr
+JOIN   concept c2
+       ON c2.concept_id = cr.concept_id_2
+WHERE  cr.concept_id_1    = 4222295
+  AND  cr.relationship_id = 'Maps to'
+  AND  cr.invalid_reason IS NULL;
 ```
 
-*Query Results - Value Concept:*
-- **concept_id**: 1728416
-- **concept_name**: Penicillin G
-- **domain_id**: Drug
-- **vocabulary_id**: RxNorm
-- **standard_concept**: S
+*Result:* `observation_concept_id = 439224` ("Allergy to drug", Observation domain, standard concept).
+
+*Step 4c: Derive `value_as_concept_id` via the `Maps to value` relationship*
+
+```sql
+SELECT cr.concept_id_2 AS value_as_concept_id,
+       c2.concept_name,
+       c2.domain_id,
+       c2.standard_concept
+FROM   concept_relationship cr
+JOIN   concept c2
+       ON c2.concept_id = cr.concept_id_2
+WHERE  cr.concept_id_1    = 4222295
+  AND  cr.relationship_id = 'Maps to value'
+  AND  cr.invalid_reason IS NULL;
+```
+
+*Result:* `value_as_concept_id = 1728416` ("Penicillin G", Drug domain, standard concept).
+
+*Handling vocabulary gaps*
+
+If either the `Maps to` or the `Maps to value` lookup returns no row, the source concept has no validated standard mapping in the current OMOP vocabulary release. In that case:
+
+1. Populate the corresponding `_concept_id` field with `0` (the OMOP convention for an unmapped concept).
+2. Preserve the original code in `observation_source_value` and the display string in `value_source_value` so the record remains traceable to the source FHIR data.
+3. Report the gap to the OHDSI vocabulary team via the [OHDSI Forums](https://forums.ohdsi.org/) or the [Vocabulary-v5.0 issue tracker](https://github.com/OHDSI/Vocabulary-v5.0/issues) so that the mapping can be added in a future vocabulary release.
+
+> **Anti-pattern (do not use).** Earlier drafts of this guide suggested locating the observation and value concepts by name using `concept_name LIKE` queries, for example:
+>
+> ```sql
+> SELECT concept_id, concept_name, domain_id, vocabulary_id, standard_concept
+> FROM   concept
+> WHERE  concept_name LIKE '%Penicillin G%'
+>   AND  vocabulary_id IN ('RxNorm', 'SNOMED')
+>   AND  standard_concept = 'S';
+> ```
+>
+> This approach is fragile and non-deterministic. The OMOP vocabulary contains dozens of concepts whose names match "Penicillin G" (ingredients, clinical drugs, branded drugs, different strengths and dose forms, SNOMED substance entries), and selecting the correct row requires an undocumented clinical judgment call that will not produce the same result across implementations. Use the `concept_relationship` pattern shown above instead.
+
+---
 
 **5a: Populate Appropriate OMOP Domain**
 
@@ -157,14 +200,14 @@ INSERT INTO observation (
     <tr>
       <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
       <td style="border: 1px solid #d0d7de;">439224</td>
-      <td style="border: 1px solid #d0d7de;">Decomposed from SNOMED 294499007</td>
-      <td style="border: 1px solid #d0d7de;">Standard concept for "Allergy to drug"</td>
+      <td style="border: 1px solid #d0d7de;">`concept_relationship` traversal from source concept 4222295 </td>
+      <td style="border: 1px solid #d0d7de;">Derived via `relationship_id = 'Maps to'`; standard concept for "Allergy to drug"</td>
     </tr>
     <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;"><code>value_as_concept_id</code></td>
       <td style="border: 1px solid #d0d7de;">1728416</td>
-      <td style="border: 1px solid #d0d7de;">Decomposed from SNOMED 294499007</td>
-      <td style="border: 1px solid #d0d7de;">Standard concept for "Penicillin G"</td>
+      <td style="border: 1px solid #d0d7de;">`concept_relationship` traversal from source concept 4222295</td>
+      <td style="border: 1px solid #d0d7de;">Derived via `relationship_id = 'Maps to value'`; standard concept for "Penicillin G"</td>
     </tr>
     <tr>
       <td style="border: 1px solid #d0d7de;"><code>observation_source_value</code></td>
