@@ -2,7 +2,7 @@
 <specification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ballotUrl="http://hl7.org/fhir/uv/omop/2025Sep" ciUrl="https://build.fhir.org/ig/HL7/fhir-omop-ig" defaultVersion="1.0.0" defaultWorkgroup="brr" gitUrl="https://github.com/HL7/fhir-omop" url="http://hl7.org/fhir/uv/omop">
 <version code="current" url="https://build.fhir.org/ig/HL7/fhir-omop-ig"/>
 <version code="1.0.0" url="http://hl7.org/fhir/uv/omop/INFORMATIVE1"/>
-<version code="1.0.0-ballot" url="http://hl7.org/fhir/uv/omop/2025Sep"/>
+<version code="1.0.0-ballot" deprecated="true" url="http://hl7.org/fhir/uv/omop/2025Sep"/>
 <artifactPageExtension value="-definitions"/>
 <artifactPageExtension value="-examples"/>
 <artifactPageExtension value="-mappings"/>
@@ -60,6 +60,7 @@
 <page key="many" name="(many)"/>
 <page key="credits" name="Acknowledgements"/>
 <page key="artifacts" name="Artifacts Summary"/>
+<page key="changes" name="Change Log"/>
 <page key="CodeableConceptPattern" name="CodeableConcept Mapping Patterns"/>
 <page key="codemappings" name="Coded Field Mapping Principles"/>
 <page key="F2OGeneralIssues" name="Common Challenges When Transforming FHIR to OMOP"/>

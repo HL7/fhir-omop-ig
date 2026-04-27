@@ -51,3 +51,6 @@ Group diastolicTable parameter comp has no type, so the paths cannot be validate
 # 12 - The elements are just slices of the root element so this is okay
 The target path src.component refers to the path Observation.component which could be a reference to multiple elements (Observation.component, Observation.component:SystolicBP, Observation.component:DiastolicBP). No further checking can be performed
 The target path s.coding refers to the path Observation.code.coding which could be a reference to multiple elements (Observation.code.coding, Observation.code.coding:BPCode). No further checking can be performed
+
+# 13 - Info messages about conformance terms in our change log
+No conformance term found in the text%
