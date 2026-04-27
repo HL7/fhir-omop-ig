@@ -21,15 +21,15 @@ This IG is an application of that harmonization principle to the specific FHIR-t
 
 ### FHIR and OMOP: Different Purposes, Different Designs
 
-FHIR and OMOP were designed to serve fundamentally different use cases, and understanding those differences is essential to understanding what this IG can and cannot do. Tsafnat and colleagues [6] describe three distinct domains of health care data, each with its own design requirements:
+FHIR and OMOP were designed to serve fundamentally different use cases, and understanding those differences is essential to understanding what this IG can and cannot do. Tsafnat and colleagues [1] describe three distinct domains of health care data, each with its own design requirements:
 
 - **Clinical care and administration** — the documentation of care delivery for continuity of care and billing, requiring broad coverage of data types including unforeseen events, with vendor-neutral portability as a primary concern.
 - **Data exchange** — the transmission of health care information between systems, often in real time, with high fidelity to the operational processes and local terminology of the originating system.
 - **Longitudinal analysis** — the retrospective interrogation of aggregated patient data for patterns, trends, and population-level inferences, requiring standardized vocabularies and generalizations across sites.
 
-FHIR is positioned squarely in the *data exchange* domain. Its RESTful API, resource-oriented structure, and support for rich local terminology reflect a design optimized for moving the right information between the right systems at the right time. FHIR resources are deliberately flexible, permitting variations in how the same clinical reality is expressed — for example, a medication record may appear as a `MedicationRequest`, `MedicationAdministration`, `MedicationStatement`, or `MedicationDispense` depending on the workflow that produced it — and FHIR does not aim to normalize these variations into a single canonical form [6].
+FHIR is positioned squarely in the *data exchange* domain. Its RESTful API, resource-oriented structure, and support for rich local terminology reflect a design optimized for moving the right information between the right systems at the right time. FHIR resources are deliberately flexible, permitting variations in how the same clinical reality is expressed — for example, a medication record may appear as a `MedicationRequest`, `MedicationAdministration`, `MedicationStatement`, or `MedicationDispense` depending on the workflow that produced it — and FHIR does not aim to normalize these variations into a single canonical form [1].
 
-OMOP is positioned squarely in the *longitudinal analysis* domain. Its relational, patient-centric design and the OHDSI Standardized Vocabularies that accompany it are optimized for large-scale aggregation across heterogeneous data sources, where comparability and reproducibility across sites take precedence over fidelity to any individual source system. OMOP deliberately normalizes local terminology into a small set of Standard concepts within each domain; it uses generalizations (for example, stratifying ages into brackets) that would be inappropriate in an operational exchange context but that are appropriate — and often necessary — for population analytics [6].
+OMOP is positioned squarely in the *longitudinal analysis* domain. Its relational, patient-centric design and the OHDSI Standardized Vocabularies that accompany it are optimized for large-scale aggregation across heterogeneous data sources, where comparability and reproducibility across sites take precedence over fidelity to any individual source system. OMOP deliberately normalizes local terminology into a small set of Standard concepts within each domain; it uses generalizations (for example, stratifying ages into brackets) that would be inappropriate in an operational exchange context but that are appropriate — and often necessary — for population analytics [1].
 
 Neither design is deficient. Each standard is well-suited to the domain for which it was built. But the designs are not symmetric, and transformations between them cannot be.
 
@@ -48,7 +48,7 @@ These four loss types explain, concretely, why this IG does not — and cannot �
 
 This IG is limited to a common core of EHR data as expressed in the International Patient Access (IPA) IG profile(s). Beyond these core EHR elements, the project team identified a community need to include Encounter and Procedure information to achieve the goal of creating a foundational resource supporting observational research. The IG therefore incorporates the Encounter and Procedures profiles from the US Core FHIR IG (STU7 Sequence) within its scope.
 
-The IG targets OMOP Common Data Model v5.4. At the time this document was developed, v5.4 was the latest version of the OMOP CDM. In 2022, the OHDSI community ceased development of v6.0 because v6.0 made the `*_datetime` fields mandatory rather than optional, radically changing the assumptions related to exposure and outcome timing. Rather than proceeding with v6.0, CDM v5.4 was designed and released with additions requested by the OHDSI community while retaining the date structure of medical events from v5.3. Detailed changes from CDM v5.3 to v5.4 are available in the OMOP CDM GitHub documentation. New implementations are asked to transform data to CDM v5.4 until the next series of CDM versions is ready for mainstream use [8]. Further detail on the OMOP CDM itself is provided on the [OMOP CDM](the-omop-cdm.html) page of this guide.
+The IG targets OMOP Common Data Model v5.4. At the time this document was developed, v5.4 was the latest version of the OMOP CDM. In 2022, the OHDSI community ceased development of v6.0 because v6.0 made the `*_datetime` fields mandatory rather than optional, radically changing the assumptions related to exposure and outcome timing. Rather than proceeding with v6.0, CDM v5.4 was designed and released with additions requested by the OHDSI community while retaining the date structure of medical events from v5.3. Detailed changes from CDM v5.3 to v5.4 are available in the OMOP CDM GitHub documentation. New implementations are asked to transform data to CDM v5.4 until the next series of CDM versions is ready for mainstream use [2]. Further detail on the OMOP CDM itself is provided on the [OMOP CDM](the-omop-cdm.html) page of this guide.
 
 The IG is deliberately *not* scoped to:
 
@@ -57,8 +57,10 @@ The IG is deliberately *not* scoped to:
 - Remediation of content-level issues in the OHDSI Standardized Vocabularies, which are addressed through the OHDSI Vocabulary Working Group's community contribution process; or
 - Replacement of any component of either parent standard.
 
+#### FHIR Versions
 
+Although this implementation guide has been developed and tested against FHIR R5, implementers should not consider this a barrier to adoption with other FHIR versions. The core concepts, profiles, and conformance expectations expressed in this guide are intended to be version-agnostic in nature, and there is nothing within this guide that explicitly precludes implementation against FHIR R4 or future versions such as the forthcoming FHIR R6. Implementers wishing to adopt this guide against a different FHIR version are encouraged to review the [HL7 FHIR Cross-Version Mapping Pack](https://build.fhir.org/ig/HL7/fhir-cross-version/index.html) which provides detailed mappings and guidance for navigating differences between FHIR releases.
 
-[7] Health Level Seven, "Vulcan accelerator home." https://confluence.hl7.org/display/VA (accessed Dec. 08, 2023).
+[1] Health Level Seven, "Vulcan accelerator home." https://confluence.hl7.org/display/VA (accessed Dec. 08, 2023).
 
-[8] "OMOP Common Data Model." https://ohdsi.github.io/CommonDataModel/index.html (accessed Dec. 08, 2023).
+[2] "OMOP Common Data Model." https://ohdsi.github.io/CommonDataModel/index.html (accessed Dec. 08, 2023).

@@ -22,7 +22,7 @@ extension:
   - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
     valueCode: informative
   - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm
-    valueInteger: 1
+    valueInteger: 2
   - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-wg
     valueCode: brr
 parameters:
@@ -54,6 +54,8 @@ pages:
     title: Technical Artifacts 
   TerminologyServer.md:
     title: Terminology Server API Utilization
+  changes.md:
+    title: Change Log
   credits.md:
     title: Acknowledgements
 
@@ -78,6 +80,7 @@ menu:
     Project Page: https://confluence.hl7.org/spaces/VA/pages/325451879/FHIR+to+OMOP+2025
     Specification Dashboard: https://jira.hl7.org/secure/Dashboard.jspa?selectPageId=17809
     Propose a Change: https://jira.hl7.org/secure/CreateIssueDetails!init.jspa?pid=10405&amp;issuetype=10600&amp;customfield_11302=FHIR-omop
+  Change Log: changes.html
   Acknowledgements: credits.html
 
 #

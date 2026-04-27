@@ -66,6 +66,7 @@
 <page key="CodeMappingBasePattern" name="FHIR to OMOP Code Mapping Patterns"/>
 <page key="index" name="Introduction"/>
 <page key="the-omop-cdm" name="OMOP CDM"/>
+<page key="RaceAndEthnicity" name="Populating Race and Ethnicity"/>
 <page key="toc" name="Table of Contents"/>
 <page key="technical_artifacts" name="Technical Artifacts"/>
 <page key="TerminologyServer" name="Terminology Server API Utilization"/>
