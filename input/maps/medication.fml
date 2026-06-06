@@ -17,14 +17,14 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
           };
         };
         // multiple possible values with different systems?
-        src.medication : CodeableReference as s -> tgt then {
-            s.concept as scs -> tgt then {
-                scs.coding as sc where system = 'http://www.nlm.nih.gov/research/umls/rxnorm' 
-                    -> tgt.drug_concept_id = translate(sc, '', 'code');
-                scs.coding.where(system = 'http://www.nlm.nih.gov/research/umls/rxnorm').first().code as c
-                    -> tgt.drug_source_value = c;
-            };
-        };
+        //src.medication : CodeableReference as s -> tgt then {
+        //    s.concept as scs -> tgt then {
+        //        scs.coding as sc where system = 'http://www.nlm.nih.gov/research/umls/rxnorm' 
+        //            -> tgt.drug_concept_id = translate(sc, '', 'code');
+        //        scs.coding.where(system = 'http://www.nlm.nih.gov/research/umls/rxnorm').first().code as c
+        //            -> tgt.drug_source_value = c;
+        //    };
+        //};
 
         src.effective : dateTime as edt -> tgt.drug_exposure_start_datetime = edt, tgt.drug_exposure_start_date = cast(edt, "date");
         src.effective : Period as s -> tgt then {

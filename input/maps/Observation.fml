@@ -7,16 +7,16 @@
 uses "http://hl7.org/fhir/StructureDefinition/Observation" alias Observation as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTable as target
 
-group translateUnit(source vq: Quantity, target tgt: MeasurementTable) {
-    vq.code as c -> tgt.unit_concept_id = translate(
-        create('Coding') as coding then {
-            vq -> coding.system = 'http://unitsofmeasure.org';
-            vq -> coding.code = c;
-        },
-        '',
-        'code'
-    );
-}
+//group translateUnit(source vq: Quantity, target tgt: MeasurementTable) {
+//    vq.code as c -> tgt.unit_concept_id = translate(
+//        create('Coding') as coding then {
+//            vq -> coding.system = 'http://unitsofmeasure.org';
+//            vq -> coding.code = c;
+//        },
+//        '',
+//        'code'
+//    );
+//}
 
 group Observe(source src : Observation, target tgt : ObsTable) 
 {
