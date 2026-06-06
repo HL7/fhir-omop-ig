@@ -27,8 +27,8 @@ group Person(source src: Patient, target tgt : PersonTable) {
 		tgt.day_of_birth = (src.birthDate.toString().substring(8,2));
 
     // no, these require US Core, though the concpets are required
-    //-> tgt.race_concept_id # TODO
-    //-> tgt.ethnicity_concept_id # TODO
+    //-> tgt.race_concept_id // TODO
+    //-> tgt.ethnicity_concept_id // TODO
 
 
     // Foreign Keys
