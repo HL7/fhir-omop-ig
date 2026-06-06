@@ -13,7 +13,9 @@ group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)  
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
-                sc.code as a -> tgt.procedure_concept_id, tgt.procedure_source_value, tgt.procedure_source_concept_id = a;
+                sc a -> tgt.procedure_concept_id = translate(sc, '', 'code');
+                sc.code as a -> tgt.procedure_source_value = a;
+                sc -> tgt.procedure_source_concept_id = translate(sc, '', 'code');
             };
         };
 

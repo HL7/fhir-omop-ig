@@ -17,7 +17,8 @@ group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
 	
 	src.class as s -> tgt then {
 		s.coding as sc -> tgt then {
-			sc.code as a -> tgt.visit_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterClass', 'code'), tgt.visit_source_value = a;
+			#sc.code as a -> tgt.visit_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterClass', 'code'), tgt.visit_source_value = a;
+			sc.code as a -> tgt.visit_concept_id = translate(a, '', 'code'), tgt.visit_source_value = a;
 		};
 	};
 	
