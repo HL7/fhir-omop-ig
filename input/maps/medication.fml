@@ -13,11 +13,19 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
         
         src.medication : CodeableReference as s -> tgt then {
           s.concept as scs -> tgt then {
-            scs.coding as sc -> tgt then {
-                sc.code as a -> tgt.drug_concept_id  = a;
-            };
+            scs.coding as sc -> tgt.drug_concet_id = translate(sc, '', 'code');
           };
         };
+        // multiple possible values with different systems?
+        //src.medication : CodeableReference as s -> tgt then {
+        //    s.concept as scs -> tgt then {
+        //        scs.coding as sc where system = 'http://www.nlm.nih.gov/research/umls/rxnorm' 
+        //            -> tgt.drug_concept_id = translate(sc, '', 'code');
+        //        scs.coding.where(system = 'http://www.nlm.nih.gov/research/umls/rxnorm').first().code as c
+        //            -> tgt.drug_source_value = c;
+        //    };
+        //};
+
         src.effective : dateTime as edt -> tgt.drug_exposure_start_datetime = edt, tgt.drug_exposure_start_date = cast(edt, "date");
         src.effective : Period as s -> tgt then {
             s.start as fps -> tgt.drug_exposure_start_datetime = fps, tgt.drug_exposure_start_date = cast(fps, "date");
@@ -34,10 +42,11 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
             };
         };
         src.reason : CodeableReference as s -> tgt then {
-          s.concept as scs -> tgt then {
-            scs.coding as sc -> tgt then {
-                sc.code as a -> tgt.stop_reason = a;
+            s.concept as scs -> tgt then {
+                scs.coding as sc -> tgt then {
+                    sc.code as a -> tgt.stop_reason = a;
+                };
             };
         };
-    };
 };
+

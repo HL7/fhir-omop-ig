@@ -7,13 +7,24 @@
 uses "http://hl7.org/fhir/StructureDefinition/Observation" alias Observation as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
+//group translateUnit(source vq: Quantity, target tgt: MeasurementTable) {
+//    vq.code as c -> tgt.unit_concept_id = translate(
+//        create('Coding') as coding then {
+//            vq -> coding.system = 'http://unitsofmeasure.org';
+//            vq -> coding.code = c;
+//        },
+//        '',
+//        'code'
+//    );
+//}
+
 group Measures(source src : Observation, target tgt : MeasureTable) {
     src where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) then { 
         src.id as id -> tgt.measurement_id = 1;
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
-                sc.code as a -> tgt.measurement_concept_id = a;
+                sc.code as a -> tgt.measurement_concept_id = translate(a, '', 'code');
             };
         } "MeasurementConcept";
 
@@ -33,7 +44,10 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
         src.value : Quantity as s -> tgt then {
             s.value as a -> tgt.value_as_number = a;
             s.unit as b -> tgt.unit_concept_id = b;
+            //s -> tgt then translateUnit(s, tgt);
+            s.code as c -> tgt.unit_source_value = c;
         } "QuantityValue";
+
         src.value : CodeableConcept as s  -> tgt then {
             s.coding as sc -> tgt then {
                 sc.code as a -> tgt.value_as_concept_id = a;

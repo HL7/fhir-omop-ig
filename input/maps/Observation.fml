@@ -7,14 +7,26 @@
 uses "http://hl7.org/fhir/StructureDefinition/Observation" alias Observation as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTable as target
 
- group Observe(source src : Observation, target tgt : ObsTable) 
- {
+//group translateUnit(source vq: Quantity, target tgt: MeasurementTable) {
+//    vq.code as c -> tgt.unit_concept_id = translate(
+//        create('Coding') as coding then {
+//            vq -> coding.system = 'http://unitsofmeasure.org';
+//            vq -> coding.code = c;
+//        },
+//        '',
+//        'code'
+//    );
+//}
+
+group Observe(source src : Observation, target tgt : ObsTable) 
+{
     src where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure' ).supersetOf(Observation.category.coding.code)  then {
         src.id -> tgt.observation_id = 1;
 
         src.code as s -> tgt then {
+            // s.coding.first() as sc -> tgt then {
             s.coding as sc -> tgt then {
-                sc.code as a -> tgt.observation_concept_id = a;
+                sc.code as a -> tgt.observation_concept_id = translate(a, '', 'code');
             };
         };
 
@@ -32,11 +44,11 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
 
         src.value : Quantity as s -> tgt then {
             s.value as a  -> tgt.value_as_number = a;
-            s.unit as b -> tgt.unit_concept_id = b;
+            s.unit as b -> tgt.unit_concept_id = b; // TODO,  translate from UCUM, but often with string massaging?:
         };
         src.value : CodeableConcept as s  -> tgt then {
             s.coding as sc -> tgt then {
-                sc.code as a -> tgt.value_as_concept_id = a;
+                sc.code as a -> tgt.value_as_concept_id =  translate(b, '', 'code');
             };
         };
         src.value : string as b -> tgt.value_as_string = b;

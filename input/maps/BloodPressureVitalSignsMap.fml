@@ -27,7 +27,7 @@ group bpMap(source src : BloodPressure, target bundle : Bundle) {
 }
 
 group systolicTable(source comp, target sysTable: Measurement) {
-    comp.code -> sysTable.measurement_concept_id = 3004249;
+    comp.code -> sysTable.measurement_concept_id = 3004249; // TOOD map from code and codeSystem
     comp.value: quantity as qty -> sysTable then {
         qty.value -> sysTable.value_as_number;
         qty.unit -> sysTable.unit_concept_id;
@@ -35,7 +35,7 @@ group systolicTable(source comp, target sysTable: Measurement) {
 }
      
 group diastolicTable(source comp, target diasTable : Measurement) {
-    comp.code -> diasTable.measurement_concept_id = 3012888;
+    comp.code -> diasTable.measurement_concept_id = 3012888; // TOOD map from code and codeSystem
     comp.value: quantity as qty -> diasTable then {
         qty.value -> diasTable.value_as_number;
         qty.unit -> diasTable.unit_concept_id;

@@ -16,8 +16,35 @@ group Person(source src: Patient, target tgt : PersonTable) {
 	src.gender as gender -> tgt.gender_concept_id = translate(gender, 'http://hl7.org/fhir/uv/omop/ConceptMap/GenderClass', 'code'), tgt.gender_source_value = gender;
 	src where(src.gender.empty()) -> tgt.gender_concept_id = 0, tgt.gender_source_value = "unknown" "nogender";
 
+
+    // ->tgt.year_of_birth (TODO)
+    // ->tgt.month_of_birth (optional)
+    // ->tgt.day_of_birth (optional)
+
 	src.birthDate as bdSrc -> tgt.birth_datetime = bdSrc, 
 		tgt.year_of_birth = (src.birthDate.toString().substring(0,4)), 
 		tgt.month_of_birth = (src.birthDate.toString().substring(5,2)), 
 		tgt.day_of_birth = (src.birthDate.toString().substring(8,2));
+
+    // no, these require US Core, though the concpets are required
+    //-> tgt.race_concept_id // TODO
+    //-> tgt.ethnicity_concept_id // TODO
+
+
+    // Foreign Keys
+    //-> tgt.location_id // (optional)
+    //-> tgt.provider_id // (optional)
+    //-> tgt.care_site_id // (optional)
+
+    //-> tgt.person_source_value // (optional)
+
+    //-> tgt.gender_source_value // (optional)
+    //-> tgt.gender_source_concept_id // (optional)
+
+
+    // no, these also require US Core, though the concpets are required. TODO
+    //-> tgt.race_source_value
+    //-> tgt.race_source_concept_id
+    //-> tgt.ethnicity_source_value
+    //-> tgt.ethnicity_source_concept_id
 }
