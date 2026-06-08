@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# simple call to publisher.jar
+
 publisher_jar=publisher.jar
 input_cache_path=./input-cache/
 echo Checking internet connection...
