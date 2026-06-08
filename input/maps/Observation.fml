@@ -43,12 +43,13 @@ group Observe(source src : Observation, target tgt : ObsTable)
         src.category -> tgt.observation_type_concept_id = 32817;
 
         src.value : Quantity as s -> tgt then {
-            s.value as a  -> tgt.value_as_number = a;
-            s.unit as b -> tgt.unit_concept_id = b; // TODO,  translate from UCUM, but often with string massaging?:
+            s.value as a -> tgt.value_as_number = a;
+            // unit_concept_id requires UCUM→OMOP translation (TODO); writing the string directly causes INT32 error
+            s.unit as b -> tgt.unit_source_value = b;
         };
         src.value : CodeableConcept as s  -> tgt then {
             s.coding as sc -> tgt then {
-                sc.code as a -> tgt.value_as_concept_id =  translate(b, '', 'code');
+                sc.code as a -> tgt.value_as_concept_id = translate(a, '', 'code');
             };
         };
         src.value : string as b -> tgt.value_as_string = b;

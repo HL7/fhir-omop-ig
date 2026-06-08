@@ -22,11 +22,14 @@ group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)  
             //};
         };
 
-        src.occurrence : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = edt;
-        src.occurrence : Period as s -> tgt then {
+        // R4: performed[x] (renamed to occurrence[x] in R5 — R5 form commented out below)
+        src.performed : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = edt;
+        src.performed : Period as s -> tgt then {
             s.start as start -> tgt.procedure_datetime = cast(start, "dateTime"), tgt.procedure_date = start;
-			s.end as end -> tgt.procedure_end_datetime, tgt.procedure_end_date = end;
+            s.end as end -> tgt.procedure_end_datetime = cast(end, "dateTime"), tgt.procedure_end_date = end;
         };
+        // R5: src.occurrence : dateTime as edt -> ...
+        // R5: src.occurrence : Period as s -> ...
 
         src.encounter -> tgt.visit_occurrence_id = 1;
 }
