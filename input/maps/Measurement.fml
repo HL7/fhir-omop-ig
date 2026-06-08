@@ -43,8 +43,8 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
         
         src.value : Quantity as s -> tgt then {
             s.value as a -> tgt.value_as_number = a;
-            s.unit as b -> tgt.unit_concept_id = b;
-            //s -> tgt then translateUnit(s, tgt);
+            // unit_concept_id requires UCUM→OMOP translation (TODO); writing the string directly causes INT32 error
+            s.unit as b -> tgt.unit_source_value = b;
             s.code as c -> tgt.unit_source_value = c;
         } "QuantityValue";
 
