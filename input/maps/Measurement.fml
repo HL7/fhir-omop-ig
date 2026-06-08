@@ -24,7 +24,7 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
-                sc.code as a -> tgt.measurement_concept_id = translate(a, '', sc);
+                sc.code as a -> tgt.measurement_concept_id = translate(a, '', 'code');
             };
         } "MeasurementConcept";
 
