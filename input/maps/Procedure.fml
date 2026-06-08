@@ -8,7 +8,8 @@ uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target
 
 group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)     {
-        src.id -> tgt.procedure_occurrence_id = 1;
+        // procedure_type_concept_id 32817 = EHR (NOT NULL in OMOP CDM 5.4)
+        src.id -> tgt.procedure_occurrence_id = 1, tgt.procedure_type_concept_id = 32817;
         src.subject -> tgt.person_id = 1;
 
         src.code as s -> tgt then {
