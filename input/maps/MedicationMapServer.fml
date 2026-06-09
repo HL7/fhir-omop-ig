@@ -14,14 +14,12 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
             s.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
         } "subject-person-id";
 
-        src.medication : CodeableReference as s -> tgt then {
-          s.concept as scs -> tgt then {
+        src.medication : CodeableConcept as scs -> tgt then {
             scs.coding as sc -> tgt.drug_concept_id = translate(sc, '', 'code');
             scs.coding as sc -> tgt then {
-              sc.code as code -> tgt.drug_source_value = code;
+                sc.code as code -> tgt.drug_source_value = code;
             };
-          };
-        };
+        } "med-concept";
 
         src.effective : dateTime as edt -> tgt.drug_exposure_start_datetime = edt, tgt.drug_exposure_start_date = cast(edt, "date");
         src.effective : Period as s -> tgt then {
@@ -38,11 +36,9 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
                 sc.code as a -> tgt.drug_type_concept_id = a;
             };
         };
-        src.reason : CodeableReference as s -> tgt then {
-            s.concept as scs -> tgt then {
-                scs.coding as sc -> tgt then {
-                    sc.code as a -> tgt.stop_reason = a;
-                };
+        src.reasonCode : CodeableConcept as scs -> tgt then {
+            scs.coding as sc -> tgt then {
+                sc.code as a -> tgt.stop_reason = a;
             };
         };
 }

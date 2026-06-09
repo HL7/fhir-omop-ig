@@ -33,12 +33,14 @@
 <artifact id="ConceptMap/ImmunizationVaccine" key="ConceptMap-ImmunizationVaccine" name="Immunization vaccine codes to OMOP"/>
 <artifact id="StructureDefinition/Location" key="StructureDefinition-Location" name="Location OMOP Table"/>
 <artifact id="StructureMap/AllergyMap" key="StructureMap-AllergyMap" name="Mapping Allergy resource to Observation OMOP Domain"/>
+<artifact id="StructureMap/AllergyMapServer" key="StructureMap-AllergyMapServer" name="Mapping Allergy resource to Observation OMOP Domain (Echidna server path)"/>
 <artifact id="StructureMap/BloodPressureVitalSignsMap" key="StructureMap-BloodPressureVitalSignsMap" name="Mapping Blood Pressure Vital Signs resource to Measurement OMOP Domain"/>
 <artifact id="StructureMap/ConditionMap" key="StructureMap-ConditionMap" name="Mapping Condition resource to Condition Occurrence OMOP Domain"/>
 <artifact id="StructureMap/EncounterVisitMap" key="StructureMap-EncounterVisitMap" name="Mapping Encounter resource to VisitOccurrence OMOP Domain"/>
 <artifact id="StructureMap/EncounterVisitMapServer" key="StructureMap-EncounterVisitMapServer" name="Mapping Encounter resource to VisitOccurrence OMOP Domain (Echidna server path)"/>
 <artifact id="StructureMap/ImmunizationMap" key="StructureMap-ImmunizationMap" name="Mapping Immunization resource to Drug Exposure OMOP Domain"/>
 <artifact id="StructureMap/MedicationMap" key="StructureMap-MedicationMap" name="Mapping MedicationStatement resource to DrugExposure OMOP Domain"/>
+<artifact id="StructureMap/MedicationMapServer" key="StructureMap-MedicationMapServer" name="Mapping MedicationStatement resource to DrugExposure OMOP Domain (Echidna server path)"/>
 <artifact id="StructureMap/MeasurementMap" key="StructureMap-MeasurementMap" name="Mapping Observation resource to Measurement OMOP Domain"/>
 <artifact id="StructureMap/ObservationMap" key="StructureMap-ObservationMap" name="Mapping Observation resource to Observation OMOP Domain"/>
 <artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
