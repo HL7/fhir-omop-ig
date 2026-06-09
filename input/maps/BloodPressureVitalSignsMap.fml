@@ -6,7 +6,7 @@
 
 uses "http://hl7.org/fhir/StructureDefinition/bp" alias BloodPressure as source
 uses "http://hl7.org/fhir/StructureDefinition/Bundle" as target
-uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias Measurement as target
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
 //make the bundle
 group bpMap(source src : BloodPressure, target bundle : Bundle) {
@@ -15,42 +15,45 @@ group bpMap(source src : BloodPressure, target bundle : Bundle) {
 
     src as parent -> bundle.entry as entry then {
         parent -> entry.fullUrl = "BloodPressure" "entryURL";
-        parent -> entry.resource = create("Measurement") as parentTable then parentTable(parent, parentTable) "bpEntryResource";
+        parent -> entry.resource = create("MeasureTable") as parentTable then parentTable(parent, parentTable) "bpEntryResource";
     } "bpBundleEntry";
 
     src.component as comp -> bundle.entry as entry then {
         comp -> entry.fullUrl = "Component 1" "entryURL";
-        comp where (comp.code.coding.code = '8480-6') -> entry.resource = create("Measurement") as sysTable then systolicTable(comp, sysTable) "systolicEntryResource";
-        comp where (comp.code.coding.code = '8462-4') -> entry.resource = create("Measurement") as diasTable then diastolicTable(comp, diasTable) "diastolicEntryResource";
+        comp where (comp.code.coding.code = '8480-6') -> entry.resource = create("MeasureTable") as sysTable then systolicTable(comp, sysTable) "systolicEntryResource";
+        comp where (comp.code.coding.code = '8462-4') -> entry.resource = create("MeasureTable") as diasTable then diastolicTable(comp, diasTable) "diastolicEntryResource";
 
     } "bpComponentEntries";
 }
 
-group systolicTable(source comp, target sysTable: Measurement) {
-    comp.code -> sysTable.measurement_concept_id = 3004249; // TOOD map from code and codeSystem
+// fhir-omop-ig#9: unit string to unit_source_value; measurement_id assigned by ETL pipeline
+group systolicTable(source comp, target sysTable: MeasureTable) {
+    comp.code -> sysTable.measurement_concept_id = 3004249;
     comp.value: quantity as qty -> sysTable then {
         qty.value -> sysTable.value_as_number;
-        qty.unit -> sysTable.unit_concept_id;
+        qty.unit -> sysTable.unit_source_value;
     } "systolicMeasure";
 }
-     
-group diastolicTable(source comp, target diasTable : Measurement) {
-    comp.code -> diasTable.measurement_concept_id = 3012888; // TOOD map from code and codeSystem
+
+// fhir-omop-ig#9: unit string to unit_source_value; measurement_id assigned by ETL pipeline
+group diastolicTable(source comp, target diasTable : MeasureTable) {
+    comp.code -> diasTable.measurement_concept_id = 3012888;
     comp.value: quantity as qty -> diasTable then {
         qty.value -> diasTable.value_as_number;
-        qty.unit -> diasTable.unit_concept_id;
+        qty.unit -> diasTable.unit_source_value;
     } "diastolicMeasure";
 };
 
-group parentTable(source src: BloodPressure, target tgt: Measurement) {
-    src.code as s -> tgt then {
-        s.coding as sc -> tgt then {
-            sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
-        };
-    };
+// fhir-omop-ig#9: measurement_type_concept_id hardcoded 32817 (EHR) —
+// BloodPressureCodes ConceptMap does not exist in the IG; translate() raised 500.
+// measurement_id=1 set here because parentTable is a direct group target (not create()-d nested).
+group parentTable(source src: BloodPressure, target tgt: MeasureTable) {
+    // measurement_id cannot be set on create()-d nested Bundle resources in HAPI-FHIR FML;
+    // assigned by the ETL pipeline (transform_blood_pressure in transforms.py)
+    src.id -> tgt.measurement_type_concept_id = 32817 "parent-type-concept";
     src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
     src.effective : Period as s -> tgt then {
         s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = cast(eps, "date");
-    };                        
+    };
     src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
 };
