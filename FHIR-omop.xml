@@ -34,7 +34,9 @@
 <artifact id="StructureDefinition/Location" key="StructureDefinition-Location" name="Location OMOP Table"/>
 <artifact id="StructureMap/AllergyMap" key="StructureMap-AllergyMap" name="Mapping Allergy resource to Observation OMOP Domain"/>
 <artifact id="StructureMap/AllergyMapServer" key="StructureMap-AllergyMapServer" name="Mapping Allergy resource to Observation OMOP Domain (Echidna server path)"/>
-<artifact id="StructureMap/BloodPressureVitalSignsMap" key="StructureMap-BloodPressureVitalSignsMap" name="Mapping Blood Pressure Vital Signs resource to Measurement OMOP Domain"/>
+<artifact id="StructureMap/BloodPressureDiastolicMap" key="StructureMap-BloodPressureDiastolicMap" name="Mapping Blood Pressure Diastolic component to OMOP Measurement"/>
+<artifact id="StructureMap/BloodPressureSystolicMap" key="StructureMap-BloodPressureSystolicMap" name="Mapping Blood Pressure Systolic component to OMOP Measurement"/>
+<artifact id="StructureMap/BloodPressureVitalSignsMap" key="StructureMap-BloodPressureVitalSignsMap" name="Mapping Blood Pressure panel Observation to OMOP Measurement"/>
 <artifact id="StructureMap/ConditionMap" key="StructureMap-ConditionMap" name="Mapping Condition resource to Condition Occurrence OMOP Domain"/>
 <artifact id="StructureMap/EncounterVisitMap" key="StructureMap-EncounterVisitMap" name="Mapping Encounter resource to VisitOccurrence OMOP Domain"/>
 <artifact id="StructureMap/EncounterVisitMapServer" key="StructureMap-EncounterVisitMapServer" name="Mapping Encounter resource to VisitOccurrence OMOP Domain (Echidna server path)"/>
