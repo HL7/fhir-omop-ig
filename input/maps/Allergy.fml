@@ -20,11 +20,11 @@ group Observation(source src: Allergy, target tgt : ObservationTable) {
     } "encounter-visit-id";
 
     src.code as s -> tgt then {
-        s.coding as sc -> tgt.observation_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergyType', 'code') "obs-concept-id";
         s.coding as sc -> tgt then {
-            sc.code as code -> tgt.value_as_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergySubstanceType', 'code'), tgt.value_source_value = code;
+            sc.code as code -> tgt.observation_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergyType', 'code') "obs-concept-id";
+            sc.code as code -> tgt.value_as_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergySubstanceType', 'code'), tgt.value_source_value = code;
         };
-    };
+    } "obs-code";
 
     src.recordedDate : dateTime as osd -> tgt.observation_date = (src.recordedDate.toString().substring(0,10)), tgt.observation_datetime = osd;
 }

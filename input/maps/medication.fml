@@ -16,12 +16,12 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
 
         src.medication : CodeableReference as s -> tgt then {
           s.concept as scs -> tgt then {
-            scs.coding as sc -> tgt.drug_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/DrugConcepts', 'code');
             scs.coding as sc -> tgt then {
+              sc.code as code -> tgt.drug_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/DrugConcepts', 'code');
               sc.code as code -> tgt.drug_source_value = code;
             };
           };
-        };
+        } "med-concept";
         // multiple possible values with different systems?
         //src.medication : CodeableReference as s -> tgt then {
         //    s.concept as scs -> tgt then {
