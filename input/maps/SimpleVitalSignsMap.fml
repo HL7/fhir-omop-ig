@@ -8,7 +8,10 @@ uses "http://hl7.org/fhir/StructureDefinition/vitalsigns" alias VitalSigns as so
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
 group Measures(source src : VitalSigns, target tgt : MeasureTable) {
-    src.id -> tgt.measurement_id = 1;
+    src.id as id -> tgt.measurement_id = translate(id, 'http://omop/id-registry/Measurement', 'code') "measurement-id";
+    src.subject as s -> tgt then {
+        s.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+    } "subject-person-id";
     src where ('vital-signs').supersetOf(VitalSigns.category.coding.code) then {
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {

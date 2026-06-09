@@ -9,12 +9,12 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence" alias Vis
 
 group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
 
-    // OMOP Visit Occurrence ID would be a map from FHIR ID to an external key
     // visit_type_concept_id 32817 = EHR (NOT NULL in OMOP CDM 5.4)
-    src.id -> tgt.visit_occurrence_id = 1, tgt.visit_type_concept_id = 32817;
-
-    // OMOP Person ID would be a map from the FHIR Encounter Subject reference to an external key
-    src.subject -> tgt.person_id = 1;
+    src.id as id -> tgt.visit_occurrence_id = translate(id, 'http://omop/id-registry/VisitOccurrence', 'code') "visit-id";
+    src.id -> tgt.visit_type_concept_id = 32817;
+    src.subject as s -> tgt then {
+        s.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+    } "subject-person-id";
 	
 	// R4: Encounter.class is a single Coding — access .code directly
 	src.class as sc -> tgt then {

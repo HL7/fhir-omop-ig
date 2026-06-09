@@ -20,7 +20,7 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias Measure
 
 group Measures(source src : Observation, target tgt : MeasureTable) {
     src where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) then { 
-        src.id as id -> tgt.measurement_id = 1;
+        src.id as id -> tgt.measurement_id = translate(id, 'http://omop/id-registry/Measurement', 'code') "measurement-id";
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
@@ -28,8 +28,12 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
             };
         } "MeasurementConcept";
 
-        src.subject -> tgt.person_id = 1;
-        src.encounter ->  tgt.visit_occurrence_id = 1;
+        src.subject as s -> tgt then {
+            s.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+        } "subject-person-id";
+        src.encounter as e -> tgt then {
+            e.reference as ref -> tgt.visit_occurrence_id = translate(ref, 'http://omop/id-registry/VisitOccurrence', 'code');
+        } "encounter-visit-id";
 
         src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
         src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), tgt.measurement_date = cast(einst, "date");

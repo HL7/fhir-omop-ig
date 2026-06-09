@@ -10,14 +10,13 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias Observa
 
 group Observation(source src: Allergy, target tgt : ObservationTable) {
 
-    // OMOP Observation ID would be a map from FHIR ID to an external key
-    src.id  -> tgt.observation_id = 1;
-
-    // OMOP Person ID would be a map from the FHIR Allergy Patient reference to an external key
-    src.patient -> tgt.person_id = 1;
-
-    // OMOP Visit Occurrence ID would be a map from the FHIR Allergy Encounter reference to an external key
-    src.encounter -> tgt.visit_occurrence_id = 1;
+    src.id as id -> tgt.observation_id = translate(id, 'http://omop/id-registry/Observation', 'code') "obs-id";
+    src.patient as p -> tgt then {
+        p.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+    } "patient-person-id";
+    src.encounter as e -> tgt then {
+        e.reference as ref -> tgt.visit_occurrence_id = translate(ref, 'http://omop/id-registry/VisitOccurrence', 'code');
+    } "encounter-visit-id";
 
     src.type as s -> tgt then {
         s.coding as sc -> tgt then {

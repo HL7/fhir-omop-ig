@@ -21,7 +21,7 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
 group Observe(source src : Observation, target tgt : ObsTable) 
 {
     src where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure' ).supersetOf(Observation.category.coding.code)  then {
-        src.id -> tgt.observation_id = 1;
+        src.id as id -> tgt.observation_id = translate(id, 'http://omop/id-registry/Observation', 'code') "obs-id";
 
         src.code as s -> tgt then {
             // s.coding.first() as sc -> tgt then {
@@ -30,8 +30,12 @@ group Observe(source src : Observation, target tgt : ObsTable)
             };
         };
 
-        src.subject as s -> tgt.person_id = 1; 
-        src.encounter -> tgt.visit_occurrence_id = 1;
+        src.subject as s -> tgt then {
+            s.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+        } "subject-person-id";
+        src.encounter as e -> tgt then {
+            e.reference as ref -> tgt.visit_occurrence_id = translate(ref, 'http://omop/id-registry/VisitOccurrence', 'code');
+        } "encounter-visit-id";
 
         src.effective : dateTime as a -> tgt.observation_datetime = a , tgt.observation_date = cast(a, "date");
         src.effective : instant as einst -> tgt.observation_datetime = cast(einst, "dateTime"), tgt.observation_date = cast(einst, "date");

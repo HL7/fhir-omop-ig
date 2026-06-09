@@ -12,7 +12,8 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Person" alias PersonTable 
 group Person(source src: Patient, target tgt : PersonTable) {
 	 // OMOP person ID would be a map from FHIR ID to an external key
 	 // race/ethnicity default to 0 (Unknown) — OMOP NOT NULL; US Core extension mapping is a separate TODO
-    src.id as id -> tgt.person_source_value = id, tgt.person_id = 1, tgt.race_concept_id = 0, tgt.ethnicity_concept_id = 0;
+    src.id as id -> tgt.person_source_value = id, tgt.race_concept_id = 0, tgt.ethnicity_concept_id = 0;
+    src.id as id -> tgt.person_id = translate(id, 'http://omop/id-registry/Patient', 'code') "person-id";
 
 	src.gender as gender -> tgt.gender_concept_id = translate(gender, 'http://hl7.org/fhir/uv/omop/ConceptMap/GenderClass', 'code'), tgt.gender_source_value = gender;
 	src where(src.gender.empty()) -> tgt.gender_concept_id = 0, tgt.gender_source_value = "unknown" "nogender";

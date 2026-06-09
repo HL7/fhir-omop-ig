@@ -9,8 +9,11 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias
 
 group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)     {
         // procedure_type_concept_id 32817 = EHR (NOT NULL in OMOP CDM 5.4)
-        src.id -> tgt.procedure_occurrence_id = 1, tgt.procedure_type_concept_id = 32817;
-        src.subject -> tgt.person_id = 1;
+        src.id as id -> tgt.procedure_occurrence_id = translate(id, 'http://omop/id-registry/ProcedureOccurrence', 'code') "procedure-id";
+        src.id -> tgt.procedure_type_concept_id = 32817;
+        src.subject as s -> tgt then {
+            s.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+        } "subject-person-id";
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt.procedure_concept_id = translate(sc, '', 'code');
@@ -32,5 +35,7 @@ group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)  
         // R5: src.occurrence : dateTime as edt -> ...
         // R5: src.occurrence : Period as s -> ...
 
-        src.encounter -> tgt.visit_occurrence_id = 1;
+        src.encounter as e -> tgt then {
+            e.reference as ref -> tgt.visit_occurrence_id = translate(ref, 'http://omop/id-registry/VisitOccurrence', 'code');
+        } "encounter-visit-id";
 }
