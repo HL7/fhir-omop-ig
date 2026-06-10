@@ -81,7 +81,7 @@ Usage: #definition
 * status = #draft
 * experimental = true
 
-* group
+* group[+]
   * source = "http://snomed.info/sct"
   * target = "https://fhir-terminology.ohdsi.org"
   * element[+]
@@ -96,7 +96,7 @@ Usage: #definition
       * code = #1728416
       * display = "benzylpenicillin"
       * relationship = #equivalent
-* group
+* group[+]
   * source = "http://www.nlm.nih.gov/research/umls/rxnorm"
   * target = "https://fhir-terminology.ohdsi.org"
   * element[+]
