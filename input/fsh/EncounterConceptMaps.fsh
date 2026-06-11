@@ -69,7 +69,7 @@ Description: "An example mapping of FHIR Encounter admission source codes to OMO
   * element[+]
     * code = #emd
     * target
-      * code = #8670
+      * code = #8870
       * display = "Emergency Room - Hospital"
       * relationship = #equivalent
   * element[+]
@@ -114,7 +114,7 @@ Description: "An example mapping of FHIR Encounter admission source codes to OMO
     * code = #rehab
     * target
       * code = #38004254
-      * display = "Rehabilition Clinic/Center"
+      * display = "Rehabilitation Clinic/Center"
       * relationship = #equivalent
   * element[+]
     * code = #other
