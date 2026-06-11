@@ -9,5 +9,6 @@ Description: "Collection of records belonging to a single patient."
 * record_set_timestamp 1..1 dateTime "Record date" ""
 * patient_id 1..1 integer "Patient Identifier" ""
 
-* measurement 0..* Measurement "" ""
-* medication 0..* Medication "" ""
+* allergy 0..* Observation "Allergy Observation" ""
+* measurement 0..* Measurement "Measurement" ""
+* medication 0..* Medication "Medication" ""

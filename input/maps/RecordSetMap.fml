@@ -26,13 +26,12 @@ group RecordSet(source src: Bundle, target tgt : RecordSetTable) {
     src.timestamp as ts -> tgt.record_set_timestamp = ts;
 
     // Map bundle entries
-    src where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) then {
-        src.resource as r -> tgt then {
-            s.resourceType as o -> tgt then {
-                Measures(o, tgt.measurement) "measurementEntry";
-            } "measurementMap";
-        } "MeasurementConcept";
-    } "measurementFinal";
 
-    
-};
+
+    src.entry as entry -> tgt then {
+        entry.resource : Observation as observation -> tgt then {
+            observation where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) -> tgt.measurement as measurement then Measures(observation, measurement) "measurementEntry";
+        } "observationEntry";
+    } "bundleEntry";
+
+};re

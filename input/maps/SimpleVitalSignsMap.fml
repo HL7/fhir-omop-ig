@@ -7,7 +7,7 @@
 uses "http://hl7.org/fhir/StructureDefinition/vitalsigns" alias VitalSigns as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
-group Measures(source src : VitalSigns, target tgt : MeasureTable) {
+group VitalSigns(source src : VitalSigns, target tgt : MeasureTable) {
     src where ('vital-signs').supersetOf(VitalSigns.category.coding.code) then { 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
