@@ -1,0 +1,25 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/PersonMapServer'
+/// name = 'PersonMapServer'
+/// title = 'Mapping Patient resource to Person OMOP Domain (Echidna server path)'
+/// status = 'draft'
+/// description = "Echidna-path variant of PersonMap: blank ConceptMap URLs route all translate calls to the terminology server. Bare FHIR gender codes (male/female) cannot be resolved by Echidna without a sourceSystem, so gender_concept_id will be null until Echidna coverage improves."
+
+uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Person" alias PersonTable as target
+
+
+
+group Person(source src: Patient, target tgt : PersonTable) {
+	// OMOP person ID would be a map from FHIR ID to an external key
+	// race/ethnicity default to 0 (Unknown) — OMOP NOT NULL; US Core extension mapping is a separate TODO
+	src.id as id -> tgt.person_source_value = id, tgt.race_concept_id = 0, tgt.ethnicity_concept_id = 0;
+	src.id as id -> tgt.person_id = translate(id, 'http://omop/id-registry/Patient', 'code') "person-id";
+
+	src.gender as gender -> tgt.gender_concept_id = translate(gender, '', 'code'), tgt.gender_source_value = gender;
+	src where(src.gender.empty()) -> tgt.gender_concept_id = 0, tgt.gender_source_value = "unknown" "nogender";
+
+	src.birthDate as bdSrc -> tgt.birth_datetime = bdSrc,
+		tgt.year_of_birth = (src.birthDate.toString().substring(0,4)),
+		tgt.month_of_birth = (src.birthDate.toString().substring(5,2)),
+		tgt.day_of_birth = (src.birthDate.toString().substring(8,2));
+}

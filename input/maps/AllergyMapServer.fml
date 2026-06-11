@@ -1,0 +1,30 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/AllergyMapServer'
+/// name = 'AllergyMapServer'
+/// title = 'Mapping Allergy resource to Observation OMOP Domain (Echidna server path)'
+/// status = 'draft'
+
+/// description = "Echidna-path variant of AllergyMap: blank ConceptMap URLs route all translate calls to the configured terminology server (Echidna). observation_concept_id and value_as_concept_id are resolved from the SNOMED coding in AllergyIntolerance.code via system-based lookup."
+
+uses "http://hl7.org/fhir/StructureDefinition/AllergyIntolerance" alias Allergy as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObservationTable as target
+
+group Observation(source src: Allergy, target tgt : ObservationTable) {
+
+    src.id as id -> tgt.observation_id = translate(id, 'http://omop/id-registry/Observation', 'code') "obs-id";
+    src -> tgt.observation_type_concept_id = 32817 "obs-type-concept-id";
+    src.patient as p -> tgt then {
+        p.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+    } "patient-person-id";
+    src.encounter as e -> tgt then {
+        e.reference as ref -> tgt.visit_occurrence_id = translate(ref, 'http://omop/id-registry/VisitOccurrence', 'code');
+    } "encounter-visit-id";
+
+    src.code as s -> tgt then {
+        s.coding as sc -> tgt.observation_concept_id = translate(sc, '', 'code') "obs-concept-id";
+        s.coding as sc -> tgt then {
+            sc.code as code -> tgt.value_as_concept_id = translate(sc, '', 'code'), tgt.value_source_value = code;
+        };
+    };
+
+    src.recordedDate : dateTime as osd -> tgt.observation_date = (src.recordedDate.toString().substring(0,10)), tgt.observation_datetime = osd;
+}

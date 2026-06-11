@@ -1,0 +1,53 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/EncounterVisitMapServer'
+/// name = 'EncounterVisitMapServer'
+/// title = 'Mapping Encounter resource to VisitOccurrence OMOP Domain (Echidna server path)'
+/// status = 'draft'
+/// description = "Echidna-path variant of EncounterVisitMap: blank ConceptMap URLs route all translate calls to the terminology server. Bare FHIR Act codes (AMB/IMP/EMER) cannot be resolved by Echidna without a sourceSystem, so visit_concept_id will be null until Echidna coverage improves."
+
+uses "http://hl7.org/fhir/StructureDefinition/Encounter" alias Encounter as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence" alias VisitTable as target
+
+group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
+
+    // visit_type_concept_id 32817 = EHR (NOT NULL in OMOP CDM 5.4)
+    src.id as id -> tgt.visit_occurrence_id = translate(id, 'http://omop/id-registry/VisitOccurrence', 'code') "visit-id";
+    src.id -> tgt.visit_type_concept_id = 32817;
+    src.subject as s -> tgt then {
+        s.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+    } "subject-person-id";
+
+	// R4: Encounter.class is a single Coding — access .code directly
+	src.class as sc -> tgt then {
+		sc.code as a -> tgt.visit_concept_id = translate(a, '', 'code'), tgt.visit_source_value = a;
+	};
+	// R5: Encounter.class is CodeableConcept[] — needs .coding indirection (broken on R4 server)
+	// src.class as s -> tgt then {
+	//     s.coding as sc -> tgt then {
+	//         sc.code as a -> tgt.visit_concept_id = translate(a, '', 'code'), tgt.visit_source_value = a;
+	//     };
+	// };
+
+	// R4: Encounter.period (renamed to actualPeriod in R5)
+	src.period as s -> tgt then {
+		s.start as std -> tgt.visit_start_date = (src.period.start.toString().substring(0,10)), tgt.visit_start_datetime = std;
+		s.end as ed -> tgt.visit_end_date = (src.period.end.toString().substring(0,10)), tgt.visit_end_datetime = ed;
+	};
+	// R5: src.actualPeriod as s -> tgt then { ... };
+
+	// R4: Encounter.hospitalization (renamed to admission in R5)
+	src.hospitalization as s -> tgt then {
+		s.admitSource as sa -> tgt then {
+			sa.coding as sc -> tgt then {
+				sc.code as code -> tgt.admitted_from_concept_id = translate(code, '', 'code'), tgt.admitted_from_source_value = code;
+			};
+		};
+
+		s.dischargeDisposition as sd -> tgt then {
+			sd.coding as sc -> tgt then {
+				sc.code as code -> tgt.discharged_to_concept_id = translate(code, '', 'code'), tgt.discharged_to_source_value = code;
+			};
+		};
+	};
+	// R5: src.admission as s -> tgt then { ... };
+
+}
