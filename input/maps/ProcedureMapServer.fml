@@ -1,0 +1,28 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ProcedureMapServer'
+/// name = 'ProcedureMapServer'
+/// title = 'Mapping Procedure resource to Procedure Occurrence OMOP Domain (Echidna server path)'
+/// status = 'draft'
+/// description = "This mapping maps FHIR Procedure instances to OMOP Procedure Occurrence Table objects."
+
+uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target
+
+group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)     {
+        src.id -> tgt.procedure_occurrence_id = 1;
+        src.subject -> tgt.person_id = 1;
+
+        src.code as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc -> tgt.procedure_concept_id = translate(sc, '', 'code');
+                sc.code as a -> tgt.procedure_source_value = a, tgt.procedure_source_concept_id = translate(sc, '', 'code');
+            };
+        };
+
+        src.occurrence : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = edt;
+        src.occurrence : Period as s -> tgt then {
+            s.start as start -> tgt.procedure_datetime = cast(start, "dateTime"), tgt.procedure_date = start;
+			s.end as end -> tgt.procedure_end_datetime, tgt.procedure_end_date = end;
+        };
+
+        src.encounter -> tgt.visit_occurrence_id = 1;
+}
