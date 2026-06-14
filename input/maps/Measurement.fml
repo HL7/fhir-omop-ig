@@ -13,17 +13,17 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
-                sc.code as a -> tgt.measurement_concept_id = a;
+                sc -> tgt.measurement_concept_id = translate(sc, '', 'code') "MeasureConcept";
             };
         } "MeasurementConcept";
 
         src.subject -> tgt.person_id = 1;
         src.encounter ->  tgt.visit_occurrence_id = 1;
 
-        src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
-        src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), tgt.measurement_date = cast(einst, "date");
+        src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10));
+        src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), tgt.measurement_date = (einst.toString().substring(0,10));
         src.effective : Period as s -> tgt then {
-            s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = cast(eps, "date");
+            s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = (eps.toString().substring(0,10));
         } "MeasurementDate";
         src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
         
@@ -32,11 +32,11 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
         
         src.value : Quantity as s -> tgt then {
             s.value as a -> tgt.value_as_number = a;
-            s.unit as b -> tgt.unit_concept_id = b;
+            s.code as c -> tgt.unit_concept_id = translate(c, '', 'code') "UnitConcept";
         } "QuantityValue";
         src.value : CodeableConcept as s  -> tgt then {
             s.coding as sc -> tgt then {
-                sc.code as a -> tgt.value_as_concept_id = a;
+                sc -> tgt.value_as_concept_id = translate(sc, '', 'code') "ValueConcept";
             };
         } "CodeableConceptValue";
         src.value : string as b -> tgt.value_source_value = b;

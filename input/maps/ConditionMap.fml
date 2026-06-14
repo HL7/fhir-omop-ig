@@ -16,18 +16,19 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
 
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc.code as a -> tgt.condition_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code');
+            sc -> tgt.condition_concept_id = translate(sc, '', 'code') "ConditionConcept";
             sc.display as d -> tgt.condition_source_value = d;
         };
     };
     
     src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"dateTime"), tgt.condition_start_date = rd;
-    src.onset : dateTime as osd -> tgt.condition_start_datetime = osd, tgt.condition_start_date = cast(osd, "date");
-    src.abatement : dateTime as abdt -> tgt.condition_end_datetime = adt, tgt.condition_end_date = cast(abdt, "date");
+    src.onset : dateTime as osd -> tgt.condition_start_datetime = osd, tgt.condition_start_date = (osd.toString().substring(0,10));
+    src.abatement : dateTime as abdt -> tgt.condition_end_datetime = adt, tgt.condition_end_date = (abdt.toString().substring(0,10));
 
     src.clinicalStatus as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc.code as a -> tgt.condition_status_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionStatusConcepts', 'code'), tgt.condition_status_source_value = a;
+            sc -> tgt.condition_status_concept_id = translate(sc, '', 'code') "ConditionStatus";
+            sc.code as a -> tgt.condition_status_source_value = a "ConditionStatusSrc";
         };
     };
 

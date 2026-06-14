@@ -33,6 +33,8 @@
 <artifact id="ConceptMap/ImmunizationVaccine" key="ConceptMap-ImmunizationVaccine" name="Immunization vaccine codes to OMOP"/>
 <artifact id="StructureDefinition/Location" key="StructureDefinition-Location" name="Location OMOP Table"/>
 <artifact id="StructureMap/AllergyMap" key="StructureMap-AllergyMap" name="Mapping Allergy resource to Observation OMOP Domain"/>
+<artifact id="StructureMap/BloodPressureDiastolicMap" key="StructureMap-BloodPressureDiastolicMap" name="Mapping Blood Pressure Diastolic component to OMOP Measurement"/>
+<artifact id="StructureMap/BloodPressureSystolicMap" key="StructureMap-BloodPressureSystolicMap" name="Mapping Blood Pressure Systolic component to OMOP Measurement"/>
 <artifact id="StructureMap/BloodPressureVitalSignsMap" key="StructureMap-BloodPressureVitalSignsMap" name="Mapping Blood Pressure Vital Signs resource to Measurement OMOP Domain"/>
 <artifact id="StructureMap/ConditionMap" key="StructureMap-ConditionMap" name="Mapping Condition resource to Condition Occurrence OMOP Domain"/>
 <artifact id="StructureMap/EncounterVisitMap" key="StructureMap-EncounterVisitMap" name="Mapping Encounter resource to VisitOccurrence OMOP Domain"/>
@@ -42,7 +44,7 @@
 <artifact id="StructureMap/ObservationMap" key="StructureMap-ObservationMap" name="Mapping Observation resource to Observation OMOP Domain"/>
 <artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
 <artifact id="StructureMap/ProcedureMap" key="StructureMap-ProcedureMap" name="Mapping Procedure resource to Procedure Occurrence OMOP Domain"/>
-<artifact id="StructureMap/SimpleVitalSignsMap" key="StructureMap-SimpleVitalSignsMap" name="Mapping Vital Ssigns resource to Measurement OMOP Domain"/>
+<artifact id="StructureMap/SimpleVitalSignsMap" key="StructureMap-SimpleVitalSignsMap" name="Mapping Vital Signs resource to Measurement OMOP Domain"/>
 <artifact id="StructureDefinition/Measurement" key="StructureDefinition-Measurement" name="Measurement OMOP Table"/>
 <artifact id="StructureDefinition/NoteNLP" key="StructureDefinition-NoteNLP" name="Note NLP OMOP Table"/>
 <artifact id="StructureDefinition/Note" key="StructureDefinition-Note" name="Note OMOP Table"/>

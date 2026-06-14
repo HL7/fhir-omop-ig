@@ -1,6 +1,6 @@
 /// url = 'http://hl7.org/fhir/uv/omop/StructureMap/SimpleVitalSignsMap'
 /// name = 'SimpleVitalSignsMap'
-/// title = 'Mapping Vital Ssigns resource to Measurement OMOP Domain'
+/// title = 'Mapping Vital Signs resource to Measurement OMOP Domain'
 /// status = 'draft'
 /// description = "This mapping maps simple FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."
 
@@ -8,32 +8,24 @@ uses "http://hl7.org/fhir/StructureDefinition/vitalsigns" alias VitalSigns as so
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
 group Measures(source src : VitalSigns, target tgt : MeasureTable) {
-    src where ('vital-signs').supersetOf(VitalSigns.category.coding.code) then { 
+    src where ('vital-signs').supersetOf(VitalSigns.category.coding.code) then {
         src.code as s -> tgt then {
-            s.coding as sc -> tgt then {
-                sc.system where('http://loinc.org') then {
-                    sc.code as a where ((a in ('85354-9' | '8480-6' | '8462-4' | '8478-0')).not()) -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/VitalSignsCodes', 'code') then {                        
-                        sc.display as display -> tgt.measurement_concept_id = display;
-                        src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
-                        src.effective : Period as s -> tgt then {
-                            s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = cast(eps, "date");
-                        };                        
-                        src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
-                        src.value : Quantity as s -> tgt then {
-                            s.value as a -> tgt.value_as_number = a;
-                            s.unit as b -> tgt.unit_concept_id = b;
-                        };
-                        src.value : CodeableConcept as s  -> tgt then {
-                            s.coding as sc -> tgt then {
-                                sc.code as code -> tgt.value_as_concept_id = code;
-                            };
-                        };
-                        src.value : string as b -> tgt.value_source_value = b;
-                        src.interpretation as c -> tgt.value_as_concept_id = c;
-                        src.note  as d -> tgt.measurement_source_value = d;
-                    };
-                };               
+            s.coding as sc where ((sc.code in ('85354-9' | '8480-6' | '8462-4' | '8478-0')).not()) -> tgt.measurement_concept_id = translate(sc, '', 'code') then {
+                src -> tgt.measurement_type_concept_id = 32817 "EHR";
+                src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10)) "VitalDatetime";
+                src.effective : Period as ep -> tgt then {
+                    ep.start as eps -> tgt.measurement_datetime = eps, tgt.measurement_date = (eps.toString().substring(0,10)) "VitalPeriodStart";
+                } "VitalPeriod";
+                src.issued as iss where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(iss, "string") "VitalIssued";
+                src.value : Quantity as qty -> tgt then {
+                    qty.value as v -> tgt.value_as_number = v;
+                    qty.code as c -> tgt.unit_concept_id = translate(c, '', 'code') "UnitConcept";
+                } "QuantityValue";
+                src.value : CodeableConcept as ccv -> tgt then {
+                    ccv.coding as vc -> tgt.value_as_concept_id = translate(vc, '', 'code') "ValueConcept";
+                } "CodeableConceptValue";
+                src.value : string as b -> tgt.value_source_value = b;
             };
-        };  
+        };
     } "OnlyMeasures";
 };

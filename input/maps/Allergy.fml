@@ -19,20 +19,21 @@ group Observation(source src: Allergy, target tgt : ObservationTable) {
     // OMOP Visit Occurrence ID would be a map from the FHIR Allergy Encounter reference to an external key
     src.encounter -> tgt.visit_occurrence_id = 1;
 
-    src.type as s -> tgt then {
-        s.coding as sc -> tgt then {
-            sc.code as code where(code="allergy") then {
-                src.category as category -> tgt.observation_concept_id = translate(category, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergyType', 'code');
-            };
-            src.code as code where(code="intolerance") then {
-                src.category as category -> tgt.observation_concept_id = translate(category, 'http://hl7.org/fhir/uv/omop/ConceptMap/IntoleranceType', 'code');
-            };
-        };
-    };
+    // AllergyIntolerance.category is a bare code[] (issue #14). Use IG ConceptMap canonical URLs
+    // so matchbox resolves translations locally. Allergy and intolerance use separate ConceptMaps
+    // because the same category codes map to different OMOP concepts depending on type.
+    src.type as t where(t = 'allergy') -> tgt then {
+        src.category as category -> tgt.observation_concept_id = translate(category, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergyType', 'code') "AllergyCategory";
+    } "AllergyTypeMapping";
+
+    src.type as t where(t = 'intolerance') -> tgt then {
+        src.category as category -> tgt.observation_concept_id = translate(category, 'http://hl7.org/fhir/uv/omop/ConceptMap/IntoleranceType', 'code') "IntoleranceCategory";
+    } "IntoleranceTypeMapping";
 	
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc.code as code -> tgt.value_as_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergySubstanceType', 'code'), tgt.value_source_value = code;
+            sc -> tgt.value_as_concept_id = translate(sc, '', 'code') "AllergyValue";
+            sc.code as code -> tgt.value_source_value = code "AllergyValueSrc";
         };
     };
 
