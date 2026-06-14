@@ -55,6 +55,8 @@
 <artifact id="StructureDefinition/ProcedureOccurrence" key="StructureDefinition-ProcedureOccurrence" name="Procedure Occurrence OMOP Table"/>
 <artifact id="StructureDefinition/Provider" key="StructureDefinition-Provider" name="Provider OMOP Table"/>
 <artifact id="StructureDefinition/Specimen" key="StructureDefinition-Specimen" name="Specimen OMOP Table"/>
+<artifact id="ConceptMap/EthnicityClass" key="ConceptMap-EthnicityClass" name="US Core Ethnicity codes to OMOP"/>
+<artifact id="ConceptMap/RaceClass" key="ConceptMap-RaceClass" name="US Core Race codes to OMOP"/>
 <artifact id="StructureDefinition/VisitDetail" key="StructureDefinition-VisitDetail" name="Visit Detail OMOP Table"/>
 <artifact id="StructureDefinition/VisitOccurrence" key="StructureDefinition-VisitOccurrence" name="Visit Occurrence OMOP Table"/>
 <artifact id="ConceptMap/VitalSignsCodes" key="ConceptMap-VitalSignsCodes" name="VitalSign codes to OMOP"/>
