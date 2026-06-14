@@ -18,10 +18,14 @@ group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)  
             };
         };
 
-        src.occurrence : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = edt;
-        src.occurrence : Period as s -> tgt then {
+        // procedure_type_concept_id = 32817 (EHR) — required NOT NULL.
+        src -> tgt.procedure_type_concept_id = 32817 "ProcedureType";
+
+        // R4: performed[x] (R5 renamed to occurrence[x])
+        src.performed : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = edt;
+        src.performed : Period as s -> tgt then {
             s.start as start -> tgt.procedure_datetime = cast(start, "dateTime"), tgt.procedure_date = start;
-			s.end as end -> tgt.procedure_end_datetime, tgt.procedure_end_date = end;
+            s.end as end -> tgt.procedure_end_datetime = end, tgt.procedure_end_date = (end.toString().substring(0,10));
         };
 
         src.encounter -> tgt.visit_occurrence_id = 1;

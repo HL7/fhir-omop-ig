@@ -36,5 +36,6 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
 
 
 
-    src.category -> tgt.condition_type_concept_id = 32817 "default";
+    // condition_type_concept_id = 32817 (EHR) — required NOT NULL; unconditional default.
+    src -> tgt.condition_type_concept_id = 32817 "ConditionType";
 };
