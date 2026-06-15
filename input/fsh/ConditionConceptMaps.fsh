@@ -84,6 +84,18 @@ Usage: #definition
   * source = "http://terminology.hl7.org/CodeSystem/condition-clinical"
   * target = "https://fhir-terminology.ohdsi.org"
   * element[+]
+    * code = #active
+    * target
+      * code = #32902
+      * display = "Primary diagnosis"
+      * relationship = #related-to
+  * element[+]
+    * code = #inactive
+    * target
+      * code = #32907
+      * display = "Secondary admission diagnosis"
+      * relationship = #related-to
+  * element[+]
     * code = #resolved
     * target
       * code = #32906

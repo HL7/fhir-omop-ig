@@ -11,28 +11,19 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
         src.id -> tgt.drug_exposure_id = 1;
         src.subject -> tgt.person_id = 1;
         
-        src.medication : CodeableReference as s -> tgt then {
-          s.concept as scs -> tgt then {
-            scs.coding as sc -> tgt then {
+        src.medicationCodeableConcept as s -> tgt then {
+            s.coding as sc -> tgt then {
                 sc -> tgt.drug_concept_id = translate(sc, '', 'code') "DrugConcept";
+                sc.code as c -> tgt.drug_source_value = c "DrugSrc";
             };
-          };
         };
-        src.effective : dateTime as edt -> tgt.drug_exposure_start_datetime = edt, tgt.drug_exposure_start_date = (edt.toString().substring(0,10));
+        src.effective : dateTime as edt -> tgt.drug_exposure_start_datetime = edt, tgt.drug_exposure_start_date = (edt.toString().substring(0,10)), tgt.drug_exposure_end_date = (edt.toString().substring(0,10));
         src.effective : Period as s -> tgt then {
             s.start as fps -> tgt.drug_exposure_start_datetime = fps, tgt.drug_exposure_start_date = (fps.toString().substring(0,10));
+            s.end as fpe -> tgt.drug_exposure_end_datetime = fpe, tgt.drug_exposure_end_date = (fpe.toString().substring(0,10));
+            s.end as fpe2 -> tgt.verbatim_end_date = (fpe2.toString().substring(0,10));
         };
-        src.effective : Period as s -> tgt then {
-            s.end as fpe -> tgt.drug_exposure_end_datetime = fpe, tgt.drug_exposure_end_date = (fps.toString().substring(0,10));
-        };
-        src.effective : Period as s -> tgt then {
-            s.end as fpe -> tgt.verbatim_end_date = (fps.toString().substring(0,10));
-        };
-        src.category : CodeableConcept as s -> tgt then {
-            s.coding as sc -> tgt then {
-                sc.code as a -> tgt.drug_type_concept_id = a;
-            };
-        };
+        src -> tgt.drug_type_concept_id = 32817 "DrugType";
         src.reason : CodeableReference as s -> tgt then {
           s.concept as scs -> tgt then {
             scs.coding as sc -> tgt then {

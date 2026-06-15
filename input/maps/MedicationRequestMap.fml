@@ -1,0 +1,26 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/MedicationRequestMap'
+/// name = 'MedicationRequestMap'
+/// title = 'Mapping MedicationRequest resource to DrugExposure OMOP Domain'
+/// status = 'draft'
+/// description = "This mapping maps FHIR R4 MedicationRequest instances to OMOP Drug Exposure Table objects."
+
+uses "http://hl7.org/fhir/StructureDefinition/MedicationRequest" alias MedRequest as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugExpTable as target
+
+group MedRequestExposure(source src : MedRequest, target tgt : DrugExpTable) {
+        src.id -> tgt.drug_exposure_id = 1;
+        src.subject -> tgt.person_id = 1;
+
+        src.medicationCodeableConcept as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc -> tgt.drug_concept_id = translate(sc, '', 'code') "DrugConcept";
+                sc.code as c -> tgt.drug_source_value = c "DrugSrc";
+            };
+        };
+
+        src.authoredOn as aon -> tgt.drug_exposure_start_date = aon, tgt.drug_exposure_end_date = aon, tgt.drug_exposure_start_datetime = cast(aon, "dateTime");
+
+        src -> tgt.drug_type_concept_id = 32817 "DrugType";
+
+        src.encounter -> tgt.visit_occurrence_id = 1;
+}

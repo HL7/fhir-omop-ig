@@ -97,6 +97,18 @@ Usage: #definition
   * source = "http://hl7.org/fhir/sid/cvx"
   * target = "https://fhir-terminology.ohdsi.org"
   * element[+]
+    * code = #140
+    * target
+      * code = #40225028
+      * display = "influenza virus vaccine, inactivated (seasonal injectable)"
+      * relationship = #equivalent
+  * element[+]
+    * code = #141
+    * target
+      * code = #40225028
+      * display = "influenza virus vaccine, inactivated (seasonal injectable)"
+      * relationship = #equivalent
+  * element[+]
     * code = #171
     * target
       * code = #40213143
