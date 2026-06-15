@@ -27,24 +27,16 @@
 <artifact id="ConceptMap/EncounterDischargeDisposition" key="ConceptMap-EncounterDischargeDisposition" name="Encounter Discharge Disposition codes to OMOP"/>
 <artifact id="StructureDefinition/EpisodeEvent" key="StructureDefinition-EpisodeEvent" name="Episode Event OMOP Table"/>
 <artifact id="StructureDefinition/Episode" key="StructureDefinition-Episode" name="Episode OMOP Table"/>
+<artifact id="StructureMap/BloodPressureDiastolicMap" key="StructureMap-BloodPressureDiastolicMap" name="Extracts diastolic (LOINC 8462-4, concept 3012888) from BP panel Observation to OMOP Measurement. Uses suffix Measurement-Diastolic for distinct measurement_id vs BloodPressureSystolicMap."/>
+<artifact id="StructureMap/BloodPressureSystolicMap" key="StructureMap-BloodPressureSystolicMap" name="Extracts systolic (LOINC 8480-6, concept 3004249) from BP panel Observation to OMOP Measurement. Uses suffix Measurement-Systolic for distinct measurement_id vs BloodPressureDiastolicMap."/>
 <artifact id="StructureDefinition/FactRelationship" key="StructureDefinition-FactRelationship" name="Fact Relationship OMOP Table"/>
 <artifact id="ConceptMap/ImmunizationSource" key="ConceptMap-ImmunizationSource" name="Immunization information source codes to OMOP"/>
 <artifact id="ConceptMap/ImmunizationRoute" key="ConceptMap-ImmunizationRoute" name="Immunization route codes to OMOP"/>
 <artifact id="ConceptMap/ImmunizationVaccine" key="ConceptMap-ImmunizationVaccine" name="Immunization vaccine codes to OMOP"/>
 <artifact id="StructureDefinition/Location" key="StructureDefinition-Location" name="Location OMOP Table"/>
-<artifact id="StructureMap/AllergyMap" key="StructureMap-AllergyMap" name="Mapping Allergy resource to Observation OMOP Domain"/>
-<artifact id="StructureMap/BloodPressureDiastolicMap" key="StructureMap-BloodPressureDiastolicMap" name="Mapping Blood Pressure Diastolic component to OMOP Measurement"/>
-<artifact id="StructureMap/BloodPressureSystolicMap" key="StructureMap-BloodPressureSystolicMap" name="Mapping Blood Pressure Systolic component to OMOP Measurement"/>
-<artifact id="StructureMap/BloodPressureVitalSignsMap" key="StructureMap-BloodPressureVitalSignsMap" name="Mapping Blood Pressure Vital Signs resource to Measurement OMOP Domain"/>
-<artifact id="StructureMap/ConditionMap" key="StructureMap-ConditionMap" name="Mapping Condition resource to Condition Occurrence OMOP Domain"/>
-<artifact id="StructureMap/EncounterVisitMap" key="StructureMap-EncounterVisitMap" name="Mapping Encounter resource to VisitOccurrence OMOP Domain"/>
-<artifact id="StructureMap/ImmunizationMap" key="StructureMap-ImmunizationMap" name="Mapping Immunization resource to Drug Exposure OMOP Domain"/>
-<artifact id="StructureMap/MedicationMap" key="StructureMap-MedicationMap" name="Mapping MedicationStatement resource to DrugExposure OMOP Domain"/>
-<artifact id="StructureMap/MeasurementMap" key="StructureMap-MeasurementMap" name="Mapping Observation resource to Measurement OMOP Domain"/>
-<artifact id="StructureMap/ObservationMap" key="StructureMap-ObservationMap" name="Mapping Observation resource to Observation OMOP Domain"/>
-<artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
-<artifact id="StructureMap/ProcedureMap" key="StructureMap-ProcedureMap" name="Mapping Procedure resource to Procedure Occurrence OMOP Domain"/>
-<artifact id="StructureMap/SimpleVitalSignsMap" key="StructureMap-SimpleVitalSignsMap" name="Mapping Vital Signs resource to Measurement OMOP Domain"/>
+<artifact id="StructureMap/MedicationMap" key="StructureMap-MedicationMap" name="Maps FHIR MedicationStatement to OMOP Drug Exposure. Does not map MedicationRequest; see notes."/>
+<artifact id="StructureMap/MeasurementMap" key="StructureMap-MeasurementMap" name="Maps measurement FHIR Observations (categories: vital-signs, laboratory) to OMOP Measurement."/>
+<artifact id="StructureMap/ObservationMap" key="StructureMap-ObservationMap" name="Maps non-measurement FHIR Observations to OMOP Observation. Categories: social-history, imaging, survey, exam, therapy, activity, and procedure."/>
 <artifact id="StructureDefinition/Measurement" key="StructureDefinition-Measurement" name="Measurement OMOP Table"/>
 <artifact id="StructureDefinition/NoteNLP" key="StructureDefinition-NoteNLP" name="Note NLP OMOP Table"/>
 <artifact id="StructureDefinition/Note" key="StructureDefinition-Note" name="Note OMOP Table"/>
@@ -55,6 +47,15 @@
 <artifact id="StructureDefinition/ProcedureOccurrence" key="StructureDefinition-ProcedureOccurrence" name="Procedure Occurrence OMOP Table"/>
 <artifact id="StructureDefinition/Provider" key="StructureDefinition-Provider" name="Provider OMOP Table"/>
 <artifact id="StructureDefinition/Specimen" key="StructureDefinition-Specimen" name="Specimen OMOP Table"/>
+<artifact id="StructureMap/AllergyMap" key="StructureMap-AllergyMap" name="This mapping maps FHIR AllergyIntolerance instances to OMOP Observation Table objects."/>
+<artifact id="StructureMap/ConditionMap" key="StructureMap-ConditionMap" name="This mapping maps FHIR Condition instances to OMOP Condition Occurence Table objects."/>
+<artifact id="StructureMap/EncounterVisitMap" key="StructureMap-EncounterVisitMap" name="This mapping maps FHIR Encounter instances to OMOP Visit Occurence Table objects."/>
+<artifact id="StructureMap/ImmunizationMap" key="StructureMap-ImmunizationMap" name="This mapping maps FHIR Immunization instances to OMOP Drug Exposure Table objects."/>
+<artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="This mapping maps FHIR Patient instances to OMOP Person Table objects."/>
+<artifact id="StructureMap/ProcedureMap" key="StructureMap-ProcedureMap" name="This mapping maps FHIR Procedure instances to OMOP Procedure Occurrence Table objects."/>
+<artifact id="StructureMap/MedicationRequestMap" key="StructureMap-MedicationRequestMap" name="This mapping maps FHIR R4 MedicationRequest instances to OMOP Drug Exposure Table objects."/>
+<artifact id="StructureMap/BloodPressureVitalSignsMap" key="StructureMap-BloodPressureVitalSignsMap" name="This mapping maps blood pressure FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."/>
+<artifact id="StructureMap/SimpleVitalSignsMap" key="StructureMap-SimpleVitalSignsMap" name="This mapping maps simple FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."/>
 <artifact id="ConceptMap/EthnicityClass" key="ConceptMap-EthnicityClass" name="US Core Ethnicity codes to OMOP"/>
 <artifact id="ConceptMap/RaceClass" key="ConceptMap-RaceClass" name="US Core Race codes to OMOP"/>
 <artifact id="StructureDefinition/VisitDetail" key="StructureDefinition-VisitDetail" name="Visit Detail OMOP Table"/>
