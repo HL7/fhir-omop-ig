@@ -2,7 +2,7 @@
 /// name = 'BloodPressureDiastolicMap'
 /// title = 'Mapping Blood Pressure Diastolic component to OMOP Measurement'
 /// status = 'draft'
-/// description = "Extracts the diastolic component (LOINC 8462-4, OMOP concept_id 3012888) from a blood pressure panel Observation and maps it to a single OMOP Measurement row. Uses registry suffix Measurement-Diastolic to produce a distinct measurement_id from BloodPressureSystolicMap when applied to the same source Observation."
+/// description = "Extracts diastolic (LOINC 8462-4, concept 3012888) from BP panel Observation to OMOP Measurement. Uses suffix Measurement-Diastolic for distinct measurement_id vs BloodPressureSystolicMap."
 
 uses "http://hl7.org/fhir/StructureDefinition/bp" alias BloodPressure as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
