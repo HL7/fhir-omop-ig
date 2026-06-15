@@ -1,0 +1,25 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureVitalSignsMapR5'
+/// name = 'BloodPressureVitalSignsMapR5'
+/// title = 'Mapping FHIR R5 Blood Pressure Observation to Measurement OMOP Domain'
+/// status = 'draft'
+/// description = "Maps blood pressure FHIR R5 Vital Signs Observations to OMOP Measurement. Element paths are backward-compatible with R4."
+
+uses "http://hl7.org/fhir/StructureDefinition/bp" alias BloodPressure as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
+
+group bpMapR5(source src : BloodPressure, target tgt : MeasureTable) {
+    src -> tgt.measurement_id = 1 "measurement-id";
+    src -> tgt.person_id = 1 "person-id";
+    src -> tgt.visit_occurrence_id = 1 "visit-id";
+    src.code as s -> tgt then {
+        s.coding as sc -> tgt then {
+            sc -> tgt.measurement_concept_id = translate(sc, '', 'code') "BPMeasureConcept";
+        };
+    };
+    src -> tgt.measurement_type_concept_id = 32817 "EHR";
+    src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10)) "BPDatetime";
+    src.effective : Period as s -> tgt then {
+        s.start as eps -> tgt.measurement_datetime = eps, tgt.measurement_date = (eps.toString().substring(0,10)) "BPPeriodStart";
+    } "BPPeriod";
+    src.issued as iss where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(iss, "string") "BPIssued";
+}

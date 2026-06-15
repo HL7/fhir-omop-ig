@@ -1,0 +1,34 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/SimpleVitalSignsMapR5'
+/// name = 'SimpleVitalSignsMapR5'
+/// title = 'Mapping FHIR R5 Vital Signs Observation to Measurement OMOP Domain'
+/// status = 'draft'
+/// description = "Maps simple FHIR R5 Vital Signs Observations to OMOP Measurement. Element paths are backward-compatible with R4."
+
+uses "http://hl7.org/fhir/StructureDefinition/vitalsigns" alias VitalSigns as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
+
+group MeasuresR5(source src : VitalSigns, target tgt : MeasureTable) {
+    src where ('vital-signs').supersetOf(VitalSigns.category.coding.code) then {
+        src -> tgt.measurement_id = 1 "meas-id";
+        src -> tgt.person_id = 1 "person-id";
+        src.code as s -> tgt then {
+            s.coding as sc where ((sc.code in ('85354-9' | '8480-6' | '8462-4' | '8478-0')).not()) -> tgt.measurement_concept_id = translate(sc, '', 'code') then {
+                src -> tgt.measurement_type_concept_id = 32817 "EHR";
+                src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10)) "VitalDatetime";
+                src.effective : Period as ep -> tgt then {
+                    ep.start as eps -> tgt.measurement_datetime = eps, tgt.measurement_date = (eps.toString().substring(0,10)) "VitalPeriodStart";
+                } "VitalPeriod";
+                src.issued as iss where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(iss, "string") "VitalIssued";
+                src.value : Quantity as qty -> tgt then {
+                    qty.value as v -> tgt.value_as_number = v;
+                    qty.unit as u -> tgt.unit_source_value = u;
+                    qty.code as c -> tgt.unit_concept_id = translate(c, '', 'code') "UnitConcept";
+                } "QuantityValue";
+                src.value : CodeableConcept as ccv -> tgt then {
+                    ccv.coding as vc -> tgt.value_as_concept_id = translate(vc, '', 'code') "ValueConcept";
+                } "CodeableConceptValue";
+                src.value : string as b -> tgt.value_source_value = b;
+            };
+        };
+    } "OnlyMeasures";
+};

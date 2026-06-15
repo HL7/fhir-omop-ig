@@ -1,0 +1,47 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/EncounterVisitMapR5'
+/// name = 'EncounterVisitMapR5'
+/// title = 'Mapping FHIR R5 Encounter resource to VisitOccurrence OMOP Domain'
+/// status = 'draft'
+/// description = "Maps FHIR R5 Encounter to OMOP Visit Occurrence. R5 changes: class is CodeableConcept (R4 was Coding), period renamed to actualPeriod, hospitalization renamed to admission."
+
+uses "http://hl7.org/fhir/StructureDefinition/Encounter" alias Encounter as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence" alias VisitTable as target
+
+group VisitOccurrenceR5(source src: Encounter, target tgt : VisitTable) {
+
+    src -> tgt.visit_occurrence_id = 1 "visit-id";
+    src -> tgt.person_id = 1 "person-id";
+
+    // R5: Encounter.class is now CodeableConcept (R4 was a single Coding — navigate directly).
+    src.class as cls -> tgt then {
+        cls.coding as sc -> tgt then {
+            sc -> tgt.visit_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterClass', 'code') "VisitConcept";
+            sc.code as a -> tgt.visit_source_value = a "VisitSrc";
+        };
+    };
+
+    // R5: period renamed to actualPeriod
+    src.actualPeriod as s -> tgt then {
+        s.start as std -> tgt.visit_start_date = (src.actualPeriod.start.toString().substring(0,10)), tgt.visit_start_datetime = std;
+        s.end as ed -> tgt.visit_end_date = (src.actualPeriod.end.toString().substring(0,10)), tgt.visit_end_datetime = ed;
+    };
+
+    src -> tgt.visit_type_concept_id = 32817 "VisitType";
+
+    // R5: hospitalization renamed to admission
+    src.admission as s -> tgt then {
+        s.admitSource as sa -> tgt then {
+            sa.coding as sc -> tgt then {
+                sc -> tgt.admitted_from_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterAdmitSource', 'code') "AdmitConcept";
+                sc.code as code -> tgt.admitted_from_source_value = code "AdmitSrc";
+            };
+        };
+        s.dischargeDisposition as sd -> tgt then {
+            sd.coding as sc -> tgt then {
+                sc -> tgt.discharged_to_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterDischargeDisposition', 'code') "DischargeConcept";
+                sc.code as code -> tgt.discharged_to_source_value = code "DischargeSrc";
+            };
+        };
+    };
+
+}

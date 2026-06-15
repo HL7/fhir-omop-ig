@@ -1,0 +1,23 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureSystolicMapR5'
+/// name = 'BloodPressureSystolicMapR5'
+/// title = 'Mapping Blood Pressure Systolic component to OMOP Measurement (R5)'
+/// status = 'draft'
+/// description = "Extracts systolic (LOINC 8480-6, concept 3004249) from R5 BP panel Observation to OMOP Measurement."
+
+uses "http://hl7.org/fhir/StructureDefinition/bp" alias BloodPressure as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
+
+group systolicMapR5(source src : BloodPressure, target tgt : MeasureTable) {
+    src -> tgt.measurement_id = 1 "measurement-id";
+    src -> tgt.person_id = 1 "person-id";
+    src -> tgt.visit_occurrence_id = 1 "visit-id";
+    src -> tgt.measurement_concept_id = 3004249 "concept-id";
+    src -> tgt.measurement_type_concept_id = 32817 "type-concept-id";
+    src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10)) "datetime";
+    src.component as comp where (comp.code.coding.code = '8480-6') -> tgt then {
+        comp.value : Quantity as qty -> tgt then {
+            qty.value as v -> tgt.value_as_number = v;
+            qty.unit as u -> tgt.unit_source_value = u;
+        } "systolic-value";
+    } "systolic-component";
+}

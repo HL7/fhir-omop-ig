@@ -1,0 +1,34 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ConditionMapR5'
+/// name = 'ConditionMapR5'
+/// title = 'Mapping FHIR R5 Condition resource to Condition Occurrence OMOP Domain'
+/// status = 'draft'
+/// description = "Maps FHIR R5 Condition to OMOP Condition Occurrence. Condition element paths are backward-compatible with R4."
+
+uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias ConOccTable as target
+
+group ConditionOccurrenceR5(source src : Condition, target tgt : ConOccTable) {
+    src -> tgt.condition_occurrence_id = 1 "cond-id";
+    src -> tgt.person_id = 1 "person-id";
+
+    src.code as s -> tgt then {
+        s.coding as sc -> tgt then {
+            sc -> tgt.condition_concept_id = translate(sc, '', 'code') "ConditionConcept";
+            sc.display as d -> tgt.condition_source_value = d;
+        };
+    };
+
+    src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"dateTime"), tgt.condition_start_date = rd;
+    src.onset : dateTime as osd -> tgt.condition_start_datetime = osd, tgt.condition_start_date = (osd.toString().substring(0,10));
+    src.abatement : dateTime as abdt -> tgt.condition_end_datetime = abdt, tgt.condition_end_date = (abdt.toString().substring(0,10));
+
+    src.clinicalStatus as s -> tgt then {
+        s.coding as sc -> tgt then {
+            sc -> tgt.condition_status_concept_id = translate(sc, '', 'code') "ConditionStatus";
+            sc.code as a -> tgt.condition_status_source_value = a "ConditionStatusSrc";
+        };
+    };
+
+    src -> tgt.visit_occurrence_id = 1 "visit-id";
+    src -> tgt.condition_type_concept_id = 32817 "ConditionType";
+};

@@ -1,0 +1,43 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ObservationMapR5'
+/// name = 'ObservationMapR5'
+/// title = 'Mapping FHIR R5 Observation resource to Observation OMOP Domain'
+/// status = 'draft'
+/// description = "Maps non-measurement FHIR R5 Observations to OMOP Observation. Categories: social-history, imaging, survey, exam, therapy, activity, procedure. Element paths are backward-compatible with R4."
+
+uses "http://hl7.org/fhir/StructureDefinition/Observation" alias Observation as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTable as target
+
+group ObserveR5(source src : Observation, target tgt : ObsTable) {
+    src where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure' ).supersetOf(Observation.category.coding.code) then {
+        src -> tgt.observation_id = 1 "obs-id";
+
+        src.code as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc -> tgt.observation_concept_id = translate(sc, '', 'code') "ObsConcept";
+            };
+        };
+
+        src -> tgt.person_id = 1 "person-id";
+        src -> tgt.visit_occurrence_id = 1 "visit-id";
+
+        src.effective : dateTime as a -> tgt.observation_datetime = a, tgt.observation_date = (a.toString().substring(0,10));
+        src.effective : instant as einst -> tgt.observation_datetime = cast(einst, "dateTime"), tgt.observation_date = (einst.toString().substring(0,10));
+        src.effective : Period as s -> tgt then {
+            s.start as ss -> tgt.observation_datetime = cast(ss, "dateTime"), tgt.observation_date = (ss.toString().substring(0,10));
+        };
+        src.issued as s where (s.toDate != src.effectiveDate) -> tgt.observation_source_value = cast(s, "string");
+
+        src.category -> tgt.observation_type_concept_id = 32817;
+
+        src.value : Quantity as s -> tgt then {
+            s.value as a -> tgt.value_as_number = a;
+            s.code as c -> tgt.unit_concept_id = translate(c, '', 'code') "UnitConcept";
+        };
+        src.value : CodeableConcept as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc -> tgt.value_as_concept_id = translate(sc, '', 'code') "ValueConcept";
+            };
+        };
+        src.value : string as b -> tgt.value_as_string = b;
+    } "OnlyObs";
+};
