@@ -21,6 +21,7 @@ group Measures(source src : VitalSigns, target tgt : MeasureTable) {
                 src.issued as iss where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(iss, "string") "VitalIssued";
                 src.value : Quantity as qty -> tgt then {
                     qty.value as v -> tgt.value_as_number = v;
+                    qty.unit as u -> tgt.unit_source_value = u;
                     qty.code as c -> tgt.unit_concept_id = translate(c, '', 'code') "UnitConcept";
                 } "QuantityValue";
                 src.value : CodeableConcept as ccv -> tgt then {

@@ -32,6 +32,7 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
         
         src.value : Quantity as s -> tgt then {
             s.value as a -> tgt.value_as_number = a;
+            s.unit as u -> tgt.unit_source_value = u;
             s.code as c -> tgt.unit_concept_id = translate(c, '', 'code') "UnitConcept";
         } "QuantityValue";
         src.value : CodeableConcept as s  -> tgt then {
