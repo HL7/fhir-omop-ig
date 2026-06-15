@@ -8,11 +8,10 @@ uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias ConOccTable as target
 
 group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     {
-    // OMOP Condition ID would be a map from FHIR ID to an external key
-    src.id as id -> tgt.condition_occurrence_id = 1;
-    
-    // OMOP Person ID would be a map from the FHIR Condition subject reference to an external key
-    src.subject -> tgt.person_id = 1;
+    src.id as id -> tgt.condition_occurrence_id = cast(id, "integer") "cond-id";
+    src.subject as sub -> tgt then {
+        sub.reference as ref -> tgt.person_id = cast(ref.replaceMatches('.*/', ''), "integer");
+    } "person-id";
 
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
@@ -32,7 +31,9 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
         };
     };
 
-    src.encounter -> tgt.visit_occurrence_id = 1;
+    src.encounter as enc -> tgt then {
+        enc.reference as ref -> tgt.visit_occurrence_id = cast(ref.replaceMatches('.*/', ''), "integer");
+    } "visit-id";
 
 
 
