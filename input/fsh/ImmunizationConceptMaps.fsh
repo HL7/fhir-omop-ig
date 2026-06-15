@@ -15,25 +15,25 @@ Usage: #definition
     * target
       * code = #32865
       * display = "Patient self-report"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #record
     * target
       * code = #32848
       * display = "Government report"
-      * relationship = #source-is-narrower-than-target
+      * equivalence = #narrower
   * element[+]
     * code = #school
     * target
       * code = #32848
       * display = "Government report"
-      * relationship = #source-is-narrower-than-target
+      * equivalence = #narrower
   * element[+]
     * code = #provider
     * target
       * code = #32818
       * display = "EHR administration record"
-      * relationship = #source-is-narrower-than-target
+      * equivalence = #narrower
 
 Instance: ImmunizationRoute
 InstanceOf: ConceptMap
@@ -52,37 +52,37 @@ Usage: #definition
     * target
       * code = #4156706
       * display = "Intradermal"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #IM
     * target
       * code = #4302612
       * display = "Intramuscular"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #IVINJ
     * target
       * code = #4171047
       * display = "Intravenous"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #PO
     * target
       * code = #4132161
       * display = "Oral"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #SQ
     * target
       * code = #4142048
       * display = "Subcutaneous"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #TRNSDERM
     * target
       * code = #4262099
       * display = "Transdermal"
-      * relationship = #equivalent
+      * equivalence = #equivalent
 
 Instance: ImmunizationVaccine
 InstanceOf: ConceptMap
@@ -101,16 +101,16 @@ Usage: #definition
     * target
       * code = #40225028
       * display = "influenza virus vaccine, inactivated (seasonal injectable)"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #141
     * target
       * code = #40225028
       * display = "influenza virus vaccine, inactivated (seasonal injectable)"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #171
     * target
       * code = #40213143
       * display = "Influenza, Madin Darby Canine Kidney, subunit, quadrivalent, injectable, preservative free"
-      * relationship = #equivalent
+      * equivalence = #equivalent

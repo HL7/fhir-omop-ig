@@ -15,38 +15,38 @@ Usage: #definition
     * target
       * code = #9201
       * display = "Inpatient Visit"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #AMB
     * target
       * code = #9202
       * display = "Outpatient Visit"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #OBSENC
     * target
       * code = #262
       * display = "Emergency Room and Inpatient Visit"
-      * relationship = #source-is-broader-than-target
+      * equivalence = #wider
       * comment = "The source code does not necessarily mean that the patient has moved to an inpatient visit"
   * element[+]
     * code = #EMER
     * target
       * code = #9203
       * display = "Emergency Room Visit"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #VR
     * target
       * code = #722455
       * display = "Telehealth"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #HH
     * target
       * code = #581476
       * display = "Home Visit"
-      * relationship = #equivalent
+      * equivalence = #equivalent
 
 Instance: EncounterAdmitSource
 InstanceOf: ConceptMap
@@ -65,60 +65,61 @@ Description: "An example mapping of FHIR Encounter admission source codes to OMO
     * target
       * code = #38004515
       * display = "Hospital"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #emd
     * target
       * code = #8870
       * display = "Emergency Room - Hospital"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #outp
     * target
       * code = #8756
       * display = "Outpatient Hospital"
-      * relationship = #source-is-broader-than-target
+      * equivalence = #wider
       * comment = "The source code implies any outpatient facility and not just a hospital"
   * element[+]
     * code = #born
     * target
       * code = #38004515
       * display = "Hospital"
-      * relationship = #source-is-narrower-than-target
+      * equivalence = #narrower
   * element[+]
     * code = #gp
     * target
       * code = #8940
       * display = "Office"
-      * relationship = #source-is-narrower-than-target
+      * equivalence = #narrower
   * element[+]
     * code = #mp
     * target
       * code = #8940
       * display = "Office"
-      * relationship = #source-is-narrower-than-target
+      * equivalence = #narrower
   * element[+]
     * code = #nursing
     * target
       * code = #8676
       * display = "Nursing Facility"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #psych
     * target
       * code = #8971
       * display = "Inpatient Psychiatric Facility"
-      * relationship = #source-is-broader-than-target
+      * equivalence = #wider
       * comment = "The source code does not imply an inpatient facility"
   * element[+]
     * code = #rehab
     * target
       * code = #38004254
       * display = "Rehabilitation Clinic/Center"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #other
-    * noMap = true
+    * target
+      * equivalence = #unmatched
 
 Instance: EncounterDischargeDisposition
 InstanceOf: ConceptMap
@@ -137,64 +138,65 @@ Usage: #definition
     * target
       * code = #8536
       * display = "Home"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #alt-home
     * target
       * code = #8536
       * display = "Home"
-      * relationship = #source-is-narrower-than-target
+      * equivalence = #narrower
   * element[+]
     * code = #other-hcf
     * target
       * code = #33007
       * display = "Alternate care site (ACS)"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #hosp
     * target
       * code = #8546
       * display = "Hospice"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #long
     * target
       * code = #38004277
       * display = "Long Term Care Hospital"
-      * relationship = #source-is-broader-than-target
+      * equivalence = #wider
       * comment = "The source code does not imply a hospital but any long term care facility"
   * element[+]
     * code = #aadvice
     * target
       * code = #32216
       * display = "Left against medical advice or discontinued care."
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #exp
     * target
       * code = #32218
       * display = "Expired"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #psy
     * target
       * code = #8971
       * display = "Inpatient Psychiatric Facility"
-      * relationship = #source-is-broader-than-target
+      * equivalence = #wider
       * comment = "The source code does not imply an inpatient facility"
   * element[+]
     * code = #rehab
     * target
       * code = #32266
       * display = "Clinic-Outpatient Rehab Facility (ORF)"
-      * relationship = #source-is-broader-than-target
+      * equivalence = #wider
       * comment = "The source code does not imply an outpatient facility"
   * element[+]
     * code = #snf
     * target
       * code = #8863
       * display = "Skilled Nursing Facility"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #oth
-    * noMap = true
+    * target
+      * equivalence = #unmatched

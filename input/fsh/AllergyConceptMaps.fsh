@@ -15,25 +15,25 @@ Usage: #definition
     * target
       * code = #4188027
       * display = "Allergy to food"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #medication
     * target
       * code = #439224
       * display = "Allergy to drug"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #environment
     * target
       * code = #4144450
       * display = "Environmental allergy"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #biologic
     * target
       * code = #43530807
       * display = "Allergic disposition"
-      * relationship = #source-is-narrower-than-target
+      * equivalence = #narrower
 
 Instance: IntoleranceType
 InstanceOf: ConceptMap
@@ -52,25 +52,25 @@ Usage: #definition
     * target
       * code = #4340252
       * display = "Intolerance to food"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #medication
     * target
       * code = #4240582
       * display = "Intolerance to drug"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #environment
     * target
       * code = #4172024
       * display = "Propensity to adverse reaction"
-      * relationship = #source-is-narrower-than-target
+      * equivalence = #narrower
   * element[+]
     * code = #biologic
     * target
       * code = #36684107
       * display = "Intolerance to substance"
-      * relationship = #source-is-narrower-than-target
+      * equivalence = #narrower
 
 Instance: AllergySubstanceType
 InstanceOf: ConceptMap
@@ -89,13 +89,13 @@ Usage: #definition
     * target
       * code = #4026477
       * display = "Cashew nut"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #323389000
     * target
       * code = #1728416
       * display = "benzylpenicillin"
-      * relationship = #equivalent
+      * equivalence = #equivalent
 * group[+]
   * source = "http://www.nlm.nih.gov/research/umls/rxnorm"
   * target = "https://fhir-terminology.ohdsi.org"
@@ -104,4 +104,4 @@ Usage: #definition
     * target
       * code = #1728416
       * display = "benzylpenicillin"
-      * relationship = #equivalent
+      * equivalence = #equivalent

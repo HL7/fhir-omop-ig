@@ -15,37 +15,37 @@ Usage: #definition
     * target
       * code = #8527
       * display = "White"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #2054-5
     * target
       * code = #8516
       * display = "Black or African American"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #2028-9
     * target
       * code = #8515
       * display = "Asian"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #1002-5
     * target
       * code = #8657
       * display = "American Indian or Alaska Native"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #2076-8
     * target
       * code = #8557
       * display = "Native Hawaiian or Other Pacific Islander"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #2131-1
     * target
       * code = #8522
       * display = "Other Race"
-      * relationship = #equivalent
+      * equivalence = #equivalent
 
 Instance: EthnicityClass
 InstanceOf: ConceptMap
@@ -64,13 +64,13 @@ Usage: #definition
     * target
       * code = #38003563
       * display = "Hispanic or Latino"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #2186-5
     * target
       * code = #38003564
       * display = "Not Hispanic or Latino"
-      * relationship = #equivalent
+      * equivalence = #equivalent
 
 Instance: GenderClass
 InstanceOf: ConceptMap
@@ -89,22 +89,22 @@ Usage: #definition
     * target
       * code = #8507
       * display = "Male"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #female
     * target
       * code = #8532
       * display = "Female"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #other
     * target
       * code = #44814653
       * display = "Other"
-      * relationship = #equivalent
+      * equivalence = #equivalent
   * element[+]
     * code = #unknown
     * target
       * code = #8551
       * display = "Unknown"
-      * relationship = #equivalent
+      * equivalence = #equivalent
