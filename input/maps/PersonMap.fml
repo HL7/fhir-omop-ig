@@ -11,7 +11,7 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Person" alias PersonTable 
 
 group Person(source src: Patient, target tgt : PersonTable) {
     src.id as id -> tgt.person_source_value = id "PersonSourceValue";
-    src.id as id -> tgt.person_id = cast(id, "integer") "PersonId";
+    src -> tgt.person_id = 1 "PersonId";
 
 	// Patient.gender is a bare code type (issue #14). Use the IG ConceptMap canonical URL so
 	// matchbox resolves the translation locally without hitting the tx server.

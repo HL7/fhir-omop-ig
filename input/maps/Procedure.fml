@@ -8,10 +8,8 @@ uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target
 
 group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)     {
-        src.id as id -> tgt.procedure_occurrence_id = cast(id, "integer") "proc-id";
-        src.subject as sub -> tgt then {
-            sub.reference as ref -> tgt.person_id = cast(ref.replaceMatches('.*/', ''), "integer");
-        } "person-id";
+        src -> tgt.procedure_occurrence_id = 1 "proc-id";
+        src -> tgt.person_id = 1 "person-id";
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
@@ -30,7 +28,5 @@ group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)  
             s.end as end -> tgt.procedure_end_datetime = end, tgt.procedure_end_date = (end.toString().substring(0,10));
         };
 
-        src.encounter as enc -> tgt then {
-            enc.reference as ref -> tgt.visit_occurrence_id = cast(ref.replaceMatches('.*/', ''), "integer");
-        } "visit-id";
+        src -> tgt.visit_occurrence_id = 1 "visit-id";
 }

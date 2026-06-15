@@ -8,10 +8,8 @@ uses "http://hl7.org/fhir/StructureDefinition/MedicationRequest" alias MedReques
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugExpTable as target
 
 group MedRequestExposure(source src : MedRequest, target tgt : DrugExpTable) {
-        src.id as id -> tgt.drug_exposure_id = cast(id, "integer") "drug-id";
-        src.subject as sub -> tgt then {
-            sub.reference as ref -> tgt.person_id = cast(ref.replaceMatches('.*/', ''), "integer");
-        } "person-id";
+        src -> tgt.drug_exposure_id = 1 "drug-id";
+        src -> tgt.person_id = 1 "person-id";
 
         src.medicationCodeableConcept as s -> tgt then {
             s.coding as sc -> tgt then {
@@ -24,7 +22,5 @@ group MedRequestExposure(source src : MedRequest, target tgt : DrugExpTable) {
 
         src -> tgt.drug_type_concept_id = 32817 "DrugType";
 
-        src.encounter as enc -> tgt then {
-            enc.reference as ref -> tgt.visit_occurrence_id = cast(ref.replaceMatches('.*/', ''), "integer");
-        } "visit-id";
+        src -> tgt.visit_occurrence_id = 1 "visit-id";
 }

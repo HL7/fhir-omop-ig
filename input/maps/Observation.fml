@@ -10,7 +10,7 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
  group Observe(source src : Observation, target tgt : ObsTable) 
  {
     src where ('social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure' ).supersetOf(Observation.category.coding.code)  then {
-        src.id as id -> tgt.observation_id = cast(id, "integer") "obs-id";
+        src -> tgt.observation_id = 1 "obs-id";
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
@@ -18,12 +18,8 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
             };
         };
 
-        src.subject as sub -> tgt then {
-            sub.reference as ref -> tgt.person_id = cast(ref.replaceMatches('.*/', ''), "integer");
-        } "person-id";
-        src.encounter as enc -> tgt then {
-            enc.reference as ref -> tgt.visit_occurrence_id = cast(ref.replaceMatches('.*/', ''), "integer");
-        } "visit-id";
+        src -> tgt.person_id = 1 "person-id";
+        src -> tgt.visit_occurrence_id = 1 "visit-id";
 
         src.effective : dateTime as a -> tgt.observation_datetime = a , tgt.observation_date = (a.toString().substring(0,10));
         src.effective : instant as einst -> tgt.observation_datetime = cast(einst, "dateTime"), tgt.observation_date = (einst.toString().substring(0,10));

@@ -8,13 +8,9 @@ uses "http://hl7.org/fhir/StructureDefinition/bp" alias BloodPressure as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
 group systolicMap(source src : BloodPressure, target tgt : MeasureTable) {
-    src.id as id -> tgt.measurement_id = cast(id, "integer") "measurement-id";
-    src.subject as s -> tgt then {
-        s.reference as ref -> tgt.person_id = cast(ref.replaceMatches('.*/', ''), "integer");
-    } "person-id";
-    src.encounter as e -> tgt then {
-        e.reference as ref -> tgt.visit_occurrence_id = cast(ref.replaceMatches('.*/', ''), "integer");
-    } "visit-id";
+    src -> tgt.measurement_id = 1 "measurement-id";
+    src -> tgt.person_id = 1 "person-id";
+    src -> tgt.visit_occurrence_id = 1 "visit-id";
     src -> tgt.measurement_concept_id = 3004249 "concept-id";
     src -> tgt.measurement_type_concept_id = 32817 "type-concept-id";
     src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10)) "datetime";

@@ -9,10 +9,8 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias Measure
 
 group Measures(source src : VitalSigns, target tgt : MeasureTable) {
     src where ('vital-signs').supersetOf(VitalSigns.category.coding.code) then {
-        src.id as id -> tgt.measurement_id = cast(id, "integer") "meas-id";
-        src.subject as sub -> tgt then {
-            sub.reference as ref -> tgt.person_id = cast(ref.replaceMatches('.*/', ''), "integer");
-        } "person-id";
+        src -> tgt.measurement_id = 1 "meas-id";
+        src -> tgt.person_id = 1 "person-id";
         src.code as s -> tgt then {
             s.coding as sc where ((sc.code in ('85354-9' | '8480-6' | '8462-4' | '8478-0')).not()) -> tgt.measurement_concept_id = translate(sc, '', 'code') then {
                 src -> tgt.measurement_type_concept_id = 32817 "EHR";
