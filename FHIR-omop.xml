@@ -27,16 +27,23 @@
 <artifact id="ConceptMap/EncounterDischargeDisposition" key="ConceptMap-EncounterDischargeDisposition" name="Encounter Discharge Disposition codes to OMOP"/>
 <artifact id="StructureDefinition/EpisodeEvent" key="StructureDefinition-EpisodeEvent" name="Episode Event OMOP Table"/>
 <artifact id="StructureDefinition/Episode" key="StructureDefinition-Episode" name="Episode OMOP Table"/>
-<artifact id="StructureMap/BloodPressureDiastolicMap" key="StructureMap-BloodPressureDiastolicMap" name="Extracts diastolic (LOINC 8462-4, concept 3012888) from BP panel Observation to OMOP Measurement. Uses suffix Measurement-Diastolic for distinct measurement_id vs BloodPressureSystolicMap."/>
-<artifact id="StructureMap/BloodPressureSystolicMap" key="StructureMap-BloodPressureSystolicMap" name="Extracts systolic (LOINC 8480-6, concept 3004249) from BP panel Observation to OMOP Measurement. Uses suffix Measurement-Systolic for distinct measurement_id vs BloodPressureDiastolicMap."/>
+<artifact id="StructureMap/BloodPressureDiastolicMap" key="StructureMap-BloodPressureDiastolicMap" name="Extracts diastolic (LOINC 8462-4, concept 3012888) from R5 BP panel Observation to OMOP Measurement."/>
+<artifact id="StructureMap/BloodPressureDiastolicMapR4" key="StructureMap-BloodPressureDiastolicMapR4" name="Extracts diastolic (LOINC 8462-4, concept 3012888) from BP panel Observation to OMOP Measurement. Uses suffix Measurement-Diastolic for distinct measurement_id vs BloodPressureSystolicMap."/>
+<artifact id="StructureMap/BloodPressureSystolicMap" key="StructureMap-BloodPressureSystolicMap" name="Extracts systolic (LOINC 8480-6, concept 3004249) from R5 BP panel Observation to OMOP Measurement."/>
+<artifact id="StructureMap/BloodPressureSystolicMapR4" key="StructureMap-BloodPressureSystolicMapR4" name="Extracts systolic (LOINC 8480-6, concept 3004249) from BP panel Observation to OMOP Measurement. Uses suffix Measurement-Systolic for distinct measurement_id vs BloodPressureDiastolicMap."/>
 <artifact id="StructureDefinition/FactRelationship" key="StructureDefinition-FactRelationship" name="Fact Relationship OMOP Table"/>
 <artifact id="ConceptMap/ImmunizationSource" key="ConceptMap-ImmunizationSource" name="Immunization information source codes to OMOP"/>
 <artifact id="ConceptMap/ImmunizationRoute" key="ConceptMap-ImmunizationRoute" name="Immunization route codes to OMOP"/>
 <artifact id="ConceptMap/ImmunizationVaccine" key="ConceptMap-ImmunizationVaccine" name="Immunization vaccine codes to OMOP"/>
 <artifact id="StructureDefinition/Location" key="StructureDefinition-Location" name="Location OMOP Table"/>
-<artifact id="StructureMap/MedicationMap" key="StructureMap-MedicationMap" name="Maps FHIR MedicationStatement to OMOP Drug Exposure. Does not map MedicationRequest; see notes."/>
-<artifact id="StructureMap/MeasurementMap" key="StructureMap-MeasurementMap" name="Maps measurement FHIR Observations (categories: vital-signs, laboratory) to OMOP Measurement."/>
-<artifact id="StructureMap/ObservationMap" key="StructureMap-ObservationMap" name="Maps non-measurement FHIR Observations to OMOP Observation. Categories: social-history, imaging, survey, exam, therapy, activity, and procedure."/>
+<artifact id="StructureMap/MedicationMapR4" key="StructureMap-MedicationMapR4" name="Maps FHIR MedicationStatement to OMOP Drug Exposure. Does not map MedicationRequest; see notes."/>
+<artifact id="StructureMap/MeasurementMap" key="StructureMap-MeasurementMap" name="Maps measurement FHIR R5 Observations (categories: vital-signs, laboratory) to OMOP Measurement. Element paths are backward-compatible with R4."/>
+<artifact id="StructureMap/MeasurementMapR4" key="StructureMap-MeasurementMapR4" name="Maps measurement FHIR Observations (categories: vital-signs, laboratory) to OMOP Measurement."/>
+<artifact id="StructureMap/ObservationMap" key="StructureMap-ObservationMap" name="Maps non-measurement FHIR R5 Observations to OMOP Observation. Categories: social-history, imaging, survey, exam, therapy, activity, procedure. Element paths are backward-compatible with R4."/>
+<artifact id="StructureMap/ObservationMapR4" key="StructureMap-ObservationMapR4" name="Maps non-measurement FHIR Observations to OMOP Observation. Categories: social-history, imaging, survey, exam, therapy, activity, and procedure."/>
+<artifact id="StructureMap/SimpleVitalSignsMap" key="StructureMap-SimpleVitalSignsMap" name="Maps simple FHIR R5 Vital Signs Observations to OMOP Measurement. Element paths are backward-compatible with R4."/>
+<artifact id="StructureMap/SimpleVitalSignsMapR4" key="StructureMap-SimpleVitalSignsMapR4" name="This mapping maps simple FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."/>
+<artifact id="StructureMap/MedicationStatementMap" key="StructureMap-MedicationStatementMap" name="Maps FHIR R5 MedicationStatement to OMOP Drug Exposure. R5 uses medication.concept (CodeableReference) instead of R4 medicationCodeableConcept."/>
 <artifact id="StructureDefinition/Measurement" key="StructureDefinition-Measurement" name="Measurement OMOP Table"/>
 <artifact id="StructureDefinition/NoteNLP" key="StructureDefinition-NoteNLP" name="Note NLP OMOP Table"/>
 <artifact id="StructureDefinition/Note" key="StructureDefinition-Note" name="Note OMOP Table"/>
@@ -47,15 +54,22 @@
 <artifact id="StructureDefinition/ProcedureOccurrence" key="StructureDefinition-ProcedureOccurrence" name="Procedure Occurrence OMOP Table"/>
 <artifact id="StructureDefinition/Provider" key="StructureDefinition-Provider" name="Provider OMOP Table"/>
 <artifact id="StructureDefinition/Specimen" key="StructureDefinition-Specimen" name="Specimen OMOP Table"/>
-<artifact id="StructureMap/AllergyMap" key="StructureMap-AllergyMap" name="This mapping maps FHIR AllergyIntolerance instances to OMOP Observation Table objects."/>
-<artifact id="StructureMap/ConditionMap" key="StructureMap-ConditionMap" name="This mapping maps FHIR Condition instances to OMOP Condition Occurence Table objects."/>
-<artifact id="StructureMap/EncounterVisitMap" key="StructureMap-EncounterVisitMap" name="This mapping maps FHIR Encounter instances to OMOP Visit Occurence Table objects."/>
-<artifact id="StructureMap/ImmunizationMap" key="StructureMap-ImmunizationMap" name="This mapping maps FHIR Immunization instances to OMOP Drug Exposure Table objects."/>
-<artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="This mapping maps FHIR Patient instances to OMOP Person Table objects."/>
-<artifact id="StructureMap/ProcedureMap" key="StructureMap-ProcedureMap" name="This mapping maps FHIR Procedure instances to OMOP Procedure Occurrence Table objects."/>
-<artifact id="StructureMap/MedicationRequestMap" key="StructureMap-MedicationRequestMap" name="This mapping maps FHIR R4 MedicationRequest instances to OMOP Drug Exposure Table objects."/>
-<artifact id="StructureMap/BloodPressureVitalSignsMap" key="StructureMap-BloodPressureVitalSignsMap" name="This mapping maps blood pressure FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."/>
-<artifact id="StructureMap/SimpleVitalSignsMap" key="StructureMap-SimpleVitalSignsMap" name="This mapping maps simple FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."/>
+<artifact id="StructureMap/AllergyMap" key="StructureMap-AllergyMap" name="Maps FHIR R5 AllergyIntolerance to OMOP Observation. R5 change: type is now CodeableConcept (R4 was bare code)."/>
+<artifact id="StructureMap/AllergyMapR4" key="StructureMap-AllergyMapR4" name="This mapping maps FHIR AllergyIntolerance instances to OMOP Observation Table objects."/>
+<artifact id="StructureMap/BloodPressureVitalSignsMap" key="StructureMap-BloodPressureVitalSignsMap" name="Maps blood pressure FHIR R5 Vital Signs Observations to OMOP Measurement. Element paths are backward-compatible with R4."/>
+<artifact id="StructureMap/BloodPressureVitalSignsMapR4" key="StructureMap-BloodPressureVitalSignsMapR4" name="This mapping maps blood pressure FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."/>
+<artifact id="StructureMap/ConditionMap" key="StructureMap-ConditionMap" name="Maps FHIR R5 Condition to OMOP Condition Occurrence. Condition element paths are backward-compatible with R4."/>
+<artifact id="StructureMap/ConditionMapR4" key="StructureMap-ConditionMapR4" name="This mapping maps FHIR Condition instances to OMOP Condition Occurence Table objects."/>
+<artifact id="StructureMap/EncounterVisitMap" key="StructureMap-EncounterVisitMap" name="Maps FHIR R5 Encounter to OMOP Visit Occurrence. R5 changes: class is CodeableConcept (R4 was Coding), period renamed to actualPeriod, hospitalization renamed to admission."/>
+<artifact id="StructureMap/EncounterVisitMapR4" key="StructureMap-EncounterVisitMapR4" name="This mapping maps FHIR Encounter instances to OMOP Visit Occurence Table objects."/>
+<artifact id="StructureMap/ImmunizationMap" key="StructureMap-ImmunizationMap" name="Maps FHIR R5 Immunization to OMOP Drug Exposure. R5 replaced primarySource/reportOrigin with informationSource (CodeableReference)."/>
+<artifact id="StructureMap/ImmunizationMapR4" key="StructureMap-ImmunizationMapR4" name="This mapping maps FHIR Immunization instances to OMOP Drug Exposure Table objects."/>
+<artifact id="StructureMap/MedicationRequestMap" key="StructureMap-MedicationRequestMap" name="Maps FHIR R5 MedicationRequest to OMOP Drug Exposure. R5 uses medication.concept (CodeableReference) instead of R4 medicationCodeableConcept."/>
+<artifact id="StructureMap/MedicationRequestMapR4" key="StructureMap-MedicationRequestMapR4" name="This mapping maps FHIR R4 MedicationRequest instances to OMOP Drug Exposure Table objects."/>
+<artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Maps FHIR R5 Patient to OMOP Person. Patient structure is backward-compatible with R4."/>
+<artifact id="StructureMap/PersonMapR4" key="StructureMap-PersonMapR4" name="This mapping maps FHIR Patient instances to OMOP Person Table objects."/>
+<artifact id="StructureMap/ProcedureMap" key="StructureMap-ProcedureMap" name="Maps FHIR R5 Procedure to OMOP Procedure Occurrence. R5 renamed performed[x] to occurrence[x]."/>
+<artifact id="StructureMap/ProcedureMapR4" key="StructureMap-ProcedureMapR4" name="This mapping maps FHIR Procedure instances to OMOP Procedure Occurrence Table objects."/>
 <artifact id="ConceptMap/EthnicityClass" key="ConceptMap-EthnicityClass" name="US Core Ethnicity codes to OMOP"/>
 <artifact id="ConceptMap/RaceClass" key="ConceptMap-RaceClass" name="US Core Race codes to OMOP"/>
 <artifact id="StructureDefinition/VisitDetail" key="StructureDefinition-VisitDetail" name="Visit Detail OMOP Table"/>
