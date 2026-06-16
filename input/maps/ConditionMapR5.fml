@@ -13,7 +13,7 @@ group ConditionOccurrenceR5(source src : Condition, target tgt : ConOccTable) {
 
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc -> tgt.condition_concept_id = translate(sc, '', 'code') "ConditionConcept";
+            sc -> tgt.condition_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code') "ConditionConcept";
             sc.display as d -> tgt.condition_source_value = d;
         };
     };
@@ -24,7 +24,7 @@ group ConditionOccurrenceR5(source src : Condition, target tgt : ConOccTable) {
 
     src.clinicalStatus as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc -> tgt.condition_status_concept_id = translate(sc, '', 'code') "ConditionStatus";
+            sc -> tgt.condition_status_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionStatusConcepts', 'code') "ConditionStatus";
             sc.code as a -> tgt.condition_status_source_value = a "ConditionStatusSrc";
         };
     };

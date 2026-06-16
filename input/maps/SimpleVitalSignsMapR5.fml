@@ -12,7 +12,7 @@ group MeasuresR5(source src : VitalSigns, target tgt : MeasureTable) {
         src -> tgt.measurement_id = 1 "meas-id";
         src -> tgt.person_id = 1 "person-id";
         src.code as s -> tgt then {
-            s.coding as sc where ((sc.code in ('85354-9' | '8480-6' | '8462-4' | '8478-0')).not()) -> tgt.measurement_concept_id = translate(sc, '', 'code') then {
+            s.coding as sc where ((sc.code in ('85354-9' | '8480-6' | '8462-4' | '8478-0')).not()) -> tgt.measurement_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/VitalSignsCodes', 'code') then {
                 src -> tgt.measurement_type_concept_id = 32817 "EHR";
                 src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10)) "VitalDatetime";
                 src.effective : Period as ep -> tgt then {

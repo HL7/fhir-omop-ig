@@ -15,7 +15,7 @@ group DrugExposureR5(source src: Immunization, target tgt : DrugExposureTable) {
 
     src.vaccineCode as s -> tgt then {
         s.coding first as sc -> tgt then {
-            sc -> tgt.drug_concept_id = translate(sc, '', 'code') "DrugConcept";
+            sc -> tgt.drug_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/ImmunizationVaccine', 'code') "DrugConcept";
             sc.code as c -> tgt.drug_source_value = c "DrugSrc";
         };
     };
@@ -26,7 +26,7 @@ group DrugExposureR5(source src: Immunization, target tgt : DrugExposureTable) {
 
     src.route as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc -> tgt.route_concept_id = translate(sc, '', 'code') "RouteConcept";
+            sc -> tgt.route_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/ImmunizationRoute', 'code') "RouteConcept";
             sc.code as c -> tgt.route_source_value = c "RouteSrc";
         };
     };

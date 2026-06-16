@@ -13,7 +13,7 @@ group bpMap(source src : BloodPressure, target tgt : MeasureTable) {
     src -> tgt.visit_occurrence_id = 1 "visit-id";
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc -> tgt.measurement_concept_id = translate(sc, '', 'code') "BPMeasureConcept";
+            sc -> tgt.measurement_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code') "BPMeasureConcept";
         };
     };
     src -> tgt.measurement_type_concept_id = 32817 "EHR";
