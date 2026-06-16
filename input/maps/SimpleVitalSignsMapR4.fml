@@ -1,13 +1,13 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/SimpleVitalSignsMapR5'
-/// name = 'SimpleVitalSignsMapR5'
-/// title = 'Mapping FHIR R5 Vital Signs Observation to Measurement OMOP Domain'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/SimpleVitalSignsMap'
+/// name = 'SimpleVitalSignsMap'
+/// title = 'Mapping Vital Signs resource to Measurement OMOP Domain'
 /// status = 'draft'
-/// description = "Maps simple FHIR R5 Vital Signs Observations to OMOP Measurement. Element paths are backward-compatible with R4."
+/// description = "This mapping maps simple FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."
 
 uses "http://hl7.org/fhir/StructureDefinition/vitalsigns" alias VitalSigns as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
-group MeasuresR5(source src : VitalSigns, target tgt : MeasureTable) {
+group Measures(source src : VitalSigns, target tgt : MeasureTable) {
     src where ('vital-signs').supersetOf(VitalSigns.category.coding.code) then {
         src -> tgt.measurement_id = 1 "meas-id";
         src -> tgt.person_id = 1 "person-id";

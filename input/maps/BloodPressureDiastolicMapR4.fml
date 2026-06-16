@@ -1,13 +1,13 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureDiastolicMapR5'
-/// name = 'BloodPressureDiastolicMapR5'
-/// title = 'Mapping Blood Pressure Diastolic component to OMOP Measurement (R5)'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureDiastolicMap'
+/// name = 'BloodPressureDiastolicMap'
+/// title = 'Mapping Blood Pressure Diastolic component to OMOP Measurement'
 /// status = 'draft'
-/// description = "Extracts diastolic (LOINC 8462-4, concept 3012888) from R5 BP panel Observation to OMOP Measurement."
+/// description = "Extracts diastolic (LOINC 8462-4, concept 3012888) from BP panel Observation to OMOP Measurement. Uses suffix Measurement-Diastolic for distinct measurement_id vs BloodPressureSystolicMap."
 
 uses "http://hl7.org/fhir/StructureDefinition/bp" alias BloodPressure as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
-group diastolicMapR5(source src : BloodPressure, target tgt : MeasureTable) {
+group diastolicMap(source src : BloodPressure, target tgt : MeasureTable) {
     src -> tgt.measurement_id = 1 "measurement-id";
     src -> tgt.person_id = 1 "person-id";
     src -> tgt.visit_occurrence_id = 1 "visit-id";

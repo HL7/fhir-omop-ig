@@ -1,47 +1,39 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/PersonMap'
-/// name = 'PersonMap'
-/// title = 'Mapping Patient resource to Person OMOP Domain'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/PersonMapR5'
+/// name = 'PersonMapR5'
+/// title = 'Mapping FHIR R5 Patient resource to Person OMOP Domain'
 /// status = 'draft'
-/// description = "This mapping maps FHIR Patient instances to OMOP Person Table objects."
+/// description = "Maps FHIR R5 Patient to OMOP Person. Patient structure is backward-compatible with R4."
 
 uses "http://hl7.org/fhir/StructureDefinition/Patient" alias Patient as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Person" alias PersonTable as target
 
-
-
-group Person(source src: Patient, target tgt : PersonTable) {
+group PersonR5(source src: Patient, target tgt : PersonTable) {
     src.id as id -> tgt.person_source_value = id "PersonSourceValue";
     src -> tgt.person_id = 1 "PersonId";
 
-	// Patient.gender is a bare code type (issue #14). Use the IG ConceptMap canonical URL so
-	// matchbox resolves the translation locally without hitting the tx server.
-	src.gender as gender -> tgt.gender_source_value = gender "GenderSrc";
-	src.gender as gender -> tgt.gender_concept_id = translate(gender, 'http://hl7.org/fhir/uv/omop/ConceptMap/GenderClass', 'code') "GenderConcept";
-	src where(src.gender.empty()) -> tgt.gender_concept_id = 0, tgt.gender_source_value = "unknown" "nogender";
+    src.gender as gender -> tgt.gender_source_value = gender "GenderSrc";
+    src.gender as gender -> tgt.gender_concept_id = translate(gender, 'http://hl7.org/fhir/uv/omop/ConceptMap/GenderClass', 'code') "GenderConcept";
+    src where(src.gender.empty()) -> tgt.gender_concept_id = 0, tgt.gender_source_value = "unknown" "nogender";
 
-	src.birthDate as bdSrc -> tgt.birth_datetime = bdSrc,
-		tgt.year_of_birth = (src.birthDate.toString().substring(0,4)),
-		tgt.month_of_birth = (src.birthDate.toString().substring(5,2)),
-		tgt.day_of_birth = (src.birthDate.toString().substring(8,2));
+    src.birthDate as bdSrc -> tgt.birth_datetime = bdSrc,
+        tgt.year_of_birth = (src.birthDate.toString().substring(0,4)),
+        tgt.month_of_birth = (src.birthDate.toString().substring(5,2)),
+        tgt.day_of_birth = (src.birthDate.toString().substring(8,2));
 
-	// Race/ethnicity default to 0 (Unknown); overridden below when US Core extensions are present.
-	src -> tgt.race_concept_id = 0 "RaceDefault";
-	src -> tgt.ethnicity_concept_id = 0 "EthnicityDefault";
+    src -> tgt.race_concept_id = 0 "RaceDefault";
+    src -> tgt.ethnicity_concept_id = 0 "EthnicityDefault";
 
-	// Race: navigate US Core race extension and translate via IG ConceptMap (issue #14 pattern).
-	// FML extension navigation uses "as var where url = '...'" not ".where()" function calls.
-	src.extension as raceExt where url = 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-race' -> tgt then {
-		raceExt.extension as ombExt where url = 'ombCategory' -> tgt then {
-			ombExt.value as sc -> tgt.race_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/RaceClass', 'code') "RaceConcept";
-			ombExt.value as sc -> tgt.race_source_value = (sc.code) "RaceSrc";
-		} "OmbRace";
-	} "RaceExt";
+    src.extension as raceExt where url = 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-race' -> tgt then {
+        raceExt.extension as ombExt where url = 'ombCategory' -> tgt then {
+            ombExt.value as sc -> tgt.race_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/RaceClass', 'code') "RaceConcept";
+            ombExt.value as sc -> tgt.race_source_value = (sc.code) "RaceSrc";
+        } "OmbRace";
+    } "RaceExt";
 
-	// Ethnicity: navigate US Core ethnicity extension.
-	src.extension as ethExt where url = 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity' -> tgt then {
-		ethExt.extension as ombExt where url = 'ombCategory' -> tgt then {
-			ombExt.value as sc -> tgt.ethnicity_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/EthnicityClass', 'code') "EthnicityConcept";
-			ombExt.value as sc -> tgt.ethnicity_source_value = (sc.code) "EthnicitySrc";
-		} "OmbEthnicity";
-	} "EthnicityExt";
+    src.extension as ethExt where url = 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity' -> tgt then {
+        ethExt.extension as ombExt where url = 'ombCategory' -> tgt then {
+            ombExt.value as sc -> tgt.ethnicity_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/EthnicityClass', 'code') "EthnicityConcept";
+            ombExt.value as sc -> tgt.ethnicity_source_value = (sc.code) "EthnicitySrc";
+        } "OmbEthnicity";
+    } "EthnicityExt";
 }

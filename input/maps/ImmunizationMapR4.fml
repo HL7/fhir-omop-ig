@@ -1,0 +1,47 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ImmunizationMap'
+/// name = 'ImmunizationMap'
+/// title = 'Mapping Immunization resource to Drug Exposure OMOP Domain'
+/// status = 'draft'
+/// description = "This mapping maps FHIR Immunization instances to OMOP Drug Exposure Table objects."
+
+uses "http://hl7.org/fhir/StructureDefinition/Immunization" alias Immunization as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugExposureTable as target
+
+group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
+
+    src -> tgt.drug_exposure_id = 1 "drug-id";
+    src -> tgt.person_id = 1 "person-id";
+    src -> tgt.visit_occurrence_id = 1 "visit-id";
+
+	src.vaccineCode as s -> tgt then {
+		s.coding first as sc -> tgt then {
+			sc -> tgt.drug_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/ImmunizationVaccine', 'code') "DrugConcept";
+			sc.code as c -> tgt.drug_source_value = c "DrugSrc";
+		};
+	};
+	
+	src.doseQuantity as s -> tgt then {
+		s.value as s -> tgt.quantity = s;
+	};
+	
+	src.route as s -> tgt then {
+		s.coding as sc -> tgt then {
+			sc -> tgt.route_concept_id = translate(sc, 'http://hl7.org/fhir/uv/omop/ConceptMap/ImmunizationRoute', 'code') "RouteConcept";
+			sc.code as c -> tgt.route_source_value = c "RouteSrc";
+		};
+	};
+    
+	src where(src.informationSource.empty()) -> tgt.drug_type_concept_id = 32818 "emptysource";
+
+    src.informationSource as s -> tgt then {
+        s.concept as concept -> tgt then {
+            concept.coding as sc -> tgt then {
+                sc -> tgt.drug_type_concept_id = translate(sc, '', 'code') "DrugTypeConcept";
+            };
+        };
+    };
+	
+	src.occurrence : dateTime as odt -> tgt.drug_exposure_start_date = (src.occurrence.toString().substring(0,10)), tgt.drug_exposure_start_datetime = odt, tgt.drug_exposure_end_date = (src.occurrence.toString().substring(0,10)), tgt.drug_exposure_end_datetime = odt;
+	
+	src.lotNumber as s -> tgt.lot_number;
+}

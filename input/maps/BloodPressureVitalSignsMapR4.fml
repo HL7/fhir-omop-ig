@@ -1,13 +1,13 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureVitalSignsMapR5'
-/// name = 'BloodPressureVitalSignsMapR5'
-/// title = 'Mapping FHIR R5 Blood Pressure Observation to Measurement OMOP Domain'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureVitalSignsMap'
+/// name = 'BloodPressureVitalSignsMap'
+/// title = 'Mapping Blood Pressure Vital Signs resource to Measurement OMOP Domain'
 /// status = 'draft'
-/// description = "Maps blood pressure FHIR R5 Vital Signs Observations to OMOP Measurement. Element paths are backward-compatible with R4."
+/// description = "This mapping maps blood pressure FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."
 
 uses "http://hl7.org/fhir/StructureDefinition/bp" alias BloodPressure as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
-group bpMapR5(source src : BloodPressure, target tgt : MeasureTable) {
+group bpMap(source src : BloodPressure, target tgt : MeasureTable) {
     src -> tgt.measurement_id = 1 "measurement-id";
     src -> tgt.person_id = 1 "person-id";
     src -> tgt.visit_occurrence_id = 1 "visit-id";
