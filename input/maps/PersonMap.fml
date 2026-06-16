@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/PersonMapR5'
-/// name = 'PersonMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/PersonMap'
+/// name = 'PersonMap'
 /// title = 'Mapping FHIR R5 Patient resource to Person OMOP Domain'
 /// status = 'draft'
 /// description = "Maps FHIR R5 Patient to OMOP Person. Patient structure is backward-compatible with R4."

@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ImmunizationMap'
-/// name = 'ImmunizationMap'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ImmunizationMapR4'
+/// name = 'ImmunizationMapR4'
 /// title = 'Mapping Immunization resource to Drug Exposure OMOP Domain'
 /// status = 'draft'
 /// description = "This mapping maps FHIR Immunization instances to OMOP Drug Exposure Table objects."

@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/AllergyMapR5'
-/// name = 'AllergyMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/AllergyMap'
+/// name = 'AllergyMap'
 /// title = 'Mapping FHIR R5 AllergyIntolerance resource to Observation OMOP Domain'
 /// status = 'draft'
 /// description = "Maps FHIR R5 AllergyIntolerance to OMOP Observation. R5 change: type is now CodeableConcept (R4 was bare code)."

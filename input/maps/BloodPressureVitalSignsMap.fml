@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureVitalSignsMapR5'
-/// name = 'BloodPressureVitalSignsMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureVitalSignsMap'
+/// name = 'BloodPressureVitalSignsMap'
 /// title = 'Mapping FHIR R5 Blood Pressure Observation to Measurement OMOP Domain'
 /// status = 'draft'
 /// description = "Maps blood pressure FHIR R5 Vital Signs Observations to OMOP Measurement. Element paths are backward-compatible with R4."

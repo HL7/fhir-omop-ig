@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ObservationMapR5'
-/// name = 'ObservationMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ObservationMap'
+/// name = 'ObservationMap'
 /// title = 'Mapping FHIR R5 Observation resource to Observation OMOP Domain'
 /// status = 'draft'
 /// description = "Maps non-measurement FHIR R5 Observations to OMOP Observation. Categories: social-history, imaging, survey, exam, therapy, activity, procedure. Element paths are backward-compatible with R4."

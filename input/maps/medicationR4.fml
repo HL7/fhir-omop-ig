@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/MedicationMap'
-/// name = 'MedicationMap'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/MedicationMapR4'
+/// name = 'MedicationMapR4'
 /// title = 'Mapping MedicationStatement resource to DrugExposure OMOP Domain'
 /// status = 'draft'
 /// description = "Maps FHIR MedicationStatement to OMOP Drug Exposure. Does not map MedicationRequest; see notes."

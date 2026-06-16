@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ConditionMapR5'
-/// name = 'ConditionMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ConditionMap'
+/// name = 'ConditionMap'
 /// title = 'Mapping FHIR R5 Condition resource to Condition Occurrence OMOP Domain'
 /// status = 'draft'
 /// description = "Maps FHIR R5 Condition to OMOP Condition Occurrence. Condition element paths are backward-compatible with R4."

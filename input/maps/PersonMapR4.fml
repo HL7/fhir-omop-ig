@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/PersonMap'
-/// name = 'PersonMap'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/PersonMapR4'
+/// name = 'PersonMapR4'
 /// title = 'Mapping Patient resource to Person OMOP Domain'
 /// status = 'draft'
 /// description = "This mapping maps FHIR Patient instances to OMOP Person Table objects."

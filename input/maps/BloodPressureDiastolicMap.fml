@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureDiastolicMapR5'
-/// name = 'BloodPressureDiastolicMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureDiastolicMap'
+/// name = 'BloodPressureDiastolicMap'
 /// title = 'Mapping Blood Pressure Diastolic component to OMOP Measurement (R5)'
 /// status = 'draft'
 /// description = "Extracts diastolic (LOINC 8462-4, concept 3012888) from R5 BP panel Observation to OMOP Measurement."

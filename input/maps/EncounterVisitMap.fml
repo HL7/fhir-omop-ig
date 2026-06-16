@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/EncounterVisitMapR5'
-/// name = 'EncounterVisitMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/EncounterVisitMap'
+/// name = 'EncounterVisitMap'
 /// title = 'Mapping FHIR R5 Encounter resource to VisitOccurrence OMOP Domain'
 /// status = 'draft'
 /// description = "Maps FHIR R5 Encounter to OMOP Visit Occurrence. R5 changes: class is CodeableConcept (R4 was Coding), period renamed to actualPeriod, hospitalization renamed to admission."

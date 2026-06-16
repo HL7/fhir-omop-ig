@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ConditionMap'
-/// name = 'ConditionMap'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ConditionMapR4'
+/// name = 'ConditionMapR4'
 /// title = 'Mapping Condition resource to Condition Occurrence OMOP Domain'
 /// status = 'draft'
 /// description = "This mapping maps FHIR Condition instances to OMOP Condition Occurence Table objects."

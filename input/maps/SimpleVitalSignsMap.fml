@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/SimpleVitalSignsMapR5'
-/// name = 'SimpleVitalSignsMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/SimpleVitalSignsMap'
+/// name = 'SimpleVitalSignsMap'
 /// title = 'Mapping FHIR R5 Vital Signs Observation to Measurement OMOP Domain'
 /// status = 'draft'
 /// description = "Maps simple FHIR R5 Vital Signs Observations to OMOP Measurement. Element paths are backward-compatible with R4."

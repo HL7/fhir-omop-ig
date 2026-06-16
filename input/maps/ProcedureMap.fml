@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ProcedureMapR5'
-/// name = 'ProcedureMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ProcedureMap'
+/// name = 'ProcedureMap'
 /// title = 'Mapping FHIR R5 Procedure resource to Procedure Occurrence OMOP Domain'
 /// status = 'draft'
 /// description = "Maps FHIR R5 Procedure to OMOP Procedure Occurrence. R5 renamed performed[x] to occurrence[x]."

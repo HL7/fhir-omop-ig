@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ImmunizationMapR5'
-/// name = 'ImmunizationMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ImmunizationMap'
+/// name = 'ImmunizationMap'
 /// title = 'Mapping FHIR R5 Immunization resource to Drug Exposure OMOP Domain'
 /// status = 'draft'
 /// description = "Maps FHIR R5 Immunization to OMOP Drug Exposure. R5 replaced primarySource/reportOrigin with informationSource (CodeableReference)."

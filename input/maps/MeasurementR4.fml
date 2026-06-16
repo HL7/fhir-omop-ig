@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/MeasurementMap'
-/// name = 'MeasurementMap'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/MeasurementMapR4'
+/// name = 'MeasurementMapR4'
 /// title = 'Mapping Observation resource to Measurement  OMOP Domain'
 /// status = 'draft'
 /// description = "Maps measurement FHIR Observations (categories: vital-signs, laboratory) to OMOP Measurement."

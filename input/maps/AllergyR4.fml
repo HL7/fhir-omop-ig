@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/AllergyMap'
-/// name = 'AllergyMap'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/AllergyMapR4'
+/// name = 'AllergyMapR4'
 /// title = 'Mapping Allergy resource to Observation OMOP Domain'
 /// status = 'draft'
 

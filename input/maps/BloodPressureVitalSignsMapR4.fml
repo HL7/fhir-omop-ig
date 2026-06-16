@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureVitalSignsMap'
-/// name = 'BloodPressureVitalSignsMap'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureVitalSignsMapR4'
+/// name = 'BloodPressureVitalSignsMapR4'
 /// title = 'Mapping Blood Pressure Vital Signs resource to Measurement OMOP Domain'
 /// status = 'draft'
 /// description = "This mapping maps blood pressure FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."

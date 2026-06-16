@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/SimpleVitalSignsMap'
-/// name = 'SimpleVitalSignsMap'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/SimpleVitalSignsMapR4'
+/// name = 'SimpleVitalSignsMapR4'
 /// title = 'Mapping Vital Signs resource to Measurement OMOP Domain'
 /// status = 'draft'
 /// description = "This mapping maps simple FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."

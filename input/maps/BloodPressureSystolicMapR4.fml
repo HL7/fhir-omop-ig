@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureSystolicMap'
-/// name = 'BloodPressureSystolicMap'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/BloodPressureSystolicMapR4'
+/// name = 'BloodPressureSystolicMapR4'
 /// title = 'Mapping Blood Pressure Systolic component to OMOP Measurement'
 /// status = 'draft'
 /// description = "Extracts systolic (LOINC 8480-6, concept 3004249) from BP panel Observation to OMOP Measurement. Uses suffix Measurement-Systolic for distinct measurement_id vs BloodPressureDiastolicMap."

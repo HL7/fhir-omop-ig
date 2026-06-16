@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/MedicationStatementMapR5'
-/// name = 'MedicationStatementMapR5'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/MedicationStatementMap'
+/// name = 'MedicationStatementMap'
 /// title = 'Mapping FHIR R5 MedicationStatement resource to DrugExposure OMOP Domain'
 /// status = 'draft'
 /// description = "Maps FHIR R5 MedicationStatement to OMOP Drug Exposure. R5 uses medication.concept (CodeableReference) instead of R4 medicationCodeableConcept."

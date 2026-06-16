@@ -1,5 +1,5 @@
-/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ProcedureMap'
-/// name = 'ProcedureMap'
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ProcedureMapR4'
+/// name = 'ProcedureMapR4'
 /// title = 'Mapping Procedure resource to Procedure Occurrence OMOP Domain'
 /// status = 'draft'
 /// description = "This mapping maps FHIR Procedure instances to OMOP Procedure Occurrence Table objects."
