@@ -99,14 +99,14 @@ Usage: #definition
   * element[+]
     * code = #140
     * target
-      * code = #40225028
-      * display = "influenza virus vaccine, inactivated (seasonal injectable)"
+      * code = #40213154
+      * display = "Influenza, split virus, trivalent, injectable, preservative free"
       * equivalence = #equivalent
   * element[+]
     * code = #141
     * target
-      * code = #40225028
-      * display = "influenza virus vaccine, inactivated (seasonal injectable)"
+      * code = #40213153
+      * display = "Influenza, split virus, trivalent, injectable, contains preservative"
       * equivalence = #equivalent
   * element[+]
     * code = #171
