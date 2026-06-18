@@ -26,12 +26,18 @@ group RecordSet(source src: Bundle, target tgt : RecordSetTable) {
     src.timestamp as ts -> tgt.record_set_timestamp = ts;
 
     // Map bundle entries
-
-
     src.entry as entry -> tgt then {
+        entry.resource : AllergyIntolerance as a -> tgt then {
+            a -> tgt.allergy as allergy then Allergy(a, allergy) "allergyEntry";
+        } "allergyIntoleranceEntry";
+        entry.resource : Condition as condition -> tgt then {
+            condition -> tgt.condition as conditionOccurrence then ConditionOccurrence(condition, conditionOccurrence) "conditionEntry";
+        } "conditionOccurenceEntry";
         entry.resource : Observation as observation -> tgt then {
-            observation where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) -> tgt.measurement as measurement then Measures(observation, measurement) "measurementEntry";
+            observation -> tgt.measurement as measurement then Measures(observation, measurement) "measurementEntry";
+            observation -> tgt as vitalsign then Systolic(observation, vitalsign) "systolicEntry";
+            observation -> tgt as vitalsign then Diastolic(observation, vitalsign) "diastolicEntry";
         } "observationEntry";
     } "bundleEntry";
 
-};re
+};

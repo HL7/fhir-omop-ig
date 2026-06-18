@@ -8,7 +8,7 @@
 uses "http://hl7.org/fhir/StructureDefinition/AllergyIntolerance" alias Allergy as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObservationTable as target
 
-group Observation(source src: Allergy, target tgt : ObservationTable) {
+group Allergy(source src: Allergy, target tgt : ObservationTable) {
 
     // OMOP Observation ID would be a map from FHIR ID to an external key
     src.id  -> tgt.observation_id = 1;

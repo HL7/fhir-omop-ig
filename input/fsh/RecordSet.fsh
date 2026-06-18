@@ -10,5 +10,6 @@ Description: "Collection of records belonging to a single patient."
 * patient_id 1..1 integer "Patient Identifier" ""
 
 * allergy 0..* Observation "Allergy Observation" ""
+* condition 0..* ConditionOccurrence "Condition" ""
 * measurement 0..* Measurement "Measurement" ""
 * medication 0..* Medication "Medication" ""

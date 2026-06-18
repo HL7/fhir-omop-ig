@@ -4,53 +4,73 @@
 /// status = 'draft'
 /// description = "This mapping maps blood pressure FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."
 
-uses "http://hl7.org/fhir/StructureDefinition/bp" alias BloodPressure as source
-uses "http://hl7.org/fhir/StructureDefinition/Bundle" as target
-uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias Measurement as target
+uses "http://hl7.org/fhir/StructureDefinition/Observation" alias BloodPressure as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/RecordSet" alias BPRecord as target
 
-//make the bundle
-group bpMap(source src : BloodPressure, target bundle : Bundle) {
-    src -> bundle.id = uuid() "bundle-id";
-    src -> bundle.type = 'collection' "bundle-type";
+//make the systolic measurement table
+group Systolic(source src : BloodPressure, target tgt : BPRecord) {
+    src where ('vital-signs' ).supersetOf(Observation.category.coding.code) then { 
+        src.id as id -> tgt.measurement as m = 1;
+        src.component as comp -> tgt then{
+            src.code as s -> tgt then {
+                s.coding as sc -> tgt.measurement as m then {
+                    sc.code as a where (a in ('8480-6')) -> m.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code') then {
 
-    src as parent -> bundle.entry as entry then {
-        parent -> entry.fullUrl = "BloodPressure" "entryURL";
-        parent -> entry.resource = create("Measurement") as parentTable then parentTable(parent, parentTable) "bpEntryResource";
-    } "bpBundleEntry";
-
-    src.component as comp -> bundle.entry as entry then {
-        comp -> entry.fullUrl = "Component 1" "entryURL";
-        comp where (comp.code.coding.code = '8480-6') -> entry.resource = create("Measurement") as sysTable then systolicTable(comp, sysTable) "systolicEntryResource";
-        comp where (comp.code.coding.code = '8462-4') -> entry.resource = create("Measurement") as diasTable then diastolicTable(comp, diasTable) "diastolicEntryResource";
-
-    } "bpComponentEntries";
-}
-
-group systolicTable(source comp, target sysTable: Measurement) {
-    comp.code -> sysTable.measurement_concept_id = 3004249;
-    comp.value: quantity as qty -> sysTable then {
-        qty.value -> sysTable.value_as_number;
-        qty.unit -> sysTable.unit_concept_id;
-    } "systolicMeasure";
-}
-     
-group diastolicTable(source comp, target diasTable : Measurement) {
-    comp.code -> diasTable.measurement_concept_id = 3012888;
-    comp.value: quantity as qty -> diasTable then {
-        qty.value -> diasTable.value_as_number;
-        qty.unit -> diasTable.unit_concept_id;
-    } "diastolicMeasure";
+                    src.effective : dateTime as edt -> m.measurement_datetime = edt, m.measurement_date = cast(edt, "date");
+                    sc.display as display -> m.measurement_concept_id = display;
+                    src.effective : dateTime as edt -> m.measurement_datetime = edt, m.measurement_date = cast(edt, "date");
+                    src.effective : Period as s -> m then {
+                        s.start as eps -> m.measurement_datetime = cast(eps, "dateTime"), m.measurement_date = cast(eps, "date");
+                    };                        
+                    src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> m.measurement_source_value = cast(s, "string");
+                    src.value : Quantity as s -> m then {
+                        s.value as a -> m.value_as_number = a;
+                        s.unit as b -> m.unit_concept_id = b;
+                    };
+                    src.value : CodeableConcept as s  -> m then {
+                        s.coding as sc -> m then {
+                            sc.code as code -> m.value_as_concept_id = code;
+                        };
+                    };
+                    src.value : string as b -> m.value_source_value = b;
+                    src.interpretation as c -> m.value_as_concept_id = c;
+                    src.note  as d -> m.measurement_source_value = d; 
+                };
+                };
+            };  
+        };
+         
+    } "bpSystolic";
 };
 
-group parentTable(source src: BloodPressure, target tgt: Measurement) {
-    src.code as s -> tgt then {
-        s.coding as sc -> tgt then {
-            sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
+//make the diastolic measurement table
+group Diastolic(source src : BloodPressure, target tgt : BPRecord) {
+    src where ('vital-signs' ).supersetOf(Observation.category.coding.code) then { 
+        src.component as comp -> tgt then{
+            src.code as s -> tgt then {
+                s.coding as sc -> tgt.measurement as m then {
+                    sc.code as a where (a in ('8462-4')) -> m.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code') then {
+                        sc.display as display -> m.measurement_concept_id = display;
+                            src.effective : dateTime as edt -> m.measurement_datetime = edt, m.measurement_date = cast(edt, "date");
+                            src.effective : Period as s -> m then {
+                                s.start as eps -> m.measurement_datetime = cast(eps, "dateTime"), m.measurement_date = cast(eps, "date");
+                            };                        
+                            src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> m.measurement_source_value = cast(s, "string");
+                            src.value : Quantity as s -> m then {
+                                s.value as a -> m.value_as_number = a;
+                                s.unit as b -> m.unit_concept_id = b;
+                            };
+                            src.value : CodeableConcept as s  -> m then {
+                                s.coding as sc -> m then {
+                                    sc.code as code -> m.value_as_concept_id = code;
+                                };
+                            };
+                            src.value : string as b -> m.value_source_value = b;
+                            src.interpretation as c -> m.value_as_concept_id = c;
+                            src.note  as d -> m.measurement_source_value = d;
+                    };
+                };
+            };
         };
-    };
-    src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
-    src.effective : Period as s -> tgt then {
-        s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = cast(eps, "date");
-    };                        
-    src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
+    } "bpDiastolic";
 };

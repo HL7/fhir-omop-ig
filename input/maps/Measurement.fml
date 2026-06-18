@@ -8,7 +8,7 @@ uses "http://hl7.org/fhir/StructureDefinition/Observation" alias Observation as 
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
 group Measures(source src : Observation, target tgt : MeasureTable) {
-    src where ('vital-signs' | 'laboratory' ).supersetOf(Observation.category.coding.code) then { 
+    src where ('laboratory' ).supersetOf(Observation.category.coding.code) then { 
         src.id as id -> tgt.measurement_id = 1;
 
         src.code as s -> tgt then {
@@ -20,12 +20,12 @@ group Measures(source src : Observation, target tgt : MeasureTable) {
         src.subject -> tgt.person_id = 1;
         src.encounter ->  tgt.visit_occurrence_id = 1;
 
-        src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
-        src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), tgt.measurement_date = cast(einst, "date");
+        src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10));
+        src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), (einst.toString().substring(0,10));
         src.effective : Period as s -> tgt then {
-            s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = cast(eps, "date");
+            s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = (eps.toString().substring(0,10));
         } "MeasurementDate";
-        src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = cast(s, "string");
+        src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = (s.toString());
         
         src.category -> tgt.measurement_type_concept_id = 32817 "EHR";
         src.performer -> tgt.provider_id = 1;
