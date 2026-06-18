@@ -35,8 +35,7 @@ group RecordSet(source src: Bundle, target tgt : RecordSetTable) {
         } "conditionOccurenceEntry";
         entry.resource : Observation as observation -> tgt then {
             observation -> tgt.measurement as measurement then Measures(observation, measurement) "measurementEntry";
-            observation -> tgt as vitalsign then Systolic(observation, vitalsign) "systolicEntry";
-            observation -> tgt as vitalsign then Diastolic(observation, vitalsign) "diastolicEntry";
+            observation -> tgt as recordSet then BloodPressure(observation, recordSet) "bloodPressureEntry";
         } "observationEntry";
     } "bundleEntry";
 
