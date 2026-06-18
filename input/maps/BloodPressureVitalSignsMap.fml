@@ -34,7 +34,11 @@ group parentTable(source src: BloodPressure, target tgt: Measurement) {
 
 //make the systolic measurement table
 group Systolic(source src : BloodPressure, target tgt : Measurement) {
-    src.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
+    src.code as s -> tgt then {
+        s.coding as sc -> tgt then {
+            sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
+        };
+    };
 
     src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10));
     src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), (einst.toString().substring(0,10));
@@ -44,14 +48,18 @@ group Systolic(source src : BloodPressure, target tgt : Measurement) {
     src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = (s.toString());
 
     src.value : Quantity as s -> tgt then {
-        s.value as a -> tgt.value_as_number = a;
-        s.unit as b -> tgt.unit_concept_id = b;
+        s.value as a -> tgt.value_as_number = a, tgt.unit_concept_id = 8876;
     };
 };
 
 //make the diastolic measurement table
 group Diastolic(source src : BloodPressure, target tgt : Measurement) {
-    src.code as a where (a in ('8462-4')) -> m.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
+    src.code as s -> tgt then {
+        s.coding as sc -> tgt then {
+            sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
+        };
+    };
+
     src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10));
     src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), (einst.toString().substring(0,10));
     src.effective : Period as s -> tgt then {
@@ -59,8 +67,7 @@ group Diastolic(source src : BloodPressure, target tgt : Measurement) {
     } "MeasurementDate";
     src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = (s.toString());
 
-    src.value : Quantity as s -> m then {
-        s.value as a -> m.value_as_number = a;
-        s.unit as b -> m.unit_concept_id = b;
+    src.value : Quantity as s -> tgt then {
+        s.value as a -> tgt.value_as_number = a, tgt.unit_concept_id = 8876;
     };
 };
