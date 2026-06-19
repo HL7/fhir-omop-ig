@@ -36,6 +36,7 @@ group RecordSet(source src: Bundle, target tgt : RecordSetTable) {
         entry.resource : Observation as observation -> tgt then {
             observation -> tgt.measurement as measurement then Measures(observation, measurement) "measurementEntry";
             observation -> tgt as recordSet then BloodPressure(observation, recordSet) "bloodPressureEntry";
+            observation -> tgt.measurement as vitalSign then VitalSigns(observation, vitalSign) "simpleVitalSignEntry";
         } "observationEntry";
     } "bundleEntry";
 

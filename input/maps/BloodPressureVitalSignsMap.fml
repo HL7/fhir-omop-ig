@@ -9,19 +9,27 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/RecordSet" alias BPRecord 
 
 //make the bundle
 group BloodPressure(source src : BloodPressure, target recordSet : BPRecord) {
-    src as parent -> recordSet.measurement as measurement then parentTable(parent, measurement) "bpMeasurement";
-
-    src.component as comp -> recordSet then {
-        comp where (comp.code.coding.code = '8480-6') -> recordSet.measurement as measurement then Systolic(comp, measurement) "systolicMeasurement";
-        comp where (comp.code.coding.code = '8462-4') -> recordSet.measurement as measurement then Diastolic(comp, measurement) "diastolicMeasurement";
-
+    src where ('vital-signs').supersetOf(VitalSigns.category.coding.code) then {
+        src.code as s -> recordSet then {
+            s.coding as sc -> recordSet then {
+                sc.code as a where (a in ('85354-9' | '8478-0')) -> recordSet then {
+                     src as parent -> recordSet.measurement as measurement then parentTable(parent, measurement) "bpMeasurement";
+                     src.component as comp -> recordSet then {
+                        comp where (comp.code.coding.code = '8480-6') -> recordSet.measurement as measurement then Systolic(comp, measurement) "systolicMeasurement";
+                        comp where (comp.code.coding.code = '8462-4') -> recordSet.measurement as measurement then Diastolic(comp, measurement) "diastolicMeasurement";
+                    };
+                };
+            };
+        };
     } "bpComponentEntries";
 }
 
 group parentTable(source src: BloodPressure, target tgt: Measurement) {
+    src.id -> tgt.measurement_id = 1;
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
             sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
+            sc.display as display -> tgt.measurement_concept_id = display;
         };
     };
     src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10));
@@ -34,6 +42,7 @@ group parentTable(source src: BloodPressure, target tgt: Measurement) {
 
 //make the systolic measurement table
 group Systolic(source src : BloodPressure, target tgt : Measurement) {
+    src.id -> tgt.measurement_event_id = 1;
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
             sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
@@ -48,12 +57,14 @@ group Systolic(source src : BloodPressure, target tgt : Measurement) {
     src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = (s.toString());
 
     src.value : Quantity as s -> tgt then {
-        s.value as a -> tgt.value_as_number = a, tgt.unit_concept_id = 8876;
+        s.value as a -> tgt.value_as_number = a;
+        s.unit as b -> tgt.unit_concept_id = b;
     };
 };
 
 //make the diastolic measurement table
 group Diastolic(source src : BloodPressure, target tgt : Measurement) {
+    src.id -> tgt.measurement_event_id = 1;
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
             sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
@@ -68,6 +79,7 @@ group Diastolic(source src : BloodPressure, target tgt : Measurement) {
     src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = (s.toString());
 
     src.value : Quantity as s -> tgt then {
-        s.value as a -> tgt.value_as_number = a, tgt.unit_concept_id = 8876;
+        s.value as a -> tgt.value_as_number, tgt.value_source_value = a;
+        s.unit as b -> tgt.unit_concept_id, tgt.unit_source_value = b;
     };
 };
