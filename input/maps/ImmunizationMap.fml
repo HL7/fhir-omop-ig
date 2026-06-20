@@ -19,8 +19,8 @@ group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
     src.encounter -> tgt.visit_occurrence_id = 1;
 
 	src.vaccineCode as s -> tgt then {
+		s -> tgt.drug_concept_id = translate(s, '', 'code');
 		s.coding first as sc -> tgt then {
-			sc -> tgt.drug_concept_id = translate(sc, '', 'code');
 			sc.code as c -> tgt.drug_source_value = c;
 		};
 	};
