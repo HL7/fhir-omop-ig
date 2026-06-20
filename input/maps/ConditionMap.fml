@@ -15,7 +15,7 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
     src.subject -> tgt.person_id = 1;
 
     src.code as s -> tgt then {
-        s -> tgt.condition_concept_id = translate(s, '', 'code');
+        s -> tgt.condition_concept_id = translate(s, '', 'code') "conditionConceptId";
         s.coding as sc -> tgt then {
             sc.display as d -> tgt.condition_source_value = d;
         };
