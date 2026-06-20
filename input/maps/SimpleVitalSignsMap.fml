@@ -13,7 +13,7 @@ group Measures(source src : VitalSigns, target tgt : MeasureTable) {
             s.coding as sc -> tgt then {
                 sc.system where('http://loinc.org') then {
                     sc.code as a where ((a in ('85354-9' | '8480-6' | '8462-4' | '8478-0')).not()) -> tgt then {
-                        s -> tgt.measurement_concept_id = translate(s, '', 'code') "measurementConceptId";
+                        sc -> tgt.measurement_concept_id = translate(sc, '', 'code') "measurementConceptId";
                         sc.display as display -> tgt.measurement_source_value = display;
                         src.id -> tgt.measurement_type_concept_id = 32817;
                         src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");

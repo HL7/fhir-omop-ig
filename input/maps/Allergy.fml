@@ -31,8 +31,8 @@ group Observation(source src: Allergy, target tgt : ObservationTable) {
     };
 	
     src.code as s -> tgt then {
-        s -> tgt.value_as_concept_id = translate(s, '', 'code') "valueAsConceptId";
         s.coding as sc -> tgt then {
+            sc -> tgt.value_as_concept_id = translate(sc, '', 'code') "valueAsConceptId";
             sc.code as code -> tgt.value_source_value = code;
         };
     };
