@@ -20,7 +20,7 @@ group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
 
 	src.vaccineCode as s -> tgt then {
 		s.coding first as sc -> tgt then {
-			sc.code as c -> tgt.drug_concept_id = translate(c, 'http://hl7.org/fhir/uv/omop/ConceptMap/ImmunizationVaccine', 'code'), tgt.drug_source_value = c;
+			sc.code as c -> tgt.drug_concept_id = translate(c, '', 'code'), tgt.drug_source_value = c;
 		};
 	};
 	

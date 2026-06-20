@@ -12,8 +12,9 @@ group Measures(source src : VitalSigns, target tgt : MeasureTable) {
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
                 sc.system where('http://loinc.org') then {
-                    sc.code as a where ((a in ('85354-9' | '8480-6' | '8462-4' | '8478-0')).not()) -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/VitalSignsCodes', 'code') then {                        
-                        sc.display as display -> tgt.measurement_concept_id = display;
+                    sc.code as a where ((a in ('85354-9' | '8480-6' | '8462-4' | '8478-0')).not()) -> tgt.measurement_concept_id = translate(a, '', 'code') then {                        
+                        sc.display as display -> tgt.measurement_source_value = display;
+                        src.id -> tgt.measurement_type_concept_id = 32817;
                         src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
                         src.effective : Period as s -> tgt then {
                             s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = cast(eps, "date");

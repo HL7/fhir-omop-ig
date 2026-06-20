@@ -32,7 +32,7 @@ group Observation(source src: Allergy, target tgt : ObservationTable) {
 	
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc.code as code -> tgt.value_as_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergySubstanceType', 'code'), tgt.value_source_value = code;
+            sc.code as code -> tgt.value_as_concept_id = translate(code, '', 'code'), tgt.value_source_value = code;
         };
     };
 

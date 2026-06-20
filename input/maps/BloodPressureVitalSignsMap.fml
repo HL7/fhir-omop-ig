@@ -45,7 +45,7 @@ group diastolicTable(source comp, target diasTable : Measurement) {
 group parentTable(source src: BloodPressure, target tgt: Measurement) {
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
+            sc.code as a -> tgt.measurement_concept_id = translate(a, '', 'code');
         };
     };
     src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
