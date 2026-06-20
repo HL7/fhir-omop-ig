@@ -35,5 +35,5 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
 
 
 
-    src.category -> tgt.condition_type_concept_id = 32817 "default";
+    src.id -> tgt.condition_type_concept_id = 32817;
 };
