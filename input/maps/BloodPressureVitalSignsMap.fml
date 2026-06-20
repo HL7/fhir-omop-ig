@@ -44,9 +44,7 @@ group diastolicTable(source comp, target diasTable : Measurement) {
 
 group parentTable(source src: BloodPressure, target tgt: Measurement) {
     src.code as s -> tgt then {
-        s.coding as sc -> tgt then {
-            sc -> tgt.measurement_concept_id = translate(sc, '', 'code') "measurementConceptId";
-        };
+        s.coding first as sc -> tgt.measurement_concept_id = translate(sc, '', 'code') "measurementConceptId";
     };
     src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = cast(edt, "date");
     src.effective : Period as s -> tgt then {
