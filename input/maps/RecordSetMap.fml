@@ -33,6 +33,9 @@ group RecordSet(source src: Bundle, target tgt : RecordSetTable) {
         entry.resource : Condition as condition -> tgt then {
             condition -> tgt.condition as conditionOccurrence then ConditionOccurrence(condition, conditionOccurrence) "conditionEntry";
         } "conditionOccurenceEntry";
+        entry.resource : Encounter as encounter -> tgt then {
+            encounter -> tgt.visitOccurrence as visitOccurrence then VisitOccurrence(encounter, visitOccurrence) "encounterEntry";
+        } "conditionOccurenceEntry";
         entry.resource : Observation as observation -> tgt then {
             observation -> tgt.measurement as measurement then Measures(observation, measurement) "measurementEntry";
             observation -> tgt as recordSet then BloodPressure(observation, recordSet) "bloodPressureEntry";
