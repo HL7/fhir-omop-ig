@@ -5,3 +5,9 @@ Thumbs.db
 /output
 /temp
 /template
+node_modules/
+package.json
+package-lock.json
+*~
+Requirements-fromNarrative.json
+wtf
