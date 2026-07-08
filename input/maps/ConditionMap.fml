@@ -16,7 +16,7 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
 
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc.code as a -> tgt.condition_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code');
+            sc -> tgt.condition_concept_id = translate(sc, '', 'code') "conditionConceptId";
             sc.display as d -> tgt.condition_source_value = d;
         };
     };
@@ -35,5 +35,5 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
 
 
 
-    src.category -> tgt.condition_type_concept_id = 32817 "default";
+    src.id -> tgt.condition_type_concept_id = 32817;
 };
