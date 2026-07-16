@@ -40,6 +40,12 @@ group RecordSet(source src: Bundle, target tgt : RecordSetTable) {
             observation -> tgt as recordSet then BloodPressure(observation, recordSet) "bloodPressureEntry";
             observation -> tgt.measurement as vitalSign then VitalSigns(observation, vitalSign) "simpleVitalSignEntry";
         } "observationEntry";
+        entry.resource : Patient as patient -> tgt then {
+            patient.id as id -> tgt.patient_id = id;
+        };
+        entry.resource : Encounter as encounter -> tgt then {
+            encounter -> tgt.visitOccurrence as visit then VisitOccurrence(encounter, visit) "visit";
+        };
     } "bundleEntry";
 
 };
