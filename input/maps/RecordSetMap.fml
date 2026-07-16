@@ -19,8 +19,7 @@ imports "http://hl7.org/fhir/uv/omop/StructureMap/SimpleVitalSignsMap"
 
 group RecordSet(source src: Bundle, target tgt : RecordSetTable) {
 
-    // OMOP Record Set ID would be a map from FHIR Bundle ID to an external key
-    src.id -> tgt.record_id = 1;
+    src.id as id -> tgt.record_id = cast(id, "integer");
 
     // Map bundle timestamp
     src.timestamp as ts -> tgt.record_set_timestamp = ts;

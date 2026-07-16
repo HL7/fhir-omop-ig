@@ -25,7 +25,7 @@ group BloodPressure(source src : BloodPressure, target recordSet : BPRecord) {
 }
 
 group parentTable(source src: BloodPressure, target tgt: Measurement) {
-    src.id -> tgt.measurement_id = 1;
+    src.id as id -> tgt.measurement_id = id;
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
             sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
@@ -42,7 +42,7 @@ group parentTable(source src: BloodPressure, target tgt: Measurement) {
 
 //make the systolic measurement table
 group Systolic(source src : BloodPressure, target tgt : Measurement) {
-    src.id -> tgt.measurement_event_id = 1;
+    src.id as id -> tgt.measurement_event_id = id;
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
             sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');
@@ -64,7 +64,7 @@ group Systolic(source src : BloodPressure, target tgt : Measurement) {
 
 //make the diastolic measurement table
 group Diastolic(source src : BloodPressure, target tgt : Measurement) {
-    src.id -> tgt.measurement_event_id = 1;
+    src.id as id -> tgt.measurement_event_id = id;
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
             sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');

@@ -10,13 +10,17 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugEx
 group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
 
     // OMOP Drug Exposure ID would be a map from FHIR ID to an external key
-    src.id  -> tgt.drug_exposure_id = 1;
+    src.id as id -> tgt.drug_exposure_id = id;
 
     // OMOP Person ID would be a map from the FHIR Immunization Patient reference to an external key
-    src.patient -> tgt.person_id = 1;
+    src.patient as subject -> tgt then {
+        subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf("/") + 1)); 
+    };
 
     // OMOP Visit Occurrence ID would be a map from the FHIR Immunization Encounter reference to an external key
-    src.encounter -> tgt.visit_occurrence_id = 1;
+    src.encounter as encounter -> tgt then {
+        encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf("/") + 1));
+    };
 
 	src.vaccineCode as s -> tgt then {
 		s.coding first as sc -> tgt then {

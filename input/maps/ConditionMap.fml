@@ -9,10 +9,12 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias
 
 group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     {
     // OMOP Condition ID would be a map from FHIR ID to an external key
-    src.id as id -> tgt.condition_occurrence_id = 1;
+    src.id as id -> tgt.condition_occurrence_id = id;
     
     // OMOP Person ID would be a map from the FHIR Condition subject reference to an external key
-    src.subject -> tgt.person_id = 1;
+    src.subject as subject -> tgt then {
+        subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf("/") + 1)); 
+    };
 
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
@@ -31,9 +33,9 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
         };
     };
 
-    src.encounter -> tgt.visit_occurrence_id = 1;
-
-
+    src.encounter as encounter -> tgt then {
+        encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf("/") + 1));
+    };
 
     src.category -> tgt.condition_type_concept_id = 32817 "default";
 };
