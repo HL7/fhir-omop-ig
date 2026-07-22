@@ -477,4 +477,17 @@ curl 'https://tx.fhir.org/r5/ConceptMap/$translate' \
 
 The resulting concept ID is `1567956`.
 
+### Caching and Vocabulary Version Binding
+
+A transformation of any scale will resolve the same source codes repeatedly. A single load may contain many thousands of Condition resources carrying a small number of distinct diagnosis codes, and resolving each occurrence through a separate terminology server call is wasteful in time and in load on a shared service. Caching resolved results is therefore ordinary practice, and at population scale it is effectively required for the transformation to complete in reasonable time.
+
+Caching terminology results introduces a correctness hazard that caching in most other contexts does not. The OHDSI Standardized Vocabularies are versioned and change between releases: a concept that is Standard in one release may be deprecated in the next, a Maps to relationship may be retargeted, and a domain assignment may be corrected. A cache populated under one vocabulary version and read under another will return results that were correct when computed and are wrong when used, and the transformation has no way to detect this from the cached value alone.
+
+The cache key must therefore incorporate the vocabulary version, not only the source system and code. A cache entry computed under one vocabulary release should be unreachable after the release changes, whether by including the version in the key, by partitioning the cache per version, or by invalidating the cache wholesale on vocabulary update. Which mechanism is used matters less than that the binding exists: an implementation whose cache outlives its vocabulary version will silently produce mappings inconsistent with the vocabulary it claims to be using.
+
+The vocabulary version recorded for the run, as described in [Considerations for Legacy Vocabulary Versions](codemappings.html#considerations-for-legacy-vocabulary-versions), should be the same version the cache is bound to. Where these diverge, the run's documentation asserts a vocabulary version that its concept assignments do not reflect.
+
+#### Guidance
+
+A Transformation Engine SHOULD cache terminology server responses, and where it does so SHALL bind the cache invalidation policy to the OHDSI Vocabulary version, such that entries computed under one vocabulary version are not read under another. (f2o-111)
 
