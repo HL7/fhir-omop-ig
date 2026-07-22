@@ -63,6 +63,10 @@ The IG is deliberately *not* scoped to:
 
 Although this implementation guide has been developed and tested against FHIR R5, implementers should not consider this a barrier to adoption with other FHIR versions. The core concepts, profiles, and conformance expectations expressed in this guide are intended to be version-agnostic in nature, and there is nothing within this guide that explicitly precludes implementation against FHIR R4 or future versions such as the forthcoming FHIR R6. Implementers wishing to adopt this guide against a different FHIR version are encouraged to review the [HL7 FHIR Cross-Version Mapping Pack](https://build.fhir.org/ig/HL7/fhir-cross-version/index.html) which provides detailed mappings and guidance for navigating differences between FHIR releases.
 
+#### Guidance
+
+An Implementer SHALL declare the FHIR version or versions of the source data that the transformation is configured to consume. (f2o-002)
+
 ### How to Read the Conformance Language in This Guide
 
 This guide uses a small set of key words to signal how binding a given statement is. When these words appear in capital letters, they carry the specific meanings defined by the IETF in RFC 2119 [3] as clarified by RFC 8174 [4], which together form IETF Best Current Practice 14. The key words are MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL.
