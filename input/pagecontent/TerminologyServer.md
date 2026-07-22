@@ -1,6 +1,10 @@
 A FHIR terminology server operates as a specialized collection of functions built upon FHIR CodeSystem, ValueSet, and ConceptMap resources, specifically designed to support the complex terminology requirements inherent in transforming FHIR resources into OMOP-compliant data. (See: [FHIR Terminology Service, Basic Concepts](https://hl7.org/fhir/R5/terminology-service.html#concepts)) This greatly reduces the need for implementation teams and ETL developers to be experts in source terminologies and cross-terminology relationships to OMOP concept targets essential for compliant OMOP data normalization. Further, utilization of a terminology server greatly reduces the need for manual mapping labor and provides more consistent and uniform mapping results. 
 
-FHIR terminology servers serve as bridge infrastructure that enable automated transformation between FHIR data sources and the OMOP CDM. Core functionality for FHIR to OMOP transformation centers on concept lookup and translation operations. The examples below enable systems to resolve FHIR-encoded clinical concepts to their corresponding OMOP standard concepts, retrieve concept relationships necessary for accurate domain assignment, and access the hierarchical mappings required for proper OMOP vocabulary integration. 
+FHIR terminology servers serve as bridge infrastructure that enable automated transformation between FHIR data sources and the OMOP CDM. The operations described below are standard FHIR terminology service operations and are supported by any conformant server; the specific endpoint used in the examples is incidental. Core functionality for FHIR to OMOP transformation centers on concept lookup and translation operations. The examples below enable systems to resolve FHIR-encoded clinical concepts to their corresponding OMOP standard concepts, retrieve concept relationships necessary for accurate domain assignment, and access the hierarchical mappings required for proper OMOP vocabulary integration. 
+
+**A note on the examples below:** The requests in this guide are directed at `tx.fhir.org`, which is used here purely as an illustrative example. It is not a normative or required endpoint. Any conformant FHIR terminology server that hosts the relevant OMOP CodeSystem, ValueSet, and ConceptMap resources can serve this purpose equally well; implementers should substitute the base URL of whichever server they operate or subscribe to.
+
+Note also that the responses shown here, and in particular the terminology `version` values (for example, `20250227`), reflect the state of the underlying vocabularies at the time this guide was written. These answers may change over time as the OMOP vocabularies and source terminologies are updated. Concept mappings, standard-concept designations, and display names can all shift between releases, so implementers should not treat specific returned values or versions as fixed.
 
 
 ### CodeSystem $Lookup Operation
@@ -122,6 +126,8 @@ curl 'https://tx.fhir.org/r5/CodeSystem/$lookup' \
   ]
 }
 ```
+
+Note: the `version` field (here, `20250227`) identifies the vocabulary release the server was using at the time of the request. A different server, or the same server at a later date, may return a different version and correspondingly different values.
 
 Note: this concept is non-standard (i.e. `standard-concept` is not "S"). 
 To find standard concept(s) it maps to, refer to the "Maps to" property in the above response.
@@ -470,4 +476,5 @@ curl 'https://tx.fhir.org/r5/ConceptMap/$translate' \
 ```
 
 The resulting concept ID is `1567956`.
+
 
