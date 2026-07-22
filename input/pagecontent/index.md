@@ -15,7 +15,7 @@ The IG specifies the middle column: the transformation principles, mapping patte
 
 ### Why Harmonization Between FHIR and OMOP Matters
 
-Health care interoperability suffers from what has been described as the *interoperability paradox*: more standards lead to less interoperability, because each additional standard creates new pairs of systems that cannot communicate without a transformation layer between them [6]. FHIR and OMOP are both open, widely adopted, community-maintained standards, each dominant in its respective domain, and both are likely to remain dominant for the foreseeable future. The practical consequence is that any organization operating across clinical exchange and observational research needs to move data between them routinely. Without a shared transformation specification, every organization doing so solves the problem locally, producing as many FHIR-to-OMOP mappings as there are organizations — each with its own assumptions, omissions, and edge-case handling. Systematic harmonization between standards, in contrast, reduces or eliminates information loss during transformation and allows communities that share data across the FHIR–OMOP boundary to compare analytic results meaningfully [6].
+Health care interoperability suffers from what has been described as the *interoperability paradox*: more standards lead to less interoperability, because each additional standard creates new pairs of systems that cannot communicate without a transformation layer between them [1]. FHIR and OMOP are both open, widely adopted, community-maintained standards, each dominant in its respective domain, and both are likely to remain dominant for the foreseeable future. The practical consequence is that any organization operating across clinical exchange and observational research needs to move data between them routinely. Without a shared transformation specification, every organization doing so solves the problem locally, producing as many FHIR-to-OMOP mappings as there are organizations — each with its own assumptions, omissions, and edge-case handling. Systematic harmonization between standards, in contrast, reduces or eliminates information loss during transformation and allows communities that share data across the FHIR–OMOP boundary to compare analytic results meaningfully [1].
 
 This IG is an application of that harmonization principle to the specific FHIR-to-OMOP pairing. It is not an attempt to replace either standard, nor to suggest that one is superior to the other; both are essential, and the IG treats them as complementary rather than competing specifications.
 
@@ -35,7 +35,7 @@ Neither design is deficient. Each standard is well-suited to the domain for whic
 
 ### Implications for FHIR-to-OMOP Transformation
 
-The asymmetry between the two standards has direct, practical consequences for what a FHIR-to-OMOP transformation can achieve. Tsafnat and colleagues [6] identify four categories of information loss that occur when transforming data between standards with different design purposes, and all four are routinely encountered in FHIR-to-OMOP work:
+The asymmetry between the two standards has direct, practical consequences for what a FHIR-to-OMOP transformation can achieve. Tsafnat and colleagues [1] identify four categories of information loss that occur when transforming data between standards with different design purposes, and all four are routinely encountered in FHIR-to-OMOP work:
 
 - **Fidelity loss** — when a specific term in the source is mapped to a more general concept in the target. For example, a FHIR `Condition` carrying a highly specific source code may map to a broader OMOP Standard concept when no equally specific Standard concept exists in the OMOP `Condition` domain.
 - **Information loss** — when information captured in the source standard has no corresponding field in the target. For example, the exact time at which a medication administration was witnessed, routinely captured in FHIR, has no canonical place in the OMOP CDM.
@@ -63,26 +63,22 @@ The IG is deliberately *not* scoped to:
 
 Although this implementation guide has been developed and tested against FHIR R5, implementers should not consider this a barrier to adoption with other FHIR versions. The core concepts, profiles, and conformance expectations expressed in this guide are intended to be version-agnostic in nature, and there is nothing within this guide that explicitly precludes implementation against FHIR R4 or future versions such as the forthcoming FHIR R6. Implementers wishing to adopt this guide against a different FHIR version are encouraged to review the [HL7 FHIR Cross-Version Mapping Pack](https://build.fhir.org/ig/HL7/fhir-cross-version/index.html) which provides detailed mappings and guidance for navigating differences between FHIR releases.
 
-[1] Health Level Seven, "Vulcan accelerator home." https://confluence.hl7.org/display/VA (accessed Dec. 08, 2023).
-
-[2] "OMOP Common Data Model." https://ohdsi.github.io/CommonDataModel/index.html (accessed Dec. 08, 2023).
-
 ### How to Read the Conformance Language in This Guide
 
-This guide uses a small set of key words to signal how binding a given statement is. When these words appear in capital letters, they carry the specific meanings defined by the IETF in RFC 2119 [n] as clarified by RFC 8174 [n], which together form IETF Best Current Practice 14. The key words are MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL.
+This guide uses a small set of key words to signal how binding a given statement is. When these words appear in capital letters, they carry the specific meanings defined by the IETF in RFC 2119 [3] as clarified by RFC 8174 [4], which together form IETF Best Current Practice 14. The key words are MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL.
 
 In brief, and for readers who do not work with IETF specifications day to day: SHALL and MUST mark a strict requirement; an implementation that does not meet it does not conform. SHOULD and RECOMMENDED mark a strong recommendation; there may be valid reasons to do otherwise in particular circumstances, but the full implications should be understood and weighed before choosing a different course. MAY and OPTIONAL mark something genuinely permitted but not required, with no implication either way.
 
-The distinction that matters most for reading this guide is the one RFC 8174 was written to settle: these key words carry their special, binding meaning only when they are written in capital letters [n]. When the same words appear in lower case, as ordinary English "should," "may," or "must" in explanatory prose, they carry no conformance weight and impose no obligation. They are used for readability, exactly as they would be in any technical writing.
+The distinction that matters most for reading this guide is the one RFC 8174 was written to settle: these key words carry their special, binding meaning only when they are written in capital letters [4]. When the same words appear in lower case, as ordinary English "should," "may," or "must" in explanatory prose, they carry no conformance weight and impose no obligation. They are used for readability, exactly as they would be in any technical writing.
 
 Accordingly, every normative obligation in this guide is expressed with a capitalized key word, and every capitalized key word is traceable to a numbered conformance statement on the [Conformance Statements](conformance.html) page. Explanatory narrative throughout the guide may use the lower-case forms freely; where it does, it is describing or motivating a practice, not imposing a requirement. A reader who wants to know precisely what this guide requires can therefore rely on a simple rule: look to the capitalized key words and the conformance statements they belong to, and read everything else as guidance and context.
 
-<!--
-REFERENCE LIST ENTRIES to add to the guide's running reference list (PLoS style,
-renumber to match running order):
+### References
 
-[n] Bradner S. Key words for use in RFCs to Indicate Requirement Levels. RFC 2119. Internet
-Engineering Task Force; 1997. Available from: https://www.rfc-editor.org/rfc/rfc2119
+[1] Tsafnat G, Dunscombe R, Gabriel D, Grieve G, Reich C. Converge or Collide? Making Sense of a Plethora of Open Data Standards in Health Care. J Med Internet Res. 2024;26:e55779. doi:10.2196/55779. Available from: https://www.jmir.org/2024/1/e55779
 
-[n] Leiba B. Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words. RFC 8174. Internet
-Engineering Task Force; 2017. Available from: https://www.rfc-editor.org/rfc/rfc8174
+[2] "OMOP Common Data Model." https://ohdsi.github.io/CommonDataModel/index.html (accessed Dec. 08, 2023).
+
+[3] Bradner S. Key words for use in RFCs to Indicate Requirement Levels. RFC 2119. Internet Engineering Task Force; 1997. Available from: https://www.rfc-editor.org/rfc/rfc2119
+
+[4] Leiba B. Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words. RFC 8174. Internet Engineering Task Force; 2017. Available from: https://www.rfc-editor.org/rfc/rfc8174
