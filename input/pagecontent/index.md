@@ -66,3 +66,23 @@ Although this implementation guide has been developed and tested against FHIR R5
 [1] Health Level Seven, "Vulcan accelerator home." https://confluence.hl7.org/display/VA (accessed Dec. 08, 2023).
 
 [2] "OMOP Common Data Model." https://ohdsi.github.io/CommonDataModel/index.html (accessed Dec. 08, 2023).
+
+### How to Read the Conformance Language in This Guide
+
+This guide uses a small set of key words to signal how binding a given statement is. When these words appear in capital letters, they carry the specific meanings defined by the IETF in RFC 2119 [n] as clarified by RFC 8174 [n], which together form IETF Best Current Practice 14. The key words are MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL.
+
+In brief, and for readers who do not work with IETF specifications day to day: SHALL and MUST mark a strict requirement; an implementation that does not meet it does not conform. SHOULD and RECOMMENDED mark a strong recommendation; there may be valid reasons to do otherwise in particular circumstances, but the full implications should be understood and weighed before choosing a different course. MAY and OPTIONAL mark something genuinely permitted but not required, with no implication either way.
+
+The distinction that matters most for reading this guide is the one RFC 8174 was written to settle: these key words carry their special, binding meaning only when they are written in capital letters [n]. When the same words appear in lower case, as ordinary English "should," "may," or "must" in explanatory prose, they carry no conformance weight and impose no obligation. They are used for readability, exactly as they would be in any technical writing.
+
+Accordingly, every normative obligation in this guide is expressed with a capitalized key word, and every capitalized key word is traceable to a numbered conformance statement on the [Conformance Statements](conformance.html) page. Explanatory narrative throughout the guide may use the lower-case forms freely; where it does, it is describing or motivating a practice, not imposing a requirement. A reader who wants to know precisely what this guide requires can therefore rely on a simple rule: look to the capitalized key words and the conformance statements they belong to, and read everything else as guidance and context.
+
+<!--
+REFERENCE LIST ENTRIES to add to the guide's running reference list (PLoS style,
+renumber to match running order):
+
+[n] Bradner S. Key words for use in RFCs to Indicate Requirement Levels. RFC 2119. Internet
+Engineering Task Force; 1997. Available from: https://www.rfc-editor.org/rfc/rfc2119
+
+[n] Leiba B. Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words. RFC 8174. Internet
+Engineering Task Force; 2017. Available from: https://www.rfc-editor.org/rfc/rfc8174
