@@ -124,3 +124,7 @@ The following benefits are expected to be realized upon successful implementatio
 #### Summary
 
 The FHIR-to-OMOP transformation is the **foundational objective** of this work. Achieving this transformation is what would enable healthcare organizations to apply real-time FHIR-based clinical data to pre-trained AI models that rely on the OMOP CDM. Through ETL processes, even fragmented or single-message FHIR resources would be made compatible with AI models trained on more comprehensive datasets — fostering more effective AI-driven healthcare decisions and interventions. **This capability remains a target state; progress toward implementation is ongoing.**
+
+### Guidance
+
+An Implementer SHALL declare which of the use cases described on this page the transformation supports, so that the scope of a given FHIR-to-OMOP transformation is stated explicitly rather than inferred. (f2o-004)
