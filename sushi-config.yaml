@@ -52,6 +52,10 @@ pages:
      title: Populating Race and Ethnicity
   technical_artifacts.md:
     title: Technical Artifacts 
+  actors.md:
+    title: Actors
+  conformance.md:
+    title: Conformance Statements
   TerminologyServer.md:
     title: Terminology Server API Utilization
   changes.md:
@@ -74,6 +78,9 @@ menu:
     Value-as-Concept Pattern: ValueAsConceptPattern.html
     Populating Race and Ethnicity: RaceAndEthnicity.html
   Technical Artifacts: technical_artifacts.html
+  Conformance:
+    Actors: actors.html
+    Conformance Statements: conformance.html
   Terminology Server: TerminologyServer.html
   Support:
     Discussion Forum: https://chat.fhir.org/#narrow/stream/286658-omop-.2B-fhir
