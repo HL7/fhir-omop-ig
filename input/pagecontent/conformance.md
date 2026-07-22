@@ -8,11 +8,11 @@ The conformance verbs SHALL, SHOULD, and MAY are interpreted per [RFC 8174](http
 
 #### F2O-001
 
-*Target OMOP CDM v5.4.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL produce output conforming to the OMOP Common Data Model version 5.4, and a Target OMOP Instance SHALL conform to the OMOP CDM v5.4 schema.
 
 **Actors:** ● XFM, ● TGT, ○ IMP
+
+**Discussed in:** [OMOP CDM: CDM Version History](the-omop-cdm.html#cdm-version-history)
 
 </div>
 
@@ -20,11 +20,11 @@ The conformance verbs SHALL, SHOULD, and MAY are interpreted per [RFC 8174](http
 
 #### F2O-002
 
-*Declare supported FHIR version(s) of source.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHALL declare the FHIR version or versions of the source data that the transformation is configured to consume.
 
 **Actors:** ● XFM, ● IMP
+
+**Discussed in:** [Introduction: FHIR Versions](index.html#fhir-versions)
 
 </div>
 
@@ -44,11 +44,11 @@ A Transformation Engine and Implementer SHOULD publish a machine-readable manife
 
 #### F2O-004
 
-*Declare supported use case(s).*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHALL declare which of the use cases described on the Use Cases page the transformation supports, so that the scope of a given FHIR-to-OMOP transformation is stated explicitly rather than inferred.
 
 **Actors:** ● IMP
+
+**Discussed in:** [Use Cases](UseCases.html)
 
 </div>
 
@@ -56,11 +56,11 @@ A Transformation Engine and Implementer SHOULD publish a machine-readable manife
 
 #### F2O-005
 
-*RFC 8174 verb semantics apply (applies to every actor reading this IG).*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+The key words MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL in this guide are to be interpreted as described in BCP 14 (RFC 2119, RFC 8174) when, and only when, they appear in all capitals, as shown here.
 
 **Actors:** applies to every actor reading this guide
+
+**Discussed in:** [How to Read the Conformance Language in This Guide](index.html#how-to-read-the-conformance-language-in-this-guide)
 
 </div>
 
@@ -68,11 +68,11 @@ A Transformation Engine and Implementer SHOULD publish a machine-readable manife
 
 #### F2O-006
 
-*Declare Profile-Only vs. Transformation conformance level.*
+A system or organization claiming conformance to this guide SHALL do so as one or more of the actors defined on the [Actors](actors.html) page, and SHALL meet every obligation attributed to each actor it claims. This guide defines a single level of conformance; there is no separate profile-validation-only conformance level.
 
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+**Actors:** ● IMP
 
-**Actors:** ○ XFM, ○ TRM, ● IMP
+**Discussed in:** [Actors](actors.html)
 
 </div>
 
@@ -82,11 +82,11 @@ A Transformation Engine and Implementer SHOULD publish a machine-readable manife
 
 #### F2O-010
 
-*Accept IPA, US Core, or base FHIR resources; declare which.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHALL declare which input FHIR profiles the transformation accepts, whether International Patient Access, US Core Encounter and Procedure, base FHIR resources, or a stated combination.
 
 **Actors:** ○ SRC, ● XFM, ● IMP
+
+**Discussed in:** [Source Data Expectations](F2OGeneralIssues.html#source-data-expectations)
 
 </div>
 
@@ -94,11 +94,11 @@ A Transformation Engine and Implementer SHOULD publish a machine-readable manife
 
 #### F2O-011
 
-*Do not assume elements beyond declared profile minimums.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL rely only on the elements a declared profile guarantees, and SHALL NOT assume the presence of an element that the profile permits a conformant source to omit. This is a constraint on assumptions about optional content, not an obligation to handle content beyond the transformation's declared profile scope.
 
 **Actors:** ● XFM
+
+**Discussed in:** [Source Data Expectations](F2OGeneralIssues.html#source-data-expectations)
 
 </div>
 
@@ -106,11 +106,11 @@ A Transformation Engine and Implementer SHOULD publish a machine-readable manife
 
 #### F2O-012
 
-*Validate input; reject or quarantine failures with documented disposition.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHOULD validate incoming resources against the profiles the transformation declares it accepts, and SHOULD handle a validation failure by a documented disposition, rejecting or quarantining the resource rather than admitting it unvalidated. The disposition of failed input SHOULD be recorded so that the volume and reasons for failure are visible to operators and to consumers of the target.
 
 **Actors:** ● XFM, ● IMP
+
+**Discussed in:** [Source Data Expectations](F2OGeneralIssues.html#source-data-expectations)
 
 </div>
 
