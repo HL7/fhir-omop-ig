@@ -225,7 +225,116 @@ Based on this evaluation, implementers should categorize FHIR identifiers into o
 </table>
 
 ### Status and Intent Elements in FHIR Resources
-Many FHIR resources, like MedicationRequest or Procedure, have status fields indicating administrative or health care delivery process stages (e.g., planned, completed, in progress) or indicate the type of order represented (active, on-hold, cancelled...).  OMOP, on the other hand, represents concepts that are clinical facts, which implies that only completed activities should be mapped for accurate data analysis. This creates an expectation of specific context for the data being mapped. Careful consideration must be made when FHIR data resources also contain populated status and intent fields indicating a measurement, dispensing activity or care delivery service is planned, cancelled or in process.  Specifically, attention to and disposition of data based on these FHIR elements in a transformation should be consistent within a project or OMOP implementation.  There is a need to filter out incomplete or planned activities when transforming data to OMOP, especially for procedures and medications. Including such "yet-to-be-realized" data would misrepresent actual patient exposure, leading to inaccuracies in research.  This kind of filtering is documented in the FHIR to OMOP Unit test specifications, and should be applied to transformation pipelines so that the rules are applied consistently to incremental data ingress for as long as the OMOP instance is in use. 
+
+Many FHIR resources carry elements that describe where a clinical activity sits in an administrative or care delivery workflow rather than describing the clinical fact itself. A MedicationRequest may be active, on-hold, or cancelled. A Procedure may be preparation, in-progress, completed, or not-done. A ServiceRequest carries both a status and an intent, the latter distinguishing a proposal from a plan from an order.
+
+The OMOP CDM makes a different assumption. Its clinical event tables represent things that happened: a drug_exposure record asserts that a patient was exposed to a drug, and a procedure_occurrence record asserts that a procedure was performed. OMOP has no general mechanism for representing an event that was contemplated but did not occur, and analytic tooling built on OMOP assumes throughout that records describe realized events.
+
+This mismatch is consequential. A FHIR export that includes cancelled orders, proposed procedures, and draft prescriptions describes a superset of what happened to the patient. Transformed without filtering, those records inflate apparent exposure and event rates, and the resulting analyses overstate what the patient actually received. The error is systematic rather than random, and it is invisible in the target: nothing in a drug_exposure record indicates that its source was a cancelled order.
+
+#### Distinguishing Status from Intent
+
+The two element types answer different questions and require separate evaluation. Status describes the state of the record or activity in its workflow: whether it is in progress, completed, abandoned, or entered in error. Intent, present on request-pattern resources such as MedicationRequest, ServiceRequest, and CarePlan, describes the degree of commitment the record represents: whether it is a proposal, a plan, an order, or an instance of an order.
+
+The interaction of the two is decisive for the request resources, and it is not always intuitive. For MedicationRequest, the reference test suite admits a drug_exposure row only where the intent is instance-order, and it does so regardless of status; every other intent value produces no row. The reason is semantic rather than arbitrary: within the IPA pattern, an instance-order MedicationRequest is the equivalent of a medication administration record, the point at which a prescription becomes an event that happened to the patient. A proposal, a plan, or a plain order records an intention, not an administration. Evaluating status alone would admit records that intent alone would correctly reject, so both elements must be evaluated where both are present.
+
+#### Resource-Specific Evaluation
+
+The tables below summarize the elements requiring evaluation for the resources most commonly encountered in FHIR-to-OMOP transformation, and indicate which values describe realized events. The dispositions shown here are aligned with the FHIR-to-OMOP unit test specifications, which are the governing reference: where an implementation's filter rule disagrees with the test suite, the test suite prevails. Values not enumerated for a given resource should be treated as not realized until the test suite assigns them.
+
+**MedicationRequest to drug_exposure**
+
+| Element | Values describing a realized event | Values producing no row |
+|---|---|---|
+| intent | instance-order | proposal, plan, order, original-order, reflex-order, filler-order, option |
+| status | active, completed (only in combination with intent = instance-order) | draft, on-hold, cancelled, stopped, entered-in-error, unknown |
+
+For MedicationRequest, intent is the primary filter: only instance-order produces a row, and it does so irrespective of status. Status is then evaluated within the admitted intent. Note that a MedicationRequest describes a prescription rather than an administration; the limitations of inferring exposure from prescription data are discussed in ETL Documentation on the Strategies and Best Practices page.
+
+**MedicationStatement to drug_exposure**
+
+| Element | Values describing a realized event | Values producing no row |
+|---|---|---|
+| status | active, completed | entered-in-error, intended, stopped, on-hold, unknown, not-taken |
+
+MedicationStatement follows the more direct pattern: status alone governs, and only active and completed are realized. `statusReason` handling is unresolved in the test suite and is not relied on here.
+
+**Procedure to procedure_occurrence**
+
+| Element | Values describing a realized event | Values producing no row |
+|---|---|---|
+| status | completed | preparation, in-progress, not-done, on-hold, stopped, unknown, entered-in-error |
+
+Two values warrant comment. `not-done` asserts positively that a procedure did not occur, and such records must never become procedure occurrences; where a Procedure carries not-done together with a statusReason, the fact of non-performance may itself be clinically meaningful and can be captured in the observation domain if the OMOP instance requires it. `in-progress` is filtered by the test suite: a procedure in progress at export time has not completed, and the suite treats it as not realized rather than as an implementer judgment call.
+
+**Observation to measurement or observation**
+
+| Element | Values describing a realized event | Values producing no row |
+|---|---|---|
+| status | final, amended, corrected | registered, preliminary, cancelled, entered-in-error, unknown |
+
+`preliminary` is filtered by the test suite. A separate rule applies to `dataAbsentReason`: an Observation carrying a data absent reason produces no clinical event row, since OMOP rejects the "flavors of null" pattern. Data absent reason handling is treated in its own right under Data Absent Reasons Elements below.
+
+**Condition to condition_occurrence or observation**
+
+Condition does not reduce to a realized-or-excluded status filter, because `verificationStatus` routes records across domains rather than admitting or rejecting them wholesale.
+
+| verificationStatus | Disposition |
+|---|---|
+| confirmed | condition_occurrence row |
+| unconfirmed | no row |
+| entered-in-error | no row |
+| provisional | observation row, qualifier_concept_id = preliminary diagnosis |
+| differential | observation row, qualifier_concept_id = differential |
+| refuted | observation row, qualifier_concept_id = refuted |
+
+The provisional, differential, and refuted dispositions place the record in the observation domain as a qualified concept rather than discarding it, which preserves the clinical signal that a diagnosis was considered and characterizes how. `clinicalStatus` values such as recurrence, relapse, inactive, remission, and resolved likewise route to the observation domain as qualifiers; the test suite carries these as a stretch-tier assertion, so implementations should treat the specific qualifier mappings as provisional.
+
+**Encounter to visit_occurrence**
+
+| Element | Values describing a realized event | Values producing no row |
+|---|---|---|
+| status | finished (also in-progress, arrived, and triaged, subject to end-date derivation below) | planned, cancelled, entered-in-error, unknown |
+
+Encounter is the one resource where an in-flight status is admitted rather than filtered. An encounter that is arrived, triaged, or in-progress at export time has begun, so it produces a visit_occurrence row, but its end must be derived rather than read: for inpatient class the visit_end is set to the extraction date and the visit_type is recorded as "Still Patient," and for outpatient class the end defaults to the start. This is a date-derivation obligation rather than a filtering one, and it is exercised by the temporal tests rather than the status tests.
+
+**Immunization to drug_exposure**
+
+| Element | Values describing a realized event | Values producing no row |
+|---|---|---|
+| status | completed | not-done, entered-in-error |
+
+`not-done` asserts the immunization was not given and produces no row.
+
+#### Entered-in-Error Across All Resources
+
+Entered-in-error deserves separate mention because it behaves uniformly across every resource type above. It does not mean that an event did not occur; it means the record itself is invalid and should be treated as though it had never been created. Such records are excluded from transformation regardless of any other element value, and should not be represented in the target in any form.
+
+#### Modifier Elements and Extensions
+
+Status and intent are not the only elements that can invert or qualify the meaning of a resource. FHIR modifier elements, including modifierExtension and elements such as Condition.verificationStatus, can change a record's meaning in ways that a transformation ignoring them would misrepresent. A resource carrying an unrecognized modifier extension cannot be safely transformed on the assumption that the extension is decorative. The same discipline extends to terminology operations that fail: when a translation cannot be resolved, an engine that silently emits a concept_id of zero without recording the failure has discarded a modifier on the data's meaning just as surely as one that ignores a modifierExtension. This screening is treated in full in Understanding FHIR Modifier Extensions.
+
+#### Consistency Across Loads
+
+An OMOP instance built from FHIR is rarely populated once. Data arrive incrementally over the operational life of the instance, and filter rules applied inconsistently across loads produce a target whose composition varies by ingestion date. A cohort assembled across such a target will include cancelled orders from one period and exclude them from another, and the resulting bias is undetectable from within the data.
+
+Filter rules should therefore be treated as a fixed property of the transformation rather than a runtime decision, versioned alongside the transformation logic, and changed only deliberately. Where filter rules do change, the change and its effective date belong in the ETL documentation, since analysts working across the boundary need to know the target's composition is not uniform.
+
+#### Reporting Exclusions
+
+Filtering is silent by construction: an excluded resource leaves no trace in the target. A transformation that filters without reporting therefore gives its users no way to distinguish a patient with no medication exposure from a patient whose every order was cancelled, and no way to detect a filter rule misfiring across a whole load.
+
+A per-run exclusion report addresses this. At minimum it records counts by resource type and by exclusion reason, so that a load excluding an unusual proportion of records is visible before the target is used. Such a report also serves the ETL documentation obligation, since it evidences that the documented filter rules were the rules actually applied.
+
+#### Guidance
+
+A Transformation Engine SHALL evaluate status and intent elements and SHALL NOT transform resources describing events that were not realized, including those cancelled, proposed, planned, not done, stopped, or entered in error, into OMOP clinical event tables. (f2o-060)
+
+A Transformation Engine and Implementer SHALL apply consistent filter rules across all incremental loads into a given OMOP instance, and SHALL record any change to those rules, with its effective date, in the ETL documentation. (f2o-061)
+
+A Transformation Engine SHALL emit a run-level report of resources excluded by filter, recording counts by resource type and exclusion reason. (f2o-062)
+
+A Transformation Engine SHALL evaluate FHIR modifier elements and SHALL NOT silently transform a resource whose modifier elements alter its clinical interpretation, nor silently emit a concept_id of zero when a terminology lookup fails without recording the failure. (f2o-063)
 
 ### Data Completeness, Missingness & Integrity
 Handling incomplete or partial data presents an additional challenge in transforming FHIR resources to OMOP. FHIR records are often incomplete for several reasons: the source electronic health record (EHR) itself may contain partial entries, or the FHIR resources may only include a subset of available data tailored to the specific purpose of the resource. In contrast, the OMOP data model assumes that critical fields such as dates, person references, and coded concepts are consistently populated to support standardized analysis.
