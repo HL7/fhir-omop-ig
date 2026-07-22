@@ -203,6 +203,14 @@ Created to support the Vulcan July 2025 Connectathon, [this Jupyter notebook ](h
 
 **2. Validate OMOP**  (OHDSI Data Quality Dashboard - Subset) OMOP resulting from FHIR->OMOP conversion must be valid OMOP CDMv5.4. A subset of 100 OHDSI Data Quality Dashboard tests are implemented here to validate tables, columns, concepts, and a set of completeness and plausibility checks.
 
+### FHIR to OMOP 2026 Connectathon Tooling
+The July 2026 Vulcan FHIR-to-OMOP Connectathon (7 to 8 July 2026) exercised three participation workflows, distinguished by whose tooling performs the transformation and how terminology is resolved: Workflow 1 used Working-Group reference tooling with a delegated terminology server; Workflow 2 used participant tooling with embedded local terminology and no outbound terminology calls; and Workflow 3 used participant tooling with a delegated, conformant terminology server of the participant's choice. All three produce OMOP CDM v5.4 CSV output from the same FHIR input, which is what allows participant output to be compared against the Workflow 1 baseline.
+
+Workflow 1 used Working-Group reference tooling, maintained by Christopher Roeder and published at [https://github.com/croeder-fhir-to-omop](https://github.com/croeder-fhir-to-omop), which served as the gold-standard baseline against which Workflow 2 and Workflow 3 outputs were compared at the event. The tooling is a containerized pipeline in which a FHIR mapping server (matchbox) loads this Implementation Guide's StructureMaps and exposes a `$transform` operation for each, resolving clinical codes at runtime against a FHIR terminology server. The default configuration uses a local OMOP-backed terminology server (enchilada) seeded with OHDSI Vocabularies obtained from Athena; a hosted conformant terminology server may be substituted, and participants at the event used the Echidna public terminology service (echidna.fhir.org) in this role. The pipeline drives FHIR test fixtures through the transforms, writes the results into a DuckDB OMOP CDM v5.4 database, and runs the OHDSI Data Quality Dashboard together with a unit-test suite that asserts specific OMOP field values for each StructureMap. Published Docker images allow the stack to be run without cloning source.
+
+The transformation operates on individual FHIR resources rather than Bundles, consistent with the resource-level mapping this guide defines. The reference tooling covers eleven StructureMaps spanning Person, Encounter, Condition, Observation, medication, immunization, and allergy content. In the medication area, MedicationStatement is mapped to drug_exposure, while MedicationRequest is treated as out of scope because it represents a prescription order, an intention, rather than a completed clinical act.
+
+
 ### Technical Considerations
 The following tables provide some technical information about the guide.
 
