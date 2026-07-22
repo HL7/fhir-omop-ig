@@ -50,12 +50,10 @@ pages:
     title: Value-as-Concept Mapping Pattern
   RaceAndEthnicity.md:
      title: Populating Race and Ethnicity
-  technical_artifacts.md:
-    title: Technical Artifacts 
-  actors.md:
-    title: Actors
-  conformance.md:
-    title: Conformance Statements
+  Technical Artifacts:
+    Technical Artifacts: technical_artifacts.html
+    Actors: actors.html
+    Conformance Statements: conformance.html
   TerminologyServer.md:
     title: Terminology Server API Utilization
   changes.md:
