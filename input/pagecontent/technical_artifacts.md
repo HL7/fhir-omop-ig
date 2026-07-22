@@ -210,6 +210,17 @@ Workflow 1 used Working-Group reference tooling, maintained by Christopher Roede
 
 The transformation operates on individual FHIR resources rather than Bundles, consistent with the resource-level mapping this guide defines. The reference tooling covers eleven StructureMaps spanning Person, Encounter, Condition, Observation, medication, immunization, and allergy content. In the medication area, MedicationStatement is mapped to drug_exposure, while MedicationRequest is treated as out of scope because it represents a prescription order, an intention, rather than a completed clinical act.
 
+### Capability Declaration
+
+A consumer of OMOP data produced by a FHIR-to-OMOP transformation frequently needs to know, before using the data or even before running the transformation, what the transformation accepts and what it produces. Two declarations elsewhere in this guide answer parts of that question in human-readable form: an Implementer declares which input profiles the transformation accepts, whether International Patient Access, US Core, or base FHIR resources, and a conformant Target OMOP Instance discloses which OMOP tables it populates fully, populates partially, or leaves unpopulated. Read together, these tell a consumer the two endpoints of the transformation: what goes in and what comes out.
+
+What neither declaration provides on its own is the mapping between them in a form a machine can consume. A researcher assembling a federated query across several OMOP instances, or a tool deciding whether a given transformation can supply the tables an analysis needs, benefits from a single artifact that states which input profiles produce records in which OMOP tables, and states it in a structure a program can read rather than prose a person must interpret. A capability manifest of this kind turns two separate human-readable declarations into one machine-consumable statement of what the transformation does, which is what allows capability to be reasoned about at scale rather than one engine at a time.
+
+This guide does not yet define the format of such a manifest. Defining it properly requires a profile or logical model for the manifest itself, an example instance, and validation, so that a manifest produced by one engine can be processed the same way as a manifest produced by another. That work is a candidate for a future version of this guide. Until it exists, a manifest is useful as an engine-specific artifact but cannot yet be relied on for cross-engine interoperability, and the guidance below reflects that: publishing the manifest is recommended now as good practice and as a signal of direction, and a future version that defines the manifest format would be the point at which strengthening the recommendation could reasonably be considered.
+
+#### Guidance
+
+A Transformation Engine and Implementer SHOULD publish a machine-readable manifest declaring which input FHIR profiles the transformation supports and which OMOP tables it populates from them. This manifest makes machine-consumable, and connects, the input-profile declaration described for accepted FHIR profiles and the table-population disclosure described for the Target OMOP Instance. The format of the manifest is not defined in this version of the guide; publishing a manifest in an engine-specific format is nonetheless encouraged as a signal of capability and as preparation for a future version that defines a common format. (f2o-003)
 
 ### Technical Considerations
 The following tables provide some technical information about the guide.
