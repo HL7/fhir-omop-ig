@@ -72,7 +72,9 @@ An Implementer SHALL declare which input FHIR profiles the transformation accept
 
 A Transformation Engine SHALL rely only on the elements a declared profile guarantees, and SHALL NOT assume the presence of an element that the profile permits a conformant source to omit. This is a constraint on assumptions about optional content, not an obligation to handle content beyond the transformation's declared profile scope. (f2o-011)
 
-A Transformation Engine SHOULD validate incoming resources against the profiles the transformation declares it accepts, and SHOULD handle a validation failure by a documented disposition, rejecting or quarantining the resource rather than admitting it unvalidated. The disposition of failed input SHOULD be recorded so that the volume and reasons for failure are visible to operators and to consumers of the target. (f2o-012)### Identifiers, De-identification & Privacy
+A Transformation Engine SHOULD validate incoming resources against the profiles the transformation declares it accepts, and SHOULD handle a validation failure by a documented disposition, rejecting or quarantining the resource rather than admitting it unvalidated. The disposition of failed input SHOULD be recorded so that the volume and reasons for failure are visible to operators and to consumers of the target. (f2o-012)
+
+### Identifiers, De-identification & Privacy
 Transforming FHIR resources to OMOP presents challenges in identifier management. FHIR resources utilize complex, non-integer identifiers that link discrete data across systems and support clinical workflows, while the OMOP CDM employs integer-based keys designed for de-identified research data with `person_id` serving as the primary linking mechanism across clinical domains. The core challenge is balancing OMOP's de-identification requirements with business needs for traceability and audit capabilities.
 
 #### Identifier Management
