@@ -38,7 +38,41 @@ A Transformation Engine SHALL support ingestion of both singleton resources and 
 
 Whichever forms are supported, the Implementer should document which ingestion shapes the transformation accepts and what assumptions it makes about reference resolution and completeness, as part of the ETL documentation described in ETL Documentation (Strategies and Best Practices page).
 
-### Identifiers, De-identification & Privacy
+### Source Data Expectations
+
+The [Source Data Acquisition](F2OGeneralIssues.html#source-data-acquisition) section describes the shapes in which FHIR content arrives. This section describes what a Transformation Engine may assume about that content once it arrives: which profiles it is built to consume, what it may and may not take for granted about the elements those profiles carry, and how it should behave when the incoming data does not conform.
+
+#### Declared Profile Scope
+
+This guide is scoped to a common core of EHR data expressed through the International Patient Access (IPA) profiles, together with the Encounter and Procedure profiles from US Core (STU7 Sequence). That scope is a property of the guide, not of every transformation built from it. A given transformation consumes some subset of those profiles, and a consumer of the resulting OMOP data, or a data holder deciding whether to route data to a given engine, benefits from knowing that subset explicitly rather than discovering it by trial.
+
+An Implementer therefore declares which input profiles the transformation accepts. A declaration might state that a transformation accepts IPA profiles together with US Core Encounter and Procedure; that it accepts IPA profiles only; or that it accepts base FHIR resources conforming to no profile beyond the resource definitions. The point is not which profiles are chosen but that the set is stated, so that the boundary of the transformation is explicit.
+
+#### Reliance on Declared Minimums
+
+This guide was produced as a foundation. It declared a deliberate scope and worked within it, and that discipline is what allowed a usable guide to ship rather than an endless attempt to cover every case at once. Content outside the declared scope is not precluded; on the contrary, its development as future add-on volumes, additional profiles, or downstream Implementation Guides is expressly anticipated and encouraged. Several sections of this guide discuss topics beyond its formal scope precisely to offer the community best-practice guidance for the ETLs it will build next.
+
+The same discipline applies to how a Transformation Engine reads the profiles it does consume. A profile guarantees certain elements: those it marks as required, or as must-support, or with a minimum cardinality above zero. Everything else a profile permits is optional, and a conformant source may legitimately omit it. An engine that assumes an optional element is present, because it usually is, will fail when a conformant source omits it, and the failure will be silent: a record processed as though a missing element carried a value produces output that is wrong in a way nothing in the target reveals.
+
+Relying only on what a declared profile guarantees is therefore a correctness property, not a breadth-of-coverage obligation. It does not ask an engine to handle every element a profile permits, nor to cover content outside the transformation's declared profile set. It asks the narrower thing: that the engine treat as optional what the profile treats as optional, and not build assumptions on the presence of elements a conformant source is free to leave out.
+
+#### Handling Non-Conformant Input
+
+A transformation cannot control what a source sends it. Even within a declared profile set, incoming resources may fail to validate: a required element may be absent, a value may fall outside a bound value set, a structure may be malformed. How a Transformation Engine responds to such input determines whether the resulting OMOP data can be trusted.
+
+The failure mode to avoid is silent admission. An engine that passes non-conformant input through without checking it, or that partially processes an invalid resource and writes whatever it could extract, contaminates the target with records whose provenance and correctness cannot be established after the fact. Because OMOP analytics run at a remove from the source, such contamination is rarely detected at the point it occurs and can survive into analysis.
+
+The remedy is deliberate disposition. A Transformation Engine should validate incoming resources against the profiles it has declared it accepts, and should handle validation failures by a defined route rather than by default. Two routes are ordinarily appropriate: rejection, in which the resource is not transformed and the fact of its rejection is recorded; and quarantine, in which the resource is set aside for review rather than transformed or discarded, so that a systematic source problem becomes visible and correctable. Whichever route is used, the disposition should be documented, both so that operators can see how much input failed and why, and so that a consumer of the target knows that failed input was handled deliberately rather than admitted unnoticed.
+
+This obligation is the general case of a pattern that recurs elsewhere in this guide. When a terminology lookup cannot be resolved, an engine must not silently emit a placeholder concept without recording the failure, as described under status and intent screening and exercised by the terminology-server tests. Input validation is the same principle applied at the point of ingestion: a failure is handled and recorded, never silently absorbed.
+
+#### Guidance
+
+An Implementer SHALL declare which input FHIR profiles the transformation accepts, whether International Patient Access, US Core Encounter and Procedure, base FHIR resources, or a stated combination. (f2o-010)
+
+A Transformation Engine SHALL rely only on the elements a declared profile guarantees, and SHALL NOT assume the presence of an element that the profile permits a conformant source to omit. This is a constraint on assumptions about optional content, not an obligation to handle content beyond the transformation's declared profile scope. (f2o-011)
+
+A Transformation Engine SHOULD validate incoming resources against the profiles the transformation declares it accepts, and SHOULD handle a validation failure by a documented disposition, rejecting or quarantining the resource rather than admitting it unvalidated. The disposition of failed input SHOULD be recorded so that the volume and reasons for failure are visible to operators and to consumers of the target. (f2o-012)### Identifiers, De-identification & Privacy
 Transforming FHIR resources to OMOP presents challenges in identifier management. FHIR resources utilize complex, non-integer identifiers that link discrete data across systems and support clinical workflows, while the OMOP CDM employs integer-based keys designed for de-identified research data with `person_id` serving as the primary linking mechanism across clinical domains. The core challenge is balancing OMOP's de-identification requirements with business needs for traceability and audit capabilities.
 
 #### Identifier Management
