@@ -1,6 +1,6 @@
-Implementers of FHIR-to-OMOP ETL pipelines must account for one of the most consequential—and most frequently overlooked—aspects of the FHIR specification: modifier extensions. Modifier extensions are a formal FHIR mechanism for communicating that a resource's apparent clinical meaning is fundamentally altered by contextual information that the standard resource structure cannot express. This includes negation, repurposing, participant exclusion, reliability qualification, and access constraints.
+Implementers of FHIR-to-OMOP ETL pipelines must account for one of the most consequential, and most frequently overlooked, aspects of the FHIR specification: modifier extensions. Modifier extensions are a formal FHIR mechanism for communicating that a resource's apparent clinical meaning is fundamentally altered by contextual information that the standard resource structure cannot express. This includes negation, repurposing, participant exclusion, reliability qualification, and access constraints.
 
-The risk to observational data quality is severe. A resource that superficially describes a medication order, a diagnosis, or a clinical observation may carry a modifier extension that entirely reverses its meaning — asserting, for example, that a medication must NOT be given, that a condition belongs to a family member rather than the patient, or that a measurement value is unreliable. An ETL pipeline that processes FHIR resources without inspecting modifier extensions will silently introduce false clinical facts into the OMOP CDM, corrupting cohort definitions, prevalence estimates, drug utilization analyses, and any downstream research built on those records.
+The risk to observational data quality is severe. A resource that superficially describes a medication order, a diagnosis, or a clinical observation may carry a modifier extension that entirely reverses its meaning, asserting, for example, that a medication must NOT be given, that a condition belongs to a family member rather than the patient, or that a measurement value is unreliable. An ETL pipeline that processes FHIR resources without inspecting modifier extensions will silently introduce false clinical facts into the OMOP CDM, corrupting cohort definitions, prevalence estimates, drug utilization analyses, and any downstream research built on those records.
 
 This guidance covers what modifier extensions are, what the FHIR specification normatively requires of any system that processes resources containing them, a taxonomy of common modifier extension patterns with their correct OMOP dispositions, annotated clinical examples, and concrete ETL implementation guidance.
 
@@ -27,15 +27,15 @@ Regular extensions are placed in the standard `extension` element:
 ]
 ```
 
-#### Modifier Extensions — The Critical Difference
+#### Modifier Extensions: The Critical Difference
 
 Modifier extensions are categorically different. A modifier extension contains information that qualifies, negates, or otherwise fundamentally changes the meaning of the element or resource to which it is attached. The FHIR specification identifies the following as canonical use cases:
 
-- Negating the primary meaning of the containing element — for example, asserting that something explicitly did NOT occur
-- Asserting that a resource is being used for a purpose other than its primary design — for example, using a Condition resource to record a family history assertion rather than the patient's own diagnosis
-- Asserting that a referenced participant was explicitly NOT involved in an event — for example, a performer excluded from a Procedure
-- Qualifying a value in a way that would lead to clinical misuse if the qualifier were ignored — for example, flagging a contact as "do-not-contact" or a measurement as unreliable
-- Communicating an instruction not to perform an action — for example, an "anti-prescription" indicating a patient must NOT receive a medication
+- Negating the primary meaning of the containing element, for example, asserting that something explicitly did NOT occur
+- Asserting that a resource is being used for a purpose other than its primary design, for example, using a Condition resource to record a family history assertion rather than the patient's own diagnosis
+- Asserting that a referenced participant was explicitly NOT involved in an event, for example, a performer excluded from a Procedure
+- Qualifying a value in a way that would lead to clinical misuse if the qualifier were ignored, for example, flagging a contact as "do-not-contact" or a measurement as unreliable
+- Communicating an instruction not to perform an action, for example, an "anti-prescription" indicating a patient must NOT receive a medication
 
 Modifier extensions are placed in the `modifierExtension` element, which is syntactically distinct from `extension` in both FHIR XML and JSON:
 
@@ -54,21 +54,21 @@ Modifier extensions are placed in the `modifierExtension` element, which is synt
 
 ### FHIR Specification Requirements
 
-The FHIR specification imposes normative obligations — using RFC 2119 language of SHALL, SHOULD, and MUST — on any system that processes FHIR resources. These obligations apply to ETL pipelines consuming FHIR data to populate OMOP. The authoritative source for these requirements is the [FHIR Extensibility page](https://hl7.org/fhir/R5/extensibility.html).
+The FHIR specification imposes normative obligations, using RFC 2119 language of SHALL, SHOULD, and MUST, on any system that processes FHIR resources. These obligations apply to ETL pipelines consuming FHIR data to populate OMOP. The authoritative source for these requirements is the [FHIR Extensibility page](https://hl7.org/fhir/R5/extensibility.html).
 
-> **FHIR SPEC REQUIREMENT:** *"Implementations SHALL ensure that they do not process data containing unrecognized modifier extensions."* — FHIR Specification, Extensibility (R4/R5)
+> **FHIR SPEC REQUIREMENT:** *"Implementations SHALL ensure that they do not process data containing unrecognized modifier extensions."*, FHIR Specification, Extensibility (R4/R5)
 
 When a modifier extension is encountered, a processing system SHALL choose one of the following strategies:
 
 1. Recognize the modifier extension, correctly understand its impact, and proceed with that understanding applied.
 2. Reject the resource instance entirely, declining to ingest it until the modifier extension is understood.
-3. Treat the resource as suitable for rendering only — display the resource's human-readable narrative but do not extract its discrete data elements.
+3. Treat the resource as suitable for rendering only, display the resource's human-readable narrative but do not extract its discrete data elements.
 4. Escalate to human review before processing.
 
 Additional normative guidance from the specification:
 
 - Applications SHOULD always check for modifier extensions when processing resources, even where trading partner agreements are believed to guarantee that no modifier extensions will occur, since integration and deployment options often change.
-- Where a modifier extension appears on a backbone element child rather than the resource root, a system may choose to process the resource while excluding the affected element — treating it as absent — provided the processing can safely function with incomplete data.
+- Where a modifier extension appears on a backbone element child rather than the resource root, a system may choose to process the resource while excluding the affected element, treating it as absent, provided the processing can safely function with incomplete data.
 - The human-readable narrative of a FHIR resource SHALL reflect any modifying information, making the narrative a safe fallback for rendering purposes.
 
 > **MISINTERPRETATION RISK:** An OMOP ETL pipeline that reads FHIR resources without inspecting the `modifierExtension` element at both the resource root and all backbone element levels is non-compliant with the FHIR specification and is at significant risk of ingesting clinically inverted or otherwise meaningless data into the OMOP CDM.
@@ -246,7 +246,7 @@ The patient record is valid. The contact John Smith is listed for record-keeping
 
 ##### Clinical Meaning
 
-The systolic reading (142 mmHg) is valid. The diastolic component carries a modifier extension flagging it as unreliable — perhaps due to equipment malfunction or a data entry error. The Observation `status` of `final` might otherwise lead an ETL to treat both components as confirmed values.
+The systolic reading (142 mmHg) is valid. The diastolic component carries a modifier extension flagging it as unreliable, perhaps due to equipment malfunction or a data entry error. The Observation `status` of `final` might otherwise lead an ETL to treat both components as confirmed values.
 
 ##### OMOP Misinterpretation Risk
 
@@ -291,7 +291,7 @@ The systolic reading (142 mmHg) is valid. The diastolic component carries a modi
 
 ##### Clinical Meaning
 
-The appendectomy was completed and performed by the attending surgeon. The resident physician is listed as a performer, but the modifier extension on the second performer backbone element asserts this practitioner was explicitly NOT involved — possibly listed in error, or present but non-participating.
+The appendectomy was completed and performed by the attending surgeon. The resident physician is listed as a performer, but the modifier extension on the second performer backbone element asserts this practitioner was explicitly NOT involved, possibly listed in error, or present but non-participating.
 
 ##### OMOP Misinterpretation Risk
 
@@ -337,7 +337,7 @@ The NLP system extracted the concept "pneumonia" from a clinical note and also d
 
 ##### OMOP Misinterpretation Risk
 
-> **⚠ MISINTERPRETATION RISK:** Mapping this resource to `condition_occurrence` creates a record asserting the patient had pneumonia — the exact opposite of the clinical meaning. At scale, NLP-sourced FHIR data can generate entire populations of records carrying negation modifiers, making this a systemic risk rather than an occasional edge case.
+> **⚠ MISINTERPRETATION RISK:** Mapping this resource to `condition_occurrence` creates a record asserting the patient had pneumonia, the exact opposite of the clinical meaning. At scale, NLP-sourced FHIR data can generate entire populations of records carrying negation modifiers, making this a systemic risk rather than an occasional edge case.
 
 ##### Correct ETL Disposition
 
@@ -349,7 +349,7 @@ The NLP system extracted the concept "pneumonia" from a clinical note and also d
 
 ### Relationship to Native FHIR Status and Verification Elements
 
-Modifier extensions are not the only FHIR mechanism by which a resource's surface meaning may differ from its clinical intent. Several core resource elements serve a similar modifying function and must be processed correctly alongside modifier extension inspection. The table below summarizes the most important native elements; the FHIR-to-OMOP IG's Status and Intent guidance covers these in detail. Modifier extension inspection is an additional, parallel requirement — not a substitute for processing these fields.
+Modifier extensions are not the only FHIR mechanism by which a resource's surface meaning may differ from its clinical intent. Several core resource elements serve a similar modifying function and must be processed correctly alongside modifier extension inspection. The table below summarizes the most important native elements; the FHIR-to-OMOP IG's Status and Intent guidance covers these in detail. Modifier extension inspection is an additional, parallel requirement, not a substitute for processing these fields.
 
 | FHIR Element | Resource(s) | Values That Signal Non-Standard Meaning | OMOP Impact if Ignored |
 |---|---|---|---|
@@ -368,12 +368,12 @@ Modifier extensions are not the only FHIR mechanism by which a resource's surfac
 Modifier extensions can appear in two locations within any DomainResource:
 
 - **Resource root:** The top-level `modifierExtension` array on the resource. This affects the meaning of the entire resource.
-- **Backbone elements:** Any backbone element within the resource — for example, `Observation.component`, `Procedure.performer`, `Patient.contact` — may carry its own `modifierExtension` array. This affects only the meaning of that sub-element.
+- **Backbone elements:** Any backbone element within the resource, for example, `Observation.component`, `Procedure.performer`, `Patient.contact`, may carry its own `modifierExtension` array. This affects only the meaning of that sub-element.
 
 ETL code must check both locations. Checking only the resource root is not sufficient.
 
 ```python
-#### Pseudocode — check modifier extensions before processing
+#### Pseudocode: check modifier extensions before processing
 def has_modifier_extension(resource_or_element):
     return bool(resource_or_element.get("modifierExtension", []))
 
@@ -397,7 +397,7 @@ def process_medication_request(resource):
 
 #### Resolution: Building a Modifier Extension Registry
 
-Every organization implementing a FHIR-to-OMOP pipeline should maintain a modifier extension registry — a catalog of known modifier extension URLs, their semantics, and the ETL disposition associated with each. This registry should be:
+Every organization implementing a FHIR-to-OMOP pipeline should maintain a modifier extension registry, a catalog of known modifier extension URLs, their semantics, and the ETL disposition associated with each. This registry should be:
 
 - Maintained as a versioned configuration file or database table
 - Reviewed and updated whenever new FHIR source systems or Implementation Guides are onboarded
@@ -419,7 +419,7 @@ Every organization implementing a FHIR-to-OMOP pipeline should maintain a modifi
 The FHIR specification is explicit: a system encountering an unrecognized modifier extension MUST NOT process the resource as if the extension were absent. The recommended handling is:
 
 1. Log the resource identifier, resource type, and the modifier extension URL to an audit table.
-2. Quarantine the resource — do not ingest its data into OMOP clinical domain tables.
+2. Quarantine the resource, do not ingest its data into OMOP clinical domain tables.
 3. Route the quarantined record to a human review queue or investigation process.
 4. Once the extension is understood and its disposition determined, add it to the registry and re-process quarantined records.
 5. Track quarantine rates by source system and extension URL over time as a data quality metric.
@@ -471,12 +471,12 @@ For modifier extensions that are understood and lead to a modified ETL dispositi
 
 Many FHIR Implementation Guides define modifier extensions specific to their clinical domain. ETL pipelines consuming data from systems implementing these IGs must understand and register those profile-specific extensions. The [FHIR Extension Registry](https://registry.fhir.org/) is the authoritative index of published extensions. Key IGs to review for modifier extension usage include:
 
-- [US Core Implementation Guide](https://hl7.org/fhir/us/core/) — pediatrics, vital signs, smoking status, and other US-specific clinical data
-- [minimal Common Oncology Data Elements (mCODE)](https://hl7.org/fhir/us/mcode/) — oncology-specific status and negation patterns
-- [Da Vinci Payer Data Exchange (PDex)](https://hl7.org/fhir/us/davinci-pdex/) — prior authorization and coverage context
-- [QI-Core](https://hl7.org/fhir/us/qicore/) — quality measure data elements; QI-Core profiles define several modifier extensions related to negation and exclusion for use in quality reporting
-- [Gravity SDOH Clinical Care](https://hl7.org/fhir/us/sdoh-clinicalcare/) — social determinants of health with contextual qualifiers
-- [Clinical Practice Guidelines on FHIR (CPG-on-FHIR)](https://hl7.org/fhir/uv/cpg/) — protocol and order set contexts
+- [US Core Implementation Guide](https://hl7.org/fhir/us/core/), pediatrics, vital signs, smoking status, and other US-specific clinical data
+- [minimal Common Oncology Data Elements (mCODE)](https://hl7.org/fhir/us/mcode/), oncology-specific status and negation patterns
+- [Da Vinci Payer Data Exchange (PDex)](https://hl7.org/fhir/us/davinci-pdex/), prior authorization and coverage context
+- [QI-Core](https://hl7.org/fhir/us/qicore/), quality measure data elements; QI-Core profiles define several modifier extensions related to negation and exclusion for use in quality reporting
+- [Gravity SDOH Clinical Care](https://hl7.org/fhir/us/sdoh-clinicalcare/), social determinants of health with contextual qualifiers
+- [Clinical Practice Guidelines on FHIR (CPG-on-FHIR)](https://hl7.org/fhir/uv/cpg/), protocol and order set contexts
 
 #### Versioning and Evolution of Modifier Extensions
 
@@ -492,9 +492,9 @@ When consuming FHIR data via the [Bulk Data Access API](https://hl7.org/fhir/uv/
 
 #### Modifier Extensions Are Not Data Quality Errors
 
-The presence of a modifier extension is not an indication of a data quality problem in the source FHIR system. Modifier extensions are a legitimate, specified FHIR mechanism for communicating important clinical context that the standard resource structure cannot express. The FHIR specification explicitly provides for their use in circumstances where standard elements are insufficient. Treating modifier extensions as anomalies to be filtered without inspection is the incorrect response — and is precisely the behavior the specification prohibits.
+The presence of a modifier extension is not an indication of a data quality problem in the source FHIR system. Modifier extensions are a legitimate, specified FHIR mechanism for communicating important clinical context that the standard resource structure cannot express. The FHIR specification explicitly provides for their use in circumstances where standard elements are insufficient. Treating modifier extensions as anomalies to be filtered without inspection is the incorrect response, and is precisely the behavior the specification prohibits.
 
-> **NOTE:** The correct framing: a modifier extension is a signal that the source system is communicating something clinically important. The ETL's responsibility is to understand that signal, apply the appropriate disposition, and document the decision — not to eliminate the signal.
+> **NOTE:** The correct framing: a modifier extension is a signal that the source system is communicating something clinically important. The ETL's responsibility is to understand that signal, apply the appropriate disposition, and document the decision, not to eliminate the signal.
 
 ---
 
@@ -502,29 +502,9 @@ The presence of a modifier extension is not an indication of a data quality prob
 
 | Principle | Implication for FHIR-to-OMOP ETL |
 |---|---|
-| `modifierExtension` is a distinct, named element — not a subtype of `extension` | ETL code must check for `modifierExtension` explicitly. Generically discarding all extension data without distinguishing the element name bypasses this critical mechanism. |
+| `modifierExtension` is a distinct, named element, not a subtype of `extension` | ETL code must check for `modifierExtension` explicitly. Generically discarding all extension data without distinguishing the element name bypasses this critical mechanism. |
 | Modifier extensions can appear at the resource root and on any backbone element | A two-level detection strategy is required: check the resource root, then check every backbone element within the resource. |
 | An unrecognized modifier extension MUST result in non-standard handling | Silent pass-through of unrecognized modifier extensions is non-compliant with the FHIR specification. Quarantine is the correct default for unknown URLs. |
 | Common clinical scenarios affected include negation, family history, do-not-use contacts, reliability qualifiers, participant exclusion, and NLP-derived negation | Each scenario has a distinct OMOP disposition. ETL registries must capture the full range of scenarios for each source system and IG. |
 | Modifier extensions operate independently of native FHIR status and verification elements | Filtering on `status='entered-in-error'` and `verificationStatus='refuted'` is necessary but not sufficient. Modifier extension inspection is a separate, parallel requirement. |
 | Handling decisions must be documented and communicated | Modifier extension dispositions must be captured in ETL specifications and surfaced to OMOP analysts so that downstream research can account for the transformations applied. |
-
----
-
-### References
-
-- [HL7 FHIR Specification — Extensibility (R5)](https://hl7.org/fhir/R5/extensibility.html)
-- [HL7 FHIR Specification — Defining Extensions (R5)](https://hl7.org/fhir/R5/defining-extensions.html)
-- [HL7 FHIR Specification — Extension Registry](https://registry.fhir.org/)
-- [HL7 FHIR Specification — Versioning and Maturity (R5)](https://hl7.org/fhir/R5/versions.html)
-- [HL7 FHIR Bulk Data Access Implementation Guide](https://hl7.org/fhir/uv/bulkdata/)
-- [HL7 FHIR to OMOP Implementation Guide (continuous build)](https://build.fhir.org/ig/HL7/fhir-omop-ig/)
-- [OHDSI OMOP CDM Documentation](https://ohdsi.github.io/CommonDataModel/)
-- [US Core Implementation Guide](https://hl7.org/fhir/us/core/)
-- [minimal Common Oncology Data Elements (mCODE)](https://hl7.org/fhir/us/mcode/)
-- [Da Vinci Payer Data Exchange (PDex)](https://hl7.org/fhir/us/davinci-pdex/)
-- [QI-Core Implementation Guide](https://hl7.org/fhir/us/qicore/)
-- [Gravity SDOH Clinical Care Implementation Guide](https://hl7.org/fhir/us/sdoh-clinicalcare/)
-- [Clinical Practice Guidelines on FHIR (CPG-on-FHIR)](https://hl7.org/fhir/uv/cpg/)
-- Miller TA et al. The SMART Text2FHIR Pipeline. AMIA Annu Symp Proc. 2024;2023:514–520.
-- FHIR to OMOP Cookbook (OHDSI / HL7 mCODE Connectathon). Published via OHDSI Confluence and OHDSI Symposium 2024.
