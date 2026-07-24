@@ -487,6 +487,12 @@ The cache key must therefore incorporate the vocabulary version, not only the so
 
 The vocabulary version recorded for the run, as described in [Considerations for Legacy Vocabulary Versions](codemappings.html#considerations-for-legacy-vocabulary-versions), should be the same version the cache is bound to. Where these diverge, the run's documentation asserts a vocabulary version that its concept assignments do not reflect.
 
+### Conformance Testing for Terminology Servers
+
+The HL7 FHIR Terminology Ecosystem Implementation Guide publishes a suite of version-independent test cases that a terminology server can run to demonstrate correct behavior across the standard FHIR terminology operations. Among these is a set of tests specific to OMOP content, based on a stable subset of the OHDSI Standardized Vocabularies, that exercise the same operations this page describes: validating OMOP codes provided as code, Coding, and CodeableConcept; looking up standard and non-standard OMOP concepts; expanding OMOP value sets; and translating from OMOP to a target code system through a ConceptMap. The tests cover both the accepting cases and the rejecting cases, including wrong-display, wrong-version, and domain-membership checks.
+
+A server that hosts the OHDSI Vocabularies and passes the OMOP test cases has objective evidence that it supports the operations a Transformation Engine relies on here, which is the behavior the conformance obligation below requires. The test cases, the runner, and instructions for executing them against a server are published in the [FHIR Terminology Ecosystem IG Test Case Registry](https://build.fhir.org/ig/HL7/fhir-tx-ecosystem-ig/testcases.html); the OMOP-specific cases appear there under the `omop` group. Because the OHDSI Vocabularies are versioned, a server should report the vocabulary release it is serving, so that a passing result is interpretable against a known vocabulary version.
+
 #### Guidance
 
 Where a Transformation Engine resolves concepts through a FHIR terminology server, it SHALL do so through the standard `ConceptMap/$translate` and `CodeSystem/$lookup` operations rather than through server-specific interfaces, so that a transformation is not bound to a particular server implementation. (f2o-110)
