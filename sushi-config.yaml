@@ -54,6 +54,8 @@ pages:
     title: Value-as-Concept Mapping Pattern
   RaceAndEthnicity.md:
     title: Populating Race and Ethnicity
+  technical_artifacts.md:
+    title: Technical Artifacts
   actors.md:
     title: Actors
   conformance.md:
