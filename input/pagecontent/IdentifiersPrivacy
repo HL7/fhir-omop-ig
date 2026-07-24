@@ -9,7 +9,7 @@ Transforming FHIR resources to OMOP presents challenges in identifier management
 FHIR resources carry two fundamentally different types of identifiers that serve distinct purposes and must be handled separately when transforming to OMOP. Conflating them is a common source of implementation errors.
 
 | FHIR Element | Term Used in This IG | Role |
- |---|---|---|
+|---|---|---|
 | `Resource.id` | **Logical identifier** | Server-assigned primary key for the resource instance. Combined with the resource type, it forms the canonical FHIR address (e.g., `Encounter/abc-123`). Used by FHIR to locate and dereference the resource via RESTful APIs. Logical identifiers may change if a resource is migrated to a different server. |
 | `Resource.identifier` | **Business identifier** | One or more data elements of type `Identifier` carried *on* the resource. Represent externally-assigned identifiers such as medical record numbers, encounter numbers, or accession numbers. These identify the real-world entity the resource describes, persist across systems, and may come from multiple different assigning authorities. FHIR itself does not use business identifiers to locate or resolve resources; they are data, not addresses. |
 
