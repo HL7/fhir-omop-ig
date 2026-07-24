@@ -489,5 +489,9 @@ The vocabulary version recorded for the run, as described in [Considerations for
 
 #### Guidance
 
+Where a Transformation Engine resolves concepts through a FHIR terminology server, it SHALL do so through the standard `ConceptMap/$translate` and `CodeSystem/$lookup` operations rather than through server-specific interfaces, so that a transformation is not bound to a particular server implementation. (f2o-110)
+
 A Transformation Engine SHOULD cache terminology server responses, and where it does so SHALL bind the cache invalidation policy to the OHDSI Vocabulary version, such that entries computed under one vocabulary version are not read under another. (f2o-111)
+
+A Terminology Server claiming conformance to this guide SHALL expose the OHDSI Standardized Vocabularies as FHIR CodeSystem and ConceptMap resources, and SHALL report the vocabulary release it is serving in the `version` element of its responses. (f2o-112)
 
