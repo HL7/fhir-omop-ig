@@ -376,11 +376,11 @@ Custom concepts added to a local OMOP instance SHALL use concept_id values at or
 
 #### F2O-050
 
-*Populate every *_type_concept_id with a valid Type Concept domain Standard concept.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL populate every OMOP `*_type_concept_id` field with a Standard concept from the Type Concept domain, and a Target OMOP Instance SHALL NOT contain a clinical record with an unpopulated or non-Standard type concept.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [OMOP Domain and Type Concept Examples](codemappings.html#omop-domain-and-type-concept-examples)
 
 </div>
 
@@ -388,11 +388,11 @@ Custom concepts added to a local OMOP instance SHALL use concept_id values at or
 
 #### F2O-051
 
-*Derive type concept from resource type + category + context.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL derive the type concept from the FHIR resource type together with the category and context elements the resource carries, rather than from the resource type alone.
 
 **Actors:** ● XFM
+
+**Discussed in:** [Type Concepts in the OMOP Common Data Model](codemappings.html#type-concepts-in-the-omop-common-data-model)
 
 </div>
 
@@ -400,11 +400,11 @@ Custom concepts added to a local OMOP instance SHALL use concept_id values at or
 
 #### F2O-052
 
-*Default to most general applicable type concept when context is insufficient.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where the source does not carry sufficient context to identify a specific type concept, a Transformation Engine SHALL select the most general applicable Type Concept rather than assigning a specific one by inference.
 
 **Actors:** ● XFM
+
+**Discussed in:** [When Source Context Is Insufficient](codemappings.html#when-source-context-is-insufficient)
 
 </div>
 
@@ -412,11 +412,11 @@ Custom concepts added to a local OMOP instance SHALL use concept_id values at or
 
 #### F2O-053
 
-*Distinguish patient-reported from clinician-verified provenance via distinct type concepts.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where a source record is patient-reported, a Transformation Engine SHALL assign a type concept distinguishing it from clinician-recorded data, and a Target OMOP Instance SHALL preserve that distinction.
 
 **Actors:** ● XFM, ● TGT, ○ IMP
+
+**Discussed in:** [Type Concepts in the OMOP Common Data Model](codemappings.html#type-concepts-in-the-omop-common-data-model)
 
 </div>
 
