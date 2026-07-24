@@ -4,12 +4,12 @@ The OMOP Common Data Model (CDM) is the foundation of the OHDSI analytic technic
 
 {::options parse_block_html="false" /}
 <figure>
-<figcaption><b>OMOP Common Data Model v5.4 [4]</b></figcaption>
+<figcaption><b>OMOP Common Data Model v5.4 [1]</b></figcaption>
 <img src="cdm54.png" width="800" style="padding-top:0;padding-bottom:30px" alt="The OMOP v5.4 Common Data Model"/>
 </figure>
 {::options parse_block_html="true" /}
 
-Observational health data transformed to the OMOP CDM utilize the alignment afforded by standardization to achieve consistent and reliable data quality and support analytics across geographically divergent communities at-scale. A recently published study that surveyed leading US research institutions (Clinical and Translational Science Awards (CTSA) Program members) regarding their use of data sharing tools and programs found that 94% of the 50 individual respondents indicated they used at least one OMOP-based system.[5]
+Observational health data transformed to the OMOP CDM utilize the alignment afforded by standardization to achieve consistent and reliable data quality and support analytics across geographically divergent communities at-scale. A recently published study that surveyed leading US research institutions (Clinical and Translational Science Awards (CTSA) Program members) regarding their use of data sharing tools and programs found that 94% of the 50 individual respondents indicated they used at least one OMOP-based system.[2]
 
 OMOP successfully achieved its original aims to:
 
@@ -26,7 +26,7 @@ Among its activities, OHDSI supports research collaboration via utilization of:
 
 #### CDM Version History
 
-This Implementation Guide utilizes OMOP CDM v5.4. In 2022, the OHDSI community made a decision to cease development of v6.0 of the OMOP CDM because v6.0 made the *_datetime fields mandatory rather than optional. This switch radically changed the assumptions related to exposure and outcome timing. Rather than proceeding with v6.0, CDM v5.4 was designed and released with additions requested by the OHDSI community while retaining the date structure of medical events from v5.3 (the version preceding both v6.0 and v5.4). Detailed changes from CDM v5.3 to v5.4 are available in the OMOP CDM GitHub documentation. New implementations are asked to transform data to CDM v5.4 until the next series of CDM versions is ready for mainstream use.[6]
+This Implementation Guide utilizes OMOP CDM v5.4. In 2022, the OHDSI community made a decision to cease development of v6.0 of the OMOP CDM because v6.0 made the *_datetime fields mandatory rather than optional. This switch radically changed the assumptions related to exposure and outcome timing. Rather than proceeding with v6.0, CDM v5.4 was designed and released with additions requested by the OHDSI community while retaining the date structure of medical events from v5.3 (the version preceding both v6.0 and v5.4). Detailed changes from CDM v5.3 to v5.4 are available in the OMOP CDM GitHub documentation. New implementations are asked to transform data to CDM v5.4 until the next series of CDM versions is ready for mainstream use.[4]
 
 #### Guidance
 
@@ -34,7 +34,7 @@ A Transformation Engine SHALL produce output conforming to the OMOP Common Data 
 
 ### Background on OHDSI
 
-Observational Health Data Sciences and Informatics, or OHDSI, is an international open-science community that aims to improve health by empowering the community to collaboratively generate the evidence that promotes better health decisions and better care [1]. OHDSI emerged from the Observational Medical Outcomes Partnership (OMOP), a public-private partnership active from 2008 to 2013 composed of members from industry, government, and academia, established to inform the appropriate use of observational healthcare databases for studying the effects of medical products [2]. OMOP successfully achieved its aims to conduct methodological research evaluating the performance of analytical methods, develop tools for transforming and analyzing disparate data sources, and establish a shared resource for the broader research community [3].
+Observational Health Data Sciences and Informatics, or OHDSI, is an international open-science community that aims to improve health by empowering the community to collaboratively generate the evidence that promotes better health decisions and better care [5]. OHDSI emerged from the Observational Medical Outcomes Partnership (OMOP), a public-private partnership active from 2008 to 2013 composed of members from industry, government, and academia, established to inform the appropriate use of observational healthcare databases for studying the effects of medical products [6]. OMOP successfully achieved its aims to conduct methodological research evaluating the performance of analytical methods, develop tools for transforming and analyzing disparate data sources, and establish a shared resource for the broader research community [3].
 
 A primary driver for OHDSI today is the value proposition that data generated as a by-product of care delivery can be analyzed to produce real-world evidence, which in turn can be disseminated across healthcare systems to inform clinical practice.
 
@@ -56,16 +56,16 @@ The unique strategic strength the Vulcan community brings to this effort is thro
 
 ### References
 
-[1] G. Hripcsak et al., "Observational Health Data Sciences and Informatics (OHDSI): Opportunities for Observational Researchers," *Stud. Health Technol. Inform.*, vol. 216, pp. 574–578, 2015.
+[1] G. Hripcsak, "State of the Community: Where have we been? Where are we going?," in *OHDSI 2023 Global Symposium*, Newark, NJ, 2023.
 
-[2] "Observational Medical Outcomes Partnership (OMOP)," FNIH, May 10, 2023. https://fnih.org/observational-medical-outcomes-partnership-omop/ (accessed Dec. 08, 2023).
+[2] E. Hall, G. Melton, P. Payne, D. Dorr and D. Vawdrey, "How Are Leading Research Institutions Engaging with Data Sharing Tools and Programs?," in *AMIA 2023 Annual Symposium*, Bethesda, MD, 2023.
 
 [3] "OMOP CDM Background." https://ohdsi.github.io/CommonDataModel/background.html (accessed Dec. 08, 2023).
 
-[4] G. Hripcsak, "State of the Community: Where have we been? Where are we going?," in *OHDSI 2023 Global Symposium*, Newark, NJ, 2023.
+[4] Tsafnat G, Dunscombe R, Gabriel D, Grieve G, Reich C. Converge or Collide? Making Sense of a Plethora of Open Data Standards in Health Care. *J Med Internet Res.* 2024 Apr 9;26:e55779. https://www.jmir.org/2024/1/e55779
 
-[5] E. Hall, G. Melton, P. Payne, D. Dorr and D. Vawdrey, "How Are Leading Research Institutions Engaging with Data Sharing Tools and Programs?," in *AMIA 2023 Annual Symposium*, Bethesda, MD, 2023.
+[5] G. Hripcsak et al., "Observational Health Data Sciences and Informatics (OHDSI): Opportunities for Observational Researchers," *Stud. Health Technol. Inform.*, vol. 216, pp. 574–578, 2015.
 
-[6] Tsafnat G, Dunscombe R, Gabriel D, Grieve G, Reich C. Converge or Collide? Making Sense of a Plethora of Open Data Standards in Health Care. *J Med Internet Res.* 2024 Apr 9;26:e55779. https://www.jmir.org/2024/1/e55779
+[6] "Observational Medical Outcomes Partnership (OMOP)," FNIH, May 10, 2023. https://fnih.org/observational-medical-outcomes-partnership-omop/ (accessed Dec. 08, 2023).
 
-
+[7] "We Are HL7 Vulcan," HL7 Vulcan FHIR Accelerator. https://hl7vulcan.org/ (accessed Jul. 24, 2026).
