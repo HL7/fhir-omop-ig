@@ -144,11 +144,11 @@ A Transformation Engine MAY support ingestion of Bulk Data NDJSON exports.
 
 #### F2O-020
 
-*SHALL NOT store Resource.identifier values in OMOP _source_value fields.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL NOT store FHIR business identifier values (`Resource.identifier`) in OMOP `_source_value` fields, and a Target OMOP Instance SHALL NOT contain business identifier values in those fields.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [Why `_source_value` Fields Are Not Appropriate for FHIR Identifier Storage](F2OGeneralIssues.html#why-_source_value-fields-are-not-appropriate-for-fhir-identifier-storage)
 
 </div>
 
@@ -156,11 +156,11 @@ A Transformation Engine MAY support ingestion of Bulk Data NDJSON exports.
 
 #### F2O-021
 
-*SHALL NOT derive OMOP integer PKs from Resource.identifier.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL NOT derive OMOP integer primary keys from FHIR business identifiers (`Resource.identifier`). Where primary keys are derived from FHIR source data rather than generated independently, the FHIR logical identifier (`Resource.id` combined with the resource type) is the appropriate source.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [Deriving OMOP Primary Keys from FHIR Source Data](F2OGeneralIssues.html#deriving-omop-primary-keys-from-fhir-source-data)
 
 </div>
 
@@ -168,11 +168,11 @@ A Transformation Engine MAY support ingestion of Bulk Data NDJSON exports.
 
 #### F2O-022
 
-*TGT SHALL NOT contain PII (names, addresses, MRNs, contacts).*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Target OMOP Instance SHALL NOT contain patient identifiable information, including names, addresses, medical record numbers, and contact details, in any field.
 
 **Actors:** ○ XFM, ● TGT, ○ IMP
+
+**Discussed in:** [Compliance Considerations](F2OGeneralIssues.html#compliance-considerations)
 
 </div>
 
@@ -180,11 +180,11 @@ A Transformation Engine MAY support ingestion of Bulk Data NDJSON exports.
 
 #### F2O-023
 
-*SHOULD maintain external mapping table to [ResourceType]/[Resource.id].*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHOULD maintain an external mapping table linking OMOP-generated identifiers to the originating FHIR logical identifier (`[ResourceType]/[Resource.id]`) where traceability from OMOP records back to source resources is required.
 
 **Actors:** ○ XFM, ● IMP
+
+**Discussed in:** [Recommended Approach: External Mapping Table](F2OGeneralIssues.html#recommended-approach-external-mapping-table)
 
 </div>
 
@@ -192,11 +192,11 @@ A Transformation Engine MAY support ingestion of Bulk Data NDJSON exports.
 
 #### F2O-024
 
-*External mapping table SHALL live outside OMOP schema, with distinct access controls.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where an external mapping table is maintained, it SHALL reside outside the OMOP schema and SHALL be governed by access controls distinct from those governing the OMOP instance itself.
 
 **Actors:** ● TGT, ● IMP
+
+**Discussed in:** [Recommended Approach: External Mapping Table](F2OGeneralIssues.html#recommended-approach-external-mapping-table)
 
 </div>
 
@@ -204,11 +204,11 @@ A Transformation Engine MAY support ingestion of Bulk Data NDJSON exports.
 
 #### F2O-025
 
-*Document privacy assessment (HIPAA / Expert Det. / GDPR) per identifier system.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHALL document a privacy and regulatory assessment for each identifier system encountered in the source data, identifying the framework applied, whether HIPAA Safe Harbor, Expert Determination, GDPR, or an equivalent, and the determination reached.
 
 **Actors:** ● IMP
+
+**Discussed in:** [Compliance Considerations](F2OGeneralIssues.html#compliance-considerations)
 
 </div>
 
@@ -216,11 +216,11 @@ A Transformation Engine MAY support ingestion of Bulk Data NDJSON exports.
 
 #### F2O-026
 
-*Document Surrogate-Key / External-Storage / Exclusion strategy per identifier.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHALL document, for each identifier system encountered, which handling strategy was applied, whether surrogate key mapping, external storage, or exclusion, and record that determination in the ETL documentation.
 
 **Actors:** ○ XFM, ● IMP
+
+**Discussed in:** [Decision Framework for Identifier Management](F2OGeneralIssues.html#decision-framework-for-identifier-management)
 
 </div>
 
@@ -228,11 +228,11 @@ A Transformation Engine MAY support ingestion of Bulk Data NDJSON exports.
 
 #### F2O-132
 
-*Document legal basis (BAA / IRB / DUA / equivalent) for data access.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHALL document the legal instrument governing access to the source FHIR data, whether a business associate agreement, an IRB approval or waiver, a data use agreement, or an equivalent, together with any constraint it places on identifier retention, linkage, or re-identification.
 
 **Actors:** ● IMP
+
+**Discussed in:** [Legal Basis for Data Access](F2OGeneralIssues.html#legal-basis-for-data-access)
 
 </div>
 
@@ -476,11 +476,11 @@ A Transformation Engine SHALL evaluate FHIR modifier elements and SHALL NOT sile
 
 #### F2O-070
 
-*Populate OMOP *_date (mandatory in v5.4) for every clinical event.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL populate the required OMOP `*_date` field for every clinical event record it writes, and a Target OMOP Instance SHALL NOT contain a clinical event record with an unpopulated required date field. This applies to the date fields the CDM marks as required; end-date fields that the CDM permits to be NULL are not within its scope.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [Core Implementation Pattern in OMOP](F2OGeneralIssues.html#core-implementation-pattern-in-omop)
 
 </div>
 
@@ -488,11 +488,11 @@ A Transformation Engine SHALL evaluate FHIR modifier elements and SHALL NOT sile
 
 #### F2O-071
 
-*Document imputation strategy paired with estimation type concept when dates are missing.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where a required date is derived by imputation from a partial or absent source value, a Transformation Engine SHALL record the imputation by means of an appropriate type concept, and an Implementer SHALL document the imputation rules applied and their effective scope in the ETL documentation.
 
 **Actors:** ● XFM, ● IMP
+
+**Discussed in:** [Handling Partial or Approximate Dates When Mapping from FHIR](F2OGeneralIssues.html#handling-partial-or-approximate-dates-when-mapping-from-fhir)
 
 </div>
 
@@ -500,11 +500,11 @@ A Transformation Engine SHALL evaluate FHIR modifier elements and SHALL NOT sile
 
 #### F2O-072
 
-*Preserve timezone from FHIR instants, normalize to UTC in *_datetime.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where a FHIR source value carries a time zone offset and the corresponding OMOP `*_datetime` field is populated, a Transformation Engine SHALL convert the value to a single time zone applied consistently across the instance, and an Implementer SHALL state that time zone in the ETL documentation. The OMOP CDM provides no standard field for a time zone offset, so this guide does not require the original offset to be preserved.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [Normalizing Time Zones on Ingestion](F2OGeneralIssues.html#normalizing-time-zones-on-ingestion)
 
 </div>
 
@@ -512,11 +512,11 @@ A Transformation Engine SHALL evaluate FHIR modifier elements and SHALL NOT sile
 
 #### F2O-073
 
-*SHOULD populate optional *_datetime when source provides sub-day precision.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHOULD populate the optional OMOP `*_datetime` fields where the FHIR source provides sub-day precision, rather than discarding that precision by populating only the required date field.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [Optional Datetime Fields in OMOP](F2OGeneralIssues.html#optional-datetime-fields-in-omop)
 
 </div>
 
