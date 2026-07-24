@@ -34,7 +34,7 @@ The tradeoff is that references are resolved across files rather than within a c
 
 A Transformation Engine SHALL support ingestion of both singleton resources and Bundles, since both forms are produced by conformant FHIR servers under ordinary retrieval patterns and a transformation restricted to one form cannot consume the other without an intermediary. Where a Bundle is the source unit, its Bundle.type SHALL be one of document, collection, or message. A Transformation Engine MAY support ingestion of Bulk Data NDJSON exports; this is not required, because Bulk Data Access is itself an optional capability for FHIR servers and not all data holders expose it, but implementers building population-scale OMOP instances should expect to encounter it. (f2o-013, f2o-014)
 
-Whichever forms are supported, the Implementer should document which ingestion shapes the transformation accepts and what assumptions it makes about reference resolution and completeness, as part of the ETL documentation described in ETL Documentation (Strategies and Best Practices page).
+Whichever forms are supported, the Implementer should document which ingestion shapes the transformation accepts and what assumptions it makes about reference resolution and completeness, as part of the ETL documentation described under [ETL Documentation](StrategiesBestPractices.html#etl-documentation) on the Transformation Strategies and Best Practices page.
 
 ### Source Data Expectations
 
@@ -44,7 +44,9 @@ The [Source Data Acquisition](#source-data-acquisition) section describes the sh
 
 This guide is scoped to a common core of EHR data expressed through the International Patient Access (IPA) profiles, together with the Encounter and Procedure profiles from US Core (STU7 Sequence). That scope is a property of the guide, not of every transformation built from it. A given transformation consumes some subset of those profiles, and a consumer of the resulting OMOP data, or a data holder deciding whether to route data to a given engine, benefits from knowing that subset explicitly rather than discovering it by trial.
 
-An Implementer therefore declares which input profiles the transformation accepts. A declaration might state that a transformation accepts IPA profiles together with US Core Encounter and Procedure; that it accepts IPA profiles only; or that it accepts base FHIR resources conforming to no profile beyond the resource definitions. The point is not which profiles are chosen but that the set is stated, so that the boundary of the transformation is explicit.
+An Implementer therefore declares which input profiles the transformation accepts. A declaration might state that a transformation accepts IPA profiles together with US Core Encounter and Procedure; that it accepts IPA profiles only; or that it accepts base FHIR resources conforming to no profile beyond the resource definitions. The point is not which profiles are chosen but that the set is stated, so that the boundary of the transformation is explicit. 
+
+The choice of IPA and US Core is a starting fence, not a limit on the guide's reach. Bounding the initial work to a common core of widely available EHR data on FHIR is what allowed a concrete specification to be produced at all; the transformation principles this guide establishes, code prioritization, domain assignment from the resolved concept, type concept derivation, status and intent filtering, temporal handling, and the rest, are not specific to those profiles and are intended to extend to other FHIR profiles within reason. An Implementer working from profiles beyond the curated core applies the same principles and declares the profiles used; the guide is a foundation on which more specialized content can be built, not a boundary that confines conformance to the profiles named here.
 
 #### Reliance on Declared Minimums
 
@@ -62,11 +64,11 @@ The failure mode to avoid is silent admission. An engine that passes non-conform
 
 The remedy is deliberate disposition. A Transformation Engine should validate incoming resources against the profiles it has declared it accepts, and should handle validation failures by a defined route rather than by default. Two routes are ordinarily appropriate: rejection, in which the resource is not transformed and the fact of its rejection is recorded; and quarantine, in which the resource is set aside for review rather than transformed or discarded, so that a systematic source problem becomes visible and correctable. Whichever route is used, the disposition should be documented, both so that operators can see how much input failed and why, and so that a consumer of the target knows that failed input was handled deliberately rather than admitted unnoticed.
 
-This obligation is the general case of a pattern that recurs elsewhere in this guide. When a terminology lookup cannot be resolved, an engine must not silently emit a placeholder concept without recording the failure, as described under status and intent screening and exercised by the terminology-server tests. Input validation is the same principle applied at the point of ingestion: a failure is handled and recorded, never silently absorbed.
+This obligation is the general case of a pattern that recurs elsewhere in this guide. When a terminology lookup cannot be resolved, an engine must not silently emit a placeholder concept without recording the failure, as described under status and intent screening and verified by the guide's reference test suite. Input validation is the same principle applied at the point of ingestion: a failure is handled and recorded, never silently absorbed.
 
 #### Guidance
 
-An Implementer SHALL declare which input FHIR profiles the transformation accepts, whether International Patient Access, US Core Encounter and Procedure, base FHIR resources, or a stated combination. (f2o-010)
+An Implementer SHALL declare which input FHIR profiles the transformation accepts. The declared set may be any FHIR profiles the transformation is built to consume, whether the International Patient Access and US Core profiles this guide curated its maps against, other published profiles, or base FHIR resources conforming to no profile beyond the resource definitions. (f2o-010)
 
 A Transformation Engine SHALL rely only on the elements a declared profile guarantees, and SHALL NOT assume the presence of an element that the profile permits a conformant source to omit. This is a constraint on assumptions about optional content, not an obligation to handle content beyond the transformation's declared profile scope. (f2o-011)
 
