@@ -179,7 +179,7 @@ handling approaches:
 > business identifiers is **not recommended**. These fields are intended to hold source system
 > descriptions or coded values for the clinical concept, not business identifier strings.
 > Repurposing them for identifier storage misrepresents their intended function and may
-> compromise de-identification. See Section 3.1.2 for further discussion.
+> compromise de-identification. See [Why `_source_value` Fields Are Not Appropriate for FHIR Identifier Storage](F2OGeneralIssues.html#why-_source_value-fields-are-not-appropriate-for-fhir-identifier-storage) for further discussion.
 
 #### Privacy and De-identification Considerations
 A primary concern when implementing FHIR to OMOP transformations is the potential compromise of de-identification when identifier data from source FHIR resources is carried forward into OMOP. This concern applies primarily — but not exclusively — to FHIR **business identifiers** (`Resource.identifier`), as these commonly carry externally-assigned values that may constitute or enable derivation of PII (e.g., medical record numbers, facility encounter IDs, insurance member numbers). OMOP is not designed to support business identity management use cases, and its de-identification model is a cornerstone of its design for research and analytics.
@@ -237,7 +237,7 @@ each FHIR identifier type:
 | FHIR Identifier Type | FHIR Element | De-identification Risk | Recommended Handling |
 |---|---|---|---|
 | **Logical identifier** | `Resource.id` | Generally lower — server-generated; typically not PII, but verify against source implementation | Use as the traceability key in an external mapping table; do not store directly in OMOP primary key or `_source_value` fields |
-| **Business identifier** | `Resource.identifier` | Higher — frequently contains MRNs, encounter numbers, insurance IDs, or other externally-assigned values that may constitute PII | Evaluate each identifier system individually using the framework in Section 3.1.1; store in external mapping table under access controls, or exclude entirely if PII risk cannot be managed |
+| **Business identifier** | `Resource.identifier` | Higher — frequently contains MRNs, encounter numbers, insurance IDs, or other externally-assigned values that may constitute PII | Evaluate each identifier system individually using the [Decision Framework for Identifier Management](F2OGeneralIssues.html#decision-framework-for-identifier-management); store in external mapping table under access controls, or exclude entirely if PII risk cannot be managed |
 
 ##### Compliance Considerations
 
@@ -250,51 +250,6 @@ Implementers should conduct a formal privacy and regulatory assessment before de
 
 The key principle is that OMOP databases intended for research should not contain data elements that enable re-identification of individuals — whether through direct PII or through linkage to
 external datasets. FHIR business identifiers pose a higher risk on this dimension and require careful evaluation.
-
-
-#### Decision Framework for Identifier Management
-There is no single approach that can be uniformly applied to transformation of FHIR identifiers to OMOP. Rather, implementers must evaluate FHIR identifiers systematically using criteria relevant to the use case(s) an OMOP database must support:
-1. **Research Purpose**: What research the OMOP instance is intended to support
-2. **Identifier Role**: Purpose and role of the identifier in the FHIR resource
-3. **Clinical Significance**: Whether the FHIR identifier may inform clinical facts in the observational data store
-4. **Format Constraints**: Length and format of the identifier
-5. **Privacy Assessment**: Whether the identifier contains or enables derivation of PII
-6. **Technical Feasibility**: Whether the identifier can be safely stored within OMOP constraints
-7. **Compliance Impact**: What regulatory obligations identifier retention creates
-
-Based on this evaluation, implementers should categorize FHIR identifiers into one of three handling approaches:
-
-
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
-  <thead>
-    <tr style="background-color: #f6f8fa;">
-      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Strategy</th>
-      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Use Case</th>
-      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Implementation Approach</th>
-      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Key Considerations</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="border: 1px solid #d0d7de; font-weight: bold;">Direct Mapping</td>
-      <td style="border: 1px solid #d0d7de;">Identifiers that can be safely transformed to OMOP integer keys without privacy concerns</td>
-      <td style="border: 1px solid #d0d7de;">Transform directly to OMOP integer-based keys</td>
-      <td style="border: 1px solid #d0d7de;">• Database system constraints on integer sizes<br>• Identifier format compatibility<br>• No PII risk<br>• Suitable for system-generated sequence numbers</td>
-    </tr>
-    <tr style="background-color: #f6f8fa;">
-      <td style="border: 1px solid #d0d7de; font-weight: bold;">External Storage</td>
-      <td style="border: 1px solid #d0d7de;">Identifiers needed for traceability but inappropriate for direct OMOP inclusion</td>
-      <td style="border: 1px solid #d0d7de;">Create separate mapping tables linking OMOP-generated IDs to original FHIR identifiers</td>
-      <td style="border: 1px solid #d0d7de;">• Maintains de-identification principles<br>• Requires access controls and audit trails<br>• Supports bidirectional mapping verification<br>• Preserves data provenance</td>
-    </tr>
-    <tr>
-      <td style="border: 1px solid #d0d7de; font-weight: bold;">Exclusion</td>
-      <td style="border: 1px solid #d0d7de;">Identifiers containing PII or serving no research purpose</td>
-      <td style="border: 1px solid #d0d7de;">Exclude from transformation entirely</td>
-      <td style="border: 1px solid #d0d7de;">• Medical record numbers<br>• Patient names<br>• Other PII-containing identifiers<br>• No research value</td>
-    </tr>
-  </tbody>
-</table>
 
 ### Status and Intent Elements in FHIR Resources
 
