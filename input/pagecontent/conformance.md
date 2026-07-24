@@ -564,11 +564,11 @@ An Implementer SHALL produce and maintain ETL documentation recording mapping de
 
 #### F2O-090
 
-*Output for each populated OMOP table SHALL conform to the IG's logical model for that table.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Target OMOP Instance SHALL conform to the logical model this guide defines for each OMOP table it populates.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [Logical Models](technical_artifacts.html#logical-models)
 
 </div>
 
@@ -576,11 +576,11 @@ An Implementer SHALL produce and maintain ETL documentation recording mapping de
 
 #### F2O-091
 
-*MAY execute published StructureMaps OR implement equivalent logic in another technology.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine MAY execute the StructureMaps published by this guide, or MAY implement equivalent transformation logic in another technology.
 
 **Actors:** ● XFM, ● IMP
+
+**Discussed in:** [Structure Maps](technical_artifacts.html#structure-maps)
 
 </div>
 
@@ -588,11 +588,11 @@ An Implementer SHALL produce and maintain ETL documentation recording mapping de
 
 #### F2O-092
 
-*Deviations from published StructureMaps SHALL be documented in ETL documentation.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where a transformation departs from the logic expressed by a published StructureMap, an Implementer SHALL record the departure and its rationale in the ETL documentation.
 
 **Actors:** ○ XFM, ● IMP
+
+**Discussed in:** [Deviating from the Published Maps](technical_artifacts.html#deviating-from-the-published-maps)
 
 </div>
 
@@ -600,11 +600,11 @@ An Implementer SHALL produce and maintain ETL documentation recording mapping de
 
 #### F2O-093
 
-*SHALL use published ConceptMaps (or a documented equivalent snapshot).*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL resolve code-to-concept translation against the OHDSI Standardized Vocabularies. Where a fixed set of mappings prepared in advance is used instead of resolving against the vocabularies at transformation time, an Implementer SHALL identify that set and the vocabulary release from which it was derived.
 
 **Actors:** ● XFM, ● TRM, ● IMP
+
+**Discussed in:** [Mappings Not Published by This Guide](technical_artifacts.html#mappings-not-published-by-this-guide)
 
 </div>
 
@@ -690,11 +690,11 @@ A Terminology Server claiming conformance to this guide SHALL expose the OHDSI S
 
 #### F2O-120
 
-*Pass the IG's reference test suite (Connectathon Validation Package and successors).*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL pass the reference test suite published by this guide for the transformations it claims to support. The suite is versioned independently of this guide, and a conformance claim identifies the suite version against which it was established.
 
 **Actors:** ● XFM, ○ TGT, ● IMP
+
+**Discussed in:** [FHIR to OMOP 2026 Connectathon Tooling](technical_artifacts.html#fhir-to-omop-2026-connectathon-tooling)
 
 </div>
 
@@ -702,11 +702,11 @@ A Terminology Server claiming conformance to this guide SHALL expose the OHDSI S
 
 #### F2O-121
 
-*SHOULD publish test results with IG version + vocabulary version.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHOULD publish the results of the reference test suite, identifying the version of this Implementation Guide and the OHDSI Vocabulary release under which the run was performed.
 
 **Actors:** ○ XFM, ● IMP
+
+**Discussed in:** [FHIR to OMOP 2026 Connectathon Tooling](technical_artifacts.html#fhir-to-omop-2026-connectathon-tooling)
 
 </div>
 
@@ -714,10 +714,10 @@ A Terminology Server claiming conformance to this guide SHALL expose the OHDSI S
 
 #### F2O-122
 
-*Disclose which OMOP tables are populated / partially populated / unpopulated.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Target OMOP Instance SHALL disclose which OMOP tables it populates fully, which it populates partially, and which it leaves unpopulated.
 
 **Actors:** ○ XFM, ● TGT, ● IMP
+
+**Discussed in:** [Capability Declaration](technical_artifacts.html#capability-declaration)
 
 </div>
