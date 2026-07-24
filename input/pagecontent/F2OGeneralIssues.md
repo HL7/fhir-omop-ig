@@ -558,3 +558,4 @@ Successful implementations embrace OMOP's date-level precision as the guaranteed
 [6] Microsoft Corporation. datetime2 (Transact-SQL) - SQL Server. Microsoft Learn. Available from: https://learn.microsoft.com/en-us/sql/t-sql/data-types/datetime2-transact-sql
 
 [7] Ryan P. Comment on "Timing of time" discussion. OHDSI Forums. 2016 Oct 1. Available from: https://forums.ohdsi.org/t/timing-of-time/1730
+
