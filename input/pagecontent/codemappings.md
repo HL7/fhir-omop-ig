@@ -166,6 +166,28 @@ FHIR resources may contain indicators for the use of OMOP type concept target va
 
 In both examples, the FHIR **category** or **context** information determines the **type concept** (provenance), while the actual clinical **code** determines the **standard concept** (what clinical entity it represents). This separation allows OMOP to maintain both the clinical meaning and the data source context, which is essential for proper analysis and interpretation of the data.
 
+#### When Source Context Is Insufficient
+
+The examples above assume the source carries enough context to identify a specific provenance: a
+category element naming the encounter setting, a resource type that implies how the record was
+created. Not every resource does. A Condition arriving without a category, or a MedicationStatement
+whose origin the source system does not record, leaves the transformation with a required field and
+no basis for choosing among the specific type concepts available.
+
+The response is to generalize rather than to guess. The Type Concept domain is hierarchical, and a
+transformation that cannot establish that a record came from an encounter diagnosis can still
+establish that it came from an EHR. Selecting the more general concept states what is known and
+stops there. Selecting a specific concept on the strength of what is usually true asserts a
+provenance the source did not supply, and because type concepts are precisely what researchers
+filter on, that assertion will be acted upon by analyses that have no way to detect it was inferred.
+
+The cost of generalizing is that a record contributes less to provenance-stratified analysis than
+one carrying a specific type. That is the correct outcome: a record whose provenance is unknown
+should not be indistinguishable from one whose provenance was established. Where the source
+routinely omits the context needed for specific assignment, the pattern belongs in the ETL
+documentation, since a target populated largely with general type concepts constrains the analyses
+it can support.
+
 #### OMOP Domain and Type Concept Examples
 Type concepts are implemented through fields that follow a specific naming convention, with tables containing fields ending in `_TYPE_CONCEPT_ID` such as `drug_type_concept_id` and `condition_type_concept_id`. These type concepts should be populated during the ETL process based on the source system, and valid type concepts belong to the "Type Concept" domain and vocabulary within OMOP.
 
@@ -504,3 +526,19 @@ record its provenance and the vocabulary release from which it was derived. (f2o
 
 Custom concepts added to a local OMOP instance SHALL use `concept_id` values at or above
 2,000,000,000. (f2o-039)
+
+A Transformation Engine SHALL populate every OMOP `*_type_concept_id` field with a Standard concept
+from the Type Concept domain, and a Target OMOP Instance SHALL NOT contain a clinical record with an
+unpopulated or non-Standard type concept. (f2o-050)
+
+A Transformation Engine SHALL derive the type concept from the FHIR resource type together with the
+category and context elements the resource carries, rather than from the resource type alone.
+(f2o-051)
+
+Where the source does not carry sufficient context to identify a specific type concept, a
+Transformation Engine SHALL select the most general applicable Type Concept rather than assigning a
+specific one by inference. (f2o-052)
+
+Where a source record is patient-reported, a Transformation Engine SHALL assign a type concept
+distinguishing it from clinician-recorded data, and a Target OMOP Instance SHALL preserve that
+distinction. (f2o-053)
