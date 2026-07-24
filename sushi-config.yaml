@@ -33,7 +33,11 @@ pages:
   the-omop-cdm.md:
     title: OMOP CDM
   UseCases.md:
-     title: Use Cases
+    title: Use Cases
+  SourceData.md:
+    title: Source Data Acquisition and Expectations
+  IdentifiersPrivacy.md:
+    title: Identifiers, De-identification and Privacy
   F2OGeneralIssues.md:
     title: Common Challenges When Transforming FHIR to OMOP
   StrategiesBestPractices.md:
@@ -41,15 +45,15 @@ pages:
   FHIRModifierExtensions.md:
     title: Understanding FHIR Modifier Extensions
   codemappings.md:
-     title: Coded Field Mapping Principles
+    title: Coded Field Mapping Principles
   CodeMappingBasePattern.md:
-     title: FHIR to OMOP Code Mapping Patterns
+    title: FHIR to OMOP Code Mapping Patterns
   CodeableConceptPattern.md:
     title: CodeableConcept Mapping Patterns
   ValueAsConceptPattern.md:
     title: Value-as-Concept Mapping Pattern
   RaceAndEthnicity.md:
-     title: Populating Race and Ethnicity
+    title: Populating Race and Ethnicity
   actors.md:
     title: Actors
   conformance.md:
@@ -66,6 +70,8 @@ menu:
   OMOP CDM: the-omop-cdm.html
   Use Cases: UseCases.html
   General Guidance:
+    Source Data: SourceData.html
+    Identifiers and Privacy: IdentifiersPrivacy.html
     Common Issues: F2OGeneralIssues.html
     Best Practices: StrategiesBestPractices.html
     Understanding FHIR Modifier Extensions: FHIRModifierExtensions.html
