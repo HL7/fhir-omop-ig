@@ -229,6 +229,15 @@ traceability without:
 - Violating de-identification protocols
 - Misrepresenting the semantics of OMOP fields
 
+The access controls on that table warrant specific attention, because the table is the
+re-identification key. A party holding both the mapping table and the OMOP instance can reverse the
+de-identification that the transformation was designed to achieve, which means the two must not sit
+behind the same control boundary. Access to the mapping table should therefore be governed
+separately from access to the research database: a different grant, a different approval path, and
+an audit trail recording who resolved which records and when. Where the same team administers both,
+the separation is procedural rather than technical, and the ETL documentation should say so plainly
+rather than implying a stronger control than exists.
+
 ##### De-identification Assessment by Identifier Type
 
 The following table summarizes the de-identification risk profile and recommended handling for
@@ -250,6 +259,66 @@ Implementers should conduct a formal privacy and regulatory assessment before de
 
 The key principle is that OMOP databases intended for research should not contain data elements that enable re-identification of individuals — whether through direct PII or through linkage to
 external datasets. FHIR business identifiers pose a higher risk on this dimension and require careful evaluation.
+
+Stated as a property of the result rather than as a principle for implementers, this means a
+conformant Target OMOP Instance contains no patient identifiable information: no names, no
+addresses, no medical record numbers, no contact details, in any field. The property is checkable
+by inspection of the database, independently of the pipeline that populated it, and it holds
+whether the PII would have arrived through a business identifier carried into a `_source_value`
+field, through a logical identifier that mirrors an MRN, or through any other route. An instance
+that fails this check is non-conformant regardless of how carefully the transformation that built
+it was designed.
+
+##### Legal Basis for Data Access
+
+Distinct from the privacy assessment above is the question of the instrument under which the data
+were obtained in the first place. This is not an identifier question, and it governs the whole
+transformation rather than the handling of any particular field. It appears here because identifier
+retention is the point at which the legal basis most often becomes operationally consequential: the
+terms of a data use agreement or an IRB protocol frequently determine whether a linkage table may
+be maintained at all, how long it may persist, and who may resolve it.
+
+An Implementer should therefore record the legal instrument governing access to the source FHIR
+data alongside the ETL documentation. Depending on jurisdiction and relationship, this may be a
+business associate agreement, an IRB approval or waiver, a data use agreement, an institutional
+data governance approval, or an equivalent instrument outside the US frameworks named above. What
+matters is that the instrument is identified rather than assumed, and that any constraint it places
+on identifier retention, linkage, or re-identification is recorded where the people operating the
+transformation will encounter it.
+
+#### Guidance
+
+A Transformation Engine SHALL NOT store FHIR business identifier values (`Resource.identifier`) in
+OMOP `_source_value` fields, and a Target OMOP Instance SHALL NOT contain business identifier
+values in those fields. (f2o-020)
+
+A Transformation Engine SHALL NOT derive OMOP integer primary keys from FHIR business identifiers
+(`Resource.identifier`). Where primary keys are derived from FHIR source data rather than generated
+independently, the FHIR logical identifier (`Resource.id` combined with the resource type) is the
+appropriate source. (f2o-021)
+
+A Target OMOP Instance SHALL NOT contain patient identifiable information, including names,
+addresses, medical record numbers, and contact details, in any field. (f2o-022)
+
+An Implementer SHOULD maintain an external mapping table linking OMOP-generated identifiers to the
+originating FHIR logical identifier (`[ResourceType]/[Resource.id]`) where traceability from OMOP
+records back to source resources is required. (f2o-023)
+
+Where an external mapping table is maintained, it SHALL reside outside the OMOP schema and SHALL be
+governed by access controls distinct from those governing the OMOP instance itself. (f2o-024)
+
+An Implementer SHALL document a privacy and regulatory assessment for each identifier system
+encountered in the source data, identifying the framework applied, whether HIPAA Safe Harbor,
+Expert Determination, GDPR, or an equivalent, and the determination reached. (f2o-025)
+
+An Implementer SHALL document, for each identifier system encountered, which handling strategy was
+applied, whether surrogate key mapping, external storage, or exclusion, and record that
+determination in the ETL documentation. (f2o-026)
+
+An Implementer SHALL document the legal instrument governing access to the source FHIR data,
+whether a business associate agreement, an IRB approval or waiver, a data use agreement, or an
+equivalent, together with any constraint it places on identifier retention, linkage, or
+re-identification. (f2o-132)
 
 ### Status and Intent Elements in FHIR Resources
 
@@ -558,4 +627,3 @@ Successful implementations embrace OMOP's date-level precision as the guaranteed
 [6] Microsoft Corporation. datetime2 (Transact-SQL) - SQL Server. Microsoft Learn. Available from: https://learn.microsoft.com/en-us/sql/t-sql/data-types/datetime2-transact-sql
 
 [7] Ryan P. Comment on "Timing of time" discussion. OHDSI Forums. 2016 Oct 1. Available from: https://forums.ohdsi.org/t/timing-of-time/1730
-
