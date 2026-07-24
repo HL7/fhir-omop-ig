@@ -35,8 +35,58 @@ A Transformation Engine SHOULD support idempotent re-processing of a given sourc
 ### Granularity of FHIR Data vs. OMOP Standardization
 FHIR resources can contain detailed data, such as drug dosage adjustments or specific intervals for medication administration, which might not have direct counterparts in OMOP’s more generalized tables. An implication for data transformation is that this disparity means some FHIR data may be lost or generalized in the transformation process to OMOP.  This loss could impact certain use cases. When developing a data transformation from FHIR to OMOP, there is a need to identify and document potential data losses resulting from a mismatch in source to target data granularity to inform data users about impacts to, and potential limitations this may cause in analyses.
 
+### Run Metadata and Reproducibility
+
+An OMOP instance is interpreted by people who did not build it, often years after it was populated,
+and frequently after the transformation that produced it has changed. A concept assignment that
+looked wrong may have been correct under the vocabulary release in force at the time. A record
+missing from the target may have been filtered by a rule since revised. Neither question can be
+settled without knowing what produced the data, and neither is answerable from the clinical records
+themselves.
+
+Recording the conditions of each load addresses this. At minimum a run is identified by the OMOP CDM
+version it targets, the OHDSI Vocabulary release used to resolve concepts, the version of this
+Implementation Guide the transformation claims to follow, the version of the transformation software
+itself, and the time the run executed. These five together let a later reader reconstruct the
+context in which any given record was written.
+
+The vocabulary release deserves particular attention because it changes most often and affects the
+data most directly. Concepts are deprecated between releases, Maps to relationships are retargeted,
+and domain assignments are corrected, so two runs of identical source data under different
+vocabulary releases can legitimately produce different concept assignments. A target that does not
+record which release it used offers no way to distinguish that legitimate difference from a defect.
+Where a transformation caches terminology results, the release recorded for the run should be the
+release the cache is bound to, as described under Caching and Vocabulary Version Binding on the
+Terminology Server page.
+
+Where this metadata is stored is a local decision. The OMOP CDM's `cdm_source` table accommodates
+several of these values, and implementations commonly extend it or maintain a parallel run log. What
+matters is that the values are recorded per run rather than per instance, since an instance
+populated incrementally over years will have been built under several different combinations.
+
 ### Differentiating Between Patient-Reported and Clinician-Verified Data
 FHIR resources such as MedicationStatement often contain patient-reported information, which may be less reliable than data verified or documented by clinicians. In contrast, OMOP’s data model does not consistently distinguish between data sources in a way that clearly conveys differences in reliability or verification status. Treating all records as equivalent can introduce interpretive challenges and potential bias, especially when patient-reported and clinician-verified records are analyzed together.
 
 For example, a medication history reported directly by a patient may not carry the same evidentiary weight as a medication order formally documented by a prescribing clinician. To address this limitation, the Implementation Guide recommends using OMOP's *type concepts* to indicate the provenance of each record. Type concepts are a specialized class of concept in the OMOP CDM, stored in fields whose names end in `_type_concept_id` (for example, `observation_type_concept_id` and `drug_type_concept_id`), that record the origin or source-system context of a clinical fact — for instance, whether a medication record came from an EHR prescription, a pharmacy claim, or a patient self-report. They are populated alongside, and are distinct from, the Standard concept that describes *what* the clinical fact is. A full treatment of type concepts, including the mapping pattern, the populated field names across OMOP domains, and worked FHIR examples, is provided in [Type Concepts in the OMOP Common Data Model](codemappings.html#type-concepts-in-the-omop-common-data-model) on the *Coded Field Mapping Principles* page. By explicitly tagging records with their source, implementers can support analyses that require higher confidence in data accuracy or that need to filter data based on verification status. This practice improves transparency and helps maintain analytic rigor in research contexts where the reliability of the underlying data is critical.
 
+#### Guidance
+
+An Implementer SHALL document the points at which the transformation loses information because FHIR
+granularity exceeds what the OMOP CDM can represent, and SHALL make that documentation available to
+consumers of the resulting OMOP data. (f2o-080)
+
+Where a FHIR element carries clinically meaningful content that has no representable target in the
+OMOP domain tables, a Transformation Engine SHOULD emit the residual content to the observation or
+note domain with a type concept identifying its origin, rather than discarding it silently.
+(f2o-081)
+
+An Implementer SHALL produce and maintain ETL documentation recording mapping decisions,
+prioritization choices, pre-processing and manual interventions performed, and the known limitations
+of the transformation. (f2o-082)
+
+An Implementer SHOULD maintain a traceability path from each clinical record in the Target OMOP
+Instance back to the FHIR resource that produced it. (f2o-100)
+
+A Transformation Engine SHALL record, for each ETL run, the OMOP CDM version targeted, the OHDSI
+Vocabulary release used, the version of this Implementation Guide followed, the version of the
+transformation software, and the time of execution. (f2o-102, f2o-040)
