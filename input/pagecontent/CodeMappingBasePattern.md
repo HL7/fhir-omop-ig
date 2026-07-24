@@ -4,7 +4,7 @@ Mapping coded data from FHIR to OMOP requires evaluation of the concepts to be s
 * A pattern applicable to multiple CodeableConcepts scenarios
 * Value-as-concept map pattern
 
-Future enhoncements to this guide or groups developing additional implementation guides may discover and codify additional code mapping patterns.
+Future enhancements to this guide or groups developing additional implementation guides may discover and codify additional code mapping patterns.
 
 ### Base Mapping Pattern
 
