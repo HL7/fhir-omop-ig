@@ -28,7 +28,7 @@ FHIR resource type considerations serve as secondary guidance when vocabulary do
 #### Impact of OMOP Standard Concepts & Domains
 The OMOP CDM is designed for large‑scale aggregation, whether in centralized repositories or distributed research networks. Its domain structure and Standardized Vocabularies allow data from heterogeneous sources—each with distinct schemas and code systems—to be normalized into a single analytic framework. Every concept is assigned a status of **Standard**, **Non‑Standard**, or **Classification**; only one Standard concept exists for each clinical idea within a domain, eliminating ambiguity and enabling cross‑site comparability. (See: [OMOP Vocabulary Concept Structure](https://ohdsi.github.io/CommonDataModel/dataModelConventions.html#Concepts) for additional details)
 
-Because a single FHIR resource may contains multiple clinical ideas, each coded element must be evaluated independently. A FHIR Observation may yield Measurement, Condition Occurrence, or Procedure Occurrence records in OMOP, depending on the specific codes it carries. Terminologies commonly used in FHIR—such as LOINC, SNOMED CT, and RxNorm—frequently align with OMOP Standard concepts. In cases where no Standard mapping exists, particularly in cases such as HL7‑maintained value sets, or local codes, a extension concepts may be added to the OMOP concept table  with `concept_id` values of 2,000,000,000 (2 billion) or higher may be created. These “2-billionaires” IDs preserve information without loss and can be retired once the community adopts an official Standard concept. Regular vocabulary updates are therefore essential, both for pipelines ingesting new data and for legacy OMOP datastores. (See: [OMOP CDM: Custom Concepts](https://ohdsi.github.io/CommonDataModel/customConcepts.html) for more information) 
+Because a single FHIR resource may contain multiple clinical ideas, each coded element must be evaluated independently. A FHIR Observation may yield Measurement, Condition Occurrence, or Procedure Occurrence records in OMOP, depending on the specific codes it carries. Terminologies commonly used in FHIR—such as LOINC, SNOMED CT, and RxNorm—frequently align with OMOP Standard concepts. In cases where no Standard mapping exists, particularly in cases such as HL7‑maintained value sets, or local codes, extension concepts may be added to the OMOP concept table  with `concept_id` values of 2,000,000,000 (2 billion) or higher may be created. These “2-billionaires” IDs preserve information without loss and can be retired once the community adopts an official Standard concept. Regular vocabulary updates are therefore essential, both for pipelines ingesting new data and for legacy OMOP datastores. (See: [OMOP CDM: Custom Concepts](https://ohdsi.github.io/CommonDataModel/customConcepts.html) for more information) 
 
 Accordingly, any custom (extension) concept created to represent source content that has no Standard OMOP mapping is assigned a `concept_id` at or above 2,000,000,000. Standard OMOP concept identifiers are always below this threshold, so the 2-billion floor makes custom concepts distinguishable from Standard concepts by identifier alone. Distinct from the custom-concept case above, when a source code has no Standard OMOP concept and no custom concept is created for it, the corresponding `*_concept_id` field is populated with 0. The value 0 records that the source code was evaluated and no Standard OMOP concept applied, which lets analytical queries separate successfully mapped data from unmapped data. The original source code is retained in the companion `*_source_value` (and, where applicable, `*_source_concept_id`) field so that traceability to the source system is preserved. Custom concepts should be recorded in the ETL documentation alongside the source codes that motivated them, both because they represent a local divergence from the canonical vocabulary and because they are candidates for retirement once an equivalent Standard concept becomes available.
 
@@ -38,7 +38,7 @@ Leveraging a FHIR terminology server can facilitate automated mapping processes,
 The  [OHDSI Athena](https://athena.ohdsi.org/) website  provides both access to request OHDSI Vocabulary downloads and a comprehensive searchable database that serves dual purposes for mapping activities. Implementers can use this resource to manually browse available vocabularies and identify codes that appropriately match source concepts to Standard OMOP concepts and also receive vocabulary updates when new versions of the OHDSI Stabdardized Vocabularies are published.  Utilization of the OHDSI Standardized Vocabularies is essential for validating mappings and resolving complex terminology translation challenges that arise during FHIR to OMOP transformation.
 
 #### Standard OMOP Vocabulary API Lookup Methodology
-All transformation patterns utilize a consistent API lookup approach that forms the foundation for automated vocabulary validation and concept identification. The lookup process involves querying a FHIR terminology server hosting the OHDSI Stanbdardized Vocabularies to identify matching concepts based on the source code and vocabulary system, followed by comprehensive analysis of the returned results.
+All transformation patterns utilize a consistent API lookup approach that forms the foundation for automated vocabulary validation and concept identification. The lookup process involves querying a FHIR terminology server hosting the OHDSI Standardized Vocabularies to identify matching concepts based on the source code and vocabulary system, followed by comprehensive analysis of the returned results.
 
 1. Translate source code to concept ID: Utilise the [ConceptMap/$translate](https://github.com/HL7/fhir-omop-ig/blob/main/input/pagecontent/TerminologyServer.md#conceptmap-translate-operation) FHIR terminology server operation.
 2. Lookup concept properties: Utilise the [CodeSystem/$lookup](https://github.com/HL7/fhir-omop-ig/blob/main/input/pagecontent/TerminologyServer.md#codesystem-lookup-operation) FHIR terminology server operation.
@@ -47,6 +47,22 @@ All transformation patterns utilize a consistent API lookup approach that forms 
 The lookup analysis encompasses several critical components that ensure proper concept identification and validation. Implementers must verify OMOP concept existence to confirm that the source code has a corresponding representation in the OHDSI Standardized Vocabularies. The Standard concept status requires confirmation through the presence of the 'S' flag, indicating that the concept can be used directly in OMOP analytics without requiring additional concept relationship mapping. Vocabulary alignment validation ensures that the identified concept originates from the expected terminology system and maintains semantic consistency with the source data. Domain assignment determination identifies the appropriate OMOP domain table for storing the clinical information, which may differ from expectations based solely on FHIR resource type. (See: [Terminology Server API Utilization](TerminologyServer.html) for detailed examples.) 
 
 This systematic lookup methodology via an API provides a foundation for all subsequent mapping decisions and ensures consistent handling of vocabulary validation across different transformation patterns. The approach supports both automated processing and manual validation workflows, enabling implementers to maintain high data quality standards while achieving efficient transformation throughput.
+
+Resolving concepts through these operations rather than through a crosswalk embedded in the
+transformation code is a deliberate choice with consequences for maintenance. A hard-coded
+crosswalk, whether a lookup table compiled into the pipeline or a static file shipped alongside it,
+captures the vocabulary as it stood when the crosswalk was written. It does not change when the
+OHDSI Vocabularies are updated, and nothing in the transformation signals that it has fallen behind:
+concepts deprecated since the crosswalk was built continue to be assigned, and Maps to relationships
+retargeted since then continue to resolve to their former targets. Resolving through a terminology
+server moves that currency problem to a component built to manage it, and makes the vocabulary
+version an explicit property of the run rather than an implicit property of the code.
+
+This is a recommendation rather than a requirement. A transformation may reasonably operate against
+a locally loaded vocabulary rather than a server, and some deployments have no network path to one
+at transformation time. What the guide asks is that where a static crosswalk is used, its provenance
+and the vocabulary release it was derived from are recorded, so that a consumer of the resulting
+OMOP data can tell which vocabulary the concept assignments actually reflect.
 
 #### Reporting Vocabulary Anomalies to the OHDSI Vocabulary Working Group
 
@@ -312,7 +328,7 @@ Healthcare data transformation frequently encounters historical coding systems t
 The management of historical codes introduces several complexities that require careful consideration during OMOP transformation. Maintenance limitations present the primary obstacle, as historical coding systems no longer receive updates or support from their originating organizations. This abandonment often results in their exclusion from current OMOP Standardized Vocabularies, creating gaps in direct mapping capabilities. Crosswalk complexity further complicates the transformation process, as historical-to-modern code relationships rarely follow simple one-to-one patterns. Many historical codes require mapping to multiple modern equivalents, while others may lack direct contemporary representations. This variability requires mapping strategies that preserve clinical meaning while accommodating structural differences between coding systems. Data integrity concerns arise when historical codes cannot be adequately mapped, potentially resulting in clinical information loss or the introduction of mapping-related inaccuracies. The diminishing availability of historical code support resources compounds these challenges, as fewer tools and expert resources remain dedicated to legacy system maintenance.
 
 #### Considerations for Legacy Vocabulary Versions
-The historical code management process begins with comprehensive identification of legacy codes within source datasets. Following identification, implementers must determine the optimal mapping strategy based on available resources and clinical requirements. ICD-9-CM, ICD-9-Proc, and ICD-9-ProcCN remain listed as source vocabularies for the OHDSI Standardized Vocabularies, but as of September 30, 2015 are no longer being updated in the OHDSI Vocabularies. When OHDSI-generated reference content is not available, authoritative crosswalk utilization represents the preferred approach, leveraging mapping tables provided by organizations such as the Centers for Medicare & Medicaid Services or the National Library of Medicine. Optimally these crosswalks facilitate translation from historical codes to modern equivalents, including ICD-10 or SNOMED CT classifications that can then be levereaged to identify appropriate Standard OMOP concpets. When crosswalks prove insufficient or unavailable, direct, manual mapping strategies may apply if historical codes remain present than codes represented in current OMOP vocabulary versions. 
+The historical code management process begins with comprehensive identification of legacy codes within source datasets. Following identification, implementers must determine the optimal mapping strategy based on available resources and clinical requirements. ICD-9-CM, ICD-9-Proc, and ICD-9-ProcCN remain listed as source vocabularies for the OHDSI Standardized Vocabularies, but as of September 30, 2015 are no longer being updated in the OHDSI Vocabularies. When OHDSI-generated reference content is not available, authoritative crosswalk utilization represents the preferred approach, leveraging mapping tables provided by organizations such as the Centers for Medicare & Medicaid Services or the National Library of Medicine. Optimally these crosswalks facilitate translation from historical codes to modern equivalents, including ICD-10 or SNOMED CT classifications that can then be leveraged to identify appropriate Standard OMOP concepts. When crosswalks prove insufficient or unavailable, direct, manual mapping strategies may apply if historical codes remain present than codes represented in current OMOP vocabulary versions. 
 
 #### Historical Code Implementation Example
 
@@ -450,3 +466,41 @@ The implementation also addresses scenarios where FHIR resources explicitly desi
 This approach respects the clinical decision-making embedded in the source system while maintaining consistency with OMOP requirements, regardless of other prioritization factors.
 
 The patterns described in this section address the selection of a single preferred code from among multiple codings provided in a FHIR resource. They do not address the distinct situation in which the selected source code itself resolves to more than one Standard OMOP concept within a single domain on lookup against the OHDSI Standardized Vocabularies. That situation reflects a vocabulary-content condition rather than a FHIR-to-OMOP selection decision, and is outside the scope of this IG; implementers encountering it should follow the reporting pathway described in [Reporting Vocabulary Anomalies to the OHDSI Vocabulary Working Group](#reporting-vocabulary-anomalies-to-the-ohdsi-vocabulary-working-group) rather than introduce a local workaround in ETL logic.
+
+### Guidance
+
+A Transformation Engine SHALL resolve concept assignments against the OHDSI Standardized
+Vocabularies, verifying concept existence, Standard concept status, and domain assignment for each
+source code it maps. (f2o-030)
+
+A Transformation Engine SHALL populate OMOP `*_concept_id` fields only with Standard concepts, and
+SHALL record a non-Standard source concept in the companion `*_source_concept_id` field rather than
+in the `*_concept_id` field. (f2o-031)
+
+Where a source code has no Standard OMOP concept and no custom concept is created for it, a
+Transformation Engine SHALL populate the corresponding `*_concept_id` field with 0. (f2o-032)
+
+A Transformation Engine SHALL preserve the original source code verbatim in the companion
+`*_source_value` field. (f2o-033)
+
+Where multiple codes are present for a single clinical idea, a Transformation Engine SHALL apply the
+Code Prioritization Framework described on this page, and an Implementer SHALL document any
+departure from it. (f2o-034)
+
+Where a FHIR coding array carries explicit primary or preferred designations, a Transformation
+Engine SHALL honor them as tiebreakers within the prioritization hierarchy. (f2o-035)
+
+Where a coding array carries both a parent concept and a more specific child concept from the same
+code system, a Transformation Engine SHALL select the more specific concept. (f2o-036)
+
+A Transformation Engine SHALL assign the OMOP domain from the `domain_id` of the resolved concept
+rather than from the FHIR resource type, and a Target OMOP Instance SHALL store each clinical
+record in the domain table its concept's `domain_id` indicates. (f2o-037)
+
+A Transformation Engine SHOULD resolve concepts through the `ConceptMap/$translate` and
+`CodeSystem/$lookup` operations of a FHIR terminology server rather than through a crosswalk
+hard-coded into the transformation. Where a static crosswalk is used instead, an Implementer SHALL
+record its provenance and the vocabulary release from which it was derived. (f2o-038)
+
+Custom concepts added to a local OMOP instance SHALL use `concept_id` values at or above
+2,000,000,000. (f2o-039)
