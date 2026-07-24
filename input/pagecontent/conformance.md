@@ -242,11 +242,11 @@ An Implementer SHALL document the legal instrument governing access to the sourc
 
 #### F2O-030
 
-*Resolve concept assignments using the current OHDSI Vocabularies.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL resolve concept assignments against the OHDSI Standardized Vocabularies, verifying concept existence, Standard concept status, and domain assignment for each source code it maps.
 
 **Actors:** ● XFM, ○ TGT, ● TRM, ○ IMP
+
+**Discussed in:** [Standard OMOP Vocabulary API Lookup Methodology](codemappings.html#standard-omop-vocabulary-api-lookup-methodology)
 
 </div>
 
@@ -254,11 +254,11 @@ An Implementer SHALL document the legal instrument governing access to the sourc
 
 #### F2O-031
 
-*Populate *_concept_id only with Standard (S) concepts; non-Standard to *_source_concept_id.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL populate OMOP `*_concept_id` fields only with Standard concepts, and SHALL record a non-Standard source concept in the companion `*_source_concept_id` field rather than in the `*_concept_id` field.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [Impact of OMOP Standard Concepts & Domains](codemappings.html#impact-of-omop-standard-concepts--domains)
 
 </div>
 
@@ -266,11 +266,11 @@ An Implementer SHALL document the legal instrument governing access to the sourc
 
 #### F2O-032
 
-*Populate *_concept_id = 0 when no Standard mapping exists.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where a source code has no Standard OMOP concept and no custom concept is created for it, a Transformation Engine SHALL populate the corresponding `*_concept_id` field with 0.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [Impact of OMOP Standard Concepts & Domains](codemappings.html#impact-of-omop-standard-concepts--domains)
 
 </div>
 
@@ -278,11 +278,11 @@ An Implementer SHALL document the legal instrument governing access to the sourc
 
 #### F2O-033
 
-*Preserve source codes verbatim in *_source_value.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL preserve the original source code verbatim in the companion `*_source_value` field.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [Impact of OMOP Standard Concepts & Domains](codemappings.html#impact-of-omop-standard-concepts--domains)
 
 </div>
 
@@ -290,11 +290,11 @@ An Implementer SHALL document the legal instrument governing access to the sourc
 
 #### F2O-034
 
-*Apply Code Prioritization Framework (SNOMED, RxNorm, LOINC, ICD, CPT/HCPCS, local).*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where multiple codes are present for a single clinical idea, a Transformation Engine SHALL apply the Code Prioritization Framework described in this guide, and an Implementer SHALL document any departure from it.
 
 **Actors:** ● XFM, ○ IMP
+
+**Discussed in:** [Code Prioritization Framework](codemappings.html#code-prioritization-framework)
 
 </div>
 
@@ -302,11 +302,11 @@ An Implementer SHALL document the legal instrument governing access to the sourc
 
 #### F2O-035
 
-*Honor FHIR coding rank/preference indicators as tiebreakers.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where a FHIR coding array carries explicit primary or preferred designations, a Transformation Engine SHALL honor them as tiebreakers within the prioritization hierarchy.
 
 **Actors:** ● XFM
+
+**Discussed in:** [Code Prioritization Framework](codemappings.html#code-prioritization-framework)
 
 </div>
 
@@ -314,11 +314,11 @@ An Implementer SHALL document the legal instrument governing access to the sourc
 
 #### F2O-036
 
-*Prefer more-specific concept over parent within a code system.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where a coding array carries both a parent concept and a more specific child concept from the same code system, a Transformation Engine SHALL select the more specific concept.
 
 **Actors:** ● XFM
+
+**Discussed in:** [Code Prioritization Framework](codemappings.html#code-prioritization-framework)
 
 </div>
 
@@ -326,11 +326,11 @@ An Implementer SHALL document the legal instrument governing access to the sourc
 
 #### F2O-037
 
-*Assign OMOP domain from concept table domain_id, not FHIR resource type.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL assign the OMOP domain from the `domain_id` of the resolved concept rather than from the FHIR resource type, and a Target OMOP Instance SHALL store each clinical record in the domain table its concept's `domain_id` indicates.
 
 **Actors:** ● XFM, ● TGT, ○ TRM
+
+**Discussed in:** [OMOP Domain Assignment Logic](codemappings.html#omop-domain-assignment-logic)
 
 </div>
 
@@ -338,11 +338,11 @@ An Implementer SHALL document the legal instrument governing access to the sourc
 
 #### F2O-038
 
-*SHOULD use ConceptMap/$translate and CodeSystem/$lookup rather than hard-coded crosswalks.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHOULD resolve concepts through the `ConceptMap/$translate` and `CodeSystem/$lookup` operations of a FHIR terminology server rather than through a crosswalk hard-coded into the transformation. Where a static crosswalk is used instead, an Implementer SHALL record its provenance and the vocabulary release from which it was derived.
 
 **Actors:** ● XFM, ● TRM
+
+**Discussed in:** [Standard OMOP Vocabulary API Lookup Methodology](codemappings.html#standard-omop-vocabulary-api-lookup-methodology)
 
 </div>
 
@@ -664,11 +664,11 @@ A Transformation Engine SHOULD support idempotent re-processing of a given sourc
 
 #### F2O-110
 
-*When TRM is used, SHALL invoke via $translate and $lookup.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where a Transformation Engine resolves concepts through a FHIR terminology server, it SHALL do so through the standard `ConceptMap/$translate` and `CodeSystem/$lookup` operations rather than through server-specific interfaces, so that a transformation is not bound to a particular server implementation.
 
 **Actors:** ● XFM, ● TRM
+
+**Discussed in:** [Terminology Server API Utilization](TerminologyServer.html)
 
 </div>
 
@@ -688,11 +688,11 @@ A Transformation Engine SHOULD cache terminology server responses, and where it 
 
 #### F2O-112
 
-*A conformant TRM SHALL expose OHDSI Vocabularies as FHIR CodeSystem + ConceptMap.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Terminology Server claiming conformance to this guide SHALL expose the OHDSI Standardized Vocabularies as FHIR CodeSystem and ConceptMap resources, and SHALL report the vocabulary release it is serving in the `version` element of its responses.
 
 **Actors:** ● TRM, ○ IMP
+
+**Discussed in:** [Terminology Server API Utilization](TerminologyServer.html)
 
 </div>
 
