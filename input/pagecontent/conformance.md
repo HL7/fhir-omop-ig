@@ -362,11 +362,11 @@ Custom concepts added to a local OMOP instance SHALL use concept_id values at or
 
 #### F2O-040
 
-*Record OHDSI Vocabulary version used per ETL run.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL record the OHDSI Vocabulary release used to resolve concepts for each ETL run, as part of the run metadata described under Run Metadata and Reproducibility.
 
 **Actors:** ● XFM, ● TGT, ○ TRM, ● IMP
+
+**Discussed in:** [Run Metadata and Reproducibility](StrategiesBestPractices.html#run-metadata-and-reproducibility)
 
 </div>
 
@@ -526,11 +526,11 @@ A Transformation Engine SHOULD populate the optional OMOP `*_datetime` fields wh
 
 #### F2O-080
 
-*Document known data-loss points where FHIR granularity exceeds OMOP.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHALL document the points at which the transformation loses information because FHIR granularity exceeds what the OMOP CDM can represent, and SHALL make that documentation available to consumers of the resulting OMOP data.
 
 **Actors:** ○ XFM, ● IMP
+
+**Discussed in:** [Granularity of FHIR Data vs. OMOP Standardization](StrategiesBestPractices.html#granularity-of-fhir-data-vs-omop-standardization)
 
 </div>
 
@@ -538,11 +538,11 @@ A Transformation Engine SHOULD populate the optional OMOP `*_datetime` fields wh
 
 #### F2O-081
 
-*Emit unrepresentable residual elements to note or observation with appropriate type concept.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+Where a FHIR element carries clinically meaningful content that has no representable target in the OMOP domain tables, a Transformation Engine SHOULD emit the residual content to the observation or note domain with a type concept identifying its origin, rather than discarding it silently.
 
 **Actors:** ● XFM, ● TGT
+
+**Discussed in:** [Contextual Gaps in Data Mapping](F2OGeneralIssues.html#contextual-gaps-in-data-mapping)
 
 </div>
 
@@ -550,11 +550,11 @@ A Transformation Engine SHOULD populate the optional OMOP `*_datetime` fields wh
 
 #### F2O-082
 
-*Produce and maintain ETL documentation: mapping decisions, prioritization, pre-processing, manual interventions, limitations.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHALL produce and maintain ETL documentation recording mapping decisions, prioritization choices, pre-processing and manual interventions performed, and the known limitations of the transformation.
 
 **Actors:** ○ XFM, ● IMP
+
+**Discussed in:** [ETL Documentation](StrategiesBestPractices.html#etl-documentation)
 
 </div>
 
@@ -614,23 +614,11 @@ A Transformation Engine SHOULD populate the optional OMOP `*_datetime` fields wh
 
 #### F2O-100
 
-*Traceability path from every clinical record back to originating FHIR resource.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+An Implementer SHOULD maintain a traceability path from each clinical record in the Target OMOP Instance back to the FHIR resource that produced it.
 
 **Actors:** ○ XFM, ● TGT, ● IMP
 
-</div>
-
-<div id="f2o-101" markdown="1">
-
-#### F2O-101
-
-*SHOULD capture FHIR Provenance and represent in OMOP via type concepts / note / extension.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
-
-**Actors:** ● XFM, ● TGT
+**Discussed in:** [Source Value Preservation](StrategiesBestPractices.html#source-value-preservation)
 
 </div>
 
@@ -638,11 +626,11 @@ A Transformation Engine SHOULD populate the optional OMOP `*_datetime` fields wh
 
 #### F2O-102
 
-*Each ETL run labeled with: CDM version, vocabulary version, IG version, engine version, timestamp.*
-
-> Full normative wording to be finalized. The text above is the abbreviated statement; the complete SHALL/SHOULD/MAY wording will be inserted here before ballot.
+A Transformation Engine SHALL record, for each ETL run, the OMOP CDM version targeted, the OHDSI Vocabulary release used, the version of this Implementation Guide followed, the version of the transformation software, and the time of execution.
 
 **Actors:** ● XFM, ● TGT, ● IMP
+
+**Discussed in:** [Run Metadata and Reproducibility](StrategiesBestPractices.html#run-metadata-and-reproducibility)
 
 </div>
 
