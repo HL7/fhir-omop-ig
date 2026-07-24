@@ -562,6 +562,21 @@ When transforming FHIR data to OMOP, certain temporal information cannot be full
 
 FHIR's `instant` datatype mandates timezone specification (e.g., `+02:00` or `Z` for UTC) [1]. Standard ANSI SQL `DATETIME` types—which the OMOP CDM specifies generically [2]—do not include timezone offset. The SQL standard specifies that `timestamp` without qualification is "equivalent to timestamp without time zone" [5]. Preserving timezone requires database-specific extensions such as `DATETIMEOFFSET` (SQL Server) or `TIMESTAMP WITH TIME ZONE` (PostgreSQL), which are not mandated by the OMOP CDM specification. For multi-site studies spanning time zones or analyses sensitive to absolute time (e.g., circadian rhythm research), this loss may be significant.
 
+##### Normalizing Time Zones on Ingestion
+
+Because the CDM does not carry a time zone, a `*_datetime` column populated from sources in
+different zones is ambiguous in a way that is invisible on inspection: two values an hour apart may
+represent the same instant or genuinely different ones, and nothing in the target distinguishes the
+cases. The hazard is not the loss of the offset, which the model cannot hold in any event, but the
+mixing of zones within one column.
+
+The remedy is to convert on ingestion rather than on read. Where a source value carries an offset,
+it should be converted to a single zone applied consistently across the instance, conventionally
+UTC, before the `*_datetime` field is populated, and the chosen zone should be stated in the ETL
+documentation so analysts know what the column means. Where preservation of the original offset
+matters to the research, it belongs in an auxiliary store or a database-specific column outside the
+standard schema, as described above.
+
 ##### Precision Metadata
 
 FHIR's variable-precision `dateTime` type distinguishes between values known only to the year (`2024`), year-month (`2024-03`), day (`2024-03-15`), or full timestamp (`2024-03-15T14:30:00Z`) [1]. OMOP provides no standard mechanism to capture this precision metadata. When a year-only FHIR date is transformed to OMOP, the ETL must impute a complete date (typically `YYYY-01-01`), but the original precision level is not preserved in a queryable field. The `*_source_value` columns can document the original representation, but this requires manual inspection rather than programmatic filtering.
@@ -609,6 +624,28 @@ Based on the considerations above, implementers should:
 5. **Communicate limitations to analysts** through data documentation that specifies which datetime fields are reliably populated, what imputation rules were applied, and what temporal precision can be assumed for analytical purposes.
 
 Successful implementations embrace OMOP's date-level precision as the guaranteed minimum while remaining transparent about its constraints and leveraging optional datetime fields where source data supports them. ETL developers should codify and publish rules for handling partial dates, analysts should incorporate uncertainty into models, and institutions may elect to store high-resolution timestamps in parallel schemas where local research imperatives demand them. By balancing standardisation with explicit provenance, the OMOP community can continue enabling reproducible observational research without obscuring clinically relevant temporal nuance.
+
+#### Guidance
+
+A Transformation Engine SHALL populate the required OMOP `*_date` field for every clinical event
+record it writes, and a Target OMOP Instance SHALL NOT contain a clinical event record with an
+unpopulated required date field. This applies to the date fields the CDM marks as required; end-date
+fields that the CDM permits to be NULL are not within its scope. (f2o-070)
+
+Where a required date is derived by imputation from a partial or absent source value, a
+Transformation Engine SHALL record the imputation by means of an appropriate type concept, and an
+Implementer SHALL document the imputation rules applied and their effective scope in the ETL
+documentation. (f2o-071)
+
+Where a FHIR source value carries a time zone offset and the corresponding OMOP `*_datetime` field
+is populated, a Transformation Engine SHALL convert the value to a single time zone applied
+consistently across the instance, and an Implementer SHALL state that time zone in the ETL
+documentation. The OMOP CDM provides no standard field for a time zone offset, so this guide does
+not require the original offset to be preserved. (f2o-072)
+
+A Transformation Engine SHOULD populate the optional OMOP `*_datetime` fields where the FHIR source
+provides sub-day precision, rather than discarding that precision by populating only the required
+date field. (f2o-073)
 
 ---
 
