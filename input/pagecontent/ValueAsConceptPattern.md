@@ -1,5 +1,7 @@
 Certain clinical concepts such as Drug allergies, represent a complex transformation challenge in FHIR-to-OMOP mapping due to their composite nature. It demonstrates the effectiveness of vocabulary-driven mapping over resource-type assumptions: with OMOP concept relationships taking precedence in determining the final analytical structure. In FHIR, an AllergyIntolerance resource typically contains a coded element representing both the allergy type and the specific substance.  This is not aligned with OMOP's preference for decomposed, granular concept representation. The Value-as-Concept Map pattern addresses the tension between FHIR's composite coding approach and OMOP's value-as-concept methodology, which separates the observation type (allergy classification) from the specific substance causing the reaction.
 
+> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers should verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
+
 Utilizing an OMOP datastore, this mapping pattern enables comprehensive population-level allergy surveillance through queries that identify all drug allergies regardless of the specific causative substance, while simultaneously supporting granular substance-specific contraindication checking that can pinpoint allergies to particular medications or entire drug classes. The Value-as-Concept Pattern facilitates cross-domain analytics by establishing relationships between drug allergies and other clinical observations within the OMOP ecosystem creating opportunities for epidemiological studies.  Employment of source value preservation best practice ensures traceability back to the original FHIR data while enabling future remapping as vocabularies evolve.
 
 {::options parse_block_html="false" /}
@@ -95,11 +97,11 @@ SELECT concept_id        AS source_concept_id,
        standard_concept,
        invalid_reason
 FROM   concept
-WHERE  concept_code  = '294930007'
+WHERE  concept_code  = '294499007'
   AND  vocabulary_id = 'SNOMED';
 ```
 
-*Result:* `source_concept_id = 4222295` ("Allergy to benzylpenicillin", non-standard SNOMED concept). This value is used to populate `observation_source_concept_id`.
+*Result:* `source_concept_id = 4167462` ("Allergy to penicillin G", non-standard SNOMED concept). This value is used to populate `observation_source_concept_id`.
 
 *Step 4b: Derive `observation_concept_id` via the `Maps to` relationship*
 
@@ -111,7 +113,7 @@ SELECT cr.concept_id_2 AS observation_concept_id,
 FROM   concept_relationship cr
 JOIN   concept c2
        ON c2.concept_id = cr.concept_id_2
-WHERE  cr.concept_id_1    = 4222295
+WHERE  cr.concept_id_1    = 4167462
   AND  cr.relationship_id = 'Maps to'
   AND  cr.invalid_reason IS NULL;
 ```
@@ -128,7 +130,7 @@ SELECT cr.concept_id_2 AS value_as_concept_id,
 FROM   concept_relationship cr
 JOIN   concept c2
        ON c2.concept_id = cr.concept_id_2
-WHERE  cr.concept_id_1    = 4222295
+WHERE  cr.concept_id_1    = 4167462
   AND  cr.relationship_id = 'Maps to value'
   AND  cr.invalid_reason IS NULL;
 ```
@@ -181,7 +183,7 @@ INSERT INTO observation (
     32817,                             -- observation_type_concept_id (EHR)
     1728416,                           -- value_as_concept_id (Penicillin G)
     '294499007',                       -- observation_source_value
-    4222295,                           -- observation_source_concept_id
+    4167462,                           -- observation_source_concept_id
     'benzylpenicillin'                 -- value_source_value
 );
 ```
@@ -202,13 +204,13 @@ INSERT INTO observation (
     <tr>
       <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
       <td style="border: 1px solid #d0d7de;">439224</td>
-      <td style="border: 1px solid #d0d7de;">`concept_relationship` traversal from source concept 4222295 </td>
+      <td style="border: 1px solid #d0d7de;">`concept_relationship` traversal from source concept 4167462 </td>
       <td style="border: 1px solid #d0d7de;">Derived via `relationship_id = 'Maps to'`; standard concept for "Allergy to drug"</td>
     </tr>
     <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;"><code>value_as_concept_id</code></td>
       <td style="border: 1px solid #d0d7de;">1728416</td>
-      <td style="border: 1px solid #d0d7de;">`concept_relationship` traversal from source concept 4222295</td>
+      <td style="border: 1px solid #d0d7de;">`concept_relationship` traversal from source concept 4167462</td>
       <td style="border: 1px solid #d0d7de;">Derived via `relationship_id = 'Maps to value'`; standard concept for "Penicillin G"</td>
     </tr>
     <tr>
