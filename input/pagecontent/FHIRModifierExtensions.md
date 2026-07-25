@@ -439,12 +439,19 @@ For modifier extensions that are understood and lead to a modified ETL dispositi
 
 ### Decision Framework and ETL Checklist
 
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b>Modifier Extension Decision Framework</b></figcaption>
+<img src="modifier_extension_decision_tree.svg" style="padding-top:0;padding-bottom:30px" width="800" alt="Six step decision tree for evaluating FHIR modifier extensions during transformation to OMOP"/>
+</figure>
+{::options parse_block_html="true" /}
+
 | Step | Action | If Yes | If No |
 |---|---|---|---|
 | 1 | Does the resource root have a `modifierExtension` element? | Proceed to Step 2 | Proceed to Step 5 (check backbone elements) |
 | 2 | Is every root modifier extension URL present in the registry? | Proceed to Step 3 | QUARANTINE the entire resource. Log URL. Route to review. |
 | 3 | Does any recognized root modifier extension signal negation, repurposing, or exclusion? | Apply the registered disposition. Do not ingest as a standard clinical event. | Proceed to Step 4 |
-| 4 | Does any recognized root modifier extension signal a reliability or certainty qualifier? | Map resource with qualifier applied. Flag affected data elements. | Proceed to Step 5 |
+| 4 | Does any recognized root modifier extension signal a reliability or certainty qualifier? | Map resource with qualifier applied. Flag affected data elements. Proceed to Step 5. | Proceed to Step 5 |
 | 5 | Do any backbone elements carry a `modifierExtension`? | Proceed to Step 6 for each affected element | Proceed with normal ETL mapping |
 | 6 | Is every backbone-level modifier extension URL in the registry? | Apply disposition to that element only. Process other elements normally. | EXCLUDE the affected element. Log URL. Process other elements if safe. Route excluded element to review. |
 
