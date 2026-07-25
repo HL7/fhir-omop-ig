@@ -1,0 +1,132 @@
+<svg width="800" height="1105" viewBox="0 0 800 1105" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="mxTitle mxDesc">
+  <title id="mxTitle">Modifier Extension Decision Framework for FHIR to OMOP ETL</title>
+  <desc id="mxDesc">A six step decision tree. Steps 1 through 4 evaluate modifier extensions at the resource root: whether a root modifierExtension is present, whether every root extension URL is in the registry, whether any recognized extension signals negation, repurposing or exclusion, and whether any signals a reliability or certainty qualifier. An unregistered root URL quarantines the entire resource. A resource carrying a reliability or certainty qualifier is mapped with the qualifier applied and then continues to the element level checks. Steps 5 and 6 evaluate modifier extensions on backbone elements, where an unregistered URL excludes only the affected element rather than the whole resource.</desc>
+
+  <defs>
+    <marker id="mxArrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="26" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="bold" fill="#333">Modifier Extension Decision Framework</text>
+
+  <!-- Scope band labels -->
+  <text x="22" y="410" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="bold" fill="#9e9e9e" transform="rotate(-90 22 410)">ROOT-LEVEL CHECKS</text>
+  <text x="22" y="850" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="bold" fill="#9e9e9e" transform="rotate(-90 22 850)">ELEMENT-LEVEL CHECKS</text>
+
+  <!-- Start -->
+  <rect x="195" y="44" width="250" height="50" rx="15" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+  <text x="320" y="66" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" fill="#0d47a1">FHIR Resource Enters ETL</text>
+  <text x="320" y="83" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#666">Evaluate before any mapping is attempted</text>
+
+  <!-- Step 1 -->
+  <polygon points="320,122 470,170 320,218 170,170" fill="#bbdefb" stroke="#0d47a1" stroke-width="2"/>
+  <text x="320" y="166" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">1. Root modifierExtension</text>
+  <text x="320" y="182" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">present on the resource?</text>
+
+  <!-- Step 2 -->
+  <polygon points="320,267 470,315 320,363 170,315" fill="#bbdefb" stroke="#0d47a1" stroke-width="2"/>
+  <text x="320" y="311" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">2. Every root URL present</text>
+  <text x="320" y="327" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">in the registry?</text>
+
+  <!-- Step 3 -->
+  <polygon points="320,412 470,460 320,508 170,460" fill="#bbdefb" stroke="#0d47a1" stroke-width="2"/>
+  <text x="320" y="456" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">3. Signals negation, repurposing,</text>
+  <text x="320" y="472" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">or exclusion?</text>
+
+  <!-- Step 4 -->
+  <polygon points="320,557 470,605 320,653 170,605" fill="#bbdefb" stroke="#0d47a1" stroke-width="2"/>
+  <text x="320" y="601" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">4. Signals a reliability or</text>
+  <text x="320" y="617" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">certainty qualifier?</text>
+
+  <!-- Step 5 -->
+  <polygon points="320,702 470,750 320,798 170,750" fill="#bbdefb" stroke="#0d47a1" stroke-width="2"/>
+  <text x="320" y="746" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">5. Backbone element carries</text>
+  <text x="320" y="762" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">a modifierExtension?</text>
+
+  <!-- Step 6 -->
+  <polygon points="320,847 470,895 320,943 170,895" fill="#bbdefb" stroke="#0d47a1" stroke-width="2"/>
+  <text x="320" y="891" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">6. Every backbone URL</text>
+  <text x="320" y="907" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#0d1b2a">present in the registry?</text>
+
+  <!-- Outcome A: quarantine -->
+  <rect x="545" y="277" width="250" height="76" rx="10" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+  <text x="670" y="300" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#b71c1c">QUARANTINE ENTIRE RESOURCE</text>
+  <text x="670" y="319" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">Log the unrecognized URL.</text>
+  <text x="670" y="335" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">Route to human review.</text>
+
+  <!-- Outcome B: registered disposition -->
+  <rect x="545" y="422" width="250" height="76" rx="10" fill="#fff8e1" stroke="#ff8f00" stroke-width="2"/>
+  <text x="670" y="445" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#e65100">APPLY REGISTERED DISPOSITION</text>
+  <text x="670" y="464" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">Do not ingest as a standard</text>
+  <text x="670" y="480" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">clinical event.</text>
+
+  <!-- Outcome C: qualifier applied, continues to Step 5 -->
+  <rect x="545" y="567" width="250" height="76" rx="10" fill="#fff8e1" stroke="#ff8f00" stroke-width="2"/>
+  <text x="670" y="590" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#e65100">MAP WITH QUALIFIER APPLIED</text>
+  <text x="670" y="609" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">Flag the affected data elements</text>
+  <text x="670" y="625" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">as qualified, then continue.</text>
+
+  <!-- Outcome D: normal mapping -->
+  <rect x="545" y="718" width="250" height="64" rx="10" fill="#e8f5e8" stroke="#2e7d32" stroke-width="2"/>
+  <text x="670" y="742" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#1b5e20">PROCEED WITH NORMAL ETL MAPPING</text>
+  <text x="670" y="762" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">No modifier extension constraints apply.</text>
+
+  <!-- Outcome E: element-scoped disposition -->
+  <rect x="545" y="853" width="250" height="84" rx="10" fill="#e8f5e8" stroke="#2e7d32" stroke-width="2"/>
+  <text x="670" y="876" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#1b5e20">APPLY DISPOSITION TO</text>
+  <text x="670" y="892" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#1b5e20">THAT ELEMENT ONLY</text>
+  <text x="670" y="913" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">Process other elements normally.</text>
+
+  <!-- Outcome F: element exclusion -->
+  <rect x="60" y="990" width="420" height="100" rx="10" fill="#ffebee" stroke="#c62828" stroke-width="2"/>
+  <text x="270" y="1015" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#b71c1c">EXCLUDE THE AFFECTED ELEMENT</text>
+  <text x="270" y="1035" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">Log the unrecognized URL.</text>
+  <text x="270" y="1051" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">Process the other elements if safe to do so.</text>
+  <text x="270" y="1067" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#333">Route the excluded element to human review.</text>
+
+  <!-- Spine arrows -->
+  <line x1="320" y1="94" x2="320" y2="122" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+  <line x1="320" y1="218" x2="320" y2="267" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+  <line x1="320" y1="363" x2="320" y2="412" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+  <line x1="320" y1="508" x2="320" y2="557" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+  <line x1="320" y1="653" x2="320" y2="702" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+  <line x1="320" y1="798" x2="320" y2="847" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+  <line x1="320" y1="943" x2="320" y2="990" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+
+  <!-- Exit arrows to the right -->
+  <line x1="470" y1="315" x2="545" y2="315" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+  <line x1="470" y1="460" x2="545" y2="460" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+  <line x1="470" y1="605" x2="545" y2="605" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+  <line x1="470" y1="750" x2="545" y2="750" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+  <line x1="470" y1="895" x2="545" y2="895" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+
+  <!-- Step 4 Yes outcome returns to Step 5 -->
+  <polyline points="670,643 670,678 328,678" fill="none" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+
+  <!-- Step 1 No bypass to Step 5 -->
+  <polyline points="170,170 50,170 50,750 170,750" fill="none" stroke="#333" stroke-width="2" marker-end="url(#mxArrow)"/>
+
+  <!-- Branch labels -->
+  <text x="332" y="245" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">Yes</text>
+  <text x="118" y="162" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">No</text>
+
+  <text x="332" y="390" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">Yes</text>
+  <text x="492" y="308" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">No</text>
+
+  <text x="332" y="535" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">No</text>
+  <text x="492" y="453" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">Yes</text>
+
+  <text x="278" y="672" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">No</text>
+  <text x="492" y="598" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">Yes</text>
+
+  <text x="332" y="825" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">Yes</text>
+  <text x="492" y="743" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">No</text>
+
+  <text x="332" y="970" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">No</text>
+  <text x="492" y="888" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="bold" fill="#000">Yes</text>
+
+  <!-- Per-element annotation on the Step 5 Yes branch -->
+  <text x="372" y="825" font-family="Arial, Helvetica, sans-serif" font-size="9" font-style="italic" fill="#666">repeat Steps 5 and 6 for each affected element</text>
+</svg>
