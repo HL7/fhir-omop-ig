@@ -46,7 +46,7 @@ A Transformation Engine and Implementer SHOULD publish a machine-readable manife
 
 #### F2O-004
 
-An Implementer SHALL declare which of the use cases described on the Use Cases page the transformation supports, so that the scope of a given FHIR-to-OMOP transformation is stated explicitly rather than inferred.
+An Implementer SHALL declare which use cases the transformation supports. The declared set may include any of the use cases described on the Use Cases page, other use cases not described there, or a stated combination, so that the scope of a given FHIR-to-OMOP transformation is stated explicitly rather than inferred.
 
 **Actors:** ● IMP
 
@@ -86,7 +86,7 @@ This category covers what a transformation may assume about the FHIR data reachi
 
 #### F2O-010
 
-An Implementer SHALL declare which input FHIR profiles the transformation accepts, whether International Patient Access, US Core Encounter and Procedure, base FHIR resources, or a stated combination.
+An Implementer SHALL declare which input FHIR profiles the transformation accepts. The declared set may be any FHIR profiles the transformation is built to consume, whether the International Patient Access and US Core profiles this guide curated its maps against, other published profiles, or base FHIR resources conforming to no profile beyond the resource definitions.
 
 **Actors:** ○ SRC, ● XFM, ● IMP
 
