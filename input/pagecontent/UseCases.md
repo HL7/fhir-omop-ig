@@ -4,7 +4,7 @@ An implementation of this guide declares which of the use cases described on thi
 
 ### NIH All of Us Research Program 
 
-The NIH's [All of Us Research Program](https://allofus.nih.gov/) is a historic initiative aiming to collect and analyze data from one million or more individuals residing in the United States. Currently, the Program has enrolled over 849,000 participants. The primary goal of the initiative is to promote better health outcomes by empowering thousands of researchers with diverse, longitudinal data gathered from participants—80% of whom are traditionally underrepresented in biomedical research.
+The NIH's [All of Us Research Program](https://allofus.nih.gov/) is a historic initiative aiming to collect and analyze data from one million or more individuals residing in the United States. Currently, the Program has enrolled over 849,000 participants. The primary goal of the initiative is to promote better health outcomes by empowering thousands of researchers with diverse, longitudinal data gathered from participants, 80% of whom are traditionally underrepresented in biomedical research.
 
 #### Types of Data Collected
 
@@ -41,16 +41,13 @@ Studies were selected as examples based on the following criteria:
 
 These selected studies offer practical, real-world examples of codes, data elements, and concept IDs. It is important to note that the examples may also incorporate additional codes and OMOP concept IDs as required.
 
-#### Selected Studies and Data Supplements:
+#### Selected Studies
 
 - **Renedo, D., Acosta, J. N., Sujijantarat, N., Antonios, J. P., et al. (2022)**. *Carotid Artery Disease Among Broadly Defined Underrepresented Groups: The All of Us Research Program.* Stroke, 53. [https://doi.org/10.1161/STROKEAHA.121.037554](https://doi.org/10.1161/STROKEAHA.121.037554)
-  - [Data Supplement](https://www.ahajournals.org/action/downloadSupplement?doi=10.1161%2FSTROKEAHA.121.037554&file=stroka121037554_suppl1.pdf)
 
-- **Khan, M. S., Carroll, R. J. (2022)**. *Inference-based correction of multi-site height and weight measurement data in the All of Us Research Program.* Journal of the American Medical Informatics Association, 29(4), 626–630. [https://doi.org/10.1093/jamia/ocab251](https://doi.org/10.1093/jamia/ocab251)
-  - [Data Supplement](https://academic.oup.com/jamia/article/29/4/626/6437121#supplementary-data) (additional OMOP concept IDs included in article text)
+- **Khan, M. S., Carroll, R. J. (2022)**. *Inference-based correction of multi-site height and weight measurement data in the All of Us Research Program.* Journal of the American Medical Informatics Association, 29(4), 626–630. [https://doi.org/10.1093/jamia/ocab251](https://doi.org/10.1093/jamia/ocab251) Additional OMOP concept IDs are included in the article text.
 
 - **Berman, L., Ostchega, Y., Giannini, J., Anandan, L. P., et al. (2024)**. *Application of a Data Quality Framework to Ductal Carcinoma In Situ Using Electronic Health Record Data From the All of Us Research Program.* JCO Clinical Cancer Informatics. [https://doi.org/10.1200/CCI.24.00052](https://doi.org/10.1200/CCI.24.00052)
-  - [Data Supplement](https://ascopubs.org/doi/suppl/10.1200/CCI.24.00052)
 
 ### Vulcan Real-World Data Implementation Guide
 The Vulcan Retrieval of Real World Data (RWD) for Clinical Research Implementation Guide (IG) aims to facilitate the transmission of clinical data generated during routine patient care (Electronic Health Record data, EHR) for use as Real World Data (RWD) supporting clinical research. Traditionally, clinical trials rely on prospective data collection tailored to specific research questions and analytics. In contrast, data generated through routine healthcare operations are rarely aligned with secondary research requirements. The Vulcan RWD IG defines FHIR profiles suitable for use within EHR systems, facilitating the retrieval and alignment of relevant clinical data from RWD sources for clinical research and regulatory submissions.
@@ -59,7 +56,7 @@ The Vulcan Real-World Data IG leverages the FHIR International Patient Access (I
 
 ### Vulcan RWD IG Studies from ClinicalTrials.gov
 
-During the development of the Vulcan RWD IG, the following real-world clinical research studies from ClinicalTrials.gov were used as representative use cases to identify and scope the data elements most commonly required for clinical research. These studies are referenced here as illustrative background context — they informed the scoping decisions of the Vulcan RWD IG and, by extension, the prioritization of FHIR data elements relevant to this FHIR to OMOP IG. They are not presented as studies that were operationally conducted using the Vulcan RWD IG.
+During the development of the Vulcan RWD IG, the following real-world clinical research studies from ClinicalTrials.gov were used as representative use cases to identify and scope the data elements most commonly required for clinical research. These studies are referenced here as illustrative background context; they informed the scoping decisions of the Vulcan RWD IG and, by extension, the prioritization of FHIR data elements relevant to this FHIR to OMOP IG. They are not presented as studies that were operationally conducted using the Vulcan RWD IG.
 
 1. Acute Coronary Syndrome Study, ClinicalTrials.gov ID: NCT02190123
 2. Anti-TNFa Treatment Study, ClinicalTrials.gov ID: NCT03890445
@@ -81,7 +78,7 @@ The healthcare industry is increasingly leveraging Artificial Intelligence (AI) 
 While OMOP provides a reliable foundation for building AI models, FHIR's versatility and growing adoption make it a popular choice for applying AI, which presents challenges when it comes to directly applying OMOP-trained AI models trained to FHIR data.  The key issue is that AI models typically require data in a highly structured format (such as OMOP), but FHIR resources are more granular and often transmitted in a fragmented or single-message form. This misalignment makes it difficult to directly use FHIR for training AI models, which is why a transformation from FHIR to OMOP is necessary.
 
 #### Solution: FHIR to OMOP Transformation 
-To bridge this gap, the use of Extract, Transform, Load (ETL) processes to convert FHIR data into OMOP format has emerged as a critical solution. By transforming FHIR resources—whether from a single message (such as a single patient encounter or medication prescription) or aggregated messages—into the standardized OMOP format, healthcare organizations can train AI models on OMOP data while leveraging real-time clinical data in FHIR for classification tasks.
+To bridge this gap, the use of Extract, Transform, Load (ETL) processes to convert FHIR data into OMOP format has emerged as a critical solution. By transforming FHIR resources, whether from a single message (such as a single patient encounter or medication prescription) or aggregated messages, into the standardized OMOP format, healthcare organizations can train AI models on OMOP data while leveraging real-time clinical data in FHIR for classification tasks.
 
 The transformation enables AI models trained on the OMOP CDM to be applied to clinical data captured in FHIR, ensuring that AI predictions are made based on consistent, normalized data. This makes it possible for even single-message FHIR resources (like a patient’s admission record or a medication order) to be compatible with pre-existing, trained models, which are often designed to analyze more comprehensive patient data typically found in OMOP.
 
@@ -93,7 +90,7 @@ While OMOP provides a reliable foundation for building AI models, FHIR's versati
 
 #### Goal: FHIR to OMOP Transformation
 
-**The goal of this work is to** bridge this gap through the use of Extract, Transform, Load (ETL) processes to convert FHIR data into OMOP format. By transforming FHIR resources — whether from a single message (such as a single patient encounter or medication prescription) or aggregated messages — into the standardized OMOP format, healthcare organizations would be positioned to train AI models on OMOP data while leveraging real-time clinical data in FHIR for classification tasks.
+**The goal of this work is to** bridge this gap through the use of Extract, Transform, Load (ETL) processes to convert FHIR data into OMOP format. By transforming FHIR resources, whether from a single message (such as a single patient encounter or medication prescription) or aggregated messages, into the standardized OMOP format, healthcare organizations would be positioned to train AI models on OMOP data while leveraging real-time clinical data in FHIR for classification tasks.
 
 Once implemented, this transformation would enable AI models trained on the OMOP CDM to be applied to clinical data captured in FHIR, ensuring that AI predictions are made based on consistent, normalized data. This would make it possible for even single-message FHIR resources (like a patient's admission record or a medication order) to be compatible with pre-existing, trained models, which are often designed to analyze more comprehensive patient data typically found in OMOP.
 
@@ -123,7 +120,7 @@ The following benefits are expected to be realized upon successful implementatio
 
 #### Summary
 
-The FHIR-to-OMOP transformation is the **foundational objective** of this work. Achieving this transformation is what would enable healthcare organizations to apply real-time FHIR-based clinical data to pre-trained AI models that rely on the OMOP CDM. Through ETL processes, even fragmented or single-message FHIR resources would be made compatible with AI models trained on more comprehensive datasets — fostering more effective AI-driven healthcare decisions and interventions. **This capability remains a target state; progress toward implementation is ongoing.**
+The FHIR-to-OMOP transformation is the **foundational objective** of this work. Achieving this transformation is what would enable healthcare organizations to apply real-time FHIR-based clinical data to pre-trained AI models that rely on the OMOP CDM. Through ETL processes, even fragmented or single-message FHIR resources would be made compatible with AI models trained on more comprehensive datasets, fostering more effective AI-driven healthcare decisions and interventions. **This capability remains a target state; progress toward implementation is ongoing.**
 
 ### Guidance
 
