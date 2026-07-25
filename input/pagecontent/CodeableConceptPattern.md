@@ -1,5 +1,7 @@
 The CodeableConcept patterns addresses the challenge of transforming FHIR CodeableConcept elements that may contain multiple codes, free text, or combinations of both. This pattern recognizes the tension between FHIR's flexibility in representing clinical concepts and OMOP's requirement for standardized, unambiguous concept identification. It provides systematic methodology for handling the complexity that may arise in CodeableConcept structures while preserving clinical meaning and maintaining data quality standards.
 
+> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers should verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
+
 CodeableConcept elements in FHIR can contain multiple coding entries, each potentially representing the same clinical concept through different terminology systems or at different levels of granularity. This variety of input provides opportunities for enhanced semantic representation but can also create complexity when determining which code should serve as the primary mapping target for OMOP transformation. The pattern addresses this complexity through assessment and prioritization logic.
 
 {::options parse_block_html="false" /}
@@ -44,7 +46,7 @@ The transformation of negative assertion concepts demonstrates the importance of
 }
 ```
 
-The CodeableConcept contains a single SNOMED CT code representing a standardized approach to expressing the absence of known allergies, supplemented by free text that provides additional clinical context. Vocabulary lookup reveals that SNOMED CT code 716186003 maps to OMOP concept_id 4222295, but critically, this concept resides in the Observation domain rather than the Condition domain that might be expected based on the AllergyIntolerance resource type.
+The CodeableConcept contains a single SNOMED CT code representing a standardized approach to expressing the absence of known allergies, supplemented by free text that provides additional clinical context. Vocabulary lookup reveals that SNOMED CT code 716186003 maps to OMOP concept_id 37396387, but critically, this concept resides in the Observation domain rather than the Condition domain that might be expected based on the AllergyIntolerance resource type.
 
 This domain assignment reflects OMOP's semantic organization, where negative assertions about clinical conditions are typically modeled as observations rather than conditions themselves. The vocabulary-driven domain assignment takes precedence over resource type expectations, demonstrating the importance of semantic accuracy in OMOP transformation processes.
 
@@ -59,7 +61,7 @@ INSERT INTO observation (
 ) VALUES (
     [generated_id],
     [mapped_person_id],
-    4222295,              -- No known allergy concept
+    37396387,             -- No known allergy concept
     '2023-01-15',
     '716186003',         -- Source code preservation
     NULL                 -- No additional value needed for status assertion
@@ -82,7 +84,7 @@ The transformation successfully preserves the structured coded information while
   <tbody>
     <tr>
       <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
-      <td style="border: 1px solid #d0d7de;">4222295</td>
+      <td style="border: 1px solid #d0d7de;">37396387</td>
       <td style="border: 1px solid #d0d7de;">SNOMED 716186003</td>
       <td style="border: 1px solid #d0d7de;">Standard OMOP concept for "No known allergy"</td>
     </tr>
@@ -94,7 +96,7 @@ The transformation successfully preserves the structured coded information while
     </tr>
     <tr>
       <td style="border: 1px solid #d0d7de;"><code>observation_source_concept_id</code></td>
-      <td style="border: 1px solid #d0d7de;">4222295</td>
+      <td style="border: 1px solid #d0d7de;">37396387</td>
       <td style="border: 1px solid #d0d7de;">Same as standard</td>
       <td style="border: 1px solid #d0d7de;">Source code already standard</td>
     </tr>
@@ -141,7 +143,7 @@ If the CodeableConcept contained both SNOMED and a local code:
 
 **Prioritization Application:**
 - **Standard Vocabulary First**: SNOMED CT selected over local code
-- **Result**: Same mapping to concept_id 4222295
+- **Result**: Same mapping to concept_id 37396387
 - **Local Code**: Preserved in observation_source_value as secondary
 
 #### Related Allergy Concepts
@@ -269,10 +271,10 @@ INSERT INTO condition_occurrence (
 ```
 
 ##### 3. Medical Abbreviations
-**Source Text**: "Pt w/ h/o MI, now c/o SOB"
+**Source Text**: "Pt w/ h/o MI, now c/o feeling sad"
 **NLP Processing**:
 - "h/o MI" → "history of myocardial infarction"
-- "c/o SOB" → "complains of shortness of breath"
+- "c/o feeling sad" → "complains of feeling sad"
 **Result**: Two distinct condition records
 
 *OMOP Condition Record 1 - History of MI:*
@@ -298,7 +300,7 @@ INSERT INTO condition_occurrence (
 );
 ```
 
-*OMOP Observation Record - Current SOB Complaint:*
+*OMOP Observation Record - Current Mood Complaint:*
 ```sql
 INSERT INTO observation (
     observation_id,
@@ -312,11 +314,11 @@ INSERT INTO observation (
 ) VALUES (
     54321,                                     -- observation_id
     67890,                                     -- person_id
-    4000045,                                   -- observation_concept_id (Dyspnea)
+    1761730,                                   -- observation_concept_id (Feeling sad)
     '2024-03-15',                             -- observation_date
     '2024-03-15T10:30:00',                    -- observation_datetime
     32817,                                     -- observation_type_concept_id (EHR)
-    'c/o SOB',                                -- observation_source_value (original abbreviation)
+    'c/o feeling sad',                        -- observation_source_value (original abbreviation)
     0                                          -- observation_source_concept_id (unmapped source)
 );
 ```
@@ -372,8 +374,8 @@ INSERT INTO observation (
     <tr style="background-color: #f6f8fa;">
       <td style="border: 1px solid #d0d7de;"></td>
       <td style="border: 1px solid #d0d7de;"><code>observation_concept_id</code></td>
-      <td style="border: 1px solid #d0d7de;">4000045</td>
-      <td style="border: 1px solid #d0d7de;">SOB mapped to dyspnea concept</td>
+      <td style="border: 1px solid #d0d7de;">1761730</td>
+      <td style="border: 1px solid #d0d7de;">Mood complaint mapped to a LOINC survey concept in the Observation domain</td>
     </tr>
   </tbody>
 </table>
