@@ -46,7 +46,7 @@ A Transformation Engine and Implementer SHOULD publish a machine-readable manife
 
 #### F2O-004
 
-An Implementer SHALL declare which use cases the transformation supports. The declared set may include any of the use cases described on the Use Cases page, other use cases not described there, or a stated combination, so that the scope of a given FHIR-to-OMOP transformation is stated explicitly rather than inferred.
+An Implementer SHALL declare which of the use cases described on the Use Cases page the transformation supports, so that the scope of a given FHIR-to-OMOP transformation is stated explicitly rather than inferred.
 
 **Actors:** ● IMP
 
@@ -86,7 +86,7 @@ This category covers what a transformation may assume about the FHIR data reachi
 
 #### F2O-010
 
-An Implementer SHALL declare which input FHIR profiles the transformation accepts. The declared set may be any FHIR profiles the transformation is built to consume, whether the International Patient Access and US Core profiles this guide curated its maps against, other published profiles, or base FHIR resources conforming to no profile beyond the resource definitions.
+An Implementer SHALL declare which input FHIR profiles the transformation accepts, whether International Patient Access, US Core Encounter and Procedure, base FHIR resources, or a stated combination.
 
 **Actors:** ○ SRC, ● XFM, ● IMP
 
@@ -98,7 +98,7 @@ An Implementer SHALL declare which input FHIR profiles the transformation accept
 
 #### F2O-011
 
-A Transformation Engine SHALL rely only on the elements a declared profile guarantees, and SHALL NOT assume the presence of an element that the profile permits a conformant source to omit. This is a constraint on assumptions about optional content, not an obligation to handle content beyond the transformation's declared profile scope.
+A Transformation Engine SHALL rely only on the elements guaranteed by what it has declared it accepts, whether a profile or a base resource definition, and SHALL NOT assume the presence of an element that a conformant source is permitted to omit. This is a constraint on assumptions about optional content, not an obligation to handle content beyond the transformation's declared scope.
 
 **Actors:** ● XFM
 
@@ -154,7 +154,7 @@ A Transformation Engine SHALL NOT store FHIR business identifier values (`Resour
 
 **Actors:** ● XFM, ● TGT
 
-**Discussed in:** [Why `_source_value` Fields Are Not Appropriate for FHIR Identifier Storage](IdentifiersPrivacy.html#why-sourcevalue-fields-are-not-appropriate-for-fhir-identifier-storage)
+**Discussed in:** [Why `_source_value` Fields Are Not Appropriate for FHIR Identifier Storage](IdentifiersPrivacy.html#why-_source_value-fields-are-not-appropriate-for-fhir-identifier-storage)
 
 </div>
 
