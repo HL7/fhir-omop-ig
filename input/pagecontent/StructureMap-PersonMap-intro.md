@@ -3,6 +3,8 @@
 ## Mapping Sex and Gender 
 FHIR to OMOP gender mapping requires attention to both technical precision and the evolving OHDSI conventions around gender and sex data representation. The key to successful implementation lies in establishing clear protocols that respect the OHDSI community's ratified conventions, maintaining comprehensive validation across both Person and Observation domain tables, and preparing for future standard evolution while ensuring current system reliability and accuracy. 
 
+> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers should verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
+
 ## Understanding Both Standards
 ### FHIR Gender Implementation
 FHIR implements gender as a CodeableConcept within the Patient resource, providing flexibility in representation while maintaining standardization. The gender field accepts four primary values:
@@ -17,10 +19,20 @@ The CodeableConcept structure allows implementers to include additional context 
 ### OMOP Gender Structure
 OMOP takes a more rigid approach through the `gender_concept_id` field in the person table. This field requires a mandatory reference to standardized vocabulary concepts:
 
-- **Male**: Concept ID 8507
-- **Female**: Concept ID 8532
-- **Unknown**: Concept ID 8551
-- **Other**: Concept ID 44814653
+- **Male**: Concept ID 8507 (`MALE`, Gender vocabulary)
+- **Female**: Concept ID 8532 (`FEMALE`, Gender vocabulary)
+- **Unknown**: Concept ID 8551 (`UNKNOWN`, Gender vocabulary)
+- **Other**: Concept ID 44814653 (`Unknown`, PCORNet vocabulary)
+
+#### When Two Concepts Carry the Same Display
+
+The last two entries deserve attention, because they show a condition that recurs throughout vocabulary work and is easily mistaken for an error in the guide. Concepts 8551 and 44814653 both carry the display name `Unknown`. To a transformation engine matching on display text, they are indistinguishable, and a pipeline that resolves concepts by name rather than by identifier will choose between them arbitrarily.
+
+They are not the same concept. 8551 belongs to the Gender vocabulary and sits in the Gender domain. 44814653 belongs to the PCORNet vocabulary and sits in the Observation domain. Neither is a Standard concept. The FHIR `other` value is being served here by a concept drawn from a different vocabulary and a different domain than the one serving `unknown`, which is why two rows that look alike carry different meaning.
+
+What separates them is provenance, not display. The `vocabulary_id`, the `domain_id`, and the source system that supplied the value are what allow a human reviewer to tell one from the other, and they are what an ETL specification has to record. An implementation that documents only the display name has discarded the information that makes its own assignment reconstructable. This is the practical reason the source value preservation guidance in this guide asks for the original code and system to be retained alongside the resolved concept: a resolved identifier does not always disambiguate itself.
+
+Implementers mapping the FHIR `other` value should record the selection explicitly in their ETL documentation, naming the concept chosen and the basis for choosing it, so that a later reader can distinguish a deliberate assignment from a display-name collision.
 
 The mandatory nature of this field ensures every person record contains gender information, requiring careful handling of missing or null values during transformation.
 
