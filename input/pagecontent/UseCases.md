@@ -127,4 +127,4 @@ The FHIR-to-OMOP transformation is the **foundational objective** of this work. 
 
 ### Guidance
 
-An Implementer SHALL declare which of the use cases described on this page the transformation supports, so that the scope of a given FHIR-to-OMOP transformation is stated explicitly rather than inferred. (f2o-004)
+An Implementer SHALL declare which use cases the transformation supports. The declared set may include any of the use cases described on this page, other use cases not described here, or a stated combination, so that the scope of a given FHIR-to-OMOP transformation is stated explicitly rather than inferred. (f2o-004)
