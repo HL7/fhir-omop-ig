@@ -1,5 +1,7 @@
 Mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations can follow distinct patterns.  In this Implementation Guide, we propose a non-exhaustive list of transformation patterns and guidance regarding: 
 
+> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers should verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
+
 * A base pattern that covers most simple code to concept transformation
 * A pattern applicable to multiple CodeableConcepts scenarios
 * Value-as-concept map pattern
@@ -71,7 +73,7 @@ INSERT INTO condition_occurrence (
     '2011-05-24',
     '44054006',           -- Source preservation
     201826,               -- Source concept (already standard)
-    32020                 -- EHR record type
+    32817                 -- EHR
 );
 ```
 
