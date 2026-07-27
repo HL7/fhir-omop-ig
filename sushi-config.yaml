@@ -75,8 +75,8 @@ menu:
     Common Issues: F2OGeneralIssues.html
     Source Data: SourceData.html
     Identifiers and Privacy: IdentifiersPrivacy.html
-    Best Practices: StrategiesBestPractices.html
     Understanding FHIR Modifier Extensions: FHIRModifierExtensions.html
+    Best Practices: StrategiesBestPractices.html
   Mapping Concepts:
     Coded Field Mapping Principles: codemappings.html
     Code Mapping Base Pattern: CodeMappingBasePattern.html
