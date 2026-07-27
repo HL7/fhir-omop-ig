@@ -118,6 +118,27 @@ We are deeply appreciative of all the participants in the July 2026 Connectathon
 
 The following contributors are recognized for their work leading to the Informative ballot of this Implementation Guide.
 
+## Primary Authors
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
+  <thead>
+    <tr style="background-color: #f6f8fa;">
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Name</th>
+      <th style="border: 1px solid #d0d7de; text-align: left; font-weight: bold;">Organization</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #d0d7de;">Davera Gabriel</td>
+      <td style="border: 1px solid #d0d7de;">Evidentli, Inc</td>
+    </tr>
+    <tr style="background-color: #f6f8fa;">
+      <td style="border: 1px solid #d0d7de;">Jean Duteau</td>
+      <td style="border: 1px solid #d0d7de;">Dogwood Consulting</td>
+    </tr>
+  </tbody>
+</table>
+
 ### Primary Editors (Informative Ballot)
 
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
