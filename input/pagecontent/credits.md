@@ -118,7 +118,7 @@ We are deeply appreciative of all the participants in the July 2026 Connectathon
 
 The following contributors are recognized for their work leading to the Informative ballot of this Implementation Guide.
 
-## Primary Authors
+## Primary Authors (Informative Ballot)
 
 <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: auto;">
   <thead>
