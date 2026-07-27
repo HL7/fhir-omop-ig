@@ -72,9 +72,9 @@ menu:
   OMOP CDM: the-omop-cdm.html
   Use Cases: UseCases.html
   General Guidance:
+    Common Issues: F2OGeneralIssues.html
     Source Data: SourceData.html
     Identifiers and Privacy: IdentifiersPrivacy.html
-    Common Issues: F2OGeneralIssues.html
     Best Practices: StrategiesBestPractices.html
     Understanding FHIR Modifier Extensions: FHIRModifierExtensions.html
   Mapping Concepts:
