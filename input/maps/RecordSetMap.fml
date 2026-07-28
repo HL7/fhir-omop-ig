@@ -1,7 +1,7 @@
 /// url = 'http://hl7.org/fhir/uv/omop/StructureMap/RecordSetMap'
 /// name = 'RecordSetMap'
 /// title = 'Mapping an International Patient Summary resource to OMOP domains collected in a RecordSet resource'
-/// status = 'draft'
+/// status = 'active'
 /// description = "This mapping maps a FHIR International Patient Summary Bundle to a set of OMOP Patient records collected in a RecordSet resource."
 
 uses "http://hl7.org/fhir/StructureDefinition/Bundle" alias Bundle as source

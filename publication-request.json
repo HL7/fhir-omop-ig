@@ -1,9 +1,9 @@
 {
   "package-id" : "hl7.fhir.uv.omop",
-  "version" : "1.0.0",
-  "path" : "http://hl7.org/fhir/uv/omop/INFORMATIVE1",
-  "status" : "informative",
-  "sequence" : "INFORMATIVE 1",
-  "mode": "milestone",
-  "desc" : "This is the informative release of the FHIR to OMOP IG."
+  "version" : "2.0.0-202609-ballot",
+  "path" : "http://hl7.org/fhir/uv/omop/2.0.0-202609-ballot",
+  "status" : "ballot",
+  "sequence" : "STU 1",
+  "mode": "working",
+  "desc" : "This is the first STU ballot of the FHIR to OMOP IG."
 }

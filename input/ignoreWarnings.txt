@@ -5,7 +5,7 @@
 # See https://github.com/FHIR/sample-ig/blob/master/input/ignoreWarnings.txt for examples
 
 # 01 - Various FML functions that are valid but the validator does not currently check them
-Transform copy not checked yet
+Transform evaluate not checked yet
 Transform cast not checked yet
 
 # 02 - It is intended not to assign a variable
@@ -17,6 +17,9 @@ The FHIRPath expression passed as the evaluate parameter is invalid: Error evalu
 The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence] (@char 1)
 The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/StructureDefinition/Observation] (@char 1)
 The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'src' is not valid for any of the possible types: [http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure] (@char 1)
+The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'edt' is not valid for any of the possible types: [http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement] (@char 1)
+The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 'eps' is not valid for any of the possible types: [http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement] (@char 1)
+The FHIRPath expression passed as the evaluate parameter is invalid: Error evaluating FHIRPath expression: The name 's' is not valid for any of the possible types: [http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement] (@char 1)
 
 
 # 04 - Deprecated value set that is used in FHIR core
@@ -44,13 +47,9 @@ The Source Code System http://hl7.org/fhir/sid/cvx is not fully defined and popu
 The Source Code System http://loinc.org is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
 The Source Code System http://snomed.info/sct is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
 
-# 11 - We are okay with the path not being validated as we are explicitly calling these groups
-Group systolicTable parameter comp has no type, so the paths cannot be validated
-Group diastolicTable parameter comp has no type, so the paths cannot be validated
-
-# 12 - The elements are just slices of the root element so this is okay
-The target path src.component refers to the path Observation.component which could be a reference to multiple elements (Observation.component, Observation.component:SystolicBP, Observation.component:DiastolicBP). No further checking can be performed
-The target path s.coding refers to the path Observation.code.coding which could be a reference to multiple elements (Observation.code.coding, Observation.code.coding:BPCode). No further checking can be performed
-
-# 13 - Info messages about conformance terms in our change log
+# 11 - Info messages about conformance terms in our change log
 No conformance term found in the text%
+
+# 12 - We will get an OID and these will go away
+%could usefully have an OID assigned (OIDs are easy to assign - see https://build.fhir.org/ig/FHIR/fhir-tools-ig/CodeSystem-ig-parameters.html#ig-parameters-auto-oid-root)
+

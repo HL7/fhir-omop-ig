@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<specification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ballotUrl="http://hl7.org/fhir/uv/omop/2025Sep" ciUrl="https://build.fhir.org/ig/HL7/fhir-omop-ig" defaultVersion="1.0.0" defaultWorkgroup="brr" gitUrl="https://github.com/HL7/fhir-omop" url="http://hl7.org/fhir/uv/omop">
+<specification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ballotUrl="http://hl7.org/fhir/uv/omop/2.0.0-202609-ballot" ciUrl="https://build.fhir.org/ig/HL7/fhir-omop-ig" defaultVersion="2.0.0-202609-ballot" defaultWorkgroup="brr" gitUrl="https://github.com/HL7/fhir-omop" url="http://hl7.org/fhir/uv/omop">
 <version code="current" url="https://build.fhir.org/ig/HL7/fhir-omop-ig"/>
+<version code="2.0.0-202609-ballot" url="http://hl7.org/fhir/uv/omop/2.0.0-202609-ballot"/>
 <version code="1.0.0" url="http://hl7.org/fhir/uv/omop/INFORMATIVE1"/>
 <version code="1.0.0-ballot" deprecated="true" url="http://hl7.org/fhir/uv/omop/2025Sep"/>
 <artifactPageExtension value="-definitions"/>
@@ -43,11 +44,13 @@
 <artifact id="StructureMap/PersonMap" key="StructureMap-PersonMap" name="Mapping Patient resource to Person OMOP Domain"/>
 <artifact id="StructureMap/ProcedureMap" key="StructureMap-ProcedureMap" name="Mapping Procedure resource to Procedure Occurrence OMOP Domain"/>
 <artifact id="StructureMap/SimpleVitalSignsMap" key="StructureMap-SimpleVitalSignsMap" name="Mapping Vital Ssigns resource to Measurement OMOP Domain"/>
+<artifact id="StructureMap/RecordSetMap" key="StructureMap-RecordSetMap" name="Mapping an International Patient Summary resource to OMOP domains collected in a RecordSet resource"/>
 <artifact id="StructureDefinition/Measurement" key="StructureDefinition-Measurement" name="Measurement OMOP Table"/>
 <artifact id="StructureDefinition/NoteNLP" key="StructureDefinition-NoteNLP" name="Note NLP OMOP Table"/>
 <artifact id="StructureDefinition/Note" key="StructureDefinition-Note" name="Note OMOP Table"/>
 <artifact id="StructureDefinition/Observation" key="StructureDefinition-Observation" name="Observation OMOP Table"/>
 <artifact id="StructureDefinition/ObservationPeriod" key="StructureDefinition-ObservationPeriod" name="Observation Period OMOP Table"/>
+<artifact id="StructureDefinition/RecordSet" key="StructureDefinition-RecordSet" name="Patient Record Setting"/>
 <artifact id="StructureDefinition/PayerPlanPeriod" key="StructureDefinition-PayerPlanPeriod" name="Payer Plan Period OMOP Table"/>
 <artifact id="StructureDefinition/Person" key="StructureDefinition-Person" name="Person OMOP Table"/>
 <artifact id="StructureDefinition/ProcedureOccurrence" key="StructureDefinition-ProcedureOccurrence" name="Procedure Occurrence OMOP Table"/>

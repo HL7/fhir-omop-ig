@@ -1,7 +1,7 @@
 /// url = 'http://hl7.org/fhir/uv/omop/StructureMap/EncounterVisitMap'
 /// name = 'EncounterVisitMap'
 /// title = 'Mapping Encounter resource to VisitOccurrence OMOP Domain'
-/// status = 'draft'
+/// status = 'active'
 /// description = "This mapping maps FHIR Encounter instances to OMOP Visit Occurence Table objects."
 
 uses "http://hl7.org/fhir/StructureDefinition/Encounter" alias Encounter as source
