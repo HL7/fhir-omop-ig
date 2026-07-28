@@ -42,7 +42,7 @@ pages:
     title: Use Cases
     extension:
       - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
-        valueCode: informative
+        valueCode: trial-use
   SourceData.md:
     title: Source Data Acquisition and Expectations
     extension:
@@ -126,8 +126,10 @@ pages:
 
 menu:
   Introduction: index.html
-  OMOP CDM: the-omop-cdm.html
-  Use Cases: UseCases.html
+  Background:
+    OMOP CDM: the-omop-cdm.html
+    Use Cases: UseCases.html
+    Acknowledgements: credits.html
   General Guidance:
     Common Issues: F2OGeneralIssues.html
     Source Data: SourceData.html
@@ -151,7 +153,6 @@ menu:
     Specification Dashboard: https://jira.hl7.org/secure/Dashboard.jspa?selectPageId=17809
     Propose a Change: https://jira.hl7.org/secure/CreateIssueDetails!init.jspa?pid=10405&amp;issuetype=10600&amp;customfield_11302=FHIR-omop
   Change Log: changes.html
-  Acknowledgements: credits.html
 
 #
 # ╭──────────────────────────────────────────SUSHI flags───────────────────────────────────────────╮
