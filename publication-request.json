@@ -1,6 +1,6 @@
 {
   "package-id" : "hl7.fhir.uv.omop",
-  "version" : "2.0.0-202609-ballot",
+  "version" : "2.0.0-ballot",
   "path" : "http://hl7.org/fhir/uv/omop/2.0.0-202609-ballot",
   "status" : "ballot",
   "sequence" : "STU 1",
