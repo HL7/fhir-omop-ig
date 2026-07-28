@@ -14,6 +14,8 @@ group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
 
     // OMOP Person ID would be a map from the FHIR Encounter Subject reference to an external key
     src.subject -> tgt.person_id = 1;
+
+    src.id -> tgt.visit_type_concept_id = 32817;
 	
 	src.class as s -> tgt then {
 		s.coding as sc -> tgt then {
