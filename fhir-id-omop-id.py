@@ -75,6 +75,32 @@ def find_all_id_values(data):
     collect_ids(data)
     return ids
 
+def find_all_reference_ids(data):
+    """Recursively find all ids from 'reference' fields (ResourceType/<id>).
+    Returns a list of unique id strings extracted from references.
+    """
+    import re
+    ref_ids = []
+    
+    def collect_ref_ids(obj):
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if k == 'reference' and isinstance(v, str):
+                    # Extract the id portion from ResourceType/<id> or similar patterns
+                    # Also handle URLs like https://fhir.example.com/ResourceType/<id>
+                    match = re.search(r'/([^/]+)$', v)
+                    if match:
+                        ref_id = match.group(1)
+                        if ref_id not in ref_ids:
+                            ref_ids.append(ref_id)
+                collect_ref_ids(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                collect_ref_ids(item)
+    
+    collect_ref_ids(data)
+    return ref_ids
+
 def process_data(data, search_string, replacement):
     """Process JSON data in-memory, searching and replacing values.
     
@@ -146,7 +172,11 @@ def prepare_search_and_replacement(identifier_value):
     return token_raw, replacement
 
 if __name__ == "__main__":
-    json_file = input("Enter JSON file path: ")
+    # Allow passing the JSON file path as a command-line argument for scripted runs
+    if len(sys.argv) > 1:
+        json_file = sys.argv[1]
+    else:
+        json_file = input("Enter JSON file path: ")
     try:
         with open(json_file, 'r') as f:
             data = json.load(f)
@@ -157,22 +187,36 @@ if __name__ == "__main__":
         print(f"Failed to load JSON file: {json_file}")
         sys.exit()
 
-    # Try to find identifier.value first, then also collect all resource ids
+    # Collect all ids: from identifier.value, resource id fields, and reference fields
     identifier_value = find_identifier_value(data)
     all_ids = find_all_id_values(data)
+    all_ref_ids = find_all_reference_ids(data)
     
-    # If identifier.value found and not already in all_ids, add it
-    if identifier_value and identifier_value not in all_ids:
-        all_ids.insert(0, identifier_value)
+    # Merge all ids, avoiding duplicates and preserving order
+    all_ids_to_convert = []
     
-    if not all_ids:
+    # Add identifier.value first if found
+    if identifier_value and identifier_value not in all_ids_to_convert:
+        all_ids_to_convert.append(identifier_value)
+    
+    # Then add resource ids
+    for id_val in all_ids:
+        if id_val not in all_ids_to_convert:
+            all_ids_to_convert.append(id_val)
+    
+    # Finally add reference ids
+    for ref_id in all_ref_ids:
+        if ref_id not in all_ids_to_convert:
+            all_ids_to_convert.append(ref_id)
+    
+    if not all_ids_to_convert:
         print(f"No identifiers found in file {json_file}")
         sys.exit()
 
     result = data
     
     # Process each unique identifier/id
-    for identifier_value in all_ids:
+    for identifier_value in all_ids_to_convert:
         token, replacement = prepare_search_and_replacement(identifier_value)
         if token is None:
             search_string = identifier_value
