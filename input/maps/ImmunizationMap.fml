@@ -1,7 +1,7 @@
 /// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ImmunizationMap'
 /// name = 'ImmunizationMap'
 /// title = 'Mapping Immunization resource to Drug Exposure OMOP Domain'
-/// status = 'draft'
+/// status = 'active'
 /// description = "This mapping maps FHIR Immunization instances to OMOP Drug Exposure Table objects."
 
 uses "http://hl7.org/fhir/StructureDefinition/Immunization" alias Immunization as source

@@ -9,10 +9,10 @@ name: FHIROMOP
 title: FHIR to OMOP FHIR IG
 description: An IG that provides the mappings and use cases for converting from FHIR to OMOP.
 status: active # draft | active | retired | unknown
-version: 1.0.0
+version: 2.0.0-202609-ballot
 fhirVersion: 5.0.0 # https://www.hl7.org/fhir/valueset-FHIR-version.html
 copyrightYear: 2023+
-releaseLabel: INFORMATIVE 1
+releaseLabel: STU 1
 license: CC0-1.0 # https://www.hl7.org/fhir/valueset-spdx-license.html
 jurisdiction: http://unstats.un.org/unsd/methods/m49/m49.htm#001 "World" # https://www.hl7.org/fhir/valueset-jurisdiction.html
 publisher:
@@ -20,9 +20,9 @@ publisher:
   url: http://www.hl7.org/Special/committees/rcrim
 extension:
   - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
-    valueCode: informative
+    valueCode: trial-use
   - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm
-    valueInteger: 2
+    valueInteger: 4
   - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-wg
     valueCode: brr
 parameters:
@@ -30,34 +30,99 @@ parameters:
 pages:
   index.md:
     title: Introduction
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: informative
   the-omop-cdm.md:
     title: OMOP CDM
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: informative
   UseCases.md:
-     title: Use Cases
+    title: Use Cases
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: informative
+  SourceData.md:
+    title: Source Data Acquisition and Expectations
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
+  IdentifiersPrivacy.md:
+    title: Identifiers, De-identification and Privacy
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   F2OGeneralIssues.md:
     title: Common Challenges When Transforming FHIR to OMOP
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   StrategiesBestPractices.md:
     title: Transformation Strategies & Best Practices
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   FHIRModifierExtensions.md:
     title: Understanding FHIR Modifier Extensions
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   codemappings.md:
-     title: Coded Field Mapping Principles
+    title: Coded Field Mapping Principles
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   CodeMappingBasePattern.md:
-     title: FHIR to OMOP Code Mapping Patterns
+    title: FHIR to OMOP Code Mapping Patterns
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   CodeableConceptPattern.md:
     title: CodeableConcept Mapping Patterns
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   ValueAsConceptPattern.md:
     title: Value-as-Concept Mapping Pattern
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   RaceAndEthnicity.md:
-     title: Populating Race and Ethnicity
+    title: Populating Race and Ethnicity
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   technical_artifacts.md:
     title: Technical Artifacts 
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: informative
+  actors.md:
+    title: Actors
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
+  conformance.md:
+    title: Conformance Statements
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   TerminologyServer.md:
     title: Terminology Server API Utilization
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: trial-use
   changes.md:
     title: Change Log
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: informative
   credits.md:
     title: Acknowledgements
+    extension:
+      - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
+        valueCode: informative
 
 menu:
   Introduction: index.html
@@ -65,8 +130,10 @@ menu:
   Use Cases: UseCases.html
   General Guidance:
     Common Issues: F2OGeneralIssues.html
-    Best Practices: StrategiesBestPractices.html
+    Source Data: SourceData.html
+    Identifiers and Privacy: IdentifiersPrivacy.html
     Understanding FHIR Modifier Extensions: FHIRModifierExtensions.html
+    Best Practices: StrategiesBestPractices.html
   Mapping Concepts:
     Coded Field Mapping Principles: codemappings.html
     Code Mapping Base Pattern: CodeMappingBasePattern.html
@@ -74,6 +141,9 @@ menu:
     Value-as-Concept Pattern: ValueAsConceptPattern.html
     Populating Race and Ethnicity: RaceAndEthnicity.html
   Technical Artifacts: technical_artifacts.html
+  Conformance:
+    Actors: actors.html
+    Conformance Statements: conformance.html
   Terminology Server: TerminologyServer.html
   Support:
     Discussion Forum: https://chat.fhir.org/#narrow/stream/286658-omop-.2B-fhir

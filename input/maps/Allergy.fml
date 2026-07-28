@@ -1,7 +1,7 @@
 /// url = 'http://hl7.org/fhir/uv/omop/StructureMap/AllergyMap'
 /// name = 'AllergyMap'
 /// title = 'Mapping Allergy resource to Observation OMOP Domain'
-/// status = 'draft'
+/// status = 'active'
 
 /// description = "This mapping maps FHIR AllergyIntolerance instances to OMOP Observation Table objects."
 
