@@ -61,3 +61,36 @@ RuleSet: CommonActor
 * status = #active
 * experimental = false
 * date = "2026-07-31"
+
+CodeSystem: FHIRToOMOPRequirementCodes
+Title: "FHIR to OMOP Requirement Codes"
+Description: "Codes defined as part of the FHIR to OMOP implementation guide used for requirement categories."
+* ^status = #active
+* ^experimental = false
+* ^caseSensitive = true
+* ^hierarchyMeaning = #is-a
+* ^content = #complete
+
+* #_reqcat      "Requirements Categories"  "Codes that help to categorize requirements statements"
+  * ^property.code = #abstract
+  * ^property.valueBoolean = true
+  * #scope      "scope"            "Requirements related to scope, versioning, and conformance framework"
+  * #data       "data"             "Requirements related to source FHIR data expectations"
+  * #identifier "identifier"       "Requirements related to identifier handling and privacy"
+  * #codes      "codes"            "Requirements related to code mapping and terminology"
+  * #concept    "concept"          "Requirements related to the OMOP type concept fields"
+  * #status     "status"           "Requirements related to status, intent, and filtering"
+  * #temporal   "temporal"         "Requirements related to temporal precision"
+  * #dataloss   "dataloss"         "Requirements related to granularity and data loss"
+  * #models     "models"           "Requirements related to logical models and StructureMaps"
+  * #traceability "traceability"   "Requirements related to traceability, lineage, and reproducibility"
+  * #terminology "terminology"     "Requirements related to terminology server interaction"
+  * #testing     "testing"         "Requirements related to testing and coverage"
+
+ValueSet: FHIRToOMOPConformanceStatementCategories
+Id: cs-categories
+Title: "FHIR to OMOP Conformance Statement Categories"
+Description: "Categories for conformance statements found in the FHIR to OMOP IG"
+* ^status = #active
+* ^experimental = false
+* include codes from system FHIRToOMOPRequirementCodes where concept descendent-of #_reqcat

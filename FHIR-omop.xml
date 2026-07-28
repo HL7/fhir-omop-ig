@@ -29,6 +29,8 @@
 <artifact id="ConceptMap/EncounterDischargeDisposition" key="ConceptMap-EncounterDischargeDisposition" name="Encounter Discharge Disposition codes to OMOP"/>
 <artifact id="StructureDefinition/EpisodeEvent" key="StructureDefinition-EpisodeEvent" name="Episode Event OMOP Table"/>
 <artifact id="StructureDefinition/Episode" key="StructureDefinition-Episode" name="Episode OMOP Table"/>
+<artifact id="ValueSet/cs-categories" key="ValueSet-cs-categories" name="FHIR to OMOP Conformance Statement Categories"/>
+<artifact id="CodeSystem/FHIRToOMOPRequirementCodes" key="CodeSystem-FHIRToOMOPRequirementCodes" name="FHIR to OMOP Requirement Codes"/>
 <artifact id="StructureDefinition/FactRelationship" key="StructureDefinition-FactRelationship" name="Fact Relationship OMOP Table"/>
 <artifact id="ConceptMap/ImmunizationSource" key="ConceptMap-ImmunizationSource" name="Immunization information source codes to OMOP"/>
 <artifact id="ConceptMap/ImmunizationRoute" key="ConceptMap-ImmunizationRoute" name="Immunization route codes to OMOP"/>

@@ -52,5 +52,7 @@ The Source Code System http://snomed.info/sct is not fully defined and populated
 # 11 - Info messages about conformance terms in our change log
 No conformance term found in the text%
 
-# 12 - We will get an OID and these will go away
-%could usefully have an OID assigned (OIDs are easy to assign - see https://build.fhir.org/ig/FHIR/fhir-tools-ig/CodeSystem-ig-parameters.html#ig-parameters-auto-oid-root)
+# 12 - We have a code system that defines our requirements categories.  These are FHIR to OMOP-specific so they won't be moving to THO. We also define an abstract code so we can easily create the value set.
+Most code systems defined in HL7 IGs will need to move to THO later during the process. Consider giving this code system a THO URL now (See https://confluence.hl7.org/display/TSMG/Terminology+Play+Book, and/or talk to TSMG)
+The property 'abstract' has no definition in CodeSystem.property. Many terminology tools won't know what to do with it
+

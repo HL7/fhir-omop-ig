@@ -27,6 +27,12 @@ extension:
     valueCode: brr
 parameters:
   produce-jekyll-data: true
+  auto-oid-root: 2.16.840.1.113883.4.642.40.80
+  requirements-category-vs: "http://hl7.org/fhir/uv/omop/ValueSet/cs-categories"
+  apply-publisher: true
+  apply-contact: true
+  shownav: true
+  toggle-changes: true
 pages:
   index.md:
     title: Introduction
