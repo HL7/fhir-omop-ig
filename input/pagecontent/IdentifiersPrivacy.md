@@ -104,7 +104,7 @@ handling approaches:
 > business identifiers is **not recommended**. These fields are intended to hold source system
 > descriptions or coded values for the clinical concept, not business identifier strings.
 > Repurposing them for identifier storage misrepresents their intended function and may
-> compromise de-identification. See [Why `_source_value` Fields Are Not Appropriate for FHIR Identifier Storage](#why-sourcevalue-fields-are-not-appropriate-for-fhir-identifier-storage) for further discussion.
+> compromise de-identification. See [Why `_source_value` Fields Are Not Appropriate for FHIR Identifier Storage](#why-_source_value-fields-are-not-appropriate-for-fhir-identifier-storage) for further discussion.
 
 #### Privacy and De-identification Considerations
 A primary concern when implementing FHIR to OMOP transformations is the potential compromise of de-identification when identifier data from source FHIR resources is carried forward into OMOP. This concern applies primarily, but not exclusively, to FHIR **business identifiers** (`Resource.identifier`), as these commonly carry externally-assigned values that may constitute or enable derivation of PII (e.g., medical record numbers, facility encounter IDs, insurance member numbers). OMOP is not designed to support business identity management use cases, and its de-identification model is a cornerstone of its design for research and analytics.

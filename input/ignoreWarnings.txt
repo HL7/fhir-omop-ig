@@ -31,8 +31,10 @@ Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.
 # 06 - This warning is all on Logical Models and we are matching the names of the elements in the OMOP tables.
 Constraint failed: eld-20: 'The first component of the path should be UpperCamelCase.  Additional components (following a '.') should be lowerCamelCase.  If this syntax is not adhered to, code generation tools may be broken. Logical models may be less concerned about this implication. (path.matches('^[A-Za-z][A-Za-z0-9]{0,63}(\\.[a-z][A-Za-z0-9]{0,63}(\\[x])?)*$'))' (defined in http://hl7.org/fhir/StructureDefinition/ElementDefinition)
 
-# 07 - We do not have any conformance clauses in this informative guide - all uses of conformance verbs are examplar
+# 07 - We are updating the representation of our conformance clauses
 The html source contains the word 'SHALL' but it is not in a text phrase marked as a conformance clause%
+The html source contains the word 'SHALL NOT' but it is not in a text phrase marked as a conformance clause%
+The html source contains the word 'SHOULD' but it is not in a text phrase marked as a conformance clause:%
 
 # 08 - We are providing example concept maps and the FHIR resources do not have required bindings and neither do the OMOP bindings
 The source variable does not have a required binding, so this concept map can't be checked
@@ -52,4 +54,3 @@ No conformance term found in the text%
 
 # 12 - We will get an OID and these will go away
 %could usefully have an OID assigned (OIDs are easy to assign - see https://build.fhir.org/ig/FHIR/fhir-tools-ig/CodeSystem-ig-parameters.html#ig-parameters-auto-oid-root)
-

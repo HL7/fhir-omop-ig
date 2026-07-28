@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<specification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ballotUrl="http://hl7.org/fhir/uv/omop/2.0.0-202609-ballot" ciUrl="https://build.fhir.org/ig/HL7/fhir-omop-ig" defaultVersion="2.0.0-202609-ballot" defaultWorkgroup="brr" gitUrl="https://github.com/HL7/fhir-omop" url="http://hl7.org/fhir/uv/omop">
+<specification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ballotUrl="http://hl7.org/fhir/uv/omop/2.0.0-202609-ballot" ciUrl="https://build.fhir.org/ig/HL7/fhir-omop-ig" defaultVersion="1.0.0" defaultWorkgroup="brr" gitUrl="https://github.com/HL7/fhir-omop" url="http://hl7.org/fhir/uv/omop">
 <version code="current" url="https://build.fhir.org/ig/HL7/fhir-omop-ig"/>
 <version code="2.0.0-202609-ballot" url="http://hl7.org/fhir/uv/omop/2.0.0-202609-ballot"/>
 <version code="1.0.0" url="http://hl7.org/fhir/uv/omop/INFORMATIVE1"/>
@@ -23,6 +23,7 @@
 <artifact id="StructureDefinition/DoseEra" key="StructureDefinition-DoseEra" name="Dose Era OMOP Table"/>
 <artifact id="StructureDefinition/DrugEra" key="StructureDefinition-DrugEra" name="Drug Era OMOP Table"/>
 <artifact id="StructureDefinition/DrugExposure" key="StructureDefinition-DrugExposure" name="Drug Exposure OMOP Table"/>
+<artifact id="ActorDefinition/imp" key="ActorDefinition-imp" name="ETL Implementer"/>
 <artifact id="ConceptMap/EncounterAdmitSource" key="ConceptMap-EncounterAdmitSource" name="Encounter Admission Source codes to OMOP"/>
 <artifact id="ConceptMap/EncounterClass" key="ConceptMap-EncounterClass" name="Encounter Class codes to OMOP"/>
 <artifact id="ConceptMap/EncounterDischargeDisposition" key="ConceptMap-EncounterDischargeDisposition" name="Encounter Discharge Disposition codes to OMOP"/>
@@ -48,29 +49,37 @@
 <artifact id="StructureDefinition/Measurement" key="StructureDefinition-Measurement" name="Measurement OMOP Table"/>
 <artifact id="StructureDefinition/NoteNLP" key="StructureDefinition-NoteNLP" name="Note NLP OMOP Table"/>
 <artifact id="StructureDefinition/Note" key="StructureDefinition-Note" name="Note OMOP Table"/>
+<artifact id="ActorDefinition/tgt" key="ActorDefinition-tgt" name="OMOP Target Instance"/>
 <artifact id="StructureDefinition/Observation" key="StructureDefinition-Observation" name="Observation OMOP Table"/>
 <artifact id="StructureDefinition/ObservationPeriod" key="StructureDefinition-ObservationPeriod" name="Observation Period OMOP Table"/>
+<artifact id="ActorDefinition/src" key="ActorDefinition-src" name="PAS Client"/>
 <artifact id="StructureDefinition/RecordSet" key="StructureDefinition-RecordSet" name="Patient Record Setting"/>
 <artifact id="StructureDefinition/PayerPlanPeriod" key="StructureDefinition-PayerPlanPeriod" name="Payer Plan Period OMOP Table"/>
 <artifact id="StructureDefinition/Person" key="StructureDefinition-Person" name="Person OMOP Table"/>
 <artifact id="StructureDefinition/ProcedureOccurrence" key="StructureDefinition-ProcedureOccurrence" name="Procedure Occurrence OMOP Table"/>
 <artifact id="StructureDefinition/Provider" key="StructureDefinition-Provider" name="Provider OMOP Table"/>
 <artifact id="StructureDefinition/Specimen" key="StructureDefinition-Specimen" name="Specimen OMOP Table"/>
+<artifact id="ActorDefinition/trm" key="ActorDefinition-trm" name="Terminology Server"/>
+<artifact id="ActorDefinition/xfm" key="ActorDefinition-xfm" name="Transformation Engine"/>
 <artifact id="StructureDefinition/VisitDetail" key="StructureDefinition-VisitDetail" name="Visit Detail OMOP Table"/>
 <artifact id="StructureDefinition/VisitOccurrence" key="StructureDefinition-VisitOccurrence" name="Visit Occurrence OMOP Table"/>
 <artifact id="ConceptMap/VitalSignsCodes" key="ConceptMap-VitalSignsCodes" name="VitalSign codes to OMOP"/>
 <page key="NA" name="(NA)"/>
 <page key="many" name="(many)"/>
 <page key="credits" name="Acknowledgements"/>
+<page key="actors" name="Actors"/>
 <page key="artifacts" name="Artifacts Summary"/>
 <page key="changes" name="Change Log"/>
 <page key="CodeableConceptPattern" name="CodeableConcept Mapping Patterns"/>
 <page key="codemappings" name="Coded Field Mapping Principles"/>
 <page key="F2OGeneralIssues" name="Common Challenges When Transforming FHIR to OMOP"/>
+<page key="conformance" name="Conformance Statements"/>
 <page key="CodeMappingBasePattern" name="FHIR to OMOP Code Mapping Patterns"/>
+<page key="IdentifiersPrivacy" name="Identifiers, De-identification and Privacy"/>
 <page key="index" name="Introduction"/>
 <page key="the-omop-cdm" name="OMOP CDM"/>
 <page key="RaceAndEthnicity" name="Populating Race and Ethnicity"/>
+<page key="SourceData" name="Source Data Acquisition and Expectations"/>
 <page key="toc" name="Table of Contents"/>
 <page key="technical_artifacts" name="Technical Artifacts"/>
 <page key="TerminologyServer" name="Terminology Server API Utilization"/>

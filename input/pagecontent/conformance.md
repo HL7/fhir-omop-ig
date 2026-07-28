@@ -154,7 +154,7 @@ A Transformation Engine SHALL NOT store FHIR business identifier values (`Resour
 
 **Actors:** ● XFM, ● TGT
 
-**Discussed in:** [Why `_source_value` Fields Are Not Appropriate for FHIR Identifier Storage](IdentifiersPrivacy.html#why-sourcevalue-fields-are-not-appropriate-for-fhir-identifier-storage)
+**Discussed in:** [Why `_source_value` Fields Are Not Appropriate for FHIR Identifier Storage](IdentifiersPrivacy.html#why-_source_value-fields-are-not-appropriate-for-fhir-identifier-storage)
 
 </div>
 
