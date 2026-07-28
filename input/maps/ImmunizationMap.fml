@@ -9,18 +9,18 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugEx
 
 group DrugExposure(source src: Immunization, target tgt : DrugExposureTable) {
 
-    // OMOP Drug Exposure ID would be a map from FHIR ID to an external key
-    src.id  -> tgt.drug_exposure_id = 1;
-
-    // OMOP Person ID would be a map from the FHIR Immunization Patient reference to an external key
-    src.patient -> tgt.person_id = 1;
-
-    // OMOP Visit Occurrence ID would be a map from the FHIR Immunization Encounter reference to an external key
-    src.encounter -> tgt.visit_occurrence_id = 1;
+    src.id as id -> tgt.drug_exposure_id = translate(id, 'http://omop/id-registry/DrugExposure', 'code') "drug-id";
+    src.patient as p -> tgt then {
+        p.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+    } "patient-person-id";
+    src.encounter as e -> tgt then {
+        e.reference as ref -> tgt.visit_occurrence_id = translate(ref, 'http://omop/id-registry/VisitOccurrence', 'code');
+    } "encounter-visit-id";
 
 	src.vaccineCode as s -> tgt then {
 		s.coding first as sc -> tgt then {
-			sc.code as c -> tgt.drug_concept_id = translate(c, 'http://hl7.org/fhir/uv/omop/ConceptMap/ImmunizationVaccine', 'code'), tgt.drug_source_value = c;
+			//sc.code as c -> tgt.drug_concept_id = translate(c, 'http://hl7.org/fhir/uv/omop/ConceptMap/ImmunizationVaccine', 'code'), tgt.drug_source_value = c;
+			sc.code as c -> tgt.drug_concept_id = translate(c, '', 'code'), tgt.drug_source_value = c;
 		};
 	};
 	

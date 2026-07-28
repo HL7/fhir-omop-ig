@@ -8,15 +8,15 @@ uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias ConOccTable as target
 
 group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     {
-    // OMOP Condition ID would be a map from FHIR ID to an external key
-    src.id as id -> tgt.condition_occurrence_id = 1;
-    
-    // OMOP Person ID would be a map from the FHIR Condition subject reference to an external key
-    src.subject -> tgt.person_id = 1;
+    src.id as id -> tgt.condition_occurrence_id = translate(id, 'http://omop/id-registry/ConditionOccurrence', 'code') "condition-id";
+    src.subject as s -> tgt then {
+        s.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+    } "subject-person-id";
 
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc.code as a -> tgt.condition_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code');
+            //sc.code as a -> tgt.condition_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code');
+            sc.code as a -> tgt.condition_concept_id = translate(a, '', 'code');
             sc.display as d -> tgt.condition_source_value = d;
         };
     };
@@ -31,7 +31,9 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
         };
     };
 
-    src.encounter -> tgt.visit_occurrence_id = 1;
+    src.encounter as e -> tgt then {
+        e.reference as ref -> tgt.visit_occurrence_id = translate(ref, 'http://omop/id-registry/VisitOccurrence', 'code');
+    } "encounter-visit-id";
 
 
 

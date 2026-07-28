@@ -8,20 +8,34 @@ uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target
 
 group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)     {
-        src.id -> tgt.procedure_occurrence_id = 1;
-        src.subject -> tgt.person_id = 1;
+        // procedure_type_concept_id 32817 = EHR (NOT NULL in OMOP CDM 5.4)
+        src.id as id -> tgt.procedure_occurrence_id = translate(id, 'http://omop/id-registry/ProcedureOccurrence', 'code') "procedure-id";
+        src.id -> tgt.procedure_type_concept_id = 32817;
+        src.subject as s -> tgt then {
+            s.reference as ref -> tgt.person_id = translate(ref, 'http://omop/id-registry/Patient', 'code');
+        } "subject-person-id";
 
         src.code as s -> tgt then {
-            s.coding as sc -> tgt then {
-                sc.code as a -> tgt.procedure_concept_id, tgt.procedure_source_value, tgt.procedure_source_concept_id = a;
-            };
+            s.coding as sc -> tgt.procedure_concept_id = translate(sc, '', 'code');
+            /////s.coding.code as a -> tgt.procedure_source_value = a;
+            s.coding as sc -> tgt.procedure_source_concept_id = translate(sc, '', 'code');
+            //s.coding as sc -> tgt then {
+            //j    sc -> tgt.procedure_concept_id = translate(sc, '', 'code');
+            //    sc.code as a -> tgt.procedure_source_value = a;
+            //    sc -> tgt.procedure_source_concept_id = translate(sc, '', 'code');
+            //};
         };
 
-        src.occurrence : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = edt;
-        src.occurrence : Period as s -> tgt then {
+        // R4: performed[x] (renamed to occurrence[x] in R5 — R5 form commented out below)
+        src.performed : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = edt;
+        src.performed : Period as s -> tgt then {
             s.start as start -> tgt.procedure_datetime = cast(start, "dateTime"), tgt.procedure_date = start;
-			s.end as end -> tgt.procedure_end_datetime, tgt.procedure_end_date = end;
+            s.end as end -> tgt.procedure_end_datetime = cast(end, "dateTime"), tgt.procedure_end_date = end;
         };
+        // R5: src.occurrence : dateTime as edt -> ...
+        // R5: src.occurrence : Period as s -> ...
 
-        src.encounter -> tgt.visit_occurrence_id = 1;
+        src.encounter as e -> tgt then {
+            e.reference as ref -> tgt.visit_occurrence_id = translate(ref, 'http://omop/id-registry/VisitOccurrence', 'code');
+        } "encounter-visit-id";
 }
