@@ -28,10 +28,6 @@ Among its activities, OHDSI supports research collaboration via utilization of:
 
 This Implementation Guide utilizes OMOP CDM v5.4. Development of v6.0 was not carried forward, because v6.0 made the `*_datetime` fields mandatory rather than optional, and that change alters the timing assumptions on which exposure and outcome analyses rest. CDM v5.4 was released instead, carrying additions requested by the OHDSI community while retaining the date structure for medical events used in v5.3, the version preceding both v6.0 and v5.4. Detailed changes from CDM v5.3 to v5.4 are available in the OMOP CDM documentation. New implementations are asked to transform data to CDM v5.4 until the next series of CDM versions is ready for mainstream use [3,4].
 
-#### Guidance
-
-§f2o-001^xfm,tgt,imp^concept,scope:A Transformation Engine **SHALL** produce output conforming to the OMOP Common Data Model version 5.4, and a Target OMOP Instance **SHALL** conform to the OMOP CDM v5.4 schema.§
-
 ### Background on OHDSI
 
 Observational Health Data Sciences and Informatics, or OHDSI, is an international open-science community that aims to improve health by empowering the community to collaboratively generate the evidence that promotes better health decisions and better care [5]. OHDSI emerged from the Observational Medical Outcomes Partnership (OMOP), a public-private partnership active from 2008 to 2013 composed of members from industry, government, and academia, established to inform the appropriate use of observational healthcare databases for studying the effects of medical products [6]. OMOP successfully achieved its aims to conduct methodological research evaluating the performance of analytical methods, develop tools for transforming and analyzing disparate data sources, and establish a shared resource for the broader research community [3].

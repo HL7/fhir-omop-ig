@@ -63,26 +63,8 @@ The IG is deliberately *not* scoped to:
 
 Although this implementation guide has been developed and tested against FHIR R5, implementers should not consider this a barrier to adoption with other FHIR versions. The core concepts, profiles, and conformance expectations expressed in this guide are intended to be version-agnostic in nature, and there is nothing within this guide that explicitly precludes implementation against FHIR R4 or future versions such as the forthcoming FHIR R6. Implementers wishing to adopt this guide against a different FHIR version are encouraged to review the [HL7 FHIR Cross-Version Mapping Pack](https://build.fhir.org/ig/HL7/fhir-cross-version/index.html) which provides detailed mappings and guidance for navigating differences between FHIR releases.
 
-#### Guidance
-
-§f2o-002^xfm,imp^data:An Implementer **SHALL** declare the FHIR version or versions of the source data that the transformation is configured to consume.§
-
-### How to Read the Conformance Language in This Guide
-
-This guide uses a small set of key words to signal how binding a given statement is. When these words appear in capital letters, they carry the specific meanings defined by the IETF in RFC 2119 [3] as clarified by RFC 8174 [4], which together form IETF Best Current Practice 14. §f2o-005^src,xfm,tgt,trm,imp:The key words are **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**, **NOT RECOMMENDED**, **MAY**, and **OPTIONAL**.§
-
-In brief, and for readers who do not work with IETF specifications day to day: SHALL and MUST mark a strict requirement; an implementation that does not meet it does not conform. SHOULD and RECOMMENDED mark a strong recommendation; there may be valid reasons to do otherwise in particular circumstances, but the full implications should be understood and weighed before choosing a different course. MAY and OPTIONAL mark something genuinely permitted but not required, with no implication either way.
-
-The distinction that matters most for reading this guide is the one RFC 8174 was written to settle: these key words carry their special, binding meaning only when they are written in capital letters [4]. When the same words appear in lower case, as ordinary English "should," "may," or "must" in explanatory prose, they carry no conformance weight and impose no obligation. They are used for readability, exactly as they would be in any technical writing.
-
-Accordingly, every normative obligation in this guide is expressed with a capitalized key word, and every capitalized key word is traceable to a numbered conformance statement on the [Conformance Statements](conformance.html) page. Explanatory narrative throughout the guide may use the lower-case forms freely; where it does, it is describing or motivating a practice, not imposing a requirement. A reader who wants to know precisely what this guide requires can therefore rely on a simple rule: look to the capitalized key words and the conformance statements they belong to, and read everything else as guidance and context.
-
 ### References
 
 [1] Tsafnat G, Dunscombe R, Gabriel D, Grieve G, Reich C. Converge or Collide? Making Sense of a Plethora of Open Data Standards in Health Care. J Med Internet Res. 2024;26:e55779. doi:10.2196/55779. Available from: https://www.jmir.org/2024/1/e55779
 
 [2] "OMOP Common Data Model." https://ohdsi.github.io/CommonDataModel/index.html (accessed Dec. 08, 2023).
-
-[3] Bradner S. Key words for use in RFCs to Indicate Requirement Levels. RFC 2119. Internet Engineering Task Force; 1997. Available from: https://www.rfc-editor.org/rfc/rfc2119
-
-[4] Leiba B. Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words. RFC 8174. Internet Engineering Task Force; 2017. Available from: https://www.rfc-editor.org/rfc/rfc8174

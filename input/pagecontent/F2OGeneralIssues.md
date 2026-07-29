@@ -2,6 +2,11 @@ Aligning FHIR resources with the OMOP Common Data Model presents challenges due 
 
 The tension between the the two standards stems from FHIR's design for real-time clinical data exchange and workflow support versus OMOP's structure for research analytics and retrospective analysis with standardized terminology. This divergence means that poorly considered mappings can misrepresent data, particularly given OMOP's requirements for concept standardization and validated data quality procedures that must be carefully addressed when transforming patient records from FHIR format.
 
+§f2o-001^xfm,tgt,imp^concept,scope:A Transformation Engine **SHALL** produce output conforming to the OMOP Common Data Model version 5.4, and a Target OMOP Instance **SHALL** conform to the OMOP CDM v5.4 schema.§
+
+§f2o-002^xfm,imp^data:An Implementer **SHALL** declare the FHIR version or versions of the source data that the transformation is configured to consume.§
+
+
 ### Status and Intent Elements in FHIR Resources
 
 Many FHIR resources carry elements that describe where a clinical activity sits in an administrative or care delivery workflow rather than describing the clinical fact itself. A MedicationRequest may be active, on-hold, or cancelled. A Procedure may be preparation, in-progress, completed, or not-done. A ServiceRequest carries both a status and an intent, the latter distinguishing a proposal from a plan from an order.
