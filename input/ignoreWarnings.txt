@@ -44,7 +44,15 @@ The Source Code System http://hl7.org/fhir/sid/cvx is not fully defined and popu
 The Source Code System http://loinc.org is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
 The Source Code System http://snomed.info/sct is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
 
-# 12 - We have a code system that defines our requirements categories.  These are FHIR to OMOP-specific so they won't be moving to THO. We also define an abstract code so we can easily create the value set.
+# 11 - Explanation of conformance language in the conformance page
+The html source contains the word 'SHALL' but it is not in a text phrase marked as a conformance clause: 'The conformance verbs SHALL, SHOULD, and MAY are interpreted per RFC 8174.'
+
+# 12 - Conformance language that is used in JIRA issue descriptions
+No conformance term found in the text: 3.3, along with a forward reference to the full explanation in
+No conformance term found in the text:
+
+
+# 13 - We have a code system that defines our requirements categories.  These are FHIR to OMOP-specific so they won't be moving to THO. We also define an abstract code so we can easily create the value set.
 Most code systems defined in HL7 IGs will need to move to THO later during the process. Consider giving this code system a THO URL now (See https://confluence.hl7.org/display/TSMG/Terminology+Play+Book, and/or talk to TSMG)
 The property 'abstract' has no definition in CodeSystem.property. Many terminology tools won't know what to do with it
 

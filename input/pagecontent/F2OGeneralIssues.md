@@ -313,7 +313,7 @@ Successful implementations embrace OMOP's date-level precision as the guaranteed
 
 #### Guidance
 
-§f2o-070^xfm,tgt^temporalA Transformation Engine **SHALL** populate the required OMOP `*_date` field for every clinical event record it writes, and a Target OMOP Instance **SHALL** NOT contain a clinical event record with an unpopulated required date field. This applies to the date fields the CDM marks as required; end-date fields that the CDM permits to be NULL are not within its scope.§
+§f2o-070^xfm,tgt^temporal:A Transformation Engine **SHALL** populate the required OMOP `*_date` field for every clinical event record it writes, and a Target OMOP Instance **SHALL** NOT contain a clinical event record with an unpopulated required date field. This applies to the date fields the CDM marks as required; end-date fields that the CDM permits to be NULL are not within its scope.§
 
 §f2o-071^xfm,imp^temporal:Where a required date is derived by imputation from a partial or absent source value, a Transformation Engine **SHALL** record the imputation by means of an appropriate type concept, and an Implementer **SHALL** document the imputation rules applied and their effective scope in the ETL documentation.§
 

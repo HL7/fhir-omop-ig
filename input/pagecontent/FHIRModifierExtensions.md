@@ -54,22 +54,7 @@ Modifier extensions are placed in the `modifierExtension` element, which is synt
 
 ### FHIR Specification Requirements
 
-The FHIR specification imposes normative obligations, using RFC 2119 language of **SHALL**, **SHOULD**, and MUST, on any system that processes FHIR resources. These obligations apply to ETL pipelines consuming FHIR data to populate OMOP. The authoritative source for these requirements is the [FHIR Extensibility page](https://hl7.org/fhir/R5/extensibility.html).
-
-> **FHIR SPEC REQUIREMENT:** *"Implementations **SHALL** ensure that they do not process data containing unrecognized modifier extensions."*, FHIR Specification, Extensibility (R4/R5)
-
-When a modifier extension is encountered, a processing system **SHALL** choose one of the following strategies:
-
-1. Recognize the modifier extension, correctly understand its impact, and proceed with that understanding applied.
-2. Reject the resource instance entirely, declining to ingest it until the modifier extension is understood.
-3. Treat the resource as suitable for rendering only, display the resource's human-readable narrative but do not extract its discrete data elements.
-4. Escalate to human review before processing.
-
-Additional normative guidance from the specification:
-
-- §Applications **SHOULD** always check for modifier extensions when processing resources, even where trading partner agreements are believed to guarantee that no modifier extensions will occur, since integration and deployment options often change.
-- Where a modifier extension appears on a backbone element child rather than the resource root, a system may choose to process the resource while excluding the affected element, treating it as absent, provided the processing can safely function with incomplete data.
-- The human-readable narrative of a FHIR resource **SHALL** reflect any modifying information, making the narrative a safe fallback for rendering purposes.
+The FHIR Specification explicitly states that implementations must ensure that they do not process data containing unrecognized modifier extensions.
 
 > **MISINTERPRETATION RISK:** An OMOP ETL pipeline that reads FHIR resources without inspecting the `modifierExtension` element at both the resource root and all backbone element levels is non-compliant with the FHIR specification and is at significant risk of ingesting clinically inverted or otherwise meaningless data into the OMOP CDM.
 

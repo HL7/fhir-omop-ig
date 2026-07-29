@@ -1,5 +1,3 @@
-This page defines the actors involved in a FHIR-to-OMOP transformation and is the reference for the actor attributions shown on the [Conformance Statements](conformance.html) page. The conformance verbs **SHALL**, **SHOULD**, and **MAY** used throughout this guide are interpreted per [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174).
-
 A system or organization claims conformance to this Implementation Guide as one or more actors. Claiming conformance as one actor does not require, or imply, conformance as any other. Most end-to-end deployments involve several actors, frequently operated by the same organization but separable in principle. That separation is what allows, for example, a terminology service vendor to claim conformance without running an ETL pipeline, or a research network to accept OMOP instances built by different transformation engines.
 
 This guide defines a single level of conformance. A system claims conformance by meeting the obligations of the actor role or roles it takes on; there is no separate profile-validation-only conformance level distinct from transformation conformance.

@@ -48,7 +48,7 @@ Recording the conditions of each load addresses this. At minimum a run is identi
 version it targets, the OHDSI Vocabulary release used to resolve concepts, the version of this
 Implementation Guide the transformation claims to follow, the version of the transformation software
 itself, and the time the run executed. These five together let a later reader reconstruct the
-context in which any given record was written.
+context in which any given record was written.  §f2o-040^xfm,tgt^codes:A Transformation Engine **SHALL** record the OHDSI Vocabulary release used to resolve concepts for each ETL run, as part of the run metadata.§
 
 The vocabulary release deserves particular attention because it changes most often and affects the
 data most directly. Concepts are deprecated between releases, Maps to relationships are retargeted,
