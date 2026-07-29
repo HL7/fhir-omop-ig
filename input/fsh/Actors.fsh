@@ -1,6 +1,6 @@
 Instance: omop-fhir-source-system
 InstanceOf: ActorDefinition
-Title: "PAS Client"
+Title: "FHIR Source System"
 Usage: #definition
 * id = "src"
 * name = "FHIR_Source_System"
