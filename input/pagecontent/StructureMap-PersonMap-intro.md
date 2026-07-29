@@ -3,7 +3,7 @@
 ## Mapping Sex and Gender 
 FHIR to OMOP gender mapping requires attention to both technical precision and the evolving OHDSI conventions around gender and sex data representation. The key to successful implementation lies in establishing clear protocols that respect the OHDSI community's ratified conventions, maintaining comprehensive validation across both Person and Observation domain tables, and preparing for future standard evolution while ensuring current system reliability and accuracy. 
 
-> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers should verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
+> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers ought to verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
 
 ## Understanding Both Standards
 ### FHIR Gender Implementation
@@ -32,25 +32,25 @@ They are not the same concept. 8551 belongs to the Gender vocabulary and sits in
 
 What separates them is provenance, not display. The `vocabulary_id`, the `domain_id`, and the source system that supplied the value are what allow a human reviewer to tell one from the other, and they are what an ETL specification has to record. An implementation that documents only the display name has discarded the information that makes its own assignment reconstructable. This is the practical reason the source value preservation guidance in this guide asks for the original code and system to be retained alongside the resolved concept: a resolved identifier does not always disambiguate itself.
 
-Implementers mapping the FHIR `other` value should record the selection explicitly in their ETL documentation, naming the concept chosen and the basis for choosing it, so that a later reader can distinguish a deliberate assignment from a display-name collision.
+Implementers mapping the FHIR `other` value ought to record the selection explicitly in their ETL documentation, naming the concept chosen and the basis for choosing it, so that a later reader can distinguish a deliberate assignment from a display-name collision.
 
 The mandatory nature of this field ensures every person record contains gender information, requiring careful handling of missing or null values during transformation.
 
-**Important OHDSI Convention Update**: The OHDSI community has recognized that the term "gender_concept_id" is outdated and should more accurately be "sex_concept_id" to reflect biological sex rather than gender identity. However, due to the significant development effort required to change this field name across all OMOP implementations and package dependencies, this update will be implemented in the next major release of the OMOP Common Data Model.
+**Important OHDSI Convention Update**: The OHDSI community has recognized that the term "gender_concept_id" is outdated and ought to more accurately be "sex_concept_id" to reflect biological sex rather than gender identity. However, due to the significant development effort required to change this field name across all OMOP implementations and package dependencies, this update will be implemented in the next major release of the OMOP Common Data Model.
 
 ## OHDSI Gender Identity Convention
-The OHDSI community has established important conventions regarding gender-related data storage in the OMOP Common Data Model that directly impact FHIR to OMOP mapping strategies. The current `gender_concept_id` field in the OMOP person table represents a legacy naming convention that causes conceptual confusion. The OHDSI community acknowledges that this field more accurately represents biological sex rather than gender identity. The preferred term should be `sex_concept_id` to reflect this distinction properly.
+The OHDSI community has established important conventions regarding gender-related data storage in the OMOP Common Data Model that directly impact FHIR to OMOP mapping strategies. The current `gender_concept_id` field in the OMOP person table represents a legacy naming convention that causes conceptual confusion. The OHDSI community acknowledges that this field more accurately represents biological sex rather than gender identity. The preferred term ought to be `sex_concept_id` to reflect this distinction properly.
 
-**Implementation Timeline**: Due to the substantial development effort required to rename this field across all OMOP implementations, packages, and dependent systems, this change will be implemented in the next major release of the OMOP Common Data Model. Until then, implementers should understand that `gender_concept_id` conceptually represents biological sex.
+**Implementation Timeline**: Due to the substantial development effort required to rename this field across all OMOP implementations, packages, and dependent systems, this change will be implemented in the next major release of the OMOP Common Data Model. Until then, implementers ought to understand that `gender_concept_id` conceptually represents biological sex.
 
 ### Ratified Convention for Gender Identity Storage
 **Scope**: This convention applies to any database that captures gender identity information, regardless of data provenance or source system.
-**Core Principle**: Any gender-related information that can change over time, particularly gender identity, should be stored in the OBSERVATION table rather than the person table.
-**Rationale**: The person table is designed for relatively static demographic information, while the OBSERVATION table accommodates time-varying clinical and social observations, making it the appropriate location for gender identity data that may evolve over time.
+**Core Principle**: Any gender-related information that can change over time, particularly gender identity, ought to be stored in the OBSERVATION table rather than the person table.
+**Rationale**: The person table is designed for relatively static demographic information, while the OBSERVATION table accommodates time-varying clinical and social observations, making it the appropriate location for gender identity data that might evolve over time.
 
 The key distinctions implementers must understand are:
 
-1. **Current State**: The `gender_concept_id` field in the person table should be treated as biological sex information
+1. **Current State**: The `gender_concept_id` field in the person table ought to be treated as biological sex information
 2. **Gender Identity**: Use the observation table for any gender-related information that can change over time
 3. **Future Planning**: Prepare for the transition to `sex_concept_id` in the next major OMOP release
 
@@ -117,11 +117,11 @@ The most complex aspect of FHIR to OMOP gender mapping involves managing absent 
 
 **Recommended Approach**: When gender information is completely absent from the FHIR resource, assign OMOP concept ID 0, indicating no appropriate concept could be determined. This approach maintains data integrity while acknowledging information gaps.
 
-**Alternative Consideration**: Some implementations may prefer mapping null values to concept ID 8551 (Unknown), treating missing information as equivalent to unknown gender. Organizations should establish consistent policies based on their specific requirements and regulatory environment.
+**Alternative Consideration**: Some implementations might prefer mapping null values to concept ID 8551 (Unknown), treating missing information as equivalent to unknown gender. Organizations ought to establish consistent policies based on their specific requirements and regulatory environment.
 
 ## Advanced Considerations
 ### HL7 Gender Harmony Project Integration
-The HL7 Gender Harmony Project produced a [FHIR implementation Guide](https://hl7.org/xprod/ig/uv/gender-harmony/)  that introduces sophisticated gender and sex categorization that extends beyond traditional binary representations. Implementation teams should prepare for enhanced gender concepts including:
+The HL7 Gender Harmony Project produced a [FHIR implementation Guide](https://hl7.org/xprod/ig/uv/gender-harmony/)  that introduces sophisticated gender and sex categorization that extends beyond traditional binary representations. Implementation teams ought to prepare for enhanced gender concepts including:
 
 - **Recorded Sex or Gender (RSG)**: The sex or gender recorded in official documents
 - **Sex for Clinical Use (SFCU)**: Clinically relevant sex information for treatment decisions
@@ -130,7 +130,7 @@ The HL7 Gender Harmony Project produced a [FHIR implementation Guide](https://hl
 These concepts will require OMOP vocabulary extensions and updated mapping protocols as standards evolve.
 
 ### Jurisdictional Compliance
-Different healthcare jurisdictions may have specific requirements for gender data representation. Implementation teams must consider:
+Different healthcare jurisdictions might have specific requirements for gender data representation. Implementation teams must consider:
 
 - Regional terminology preferences and legal requirements
 - Cultural sensitivity in gender categorization

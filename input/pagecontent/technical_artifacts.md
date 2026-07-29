@@ -198,38 +198,17 @@ The mappings are represented via FHIR StructureMaps and those StructureMaps are 
 
 #### Mappings Not Published by This Guide
 
-The StructureMaps above express how FHIR elements populate OMOP fields. They do not express how
-individual codes translate into OMOP concepts, and this guide does not publish ConceptMap artifacts
-for that purpose. The omission is deliberate. Code-to-concept translation is the province of the
-OHDSI Standardized Vocabularies, which are versioned, maintained by the OHDSI community, and updated
-on a cadence no Implementation Guide can usefully track. A ConceptMap published here would be a
-snapshot of those vocabularies at the moment of balloting, and would begin diverging from them
-immediately.
+The StructureMaps above express how FHIR elements populate OMOP fields. They do not express how individual codes translate into OMOP concepts, and this guide does not publish ConceptMap artifacts for that purpose. The omission is deliberate. Code-to-concept translation is the province of the OHDSI Standardized Vocabularies, which are versioned, maintained by the OHDSI community, and updated on a cadence no Implementation Guide can usefully track. A ConceptMap published here would be a snapshot of those vocabularies at the moment of balloting, and would begin diverging from them immediately.
 
-A more specialized guide built on this one may reasonably publish ConceptMaps: a guide scoped to a
-particular use case, a particular set of source systems, or a particular national realm can fix the
-code sets in play tightly enough for a published map to remain useful. This guide is foundational
-and does not have that luxury.
+A more specialized guide built on this one might reasonably publish ConceptMaps: a guide scoped to a particular use case, a particular set of source systems, or a particular national realm can fix the code sets in play tightly enough for a published map to remain useful. This guide is foundational and does not have that luxury.
 
-The practical consequence for an implementer is that concept translation resolves against the OHDSI
-Vocabularies rather than against an artifact shipped with this guide, whether through a terminology
-server or a locally loaded vocabulary, as described under Coded Field Mapping Principles. Where a
-transformation instead uses a fixed set of mappings prepared in advance, that set should be
-identified along with the vocabulary release it was derived from, so that a consumer of the
-resulting data can tell which vocabulary the concept assignments reflect.
+The practical consequence for an implementer is that concept translation resolves against the OHDSI Vocabularies rather than against an artifact shipped with this guide, whether through a terminology server or a locally loaded vocabulary, as described under Coded Field Mapping Principles. Where a transformation instead uses a fixed set of mappings prepared in advance, that set ought to be identified along with the vocabulary release it was derived from, so that a consumer of the resulting data can tell which vocabulary the concept assignments reflect.
 
 #### Deviating from the Published Maps
 
-A transformation may implement the mapping logic these StructureMaps express without executing the
-StructureMaps themselves, and the Connectathon workflows described below exercise exactly that
-range: reference tooling running the published maps, and participant tooling implementing equivalent
-logic in its own stack. Both are conformant, and the guide takes no position on which is preferable.
+A transformation might implement the mapping logic these StructureMaps express without executing the StructureMaps themselves, and the Connectathon workflows described below exercise exactly that range: reference tooling running the published maps, and participant tooling implementing equivalent logic in its own stack. Both are conformant, and the guide takes no position on which is preferable.
 
-What the guide does ask is that departures be visible. A transformation that implements the maps
-faithfully in another technology produces output a consumer can reason about from the published maps
-alone. One that departs from them, whether by mapping an element the map does not, by omitting one
-it does, or by resolving a case differently, produces output the published maps no longer describe.
-Recording those departures in the ETL documentation is what allows a consumer to know which of the
+What the guide does ask is that departures be visible. A transformation that implements the maps faithfully in another technology produces output a consumer can reason about from the published maps alone. One that departs from them, whether by mapping an element the map does not, by omitting one it does, or by resolving a case differently, produces output the published maps no longer describe. Recording those departures in the ETL documentation is what allows a consumer to know which of the
 two they are looking at.
 
 ### FHIR and OMOP 2025 Connectathon Validation Package
@@ -242,7 +221,7 @@ Created to support the Vulcan July 2025 Connectathon, [this Jupyter notebook ](h
 ### FHIR to OMOP 2026 Connectathon Tooling
 The July 2026 Vulcan FHIR-to-OMOP Connectathon (7 to 8 July 2026) exercised three participation workflows, distinguished by whose tooling performs the transformation and how terminology is resolved: Workflow 1 used Working-Group reference tooling with a delegated terminology server; Workflow 2 used participant tooling with embedded local terminology and no outbound terminology calls; and Workflow 3 used participant tooling with a delegated, conformant terminology server of the participant's choice. All three produce OMOP CDM v5.4 CSV output from the same FHIR input, which is what allows participant output to be compared against the Workflow 1 baseline.
 
-Workflow 1 used Working-Group reference tooling, maintained by Christopher Roeder and published at [https://github.com/croeder-fhir-to-omop](https://github.com/croeder-fhir-to-omop), which served as the gold-standard baseline against which Workflow 2 and Workflow 3 outputs were compared at the event. The tooling is a containerized pipeline in which a FHIR mapping server (matchbox) loads this Implementation Guide's StructureMaps and exposes a `$transform` operation for each, resolving clinical codes at runtime against a FHIR terminology server. The default configuration uses a local OMOP-backed terminology server (enchilada) seeded with OHDSI Vocabularies obtained from Athena; a hosted conformant terminology server may be substituted, and participants at the event used the Echidna public terminology service (echidna.fhir.org) in this role. The pipeline drives FHIR test fixtures through the transforms, writes the results into a DuckDB OMOP CDM v5.4 database, and runs the OHDSI Data Quality Dashboard together with a unit-test suite that asserts specific OMOP field values for each StructureMap. Published Docker images allow the stack to be run without cloning source.
+Workflow 1 used Working-Group reference tooling, maintained by Christopher Roeder and published at [https://github.com/croeder-fhir-to-omop](https://github.com/croeder-fhir-to-omop), which served as the gold-standard baseline against which Workflow 2 and Workflow 3 outputs were compared at the event. The tooling is a containerized pipeline in which a FHIR mapping server (matchbox) loads this Implementation Guide's StructureMaps and exposes a `$transform` operation for each, resolving clinical codes at runtime against a FHIR terminology server. The default configuration uses a local OMOP-backed terminology server (enchilada) seeded with OHDSI Vocabularies obtained from Athena; a hosted conformant terminology server might be substituted, and participants at the event used the Echidna public terminology service (echidna.fhir.org) in this role. The pipeline drives FHIR test fixtures through the transforms, writes the results into a DuckDB OMOP CDM v5.4 database, and runs the OHDSI Data Quality Dashboard together with a unit-test suite that asserts specific OMOP field values for each StructureMap. Published Docker images allow the stack to be run without cloning source.
 
 The transformation operates on individual FHIR resources rather than Bundles, consistent with the resource-level mapping this guide defines. The reference tooling covers eleven StructureMaps spanning Person, Encounter, Condition, Observation, medication, immunization, and allergy content. In the medication area, MedicationStatement is mapped to drug_exposure, while MedicationRequest is treated as out of scope because it represents a prescription order, an intention, rather than a completed clinical act.
 

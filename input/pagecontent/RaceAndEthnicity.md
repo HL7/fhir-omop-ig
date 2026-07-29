@@ -2,7 +2,7 @@
 
 Race and ethnicity are among the most consistently requested demographic attributes in observational research, and they are also among the most structurally constrained fields in the OMOP CDM. The `PERSON` table provides exactly one `race_concept_id` and one `ethnicity_concept_id` slot per person, whereas FHIR source systems commonly carry multiple race or ethnicity codings: either because a patient self-identifies with more than one category, because the source system captures values from multiple encounters, or because the source system uses a coding system with finer granularity than the OMOP target vocabulary. Transforming FHIR race and ethnicity data to OMOP therefore requires both a vocabulary decision (which target concepts to use) and a structural decision (where to place values that do not fit into the single-slot `PERSON` fields). This page describes the patterns the IG recommends for both.
 
-> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers should verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
+> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers ought to verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
 
 ### Overview
 
@@ -31,18 +31,18 @@ The authoritative, balloted binding for this IG is the OHDSI Race and Ethnicity 
 
 ### Value Set Binding
 
-This IG binds race and ethnicity transformation to the OHDSI Race and Ethnicity Value Set, developed and maintained by the OHDSI EHR Working Group and included in this IG as the example value set suitable for International Realm use. The value set draws its content from the `Race` and `Ethnicity` domains of the OHDSI Standardized Vocabularies and is intended to support implementations that must represent race and ethnicity across jurisdictions without being tied to a single country's regulatory categories. Implementations whose sources use a narrower or jurisdiction-specific code system, for example US Core's CDC Race & Ethnicity codings, should translate into the bound value set via the OHDSI Standardized Vocabularies and document the chosen translation in their ETL documentation, per the [Source Value Preservation](StrategiesBestPractices.html#source-value-preservation) and [ETL Documentation](StrategiesBestPractices.html#etl-documentation) guidance.
+This IG binds race and ethnicity transformation to the OHDSI Race and Ethnicity Value Set, developed and maintained by the OHDSI EHR Working Group and included in this IG as the example value set suitable for International Realm use. The value set draws its content from the `Race` and `Ethnicity` domains of the OHDSI Standardized Vocabularies and is intended to support implementations that must represent race and ethnicity across jurisdictions without being tied to a single country's regulatory categories. Implementations whose sources use a narrower or jurisdiction-specific code system, for example US Core's CDC Race & Ethnicity codings, ought to translate into the bound value set via the OHDSI Standardized Vocabularies and document the chosen translation in their ETL documentation, per the [Source Value Preservation](StrategiesBestPractices.html#source-value-preservation) and [ETL Documentation](StrategiesBestPractices.html#etl-documentation) guidance.
 
-The binding strength for `PERSON.race_concept_id` and `PERSON.ethnicity_concept_id` transformation targets is *extensible*: implementations should use a concept from this value set whenever the source value maps to one, and may use other Standard concepts from the OHDSI `Race` or `Ethnicity` domains when no concept in the value set fits. Where no suitable Standard concept exists at all, follow the [Unmapped Source Values](#unmapped-source-values) guidance.
+The binding strength for `PERSON.race_concept_id` and `PERSON.ethnicity_concept_id` transformation targets is *extensible*: implementations ought to use a concept from this value set whenever the source value maps to one, and might use other Standard concepts from the OHDSI `Race` or `Ethnicity` domains when no concept in the value set fits. Where no suitable Standard concept exists at all, follow the [Unmapped Source Values](#unmapped-source-values) guidance.
 
 ### FHIR Source Patterns
 
 Race and ethnicity in FHIR are most commonly carried as extensions on the `Patient` resource rather than as first-class elements, because the base FHIR `Patient` resource does not define race or ethnicity fields directly. Implementers will encounter several source patterns:
 
 * **US Core `us-core-race` and `us-core-ethnicity` extensions**: structured extensions that carry one or more `ombCategory` codings and an optional `text` value, using the CDC Race & Ethnicity code system. Each `ombCategory` occurrence represents one self-identified race or ethnicity.
-* **IPS and other International Patient profiles**: may carry race and ethnicity through locally defined extensions or not at all, depending on jurisdiction.
+* **IPS and other International Patient profiles**: might carry race and ethnicity through locally defined extensions or not at all, depending on jurisdiction.
 * **Jurisdictional profiles**: national or regional Patient profiles (for example, AU Core, CA Core+) typically define their own race/ethnicity extensions bound to locally appropriate code systems.
-* **Patient-provided or survey-sourced values**: may arrive as `Observation` resources rather than `Patient` extensions, particularly when captured outside the EHR registration workflow.
+* **Patient-provided or survey-sourced values**: might arrive as `Observation` resources rather than `Patient` extensions, particularly when captured outside the EHR registration workflow.
 
 Regardless of the source pattern, the transformation logic is driven by *how many* race values and *how many* ethnicity values resolve to Standard OMOP concepts for a given person, not by the FHIR element through which they were carried.
 
@@ -54,7 +54,7 @@ For example, a FHIR `Patient` carrying a single `us-core-race` extension with `o
 
 ### Multiple-Value Transformation: Race
 
-A FHIR source may contribute more than one Standard-resolving race value for a person: the source may carry multiple `ombCategory` occurrences in a single extension, multiple encounters may have recorded different values, or the source system may express a multi-racial identity through separate codings. In these cases the transformation follows the Themis convention:
+A FHIR source might contribute more than one Standard-resolving race value for a person: the source might carry multiple `ombCategory` occurrences in a single extension, multiple encounters might have recorded different values, or the source system might express a multi-racial identity through separate codings. In these cases the transformation follows the Themis convention:
 
 1. Populate `PERSON.race_concept_id` with concept `1546847` ("More than one race"). This preserves the CDM's single-slot structure while signalling to downstream consumers that granular values are available elsewhere.
 2. For each distinct Standard race concept contributed by the source, create one record in the `OBSERVATION` table with:
@@ -90,7 +90,7 @@ Source values that are semantic equivalents of null must not be carried into the
 * If a person has **one valid** Standard-resolving source value **and one or more flavor-of-null** source values for race, ignore the flavor-of-null values and populate `PERSON.race_concept_id` with the single valid concept. Do not treat this as a multiple-value case. Apply the same rule independently to ethnicity.
 * If a person has **more than one valid** Standard-resolving source value **and one or more flavor-of-null** source values, ignore the flavor-of-null values and apply the multiple-value transformation appropriate to the attribute to the valid values only.
 
-In all three cases, the original source values, including the flavor-of-null values, should still be preserved verbatim in `PERSON.race_source_value` / `PERSON.ethnicity_source_value` for lineage, per the [Source Value Preservation](StrategiesBestPractices.html#source-value-preservation) guidance.
+In all three cases, the original source values, including the flavor-of-null values, ought to still be preserved verbatim in `PERSON.race_source_value` / `PERSON.ethnicity_source_value` for lineage, per the [Source Value Preservation](StrategiesBestPractices.html#source-value-preservation) guidance.
 
 ### Observation Date Selection
 

@@ -39,7 +39,7 @@ Studies were selected as examples based on the following criteria:
     - Demographic variables/data elements detailed either in supplements or articles.
     - OMOP concept IDs.
 
-These selected studies offer practical, real-world examples of codes, data elements, and concept IDs. It is important to note that the examples may also incorporate additional codes and OMOP concept IDs as required.
+These selected studies offer practical, real-world examples of codes, data elements, and concept IDs. It is important to note that the examples might also incorporate additional codes and OMOP concept IDs as required.
 
 #### Selected Studies
 

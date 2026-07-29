@@ -1,12 +1,12 @@
 Mapping coded data from FHIR to OMOP requires evaluation of the concepts to be stored in tables on OMOP, and these transformations can follow distinct patterns.  In this Implementation Guide, we propose a non-exhaustive list of transformation patterns and guidance regarding: 
 
-> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers should verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
+> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers ought to verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
 
 * A base pattern that covers most simple code to concept transformation
 * A pattern applicable to multiple CodeableConcepts scenarios
 * Value-as-concept map pattern
 
-Future enhancements to this guide or groups developing additional implementation guides may discover and codify additional code mapping patterns.
+Future enhancements to this guide or groups developing additional implementation guides might discover and codify additional code mapping patterns.
 
 ### Base Mapping Pattern
 
@@ -19,13 +19,13 @@ Future enhancements to this guide or groups developing additional implementation
 
 The foundational pattern for simple code-to-concept transformations provides the essential framework that underlies all other transformation approaches. This pattern addresses the most straightforward scenarios where FHIR resources contain single, well-defined codes that can be directly mapped to OMOP standard concepts without requiring complex prioritization or decomposition logic.
 
-The base mapping process begins with extracting coded data from FHIR resources, focusing on identifying coded elements of the type CodeableConcept or Coding within the resource structure. This extraction phase requires careful attention to the location and structure of coded elements, as they may appear in different fields depending on the FHIR resource type and profile being processed. The extraction process must capture not only the code values themselves but also the associated system identifiers and any relevant metadata that may influence the mapping process.
+The base mapping process begins with extracting coded data from FHIR resources, focusing on identifying coded elements of the type CodeableConcept or Coding within the resource structure. This extraction phase requires careful attention to the location and structure of coded elements, as they could appear in different fields depending on the FHIR resource type and profile being processed. The extraction process must capture not only the code values themselves but also the associated system identifiers and any relevant metadata that could influence the mapping process.
 
-Following code extraction, the transformation applies the Universal Code Prioritization Framework when multiple codes exist within the source data. Even in base mapping scenarios, multiple codes may be present due to system interoperability requirements or legacy data migration processes. The prioritization framework ensures consistent selection logic that favors standard vocabularies, clinical specificity, and explicit primary designations while providing fallback mechanisms for edge cases.
+Following code extraction, the transformation applies the Universal Code Prioritization Framework when multiple codes exist within the source data. Even in base mapping scenarios, multiple codes could be present due to system interoperability requirements or legacy data migration processes. The prioritization framework ensures consistent selection logic that favors standard vocabularies, clinical specificity, and explicit primary designations while providing fallback mechanisms for edge cases.
 
 The vocabulary lookup phase applies the Standard OMOP Vocabulary Lookup Methodology to identify corresponding OMOP concepts for the selected source codes. This critical step validates that source codes have appropriate representations within the OHDSI Standardized Vocabularies and determines whether direct mapping is possible or if concept relationship traversal is required for non-standard source codes.
 
-Domain determination utilizes the Domain Assignment Logic to identify the appropriate OMOP domain table for storing the clinical information. This step recognizes that vocabulary-driven domain assignment may differ from assumptions based solely on FHIR resource types, ensuring that clinical concepts are stored in semantically appropriate locations within the OMOP analytical framework.
+Domain determination utilizes the Domain Assignment Logic to identify the appropriate OMOP domain table for storing the clinical information. This step recognizes that vocabulary-driven domain assignment could differ from assumptions based solely on FHIR resource types, ensuring that clinical concepts are stored in semantically appropriate locations within the OMOP analytical framework.
 
 Non-standard concept handling addresses scenarios where source codes map to non-standard OMOP concepts, requiring traversal of the concept_relationship table to identify appropriate standard concepts for analytical use. This process maintains the connection between source codes and their standard representations while preserving the original mapping context for audit and validation purposes.
 
@@ -124,4 +124,4 @@ This example demonstrates the straightforward application of the base pattern, s
   </tbody>
 </table>
 
-The example above represents a straightforward transformation scenario with a direct vocabulary match and domain alignment. Real-world implementations should prepare for more complex scenarios involving non-standard vocabularies, domain mismatches, and mapping gaps, but this base pattern provides the foundational framework for handling all transformation cases systematically and consistently.
+The example above represents a straightforward transformation scenario with a direct vocabulary match and domain alignment. Real-world implementations ought to prepare for more complex scenarios involving non-standard vocabularies, domain mismatches, and mapping gaps, but this base pattern provides the foundational framework for handling all transformation cases systematically and consistently.

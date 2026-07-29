@@ -18,7 +18,7 @@ Usage: #definition
 * name = "Transformation_Engine"
 * description = "The software component that reads FHIR resources from a Source System and produces records in an OMOP CDM v5.4 database. This is the actor that executes the ETL logic, whether through published FHIR StructureMaps, a custom ETL stack in SQL, dbt, Spark, or Python, or a hybrid of these. The Transformation Engine carries the largest number of conformance obligations in this guide, because it is where mapping decisions, code prioritization, type concept assignment, and status and intent filtering are enforced at runtime.
 
-The Transformation Engine is distinguished from the ETL Implementer (A5) in that the Engine is the software and the Implementer is the organization that configures and runs it. A single Transformation Engine product, such as a commercial ETL tool, may be deployed by many Implementers, each producing their own Target OMOP Instances."
+The Transformation Engine is distinguished from the ETL Implementer (A5) in that the Engine is the software and the Implementer is the organization that configures and runs it. A single Transformation Engine product, such as a commercial ETL tool, could be deployed by many Implementers, each producing their own Target OMOP Instances."
 * type = #system
 * insert CommonActor
 
@@ -40,7 +40,7 @@ Title: "Terminology Server"
 Usage: #definition
 * id = "trm"
 * name = "Terminology_Server"
-* description = "A FHIR-conformant terminology server that hosts the OHDSI Standardized Vocabularies and exposes them through standard FHIR terminology operations, namely ConceptMap/$translate, CodeSystem/$lookup, and ValueSet/$expand. A Terminology Server is optional in the architecture: a Transformation Engine may instead use a locally loaded OMOP vocabulary. When a Terminology Server is used, its obligations are specified here so that Engines can rely on consistent behavior across servers."
+* description = "A FHIR-conformant terminology server that hosts the OHDSI Standardized Vocabularies and exposes them through standard FHIR terminology operations, namely ConceptMap/$translate, CodeSystem/$lookup, and ValueSet/$expand. A Terminology Server is optional in the architecture: a Transformation Engine could instead use a locally loaded OMOP vocabulary. When a Terminology Server is used, its obligations are specified here so that Engines can rely on consistent behavior across servers."
 * type = #system
 * insert CommonActor
 

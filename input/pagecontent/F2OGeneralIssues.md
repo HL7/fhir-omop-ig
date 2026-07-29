@@ -8,7 +8,7 @@ The tension between the the two standards stems from FHIR's design for real-time
 
 ### Status and Intent Elements in FHIR Resources
 
-Many FHIR resources carry elements that describe where a clinical activity sits in an administrative or care delivery workflow rather than describing the clinical fact itself. A MedicationRequest may be active, on-hold, or cancelled. A Procedure may be preparation, in-progress, completed, or not-done. A ServiceRequest carries both a status and an intent, the latter distinguishing a proposal from a plan from an order.
+Many FHIR resources carry elements that describe where a clinical activity sits in an administrative or care delivery workflow rather than describing the clinical fact itself. A MedicationRequest could be active, on-hold, or cancelled. A Procedure could be preparation, in-progress, completed, or not-done. A ServiceRequest carries both a status and an intent, the latter distinguishing a proposal from a plan from an order.
 
 The OMOP CDM makes a different assumption. Its clinical event tables represent things that happened: a drug_exposure record asserts that a patient was exposed to a drug, and a procedure_occurrence record asserts that a procedure was performed. OMOP has no general mechanism for representing an event that was contemplated but did not occur, and analytic tooling built on OMOP assumes throughout that records describe realized events.
 
@@ -22,7 +22,7 @@ The interaction of the two is decisive for the request resources, and it is not 
 
 #### Resource-Specific Evaluation
 
-The tables below summarize the elements requiring evaluation for the resources most commonly encountered in FHIR-to-OMOP transformation, and indicate which values describe realized events. The dispositions shown here are aligned with the FHIR-to-OMOP unit test specifications, which are the governing reference: where an implementation's filter rule disagrees with the test suite, the test suite prevails. Values not enumerated for a given resource should be treated as not realized until the test suite assigns them.
+The tables below summarize the elements requiring evaluation for the resources most commonly encountered in FHIR-to-OMOP transformation, and indicate which values describe realized events. The dispositions shown here are aligned with the FHIR-to-OMOP unit test specifications, which are the governing reference: where an implementation's filter rule disagrees with the test suite, the test suite prevails. Values not enumerated for a given resource ought to be treated as not realized until the test suite assigns them.
 
 **MedicationRequest to drug_exposure**
 
@@ -47,7 +47,7 @@ MedicationStatement follows the more direct pattern: status alone governs, and o
 |---|---|---|
 | status | completed | preparation, in-progress, not-done, on-hold, stopped, unknown, entered-in-error |
 
-Two values warrant comment. `not-done` asserts positively that a procedure did not occur, and such records must never become procedure occurrences; where a Procedure carries not-done together with a statusReason, the fact of non-performance may itself be clinically meaningful and can be captured in the observation domain if the OMOP instance requires it. `in-progress` is filtered by the test suite: a procedure in progress at export time has not completed, and the suite treats it as not realized rather than as an implementer judgment call.
+Two values warrant comment. `not-done` asserts positively that a procedure did not occur, and such records must never become procedure occurrences; where a Procedure carries not-done together with a statusReason, the fact of non-performance could itself be clinically meaningful and can be captured in the observation domain if the OMOP instance requires it. `in-progress` is filtered by the test suite: a procedure in progress at export time has not completed, and the suite treats it as not realized rather than as an implementer judgment call.
 
 **Observation to measurement or observation**
 
@@ -70,7 +70,7 @@ Condition does not reduce to a realized-or-excluded status filter, because `veri
 | differential | observation row, qualifier_concept_id = differential |
 | refuted | observation row, qualifier_concept_id = refuted |
 
-The provisional, differential, and refuted dispositions place the record in the observation domain as a qualified concept rather than discarding it, which preserves the clinical signal that a diagnosis was considered and characterizes how. `clinicalStatus` values such as recurrence, relapse, inactive, remission, and resolved likewise route to the observation domain as qualifiers; the test suite carries these as a stretch-tier assertion, so implementations should treat the specific qualifier mappings as provisional.
+The provisional, differential, and refuted dispositions place the record in the observation domain as a qualified concept rather than discarding it, which preserves the clinical signal that a diagnosis was considered and characterizes how. `clinicalStatus` values such as recurrence, relapse, inactive, remission, and resolved likewise route to the observation domain as qualifiers; the test suite carries these as a stretch-tier assertion, so implementations ought to treat the specific qualifier mappings as provisional.
 
 **Encounter to visit_occurrence**
 
@@ -90,7 +90,7 @@ Encounter is the one resource where an in-flight status is admitted rather than 
 
 #### Entered-in-Error Across All Resources
 
-Entered-in-error deserves separate mention because it behaves uniformly across every resource type above. It does not mean that an event did not occur; it means the record itself is invalid and should be treated as though it had never been created. Such records are excluded from transformation regardless of any other element value, and should not be represented in the target in any form.
+Entered-in-error deserves separate mention because it behaves uniformly across every resource type above. It does not mean that an event did not occur; it means the record itself is invalid and ought to be treated as though it had never been created. Such records are excluded from transformation regardless of any other element value, and ought not be represented in the target in any form.
 
 #### Modifier Elements and Extensions
 
@@ -100,7 +100,7 @@ Status and intent are not the only elements that can invert or qualify the meani
 
 An OMOP instance built from FHIR is rarely populated once. Data arrive incrementally over the operational life of the instance, and filter rules applied inconsistently across loads produce a target whose composition varies by ingestion date. A cohort assembled across such a target will include cancelled orders from one period and exclude them from another, and the resulting bias is undetectable from within the data.
 
-Filter rules should therefore be treated as a fixed property of the transformation rather than a runtime decision, versioned alongside the transformation logic, and changed only deliberately. Where filter rules do change, the change and its effective date belong in the ETL documentation, since analysts working across the boundary need to know the target's composition is not uniform.
+Filter rules ought to therefore be treated as a fixed property of the transformation rather than a runtime decision, versioned alongside the transformation logic, and changed only deliberately. Where filter rules do change, the change and its effective date belong in the ETL documentation, since analysts working across the boundary need to know the target's composition is not uniform.
 
 #### Reporting Exclusions
 
@@ -121,21 +121,21 @@ This report is strongly advised rather than required, and the reason for the dis
 §f2o-063^xfm^status:A Transformation Engine **SHALL** evaluate FHIR modifier elements and **SHALL** NOT silently transform a resource whose modifier elements alter its clinical interpretation, nor silently emit a concept_id of zero when a terminology lookup fails without recording the failure.§
 
 ### Data Completeness, Missingness & Integrity
-Handling incomplete or partial data presents an additional challenge in transforming FHIR resources to OMOP. FHIR records are often incomplete for several reasons: the source electronic health record (EHR) itself may contain partial entries, or the FHIR resources may only include a subset of available data tailored to the specific purpose of the resource. In contrast, the OMOP data model assumes that critical fields such as dates, person references, and coded concepts are consistently populated to support standardized analysis.
+Handling incomplete or partial data presents an additional challenge in transforming FHIR resources to OMOP. FHIR records are often incomplete for several reasons: the source electronic health record (EHR) itself could contain partial entries, or the FHIR resources could only include a subset of available data tailored to the specific purpose of the resource. In contrast, the OMOP data model assumes that critical fields such as dates, person references, and coded concepts are consistently populated to support standardized analysis.
 
-When transforming FHIR to OMOP, these gaps require careful consideration to avoid introducing ambiguity or bias. For example, a FHIR MedicationStatement may be missing start or end dates, which makes it unclear whether the medication should be interpreted as active, historical, or intended. Similarly, a procedure or encounter record may lack information about the performer or the location, undermining the ability to analyze provider performance, regional variation, or care delivery patterns.
+When transforming FHIR to OMOP, these gaps require careful consideration to avoid introducing ambiguity or bias. For example, a FHIR MedicationStatement could be missing start or end dates, which makes it unclear whether the medication ought to be interpreted as active, historical, or intended. Similarly, a procedure or encounter record could lack information about the performer or the location, undermining the ability to analyze provider performance, regional variation, or care delivery patterns.
 
 One approach to address these challenges is to consider fallback strategies that preserve as much context as possible. Implementers can use the OMOP observation domain or the note table to retain essential but incomplete data when no direct mapping is feasible. In cases where fields such as dates are missing, records can be flagged as incomplete by selecting appropriate ‘type’ concept IDs to indicate that the data is estimated or partial. This practice ensures that analysts reviewing the transformed data are aware of the uncertainty inherent in these records.
 
-It is equally important for implementers to reflect on the implications of partial data for downstream analyses. Records with incomplete information may introduce misinterpretation or bias if not carefully accounted for in study design and statistical modeling. Therefore, teams should exercise caution when drawing inferences from datasets containing records transformed from incomplete FHIR sources.
+It is equally important for implementers to reflect on the implications of partial data for downstream analyses. Records with incomplete information could introduce misinterpretation or bias if not carefully accounted for in study design and statistical modeling. Therefore, teams ought to exercise caution when drawing inferences from datasets containing records transformed from incomplete FHIR sources.
 
 #### Contextual Gaps in Data Mapping
-A challenge faced in transforming FHIR to OMOP is that FHIR resources often contain contextual elements such as `reasonCode`, `performer`, `location`, or `supportingInfo` that help clarify the conditions or context surrounding a clinical event. OMOP tables do not have a direct way to represent these contexts fully in the same way that FHIR has structured this information. While core information may be mapped to OMOP fields in most instances, key context might be lost if certain contextual elements cannot be directly represented, impacting downstream analytics. For example, `reasonCode` in FHIR can specify the purpose of a procedure, such as preventive care vs. diagnostic intervention. This nuance can be critical to outcomes analyses but may not be directly captured in OMOP.  Also of issue is that lacking context, such as missing details on “why” a procedure was performed or medication prescribed could lead to misinterpretations in analysis, particularly for longitudinal studies tracking disease progression or treatment efficacy. 
+A challenge faced in transforming FHIR to OMOP is that FHIR resources often contain contextual elements such as `reasonCode`, `performer`, `location`, or `supportingInfo` that help clarify the conditions or context surrounding a clinical event. OMOP tables do not have a direct way to represent these contexts fully in the same way that FHIR has structured this information. While core information could be mapped to OMOP fields in most instances, key context might be lost if certain contextual elements cannot be directly represented, impacting downstream analytics. For example, `reasonCode` in FHIR can specify the purpose of a procedure, such as preventive care vs. diagnostic intervention. This nuance can be critical to outcomes analyses but could not be directly captured in OMOP.  Also of issue is that lacking context, such as missing details on “why” a procedure was performed or medication prescribed could lead to misinterpretations in analysis, particularly for longitudinal studies tracking disease progression or treatment efficacy. 
    
-One workaround could be to capture the context in a generic OMOP extension, such as "note," but this would have limitations.  Another workaround would be to create specific OMOP extensions for the relevant FHIR elements. This would still have limitations as it produces non-standard OMOP implementations.  Further, any extension suggested as universally applicable for FHIR source data would suggest implementation of OMOP CDM non-conformant as a routine. Rather, for the scope of this implementation guide, we want to call attention to the limitation and suggest review of the source data for potential proxies in the choices made for target Standard concepts, special attention to selection of record ‘type’ concepts that confer metadata about the source records or ensuring linkage in the transformed data to specific `visit_occurrence` records to approximate some context potentially lost. As suggested with identifiers, if the contextual information potentially lost in transformation cannot be accommodated and is critical to the research intended, then accommodation with concept or table extensions may be considered. 
+One workaround could be to capture the context in a generic OMOP extension, such as "note," but this would have limitations.  Another workaround would be to create specific OMOP extensions for the relevant FHIR elements. This would still have limitations as it produces non-standard OMOP implementations.  Further, any extension suggested as universally applicable for FHIR source data would suggest implementation of OMOP CDM non-conformant as a routine. Rather, for the scope of this implementation guide, we want to call attention to the limitation and suggest review of the source data for potential proxies in the choices made for target Standard concepts, special attention to selection of record ‘type’ concepts that confer metadata about the source records or ensuring linkage in the transformed data to specific `visit_occurrence` records to approximate some context potentially lost. As suggested with identifiers, if the contextual information potentially lost in transformation cannot be accommodated and is critical to the research intended, then accommodation with concept or table extensions could be considered. 
 
 #### HL7 Flavors of Null and OMOP
-When implementing an HL7 FHIR to OMOP transformation using a FHIR Implementation Guide (IG), handling null values or *flavors of null* is a critical concern. In HL7 FHIR, data absence can be explicitly communicated using extensions like data-absent-reason, which distinguishes between *unknown*, *asked-but-unknown*, or *not-applicable* values. OMOP CDM, however, represents nulls more implicitly: fields may be left empty, or encoded using specific concepts like 0 (for “No matching concept”) or NULL in SQL. Mapping between these two paradigms requires careful alignment to avoid misinterpretation of data. For instance, a FHIR Observation with a data-absent-reason \= unknown must be mapped meaningfully to the OMOP measurement table, potentially setting the value\_as\_number and value\_as\_concept\_id to NULL, while assigning an appropriate observation\_concept\_id to indicate that the test was performed but the result was unavailable.
+When implementing an HL7 FHIR to OMOP transformation using a FHIR Implementation Guide (IG), handling null values or *flavors of null* is a critical concern. In HL7 FHIR, data absence can be explicitly communicated using extensions like data-absent-reason, which distinguishes between *unknown*, *asked-but-unknown*, or *not-applicable* values. OMOP CDM, however, represents nulls more implicitly: fields could be left empty, or encoded using specific concepts like 0 (for “No matching concept”) or NULL in SQL. Mapping between these two paradigms requires careful alignment to avoid misinterpretation of data. For instance, a FHIR Observation with a data-absent-reason \= unknown must be mapped meaningfully to the OMOP measurement table, potentially setting the value\_as\_number and value\_as\_concept\_id to NULL, while assigning an appropriate observation\_concept\_id to indicate that the test was performed but the result was unavailable.
 
 **Comparison Table: FHIR vs OMOP Flavors of Null**
 
@@ -179,12 +179,12 @@ When implementing an HL7 FHIR to OMOP transformation using a FHIR Implementation
 
 In short, FHIR provides a more expressive mechanism to convey the *reason* for missing data, while OMOP assumes nulls are more operational or structural. Mapping between them in a FHIR-to-OMOP ETL process requires deliberate rules to preserve clinical meaning without overfitting to the destination model.
 
-OMOP provides \*\_source\_value fields that can be leveraged to carry forward original FHIR null semantics (e.g., “refused” or “masked”) when they do not map cleanly to a standard concept. For instance, a FHIR Observation with data-absent-reason \= not-permitted may result in a NULL value\_as\_number and value\_as\_concept\_id, but the string "not-permitted" could be preserved in the value\_source\_value field. This approach ensures that valuable context about the data's absence is not lost in the transformation, preserving semantic integrity across models.
+OMOP provides \*\_source\_value fields that can be leveraged to carry forward original FHIR null semantics (e.g., “refused” or “masked”) when they do not map cleanly to a standard concept. For instance, a FHIR Observation with data-absent-reason \= not-permitted could result in a NULL value\_as\_number and value\_as\_concept\_id, but the string "not-permitted" could be preserved in the value\_source\_value field. This approach ensures that valuable context about the data's absence is not lost in the transformation, preserving semantic integrity across models.
 
 #### Data Absent Reasons Elements
-The Data Absent Reason element in FHIR allows implementers to record why information is missing or incomplete in observations, medication statements, and immunizations. When using FHIR resources that document reasons for absent data, it is important to assess carefully which of these reasons should be included in OMOP. This consideration applies to common scenarios such as missing lab results, medications that were not administered, or declined immunizations.
+The Data Absent Reason element in FHIR allows implementers to record why information is missing or incomplete in observations, medication statements, and immunizations. When using FHIR resources that document reasons for absent data, it is important to assess carefully which of these reasons ought to be included in OMOP. This consideration applies to common scenarios such as missing lab results, medications that were not administered, or declined immunizations.
 
-Because Data Absent Reasons cover a spectrum ranging from clinically meaningful refusals to routine administrative gaps, a selective approach is recommended. Implementers are encouraged to map only those reasons with clear clinical or research value for the intended use case, which may include or exclude information such as patient refusals, or  adverse reactions, while excluding operational or ambiguous reasons like “unknown” or “unsupported.” 
+Because Data Absent Reasons cover a spectrum ranging from clinically meaningful refusals to routine administrative gaps, a selective approach is recommended. Implementers are encouraged to map only those reasons with clear clinical or research value for the intended use case, which could include or exclude information such as patient refusals, or  adverse reactions, while excluding operational or ambiguous reasons like “unknown” or “unsupported.” 
 
 In FHIR, Data Absent Reasons use codes such as “unknown,” “not asked,” “asked but unknown,” and “not applicable,” reflecting nuances in why data were not captured. For example, a lab result ordered but not performed could be marked “patient declined,” while a medication not taken might be recorded as due to side effects.
 
@@ -205,11 +205,11 @@ FHIR defines multiple temporal primitive types with distinct precision and const
 | `date` | Day, month, or year | **Prohibited** | `2024-03-15`, `2024-03`, `2024` |
 | `time` | Time of day only | **Prohibited** | `14:30:00` |
 
-This flexibility allows FHIR to represent clinical events at the precision appropriate to the source system. The `instant` type is explicitly designated for "precisely observed times" such as system logs, while `dateTime` accommodates human-reported times where precision may vary [1]. Critically, FHIR mandates timezone specification whenever time components are present in `instant` or `dateTime` values.
+This flexibility allows FHIR to represent clinical events at the precision appropriate to the source system. The `instant` type is explicitly designated for "precisely observed times" such as system logs, while `dateTime` accommodates human-reported times where precision could vary [1]. Critically, FHIR mandates timezone specification whenever time components are present in `instant` or `dateTime` values.
 
 #### Core Implementation Pattern in OMOP
 
-Because OMOP treats the calendar day as the atomic temporal unit for required fields, every *\_date* column is stored as a SQL `DATE`. For example, `condition_start_date` captures when a diagnosis was first recorded, whereas `visit_start_date` and `visit_end_date` bracket an encounter. End-date fields may be **NULL** for chronic conditions, long-term drug exposures, or any scenario where the source system never records cessation. Avoiding imputed end dates prevents false precision but requires ETL architects to document any necessary imputations for downstream transparency.
+Because OMOP treats the calendar day as the atomic temporal unit for required fields, every *\_date* column is stored as a SQL `DATE`. For example, `condition_start_date` captures when a diagnosis was first recorded, whereas `visit_start_date` and `visit_end_date` bracket an encounter. End-date fields could be **NULL** for chronic conditions, long-term drug exposures, or any scenario where the source system never records cessation. Avoiding imputed end dates prevents false precision but requires ETL architects to document any necessary imputations for downstream transparency.
 
 #### Optional Datetime Fields in OMOP
 
@@ -224,7 +224,7 @@ The OMOP CDM specification states: "If a source does not specify datetime the co
 
 The optional status of datetime fields reflects a deliberate community decision. OMOP CDM v6.0 proposed making datetime fields mandatory, but this version was not adopted. The official documentation explains: "The major difference in CDM v5.3 and CDM v6.0 involves switching the *_datetime fields to mandatory rather than optional. This switch radically changes the assumptions related to exposure and outcome timing. Rather than move forward with v6.0, CDM v5.4 was designed with additions to the model that have been requested by the community while retaining the date structure of medical events in v5.3" [4]. Organizations are advised to transform data to CDM v5.4 "until such time that the v6 series of the CDM is ready for mainstream use" [4].
 
-> **Implementer Recommendation**: When FHIR source data contains precise timestamps, ETL pipelines should populate the optional OMOP datetime fields to preserve this information. However, implementers should document which datetime values represent actual recorded times versus imputed midnight defaults, as this distinction affects analytical validity.
+> **Implementer Recommendation**: When FHIR source data contains precise timestamps, ETL pipelines ought to populate the optional OMOP datetime fields to preserve this information. However, implementers ought to document which datetime values represent actual recorded times versus imputed midnight defaults, as this distinction affects analytical validity.
 
 #### OMOP Domain Requirements
 
@@ -246,22 +246,13 @@ When transforming FHIR data to OMOP, certain temporal information cannot be full
 
 ##### Timezone Information
 
-FHIR's `instant` datatype mandates timezone specification (e.g., `+02:00` or `Z` for UTC) [1]. Standard ANSI SQL `DATETIME` types, which the OMOP CDM specifies generically [2], do not include timezone offset. The SQL standard specifies that `timestamp` without qualification is "equivalent to timestamp without time zone" [5]. Preserving timezone requires database-specific extensions such as `DATETIMEOFFSET` (SQL Server) or `TIMESTAMP WITH TIME ZONE` (PostgreSQL), which are not mandated by the OMOP CDM specification. For multi-site studies spanning time zones or analyses sensitive to absolute time (e.g., circadian rhythm research), this loss may be significant.
+FHIR's `instant` datatype mandates timezone specification (e.g., `+02:00` or `Z` for UTC) [1]. Standard ANSI SQL `DATETIME` types, which the OMOP CDM specifies generically [2], do not include timezone offset. The SQL standard specifies that `timestamp` without qualification is "equivalent to timestamp without time zone" [5]. Preserving timezone requires database-specific extensions such as `DATETIMEOFFSET` (SQL Server) or `TIMESTAMP WITH TIME ZONE` (PostgreSQL), which are not mandated by the OMOP CDM specification. For multi-site studies spanning time zones or analyses sensitive to absolute time (e.g., circadian rhythm research), this loss could be significant.
 
 ##### Normalizing Time Zones on Ingestion
 
-Because the CDM does not carry a time zone, a `*_datetime` column populated from sources in
-different zones is ambiguous in a way that is invisible on inspection: two values an hour apart may
-represent the same instant or genuinely different ones, and nothing in the target distinguishes the
-cases. The hazard is not the loss of the offset, which the model cannot hold in any event, but the
-mixing of zones within one column.
+Because the CDM does not carry a time zone, a `*_datetime` column populated from sources in different zones is ambiguous in a way that is invisible on inspection: two values an hour apart may represent the same instant or genuinely different ones, and nothing in the target distinguishes the cases. The hazard is not the loss of the offset, which the model cannot hold in any event, but the mixing of zones within one column.
 
-The remedy is to convert on ingestion rather than on read. Where a source value carries an offset,
-it should be converted to a single zone applied consistently across the instance, conventionally
-UTC, before the `*_datetime` field is populated, and the chosen zone should be stated in the ETL
-documentation so analysts know what the column means. Where preservation of the original offset
-matters to the research, it belongs in an auxiliary store or a database-specific column outside the
-standard schema, as described above.
+The remedy is to convert on ingestion rather than on read. Where a source value carries an offset, it ought to be converted to a single zone applied consistently across the instance, conventionally UTC, before the `*_datetime` field is populated, and the chosen zone ought to be stated in the ETL documentation so analysts know what the column means. Where preservation of the original offset matters to the research, it belongs in an auxiliary store or a database-specific column outside the standard schema, as described above.
 
 ##### Precision Metadata
 
@@ -269,7 +260,7 @@ FHIR's variable-precision `dateTime` type distinguishes between values known onl
 
 ##### Sub-second Precision Variability
 
-The OMOP CDM documentation acknowledges platform-dependent datetime handling: "The CDM does not prescribe the date and datetime format. Standard queries against CDM may vary for local instantiations and date/datetime configurations" [2]. Database implementations vary in datetime precision: traditional SQL Server `DATETIME` rounds to 3.33 milliseconds, while `DATETIME2` supports 100-nanosecond precision [6]. Without specification of minimum precision requirements, OMOP implementations may truncate FHIR's millisecond-precision timestamps.
+The OMOP CDM documentation acknowledges platform-dependent datetime handling: "The CDM does not prescribe the date and datetime format. Standard queries against CDM could vary for local instantiations and date/datetime configurations" [2]. Database implementations vary in datetime precision: traditional SQL Server `DATETIME` rounds to 3.33 milliseconds, while `DATETIME2` supports 100-nanosecond precision [6]. Without specification of minimum precision requirements, OMOP implementations could truncate FHIR's millisecond-precision timestamps.
 
 ##### Summary of Temporal Information Preservation
 
@@ -283,17 +274,17 @@ The OMOP CDM documentation acknowledges platform-dependent datetime handling: "T
 
 #### Limitations and Intra-Day Challenges
 
-When optional datetime fields are not populated, which remains common practice given their optional status and the historical prevalence of date-only source data [7], sub-day precision is lost entirely. Even when datetime fields are populated, the absence of timezone creates challenges. Intensive-care interventions, rapid laboratory results, and overlapping medication administrations can occur within minutes; without consistent datetime population and timezone handling, such events may collapse onto the same calendar day or be ambiguously ordered across time zones. Analysts must therefore supplement with auxiliary timestamp stores or infer ordering through other means. Likewise, **temporal ties**, multiple events stamped with the same date, demand caution in sequence analyses lest spurious causal relationships be inferred.
+When optional datetime fields are not populated, which remains common practice given their optional status and the historical prevalence of date-only source data [7], sub-day precision is lost entirely. Even when datetime fields are populated, the absence of timezone creates challenges. Intensive-care interventions, rapid laboratory results, and overlapping medication administrations can occur within minutes; without consistent datetime population and timezone handling, such events could collapse onto the same calendar day or be ambiguously ordered across time zones. Analysts must therefore supplement with auxiliary timestamp stores or infer ordering through other means. Likewise, **temporal ties**, multiple events stamped with the same date, demand caution in sequence analyses lest spurious causal relationships be inferred.
 
 #### Handling Partial or Approximate Dates When Mapping from FHIR
 
-Mapping FHIR resources into OMOP often surfaces partial or approximate temporal metadata. Historical records, patient-reported information, or legacy migrations may capture only a year (`2024`) or a year-month (`2024-05`). FHIR explicitly supports these partial representations through the `date` and `dateTime` datatypes' variable precision [1]. If an exact date is indispensable for OMOP, implementers can adopt controlled imputations: for example, defaulting year-only data to `YYYY-01-01` or year-month data to the first of that month. Every rule must be logged in ETL metadata, preserved in \*\_source\_value columns, and communicated to analysts so sensitivity analyses can account for uncertainty.
+Mapping FHIR resources into OMOP often surfaces partial or approximate temporal metadata. Historical records, patient-reported information, or legacy migrations could capture only a year (`2024`) or a year-month (`2024-05`). FHIR explicitly supports these partial representations through the `date` and `dateTime` datatypes' variable precision [1]. If an exact date is indispensable for OMOP, implementers can adopt controlled imputations: for example, defaulting year-only data to `YYYY-01-01` or year-month data to the first of that month. Every rule must be logged in ETL metadata, preserved in \*\_source\_value columns, and communicated to analysts so sensitivity analyses can account for uncertainty.
 
-Implementers should consider creating a supplementary precision indicator when partial dates are common in source data. While not part of the standard OMOP CDM, a local extension table documenting the original temporal precision for each record can enable analysts to filter or weight observations based on date certainty.
+Implementers ought to consider creating a supplementary precision indicator when partial dates are common in source data. While not part of the standard OMOP CDM, a local extension table documenting the original temporal precision for each record can enable analysts to filter or weight observations based on date certainty.
 
 #### Analytical Implications
 
-Despite its limitations, the OMOP temporal model underpins a wide array of research tasks. Cohort definitions hinge on date fields for inclusion windows; comparative-effectiveness studies rely on day-level ordering of diagnoses, procedures, and prescriptions; and longitudinal trend analyses benefit from the removal of artefactual timestamp variability. Studies demanding minute-by-minute sequencing, such as antimicrobial stewardship audits in intensive-care units, may require either OMOP extensions or alternative data models altogether.
+Despite its limitations, the OMOP temporal model underpins a wide array of research tasks. Cohort definitions hinge on date fields for inclusion windows; comparative-effectiveness studies rely on day-level ordering of diagnoses, procedures, and prescriptions; and longitudinal trend analyses benefit from the removal of artefactual timestamp variability. Studies demanding minute-by-minute sequencing, such as antimicrobial stewardship audits in intensive-care units, could require either OMOP extensions or alternative data models altogether.
 
 #### Recommendations for FHIR-to-OMOP Temporal Mapping
 
@@ -309,7 +300,7 @@ Based on the considerations above, implementers should:
 
 5. **Communicate limitations to analysts** through data documentation that specifies which datetime fields are reliably populated, what imputation rules were applied, and what temporal precision can be assumed for analytical purposes.
 
-Successful implementations embrace OMOP's date-level precision as the guaranteed minimum while remaining transparent about its constraints and leveraging optional datetime fields where source data supports them. ETL developers should codify and publish rules for handling partial dates, analysts should incorporate uncertainty into models, and institutions may elect to store high-resolution timestamps in parallel schemas where local research imperatives demand them. By balancing standardisation with explicit provenance, the OMOP community can continue enabling reproducible observational research without obscuring clinically relevant temporal nuance.
+Successful implementations embrace OMOP's date-level precision as the guaranteed minimum while remaining transparent about its constraints and leveraging optional datetime fields where source data supports them. ETL developers ought to codify and publish rules for handling partial dates, analysts ought to incorporate uncertainty into models, and institutions could elect to store high-resolution timestamps in parallel schemas where local research imperatives demand them. By balancing standardisation with explicit provenance, the OMOP community can continue enabling reproducible observational research without obscuring clinically relevant temporal nuance.
 
 #### Guidance
 

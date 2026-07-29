@@ -2,7 +2,7 @@
 ## Terminology and Code Systems: CVX (Vaccines Administered)
 Aligned with the IPA Immunization profile recommendations, CVX is the reccomended terminology to use for vaccine administration records.  CVX provides a standardized coding system specifically designed for vaccines in healthcare data and is regularly updated to include new vaccines, including COVID-19 vaccines in recent versions.
 
-> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers should verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
+> **NOTE:** The OMOP concept identifiers shown in the examples on this page reflect the OHDSI Standardized Vocabularies as they stood when this guide was written. Concept mappings, Standard concept designations, domain assignments, and display names can change between vocabulary releases. Implementers ought to verify these values against the vocabulary version their transformation is bound to rather than copying them forward.
 
 ### Terminology Flexibility
 While CVX serves as the preferred terminology, we reccomend maintaining flexibility to accommodate alternative coding systems commonly found in real-world data sources. This flexibility ensures that the mapping can effectively handle variations in source data coding practices across different healthcare organizations and systems. The IPA profile's "example binding" for immunization terminology allows for the inclusion of other code systems such as:
