@@ -6,11 +6,11 @@ Here are all of the changes made since Version 1.0.0 for the 2.0.0 ballot. This 
 
 | Summary |
 |------|
-| Introduced a formal conformance framework expressed as numbered, testable statements (`§f2o-NNN`) using RFC 8174 SHALL/SHOULD/MAY language, replacing the informal "should"/"may" prose used throughout the 1.0.0 text. |
+| Introduced a formal conformance framework expressed as numbered, testable statements (`§f2o-NNN`) using RFC 8174 language, replacing the informal "should"/"may" prose used throughout the 1.0.0 text. |
 | Added a new [Actors](actors.html) page defining five conformance actors: FHIR Source System (SRC), Transformation Engine (XFM), Target OMOP Instance (TGT), Terminology Server (TRM), and ETL Implementer (IMP), each carrying a distinct set of obligations. |
 | Added a new [Conformance](conformance.html) page summarizing all conformance statements by category (scope/versioning, source data expectations, identifiers/privacy, code mapping, type concepts, status/intent filtering, temporal precision, granularity/data loss, logical models/StructureMaps, traceability/reproducibility, terminology server interaction, and testing/coverage), with a computable (XML/JSON) representation of the requirements. |
 | Distributed dozens of new `§f2o-NNN` conformance statements across existing pages (Use Cases, Coded Field Mapping, Type Concepts, Status and Intent, Temporal Precision, Identifiers and Privacy, Source Data, Strategies and Best Practices, Technical Artifacts, Terminology Server) so that each topic's obligations are testable and traceable to a single identifier. |
-| Raised the IG's `standards-status` from Informative to Trial-Use and FMM from 2 to 4 in `sushi-config.yaml`; individual background/context pages (Introduction, OMOP CDM, Use Cases) retain an Informative designation while the normative transformation-guidance pages move to Trial-Use. |
+| Raised the IG's `standards-status` from Informative to Trial-Use and FMM from 2 to 4; individual background/context pages (Introduction, OMOP CDM, Use Cases) retain an Informative designation while the normative transformation-guidance pages move to Trial-Use. |
 
 #### Identifiers, De-identification & Privacy
 
@@ -110,7 +110,7 @@ Here are all of the changes made since Version 1.0.0 for the 2.0.0 ballot. This 
 
 | Summary |
 |------|
-| Performed a broad editorial pass replacing ambiguous modal language ("may," "should," "could" used loosely) with more precise terms ("might," "could," "ought to," "SHALL/SHOULD/MAY") throughout nearly every narrative page, in support of introducing the formal conformance framework. |
+| Performed a broad editorial pass replacing ambiguous modal language ("may," "should," "could" used loosely) with more precise terms ("might," "could," "ought to,") throughout nearly every narrative page, in support of introducing the formal conformance framework. |
 | Corrected miscellaneous typos and clarified wording across Coded Field Mapping, CodeableConcept Pattern, Race and Ethnicity, Modifier Extensions, and other pages. |
 | Added a decision-tree diagram illustrating the six-step modifier extension evaluation process to the FHIR Modifier Extensions page, and trimmed its reference list in favor of two authoritative FHIR extensibility references. |
 

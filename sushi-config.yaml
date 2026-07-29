@@ -103,7 +103,7 @@ pages:
     title: Technical Artifacts 
     extension:
       - url: http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status
-        valueCode: informative
+        valueCode: trial-use
   actors.md:
     title: Actors
     extension:

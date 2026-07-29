@@ -209,7 +209,7 @@ There are a number of example concept maps that are included here to facilitate 
 * [Blood Pressure Codes](ConceptMap-BloodPressureCodes.html)
 * [Clinical Findings Codes](ConceptMap-ConditionConcepts.html)
 * [Condition Status Codes](ConceptMap-ConditionStatusConcepts.html)
-* [Encounter Admission Source Codes](ConceptMap-EncounterAdmissionSource.html)
+* [Encounter Admission Source Codes](ConceptMap-EncounterAdmitSource.html)
 * [Encounter Class Codes](ConceptMap-EncounterClass.html)
 * [Encounter Discharge Disposition Codes](ConceptMap-EncounterDischargeDisposition.html)
 * [Immunization Information Source Codes](ConceptMap-ImmunizationSource.html)
