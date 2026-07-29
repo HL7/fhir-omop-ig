@@ -495,9 +495,8 @@ A server that hosts the OHDSI Vocabularies and passes the OMOP test cases has ob
 
 #### Guidance
 
-Where a Transformation Engine resolves concepts through a FHIR terminology server, it SHALL do so through the standard `ConceptMap/$translate` and `CodeSystem/$lookup` operations rather than through server-specific interfaces, so that a transformation is not bound to a particular server implementation. (f2o-110)
+§f2o-110^xfm,trm^terminology:Where a Transformation Engine resolves concepts through a FHIR terminology server, it **SHALL** do so through the standard `ConceptMap/$translate` and `CodeSystem/$lookup` operations rather than through server-specific interfaces, so that a transformation is not bound to a particular server implementation.§
 
-A Transformation Engine SHOULD cache terminology server responses, and where it does so SHALL bind the cache invalidation policy to the OHDSI Vocabulary version, such that entries computed under one vocabulary version are not read under another. (f2o-111)
+§f2o-111^xfm,trm^terminology:A Transformation Engine **SHOULD** cache terminology server responses, and where it does so **SHALL** bind the cache invalidation policy to the OHDSI Vocabulary version, such that entries computed under one vocabulary version are not read under another.§
 
-A Terminology Server claiming conformance to this guide SHALL expose the OHDSI Standardized Vocabularies as FHIR CodeSystem and ConceptMap resources, and SHALL report the vocabulary release it is serving in the `version` element of its responses. (f2o-112)
-
+§f2o-112^trm,imp^terminology,codes:A Terminology Server claiming conformance to this guide **SHALL** expose the OHDSI Standardized Vocabularies as FHIR CodeSystem and ConceptMap resources, and **SHALL** report the vocabulary release it is serving in the `version` element of its responses.§

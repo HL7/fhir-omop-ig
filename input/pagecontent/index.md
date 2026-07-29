@@ -65,11 +65,11 @@ Although this implementation guide has been developed and tested against FHIR R5
 
 #### Guidance
 
-An Implementer SHALL declare the FHIR version or versions of the source data that the transformation is configured to consume. (f2o-002)
+§f2o-002^xfm,imp^data:An Implementer **SHALL** declare the FHIR version or versions of the source data that the transformation is configured to consume.§
 
 ### How to Read the Conformance Language in This Guide
 
-This guide uses a small set of key words to signal how binding a given statement is. When these words appear in capital letters, they carry the specific meanings defined by the IETF in RFC 2119 [3] as clarified by RFC 8174 [4], which together form IETF Best Current Practice 14. The key words are MUST, MUST NOT, REQUIRED, SHALL, SHALL NOT, SHOULD, SHOULD NOT, RECOMMENDED, NOT RECOMMENDED, MAY, and OPTIONAL.
+This guide uses a small set of key words to signal how binding a given statement is. When these words appear in capital letters, they carry the specific meanings defined by the IETF in RFC 2119 [3] as clarified by RFC 8174 [4], which together form IETF Best Current Practice 14. §f2o-005^src,xfm,tgt,trm,imp:The key words are **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**, **NOT RECOMMENDED**, **MAY**, and **OPTIONAL**.§
 
 In brief, and for readers who do not work with IETF specifications day to day: SHALL and MUST mark a strict requirement; an implementation that does not meet it does not conform. SHOULD and RECOMMENDED mark a strong recommendation; there may be valid reasons to do otherwise in particular circumstances, but the full implications should be understood and weighed before choosing a different course. MAY and OPTIONAL mark something genuinely permitted but not required, with no implication either way.
 

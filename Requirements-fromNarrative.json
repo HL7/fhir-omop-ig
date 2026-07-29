@@ -1,0 +1,1665 @@
+{
+  "resourceType" : "Requirements",
+  "id" : "fromNarrative",
+  "language" : "en",
+  "extension" : [{
+    "url" : "http://hl7.org/fhir/StructureDefinition/structuredefinition-wg",
+    "valueCode" : "brr"
+  },
+  {
+    "url" : "http://hl7.org/fhir/StructureDefinition/structuredefinition-fmm",
+    "valueInteger" : 4,
+    "_valueInteger" : {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom",
+        "valueCanonical" : "http://hl7.org/fhir/uv/omop/ImplementationGuide/hl7.fhir.uv.omop"
+      }]
+    }
+  },
+  {
+    "url" : "http://hl7.org/fhir/StructureDefinition/structuredefinition-standards-status",
+    "valueCode" : "trial-use",
+    "_valueCode" : {
+      "extension" : [{
+        "url" : "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom",
+        "valueCanonical" : "http://hl7.org/fhir/uv/omop/ImplementationGuide/hl7.fhir.uv.omop"
+      }]
+    }
+  }],
+  "url" : "http://hl7.org/fhir/uv/omop/Requirements/fromNarrative",
+  "identifier" : [{
+    "system" : "urn:ietf:rfc:3986",
+    "value" : "urn:oid:2.16.840.1.113883.4.642.40.77.36.1"
+  }],
+  "version" : "2.0.0-ballot",
+  "name" : "FromNarrative",
+  "title" : "Narrative Conformance Statements",
+  "status" : "active",
+  "experimental" : false,
+  "date" : "2026-07-28T17:57:33-06:00",
+  "publisher" : "HL7 International / Biomedical Research and Regulation",
+  "contact" : [{
+    "name" : "HL7 International / Biomedical Research and Regulation",
+    "telecom" : [{
+      "system" : "url",
+      "value" : "http://www.hl7.org/Special/committees/rcrim"
+    }]
+  }],
+  "description" : "Conformance statements found throughout the narrative of the IG consolidated into this computable resource for traceability purposes",
+  "jurisdiction" : [{
+    "coding" : [{
+      "system" : "http://unstats.un.org/unsd/methods/m49/m49.htm",
+      "code" : "001",
+      "display" : "World"
+    }]
+  }],
+  "actor" : ["http://hl7.org/fhir/uv/omop/ActorDefinition/src",
+  "http://hl7.org/fhir/uv/omop/ActorDefinition/tgt",
+  "http://hl7.org/fhir/uv/omop/ActorDefinition/xfm",
+  "http://hl7.org/fhir/uv/omop/ActorDefinition/trm",
+  "http://hl7.org/fhir/uv/omop/ActorDefinition/imp"],
+  "_actor" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-actorkey",
+      "valueId" : "src"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-actorkey",
+      "valueId" : "tgt"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-actorkey",
+      "valueId" : "xfm"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-actorkey",
+      "valueId" : "trm"
+    }]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-actorkey",
+      "valueId" : "imp"
+    }]
+  }],
+  "statement" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot",
+      "valueBoolean" : true
+    }],
+    "key" : "1",
+    "conformance" : ["SHALL"],
+    "requirement" : "f2o-070^xfm,tgt^temporalA Transformation Engine **SHALL** populate the required OMOP `*_date` field for every clinical event record it writes, and a Target OMOP Instance **SHALL** NOT contain a clinical event record with an unpopulated required date field. This applies to the date fields the CDM marks as required; end-date fields that the CDM permits to be NULL are not within its scope."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "concept",
+          "display" : "concept"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "scope",
+          "display" : "scope"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-001",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** produce output conforming to the OMOP Common Data Model version 5.4, and a Target OMOP Instance **SHALL** conform to the OMOP CDM v5.4 schema."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "data",
+          "display" : "data"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-002",
+    "conformance" : ["SHALL"],
+    "requirement" : "An Implementer **SHALL** declare the FHIR version or versions of the source data that the transformation is configured to consume."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "data",
+          "display" : "data"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-003",
+    "conformance" : ["SHOULD"],
+    "requirement" : "A Transformation Engine and Implementer **SHOULD** publish a machine-readable manifest declaring which input FHIR profiles the transformation supports and which OMOP tables it populates from them. This manifest makes machine-consumable, and connects, the input-profile declaration described for accepted FHIR profiles and the table-population disclosure described for the Target OMOP Instance. The format of the manifest is not defined in this version of the guide; publishing a manifest in an engine-specific format is nonetheless encouraged as a signal of capability and as preparation for a future version that defines a common format."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "scope",
+          "display" : "scope"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-004",
+    "conformance" : ["SHALL",
+    "MAY"],
+    "requirement" : "An Implementer **SHALL** declare which use cases the transformation supports. The declared set **MAY** include any of the use cases described on this page, other use cases not described here, or a stated combination, so that the scope of a given FHIR-to-OMOP transformation is stated explicitly rather than inferred."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot",
+      "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "src"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "trm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-005",
+    "conformance" : ["SHALL",
+    "SHOULD-NOT",
+    "SHOULD",
+    "MAY"],
+    "requirement" : "The key words are **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**, **NOT RECOMMENDED**, **MAY**, and **OPTIONAL**."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "data",
+          "display" : "data"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "src"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-010",
+    "conformance" : ["SHALL"],
+    "requirement" : "An Implementer **SHALL** declare which input FHIR profiles the transformation accepts. The declared set may be any FHIR profiles the transformation is built to consume, whether the International Patient Access and US Core profiles this guide curated its maps against, other published profiles, or base FHIR resources conforming to no profile beyond the resource definitions."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot",
+      "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "data",
+          "display" : "data"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    }],
+    "key" : "f2o-011",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** rely only on the elements guaranteed by what it has declared it accepts, whether a profile or a base resource definition, and **SHALL** NOT assume the presence of an element that a conformant source is permitted to omit. This is a constraint on assumptions about optional content, not an obligation to handle content beyond the transformation's declared scope."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "data",
+          "display" : "data"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-012",
+    "conformance" : ["SHOULD"],
+    "requirement" : "A Transformation Engine **SHOULD** validate incoming resources against the profiles the transformation declares it accepts, and **SHOULD** handle a validation failure by a documented disposition, rejecting or quarantining the resource rather than admitting it unvalidated. The disposition of failed input **SHOULD** be recorded so that the volume and reasons for failure are visible to operators and to consumers of the target."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "data",
+          "display" : "data"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    }],
+    "key" : "f2o-013",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** support ingestion of both singleton resources and Bundles, since both forms are produced by conformant FHIR servers under ordinary retrieval patterns and a transformation restricted to one form cannot consume the other without an intermediary. Where a Bundle is the source unit, its Bundle.type **SHALL** be one of document, collection, or message."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "data",
+          "display" : "data"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "src"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    }],
+    "key" : "f2o-014",
+    "conformance" : ["MAY"],
+    "requirement" : "A Transformation Engine **MAY** support ingestion of Bulk Data NDJSON exports; this is not required, because Bulk Data Access is itself an optional capability for FHIR servers and not all data holders expose it, but implementers building population-scale OMOP instances should expect to encounter it."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot",
+      "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "identifier",
+          "display" : "identifier"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-020",
+    "requirement" : "A Transformation Engine **SHALL** NOT store FHIR business identifier values (`Resource.identifier`) in OMOP `_source_value` fields, and a Target OMOP Instance **SHALL** NOT contain business identifier values in those fields."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot",
+      "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "identifier",
+          "display" : "identifier"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-021",
+    "requirement" : "A Transformation Engine **SHALL** NOT derive OMOP integer primary keys from FHIR business identifiers (`Resource.identifier`). Where primary keys are derived from FHIR source data rather than generated independently, the FHIR logical identifier (`Resource.id` combined with the resource type) is the appropriate source."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot",
+      "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "identifier",
+          "display" : "identifier"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-022",
+    "requirement" : "A Target OMOP Instance **SHALL** NOT contain patient identifiable information, including names, addresses, medical record numbers, and contact details, in any field."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "identifier",
+          "display" : "identifier"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-023",
+    "conformance" : ["SHOULD"],
+    "requirement" : "An Implementer **SHOULD** maintain an external mapping table linking OMOP-generated identifiers to the originating FHIR logical identifier (`[ResourceType]/[Resource.id]`) where traceability from OMOP records back to source resources is required."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "identifier",
+          "display" : "identifier"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-024",
+    "conformance" : ["SHALL"],
+    "requirement" : "Where an external mapping table is maintained, it **SHALL** reside outside the OMOP schema and **SHALL** be governed by access controls distinct from those governing the OMOP instance itself."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "identifier",
+          "display" : "identifier"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-025",
+    "conformance" : ["SHALL"],
+    "requirement" : "An Implementer **SHALL** document a privacy and regulatory assessment for each identifier system encountered in the source data, identifying the framework applied, whether HIPAA Safe Harbor, Expert Determination, GDPR, or an equivalent, and the determination reached."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "identifier",
+          "display" : "identifier"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-026",
+    "conformance" : ["SHALL"],
+    "requirement" : "An Implementer **SHALL** document, for each identifier system encountered, which handling strategy was applied, whether surrogate key mapping, external storage, or exclusion, and record that determination in the ETL documentation."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "trm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-030",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** resolve concept assignments against the OHDSI Standardized Vocabularies, verifying concept existence, Standard concept status, and domain assignment for each source code it maps."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "identifier",
+          "display" : "identifier"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-031",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** populate OMOP `*_concept_id` fields only with Standard concepts, and **SHALL** record a non-Standard source concept in the companion `*_source_concept_id` field rather than in the `*_concept_id` field."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "dataloss",
+          "display" : "dataloss"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-032",
+    "conformance" : ["SHALL"],
+    "requirement" : "Where a source code has no Standard OMOP concept and no custom concept is created for it, a Transformation Engine **SHALL** populate the corresponding `*_concept_id` field with 0."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "dataloss",
+          "display" : "dataloss"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-033",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** preserve the original source code verbatim in the companion `*_source_value` field."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "status",
+          "display" : "status"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "dataloss",
+          "display" : "dataloss"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-034",
+    "conformance" : ["SHALL"],
+    "requirement" : "Where multiple codes are present for a single clinical idea, a Transformation Engine **SHALL** apply the Code Prioritization Framework described on this page, and an Implementer **SHALL** document any departure from it."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "status",
+          "display" : "status"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    }],
+    "key" : "f2o-035",
+    "conformance" : ["SHALL"],
+    "requirement" : "Where a FHIR coding array carries explicit primary or preferred designations, a Transformation Engine **SHALL** honor them as tiebreakers within the prioritization hierarchy."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "status",
+          "display" : "status"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "dataloss",
+          "display" : "dataloss"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    }],
+    "key" : "f2o-036",
+    "conformance" : ["SHALL"],
+    "requirement" : "Where a coding array carries both a parent concept and a more specific child concept from the same code system, a Transformation Engine **SHALL** select the more specific concept."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "concept",
+          "display" : "concept"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    }],
+    "key" : "f2o-037",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** assign the OMOP domain from the `domain_id` of the resolved concept rather than from the FHIR resource type, and a Target OMOP Instance **SHALL** store each clinical record in the domain table its concept's `domain_id` indicates."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "concept",
+          "display" : "concept"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "trm"
+    }],
+    "key" : "f2o-038",
+    "conformance" : ["SHALL",
+    "SHOULD"],
+    "requirement" : "A Transformation Engine **SHOULD** resolve concepts through the `ConceptMap/$translate` and `CodeSystem/$lookup` operations of a FHIR terminology server rather than through a crosswalk hard-coded into the transformation. Where a static crosswalk is used instead, an Implementer **SHALL** record its provenance and the vocabulary release from which it was derived."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "concept",
+          "display" : "concept"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-039",
+    "conformance" : ["SHALL"],
+    "requirement" : "Custom concepts added to a local OMOP instance **SHALL** use `concept_id` values at or above 2,000,000,000."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot",
+      "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "concept",
+          "display" : "concept"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "status",
+          "display" : "status"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-050",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** populate every OMOP `*_type_concept_id` field with a Standard concept from the Type Concept domain, and a Target OMOP Instance **SHALL** NOT contain a clinical record with an unpopulated or non-Standard type concept."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "concept",
+          "display" : "concept"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "data",
+          "display" : "data"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    }],
+    "key" : "f2o-051",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** derive the type concept from the FHIR resource type together with the category and context elements the resource carries, rather than from the resource type alone."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "concept",
+          "display" : "concept"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "dataloss",
+          "display" : "dataloss"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    }],
+    "key" : "f2o-052",
+    "conformance" : ["SHALL"],
+    "requirement" : "Where the source does not carry sufficient context to identify a specific type concept, a Transformation Engine **SHALL** select the most general applicable Type Concept rather than assigning a specific one by inference."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot",
+      "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "status",
+          "display" : "status"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "dataloss",
+          "display" : "dataloss"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-060",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** evaluate status and intent elements and **SHALL** NOT transform resources describing events that were not realized, including those cancelled, proposed, planned, not done, stopped, or entered in error, into OMOP clinical event tables."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "status",
+          "display" : "status"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-061",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine and Implementer **SHALL** apply consistent filter rules across all incremental loads into a given OMOP instance, and **SHALL** record any change to those rules, with its effective date, in the ETL documentation."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "status",
+          "display" : "status"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-062",
+    "conformance" : ["SHOULD"],
+    "requirement" : "A Transformation Engine **SHOULD** emit a run-level report of resources excluded by filter, recording counts by resource type and exclusion reason."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementshallnot",
+      "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "dataloss",
+          "display" : "dataloss"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    }],
+    "key" : "f2o-063",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** evaluate FHIR modifier elements and **SHALL** NOT silently transform a resource whose modifier elements alter its clinical interpretation, nor silently emit a concept_id of zero when a terminology lookup fails without recording the failure."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "temporal",
+          "display" : "temporal"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-071",
+    "conformance" : ["SHALL"],
+    "requirement" : "Where a required date is derived by imputation from a partial or absent source value, a Transformation Engine **SHALL** record the imputation by means of an appropriate type concept, and an Implementer **SHALL** document the imputation rules applied and their effective scope in the ETL documentation."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "temporal",
+          "display" : "temporal"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-072",
+    "conformance" : ["SHALL"],
+    "requirement" : "Where a FHIR source value carries a time zone offset and the corresponding OMOP `*_datetime` field is populated, a Transformation Engine **SHALL** convert the value to a single time zone applied consistently across the instance, and an Implementer **SHALL** state that time zone in the ETL documentation. The OMOP CDM provides no standard field for a time zone offset, so this guide does not require the original offset to be preserved."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "temporal",
+          "display" : "temporal"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-073",
+    "conformance" : ["SHOULD"],
+    "requirement" : "A Transformation Engine **SHOULD** populate the optional OMOP `*_datetime` fields where the FHIR source provides sub-day precision, rather than discarding that precision by populating only the required date field."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "dataloss",
+          "display" : "dataloss"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-080",
+    "conformance" : ["SHALL"],
+    "requirement" : "An Implementer **SHALL** document the points at which the transformation loses information because FHIR granularity exceeds what the OMOP CDM can represent, and **SHALL** make that documentation available to consumers of the resulting OMOP data."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "dataloss",
+          "display" : "dataloss"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-081",
+    "conformance" : ["SHOULD"],
+    "requirement" : "Where a FHIR element carries clinically meaningful content that has no representable target in the OMOP domain tables, a Transformation Engine **SHOULD** emit the residual content to the observation or note domain with a type concept identifying its origin, rather than discarding it silently."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "dataloss",
+          "display" : "dataloss"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-082",
+    "conformance" : ["SHALL"],
+    "requirement" : "An Implementer **SHALL** produce and maintain ETL documentation recording mapping decisions, prioritization choices, pre-processing and manual interventions performed, and the known limitations of the transformation."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "models",
+          "display" : "models"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-090",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Target OMOP Instance **SHALL** conform to the logical model this guide defines for each OMOP table it populates."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "models",
+          "display" : "models"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-091",
+    "conformance" : ["MAY"],
+    "requirement" : "A Transformation Engine **MAY** execute the StructureMaps published by this guide, or **MAY** implement equivalent transformation logic in another technology."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-092",
+    "conformance" : ["SHALL"],
+    "requirement" : "Where a transformation departs from the logic expressed by a published StructureMap, an Implementer **SHALL** record the departure and its rationale in the ETL documentation."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "trm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-093",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** resolve code-to-concept translation against the OHDSI Standardized Vocabularies. Where a fixed set of mappings prepared in advance is used instead of resolving against the vocabularies at transformation time, an Implementer **SHALL** identify that set and the vocabulary release from which it was derived."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-100",
+    "conformance" : ["SHOULD"],
+    "requirement" : "An Implementer **SHOULD** maintain a traceability path from each clinical record in the Target OMOP Instance back to the FHIR resource that produced it."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-102",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** record, for each ETL run, the OMOP CDM version targeted, the OHDSI Vocabulary release used, the version of this Implementation Guide followed, the version of the transformation software, and the time of execution."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "data",
+          "display" : "data"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "status",
+          "display" : "status"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    }],
+    "key" : "f2o-103",
+    "conformance" : ["SHOULD"],
+    "requirement" : "A Transformation Engine **SHOULD** support idempotent re-processing of a given source snapshot, such that re-running a load does not duplicate clinical event records in the target."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "terminology",
+          "display" : "terminology"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "trm"
+    }],
+    "key" : "f2o-110",
+    "conformance" : ["SHALL"],
+    "requirement" : "Where a Transformation Engine resolves concepts through a FHIR terminology server, it **SHALL** do so through the standard `ConceptMap/$translate` and `CodeSystem/$lookup` operations rather than through server-specific interfaces, so that a transformation is not bound to a particular server implementation."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "terminology",
+          "display" : "terminology"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "trm"
+    }],
+    "key" : "f2o-111",
+    "conformance" : ["SHALL",
+    "SHOULD"],
+    "requirement" : "A Transformation Engine **SHOULD** cache terminology server responses, and where it does so **SHALL** bind the cache invalidation policy to the OHDSI Vocabulary version, such that entries computed under one vocabulary version are not read under another."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "terminology",
+          "display" : "terminology"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "codes",
+          "display" : "codes"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "trm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-112",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Terminology Server claiming conformance to this guide **SHALL** expose the OHDSI Standardized Vocabularies as FHIR CodeSystem and ConceptMap resources, and **SHALL** report the vocabulary release it is serving in the `version` element of its responses."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "data",
+          "display" : "data"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-120",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Transformation Engine **SHALL** pass the reference test suite published by this guide for the transformations it claims to support. The suite is versioned independently of this guide, and a conformance claim identifies the suite version against which it was established."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-121",
+    "conformance" : ["SHOULD"],
+    "requirement" : "An Implementer **SHOULD** publish the results of the reference test suite, identifying the version of this Implementation Guide and the OHDSI Vocabulary release under which the run was performed."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-122",
+    "conformance" : ["SHALL"],
+    "requirement" : "A Target OMOP Instance **SHALL** disclose which OMOP tables it populates fully, which it populates partially, and which it leaves unpopulated."
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "identifier",
+          "display" : "identifier"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
+      "valueCodeableConcept" : {
+        "coding" : [{
+          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
+          "code" : "traceability",
+          "display" : "traceability"
+        }]
+      }
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    }],
+    "key" : "f2o-132",
+    "conformance" : ["SHALL"],
+    "requirement" : "An Implementer **SHALL** document the legal instrument governing access to the source FHIR data, whether a business associate agreement, an IRB approval or waiver, a data use agreement, or an equivalent, together with any constraint it places on identifier retention, linkage, or re-identification."
+  }]
+}

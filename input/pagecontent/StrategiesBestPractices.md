@@ -30,7 +30,7 @@ Where full idempotency is impractical, the transformation should at minimum be a
 
 #### Guidance
 
-A Transformation Engine SHOULD support idempotent re-processing of a given source snapshot, such that re-running a load does not duplicate clinical event records in the target. (f2o-103)
+§f2o-103^xfm,tgt^data,status:A Transformation Engine **SHOULD** support idempotent re-processing of a given source snapshot, such that re-running a load does not duplicate clinical event records in the target.§
 
 ### Granularity of FHIR Data vs. OMOP Standardization
 FHIR resources can contain detailed data, such as drug dosage adjustments or specific intervals for medication administration, which might not have direct counterparts in OMOP’s more generalized tables. An implication for data transformation is that this disparity means some FHIR data may be lost or generalized in the transformation process to OMOP.  This loss could impact certain use cases. When developing a data transformation from FHIR to OMOP, there is a need to identify and document potential data losses resulting from a mismatch in source to target data granularity to inform data users about impacts to, and potential limitations this may cause in analyses.
@@ -71,22 +71,12 @@ For example, a medication history reported directly by a patient may not carry t
 
 #### Guidance
 
-An Implementer SHALL document the points at which the transformation loses information because FHIR
-granularity exceeds what the OMOP CDM can represent, and SHALL make that documentation available to
-consumers of the resulting OMOP data. (f2o-080)
+§f2o-080^xfm,imp^dataloss,traceability:An Implementer **SHALL** document the points at which the transformation loses information because FHIR granularity exceeds what the OMOP CDM can represent, and **SHALL** make that documentation available to consumers of the resulting OMOP data.§
 
-Where a FHIR element carries clinically meaningful content that has no representable target in the
-OMOP domain tables, a Transformation Engine SHOULD emit the residual content to the observation or
-note domain with a type concept identifying its origin, rather than discarding it silently.
-(f2o-081)
+§f2o-081^xfm,tgt^dataloss,traceability:Where a FHIR element carries clinically meaningful content that has no representable target in the OMOP domain tables, a Transformation Engine **SHOULD** emit the residual content to the observation or note domain with a type concept identifying its origin, rather than discarding it silently.§
 
-An Implementer SHALL produce and maintain ETL documentation recording mapping decisions,
-prioritization choices, pre-processing and manual interventions performed, and the known limitations
-of the transformation. (f2o-082)
+§f2o-082^xfm,imp^dataloss,traceability:An Implementer **SHALL** produce and maintain ETL documentation recording mapping decisions, prioritization choices, pre-processing and manual interventions performed, and the known limitations of the transformation.§
 
-An Implementer SHOULD maintain a traceability path from each clinical record in the Target OMOP
-Instance back to the FHIR resource that produced it. (f2o-100)
+§f2o-100^xfm,tgt,imp^traceability:An Implementer **SHOULD** maintain a traceability path from each clinical record in the Target OMOP Instance back to the FHIR resource that produced it.§
 
-A Transformation Engine SHALL record, for each ETL run, the OMOP CDM version targeted, the OHDSI
-Vocabulary release used, the version of this Implementation Guide followed, the version of the
-transformation software, and the time of execution. (f2o-102, f2o-040)
+§f2o-102^xfm,tgt,imp^traceability: A Transformation Engine **SHALL** record, for each ETL run, the OMOP CDM version targeted, the OHDSI Vocabulary release used, the version of this Implementation Guide followed, the version of the transformation software, and the time of execution.§

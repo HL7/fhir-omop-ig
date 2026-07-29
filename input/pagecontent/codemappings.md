@@ -493,54 +493,30 @@ The patterns described in this section address the selection of a single preferr
 
 ### Guidance
 
-A Transformation Engine SHALL resolve concept assignments against the OHDSI Standardized
-Vocabularies, verifying concept existence, Standard concept status, and domain assignment for each
-source code it maps. (f2o-030)
+§f2o-030^xfm,tgt,trm,imp^codes,traceability:A Transformation Engine **SHALL** resolve concept assignments against the OHDSI Standardized Vocabularies, verifying concept existence, Standard concept status, and domain assignment for each source code it maps.§
 
-A Transformation Engine SHALL populate OMOP `*_concept_id` fields only with Standard concepts, and
-SHALL record a non-Standard source concept in the companion `*_source_concept_id` field rather than
-in the `*_concept_id` field. (f2o-031)
+§f2o-031^xfm,tgt^identifier:A Transformation Engine **SHALL** populate OMOP `*_concept_id` fields only with Standard concepts, and **SHALL** record a non-Standard source concept in the companion `*_source_concept_id` field rather than in the `*_concept_id` field.§
 
-Where a source code has no Standard OMOP concept and no custom concept is created for it, a
-Transformation Engine SHALL populate the corresponding `*_concept_id` field with 0. (f2o-032)
+§f2o-032^xfm,tgt^codes,dataloss:Where a source code has no Standard OMOP concept and no custom concept is created for it, a Transformation Engine **SHALL** populate the corresponding `*_concept_id` field with 0.§
 
-A Transformation Engine SHALL preserve the original source code verbatim in the companion
-`*_source_value` field. (f2o-033)
+§f2o-033^xfm,tgt^codes,dataloss:A Transformation Engine **SHALL** preserve the original source code verbatim in the companion `*_source_value` field.§
 
-Where multiple codes are present for a single clinical idea, a Transformation Engine SHALL apply the
-Code Prioritization Framework described on this page, and an Implementer SHALL document any
-departure from it. (f2o-034)
+§f2o-034^xfm,imp^codes,status,dataloss:Where multiple codes are present for a single clinical idea, a Transformation Engine **SHALL** apply the Code Prioritization Framework described on this page, and an Implementer **SHALL** document any departure from it.§
 
-Where a FHIR coding array carries explicit primary or preferred designations, a Transformation
-Engine SHALL honor them as tiebreakers within the prioritization hierarchy. (f2o-035)
+§f2o-035^xfm^codes,status:Where a FHIR coding array carries explicit primary or preferred designations, a Transformation Engine **SHALL** honor them as tiebreakers within the prioritization hierarchy.§
 
-Where a coding array carries both a parent concept and a more specific child concept from the same
-code system, a Transformation Engine SHALL select the more specific concept. (f2o-036)
+§f2o-036^xfm^codes,status,dataloss:Where a coding array carries both a parent concept and a more specific child concept from the same code system, a Transformation Engine **SHALL** select the more specific concept.§
 
-A Transformation Engine SHALL assign the OMOP domain from the `domain_id` of the resolved concept
-rather than from the FHIR resource type, and a Target OMOP Instance SHALL store each clinical
-record in the domain table its concept's `domain_id` indicates. (f2o-037)
+§f2o-037^xfm^codes,concept:A Transformation Engine **SHALL** assign the OMOP domain from the `domain_id` of the resolved concept rather than from the FHIR resource type, and a Target OMOP Instance **SHALL** store each clinical record in the domain table its concept's `domain_id` indicates.§
 
-A Transformation Engine SHOULD resolve concepts through the `ConceptMap/$translate` and
-`CodeSystem/$lookup` operations of a FHIR terminology server rather than through a crosswalk
-hard-coded into the transformation. Where a static crosswalk is used instead, an Implementer SHALL
-record its provenance and the vocabulary release from which it was derived. (f2o-038)
+§f2o-038^xfm,trm^codes,concept:A Transformation Engine **SHOULD** resolve concepts through the `ConceptMap/$translate` and `CodeSystem/$lookup` operations of a FHIR terminology server rather than through a crosswalk hard-coded into the transformation. Where a static crosswalk is used instead, an Implementer **SHALL** record its provenance and the vocabulary release from which it was derived.§
 
-Custom concepts added to a local OMOP instance SHALL use `concept_id` values at or above
-2,000,000,000. (f2o-039)
+§f2o-039^xfm,tgt^concept:Custom concepts added to a local OMOP instance **SHALL** use `concept_id` values at or above 2,000,000,000.§
 
-A Transformation Engine SHALL populate every OMOP `*_type_concept_id` field with a Standard concept
-from the Type Concept domain, and a Target OMOP Instance SHALL NOT contain a clinical record with an
-unpopulated or non-Standard type concept. (f2o-050)
+§f2o-050^xfm,tgt^concept,status:A Transformation Engine **SHALL** populate every OMOP `*_type_concept_id` field with a Standard concept from the Type Concept domain, and a Target OMOP Instance **SHALL** NOT contain a clinical record with an unpopulated or non-Standard type concept.§
 
-A Transformation Engine SHALL derive the type concept from the FHIR resource type together with the
-category and context elements the resource carries, rather than from the resource type alone.
-(f2o-051)
+§f2o-051^xfm^concept,data:A Transformation Engine **SHALL** derive the type concept from the FHIR resource type together with the category and context elements the resource carries, rather than from the resource type alone.§
 
-Where the source does not carry sufficient context to identify a specific type concept, a
-Transformation Engine SHALL select the most general applicable Type Concept rather than assigning a
-specific one by inference. (f2o-052)
+§f2o-052^xfm^codes,concept,dataloss:Where the source does not carry sufficient context to identify a specific type concept, a Transformation Engine **SHALL** select the most general applicable Type Concept rather than assigning a specific one by inference.§
 
-Where a source record is patient-reported, a Transformation Engine SHALL assign a type concept
-distinguishing it from clinician-recorded data, and a Target OMOP Instance SHALL preserve that
-distinction. (f2o-053)
+§f2o-053^xfm,tgt,imp^concep,traceability:Where a source record is patient-reported, a Transformation Engine **SHALL** assign a type concept distinguishing it from clinician-recorded data, and a Target OMOP Instance **SHALL** preserve that distinction.§

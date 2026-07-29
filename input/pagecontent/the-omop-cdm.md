@@ -30,7 +30,7 @@ This Implementation Guide utilizes OMOP CDM v5.4. Development of v6.0 was not ca
 
 #### Guidance
 
-A Transformation Engine SHALL produce output conforming to the OMOP Common Data Model version 5.4, and a Target OMOP Instance SHALL conform to the OMOP CDM v5.4 schema. (f2o-001)
+§f2o-001^xfm,tgt,imp^concept,scope:A Transformation Engine **SHALL** produce output conforming to the OMOP Common Data Model version 5.4, and a Target OMOP Instance **SHALL** conform to the OMOP CDM v5.4 schema.§
 
 ### Background on OHDSI
 

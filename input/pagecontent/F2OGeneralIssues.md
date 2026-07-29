@@ -108,13 +108,13 @@ This report is strongly advised rather than required, and the reason for the dis
 
 #### Guidance
 
-A Transformation Engine SHALL evaluate status and intent elements and SHALL NOT transform resources describing events that were not realized, including those cancelled, proposed, planned, not done, stopped, or entered in error, into OMOP clinical event tables. (f2o-060)
+§f2o-060^xfm,imp^status,dataloss:A Transformation Engine **SHALL** evaluate status and intent elements and **SHALL** NOT transform resources describing events that were not realized, including those cancelled, proposed, planned, not done, stopped, or entered in error, into OMOP clinical event tables.§
 
-A Transformation Engine and Implementer SHALL apply consistent filter rules across all incremental loads into a given OMOP instance, and SHALL record any change to those rules, with its effective date, in the ETL documentation. (f2o-061)
+§f2o-061^xfm,imp^status:A Transformation Engine and Implementer **SHALL** apply consistent filter rules across all incremental loads into a given OMOP instance, and **SHALL** record any change to those rules, with its effective date, in the ETL documentation.§
 
-A Transformation Engine SHOULD emit a run-level report of resources excluded by filter, recording counts by resource type and exclusion reason. (f2o-062)
+§f2o-062^xfm,imp^status:A Transformation Engine **SHOULD** emit a run-level report of resources excluded by filter, recording counts by resource type and exclusion reason.§
 
-A Transformation Engine SHALL evaluate FHIR modifier elements and SHALL NOT silently transform a resource whose modifier elements alter its clinical interpretation, nor silently emit a concept_id of zero when a terminology lookup fails without recording the failure. (f2o-063)
+§f2o-063^xfm^dataloss:A Transformation Engine **SHALL** evaluate FHIR modifier elements and **SHALL** NOT silently transform a resource whose modifier elements alter its clinical interpretation, nor silently emit a concept_id of zero when a terminology lookup fails without recording the failure.§
 
 ### Data Completeness, Missingness & Integrity
 Handling incomplete or partial data presents an additional challenge in transforming FHIR resources to OMOP. FHIR records are often incomplete for several reasons: the source electronic health record (EHR) itself may contain partial entries, or the FHIR resources may only include a subset of available data tailored to the specific purpose of the resource. In contrast, the OMOP data model assumes that critical fields such as dates, person references, and coded concepts are consistently populated to support standardized analysis.
@@ -309,25 +309,13 @@ Successful implementations embrace OMOP's date-level precision as the guaranteed
 
 #### Guidance
 
-A Transformation Engine SHALL populate the required OMOP `*_date` field for every clinical event
-record it writes, and a Target OMOP Instance SHALL NOT contain a clinical event record with an
-unpopulated required date field. This applies to the date fields the CDM marks as required; end-date
-fields that the CDM permits to be NULL are not within its scope. (f2o-070)
+§f2o-070^xfm,tgt^temporalA Transformation Engine **SHALL** populate the required OMOP `*_date` field for every clinical event record it writes, and a Target OMOP Instance **SHALL** NOT contain a clinical event record with an unpopulated required date field. This applies to the date fields the CDM marks as required; end-date fields that the CDM permits to be NULL are not within its scope.§
 
-Where a required date is derived by imputation from a partial or absent source value, a
-Transformation Engine SHALL record the imputation by means of an appropriate type concept, and an
-Implementer SHALL document the imputation rules applied and their effective scope in the ETL
-documentation. (f2o-071)
+§f2o-071^xfm,imp^temporal:Where a required date is derived by imputation from a partial or absent source value, a Transformation Engine **SHALL** record the imputation by means of an appropriate type concept, and an Implementer **SHALL** document the imputation rules applied and their effective scope in the ETL documentation.§
 
-Where a FHIR source value carries a time zone offset and the corresponding OMOP `*_datetime` field
-is populated, a Transformation Engine SHALL convert the value to a single time zone applied
-consistently across the instance, and an Implementer SHALL state that time zone in the ETL
-documentation. The OMOP CDM provides no standard field for a time zone offset, so this guide does
-not require the original offset to be preserved. (f2o-072)
+§f2o-072^xfm,tgt^temporal:Where a FHIR source value carries a time zone offset and the corresponding OMOP `*_datetime` field is populated, a Transformation Engine **SHALL** convert the value to a single time zone applied consistently across the instance, and an Implementer **SHALL** state that time zone in the ETL documentation. The OMOP CDM provides no standard field for a time zone offset, so this guide does not require the original offset to be preserved.§
 
-A Transformation Engine SHOULD populate the optional OMOP `*_datetime` fields where the FHIR source
-provides sub-day precision, rather than discarding that precision by populating only the required
-date field. (f2o-073)
+§f2o-073^xfm,tgt^temporal:A Transformation Engine **SHOULD** populate the optional OMOP `*_datetime` fields where the FHIR source provides sub-day precision, rather than discarding that precision by populating only the required date field.§
 
 ---
 

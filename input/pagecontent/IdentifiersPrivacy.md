@@ -213,35 +213,19 @@ transformation will encounter it.
 
 #### Guidance
 
-A Transformation Engine SHALL NOT store FHIR business identifier values (`Resource.identifier`) in
-OMOP `_source_value` fields, and a Target OMOP Instance SHALL NOT contain business identifier
-values in those fields. (f2o-020)
+§f2o-020^xfm,tgt,^identifier:A Transformation Engine **SHALL** NOT store FHIR business identifier values (`Resource.identifier`) in OMOP `_source_value` fields, and a Target OMOP Instance **SHALL** NOT contain business identifier values in those fields.§
 
-A Transformation Engine SHALL NOT derive OMOP integer primary keys from FHIR business identifiers
-(`Resource.identifier`). Where primary keys are derived from FHIR source data rather than generated
-independently, the FHIR logical identifier (`Resource.id` combined with the resource type) is the
-appropriate source. (f2o-021)
+§f2o-021^xfm,tgt^identifier:A Transformation Engine **SHALL** NOT derive OMOP integer primary keys from FHIR business identifiers (`Resource.identifier`). Where primary keys are derived from FHIR source data rather than generated independently, the FHIR logical identifier (`Resource.id` combined with the resource type) is the appropriate source.§
 
-A Target OMOP Instance SHALL NOT contain patient identifiable information, including names,
-addresses, medical record numbers, and contact details, in any field. (f2o-022)
+§f2o-022^xfm,tgt,imp^identifier:A Target OMOP Instance **SHALL** NOT contain patient identifiable information, including names, addresses, medical record numbers, and contact details, in any field.§
 
-An Implementer SHOULD maintain an external mapping table linking OMOP-generated identifiers to the
-originating FHIR logical identifier (`[ResourceType]/[Resource.id]`) where traceability from OMOP
-records back to source resources is required. (f2o-023)
+§f2o-023^xfm,tgt^identifier,traceability:An Implementer **SHOULD** maintain an external mapping table linking OMOP-generated identifiers to the originating FHIR logical identifier (`[ResourceType]/[Resource.id]`) where traceability from OMOP records back to source resources is required.§
 
-Where an external mapping table is maintained, it SHALL reside outside the OMOP schema and SHALL be
-governed by access controls distinct from those governing the OMOP instance itself. (f2o-024)
+§f2o-024^xfm,tgt^identifier,traceability:Where an external mapping table is maintained, it **SHALL** reside outside the OMOP schema and **SHALL** be governed by access controls distinct from those governing the OMOP instance itself.§
 
-An Implementer SHALL document a privacy and regulatory assessment for each identifier system
-encountered in the source data, identifying the framework applied, whether HIPAA Safe Harbor,
-Expert Determination, GDPR, or an equivalent, and the determination reached. (f2o-025)
+§f2o-025^imp^identifier,traceability:An Implementer **SHALL** document a privacy and regulatory assessment for each identifier system encountered in the source data, identifying the framework applied, whether HIPAA Safe Harbor, Expert Determination, GDPR, or an equivalent, and the determination reached.§
 
-An Implementer SHALL document, for each identifier system encountered, which handling strategy was
-applied, whether surrogate key mapping, external storage, or exclusion, and record that
-determination in the ETL documentation. (f2o-026)
+§f2o-026^xfm,imp^identifier,traceability:An Implementer **SHALL** document, for each identifier system encountered, which handling strategy was applied, whether surrogate key mapping, external storage, or exclusion, and record that determination in the ETL documentation.§
 
-An Implementer SHALL document the legal instrument governing access to the source FHIR data,
-whether a business associate agreement, an IRB approval or waiver, a data use agreement, or an
-equivalent, together with any constraint it places on identifier retention, linkage, or
-re-identification. (f2o-132)
+§f2o-132^imp^identifier,traceability:An Implementer **SHALL** document the legal instrument governing access to the source FHIR data, whether a business associate agreement, an IRB approval or waiver, a data use agreement, or an equivalent, together with any constraint it places on identifier retention, linkage, or re-identification.§
 
