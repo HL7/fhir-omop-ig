@@ -31,11 +31,6 @@ Reference to experimental CodeSystem http://hl7.org/fhir/guide-parameter-code|5.
 # 06 - This warning is all on Logical Models and we are matching the names of the elements in the OMOP tables.
 Constraint failed: eld-20: 'The first component of the path should be UpperCamelCase.  Additional components (following a '.') should be lowerCamelCase.  If this syntax is not adhered to, code generation tools may be broken. Logical models may be less concerned about this implication. (path.matches('^[A-Za-z][A-Za-z0-9]{0,63}(\\.[a-z][A-Za-z0-9]{0,63}(\\[x])?)*$'))' (defined in http://hl7.org/fhir/StructureDefinition/ElementDefinition)
 
-# 07 - We are updating the representation of our conformance clauses
-The html source contains the word 'SHALL' but it is not in a text phrase marked as a conformance clause%
-The html source contains the word 'SHALL NOT' but it is not in a text phrase marked as a conformance clause%
-The html source contains the word 'SHOULD' but it is not in a text phrase marked as a conformance clause:%
-
 # 08 - We are providing example concept maps and the FHIR resources do not have required bindings and neither do the OMOP bindings
 The source variable does not have a required binding, so this concept map can't be checked
 The target variable does not have a required binding, so this concept map can't be checked
@@ -48,9 +43,6 @@ The Source Code System http://www.nlm.nih.gov/research/umls/rxnorm is not fully 
 The Source Code System http://hl7.org/fhir/sid/cvx is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
 The Source Code System http://loinc.org is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
 The Source Code System http://snomed.info/sct is not fully defined and populated, and no sourceScope is specified, so the source code checking will not be performed
-
-# 11 - Info messages about conformance terms in our change log
-No conformance term found in the text%
 
 # 12 - We have a code system that defines our requirements categories.  These are FHIR to OMOP-specific so they won't be moving to THO. We also define an abstract code so we can easily create the value set.
 Most code systems defined in HL7 IGs will need to move to THO later during the process. Consider giving this code system a THO URL now (See https://confluence.hl7.org/display/TSMG/Terminology+Play+Book, and/or talk to TSMG)
