@@ -47,7 +47,7 @@ The Source Code System http://snomed.info/sct is not fully defined and populated
 # 11 - Explanation of conformance language in the conformance page
 The html source contains the word 'SHALL' but it is not in a text phrase marked as a conformance clause: 'The conformance verbs SHALL, SHOULD, and MAY are interpreted per RFC 8174.'
 
-# 12 - Conformance language that is used in JIRA issue descriptions
+# 12 - Conformance language that is used in JIRA issue descriptions on the change log page
 No conformance term found in the text: 3.3, along with a forward reference to the full explanation in
 No conformance term found in the text:
 

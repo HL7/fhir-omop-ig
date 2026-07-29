@@ -29,6 +29,7 @@
 <artifact id="ConceptMap/EncounterDischargeDisposition" key="ConceptMap-EncounterDischargeDisposition" name="Encounter Discharge Disposition codes to OMOP"/>
 <artifact id="StructureDefinition/EpisodeEvent" key="StructureDefinition-EpisodeEvent" name="Episode Event OMOP Table"/>
 <artifact id="StructureDefinition/Episode" key="StructureDefinition-Episode" name="Episode OMOP Table"/>
+<artifact id="ActorDefinition/src" key="ActorDefinition-src" name="FHIR Source System"/>
 <artifact id="ValueSet/cs-categories" key="ValueSet-cs-categories" name="FHIR to OMOP Conformance Statement Categories"/>
 <artifact id="CodeSystem/FHIRToOMOPRequirementCodes" key="CodeSystem-FHIRToOMOPRequirementCodes" name="FHIR to OMOP Requirement Codes"/>
 <artifact id="StructureDefinition/FactRelationship" key="StructureDefinition-FactRelationship" name="Fact Relationship OMOP Table"/>
@@ -55,7 +56,6 @@
 <artifact id="ActorDefinition/tgt" key="ActorDefinition-tgt" name="OMOP Target Instance"/>
 <artifact id="StructureDefinition/Observation" key="StructureDefinition-Observation" name="Observation OMOP Table"/>
 <artifact id="StructureDefinition/ObservationPeriod" key="StructureDefinition-ObservationPeriod" name="Observation Period OMOP Table"/>
-<artifact id="ActorDefinition/src" key="ActorDefinition-src" name="PAS Client"/>
 <artifact id="StructureDefinition/RecordSet" key="StructureDefinition-RecordSet" name="Patient Record Setting"/>
 <artifact id="StructureDefinition/PayerPlanPeriod" key="StructureDefinition-PayerPlanPeriod" name="Payer Plan Period OMOP Table"/>
 <artifact id="StructureDefinition/Person" key="StructureDefinition-Person" name="Person OMOP Table"/>

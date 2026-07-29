@@ -1,6 +1,8 @@
 ### Logical Models
 This guide contains a set of logical models that describe the OMOP CDM.  By expressing the CDM tables as FHIR Logical models, we are able to express the mappings between the tables and FHIR resources using FHIR StructureMaps.
 
+Besides the CDM table logical models, we have also defined a [RecordSet model](StructureDefinition-RecordSet.html) that allows us to create a large set of OMOP records from one transformation.  This is used in the FHIR Bundle to OMOP transformation as well as in the Blood Pressure Vital Signs transformation where one FHIR Observation results in multiple OMOP Measurement records.
+
 <table class="grid">
       <col style="width:20%"/>
       <tbody>
@@ -187,7 +189,7 @@ The mappings are represented via FHIR StructureMaps and those StructureMaps are 
 * [Condition Mapping](StructureMap-ConditionMap.html)
 * [Encounter/Visit Mapping](StructureMap-EncounterVisitMap.html)
 * [Immunization Mapping](StructureMap-ImmunizationMap.html)
-* [Medication Mapping](StructureMap-MedicationMap.html)
+* [Medication Statement Mapping](StructureMap-MedicationMap.html)
 * Observation Mappings
   * [Observation to Measurement Mapping](StructureMap-MeasurementMap.html)
   * [Simple Vital Signs to Measurement Mapping](StructureMap-SimpleVitalSignsMap.html)
@@ -195,10 +197,29 @@ The mappings are represented via FHIR StructureMaps and those StructureMaps are 
   * [Observation to Observation Mapping](StructureMap-ObservationMap.html)
 * [Person Mapping](StructureMap-PersonMap.html)
 * [Procedure Mapping](StructureMap-ProcedureMap.html)
+* [Bundle Mapping](StructureMap-RecordSetMap.html)
+
+#### Example Concept Maps
+
+There are a number of example concept maps that are included here to facilitate testing of the StructureMaps.  The StructureMaps currently reference these example concept maps but they are intentionally sparse and only include a few codes used for testing.
+
+* [Allergy Category Codes](ConceptMap-AllergyType.html)
+* [Intolerance Category Codes](ConceptMap-IntoleranceType.html)
+* [Allergy Substance Codes](ConceptMap-AllergySubstanceType.html)
+* [Blood Pressure Codes](ConceptMap-BloodPressureCodes.html)
+* [Clinical Findings Codes](ConceptMap-ConditionConcepts.html)
+* [Condition Status Codes](ConceptMap-ConditionStatusConcepts.html)
+* [Encounter Admission Source Codes](ConceptMap-EncounterAdmissionSource.html)
+* [Encounter Class Codes](ConceptMap-EncounterClass.html)
+* [Encounter Discharge Disposition Codes](ConceptMap-EncounterDischargeDisposition.html)
+* [Immunization Information Source Codes](ConceptMap-ImmunizationSource.html)
+* [Immunization Route Codes](ConceptMap-ImmunizationRoute.html)
+* [Immunization Vaccine Codes](ConceptMap-ImmunizationVaccine.html)
+* [Vital Sign Codes](ConceptMap-VitalSignsCodes.html)
 
 #### Mappings Not Published by This Guide
 
-The StructureMaps above express how FHIR elements populate OMOP fields. They do not express how individual codes translate into OMOP concepts, and this guide does not publish ConceptMap artifacts for that purpose. The omission is deliberate. Code-to-concept translation is the province of the OHDSI Standardized Vocabularies, which are versioned, maintained by the OHDSI community, and updated on a cadence no Implementation Guide can usefully track. A ConceptMap published here would be a snapshot of those vocabularies at the moment of balloting, and would begin diverging from them immediately.
+The StructureMaps above express how FHIR elements populate OMOP fields. They do not express how individual codes translate into OMOP concepts, and this guide does not publish official ConceptMap artifacts for that purpose. The omission is deliberate. Code-to-concept translation is the province of the OHDSI Standardized Vocabularies, which are versioned, maintained by the OHDSI community, and updated on a cadence no Implementation Guide can usefully track. A ConceptMap published here would be a snapshot of those vocabularies at the moment of balloting, and would begin diverging from them immediately.
 
 A more specialized guide built on this one might reasonably publish ConceptMaps: a guide scoped to a particular use case, a particular set of source systems, or a particular national realm can fix the code sets in play tightly enough for a published map to remain useful. This guide is foundational and does not have that luxury.
 

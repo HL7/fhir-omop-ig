@@ -24,6 +24,10 @@
       {
         "url" : "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom",
         "valueCanonical" : "http://hl7.org/fhir/uv/omop/ImplementationGuide/hl7.fhir.uv.omop"
+      },
+      {
+        "url" : "http://hl7.org/fhir/StructureDefinition/structuredefinition-conformance-derivedFrom",
+        "valueCanonical" : "http://hl7.org/fhir/uv/omop/ImplementationGuide/hl7.fhir.uv.omop"
       }]
     }
   },
@@ -217,7 +221,7 @@
     }],
     "key" : "f2o-010",
     "conformance" : ["SHALL"],
-    "requirement" : "An Implementer **SHALL** declare which input FHIR profiles the transformation accepts. The declared set may be any FHIR profiles the transformation is built to consume, whether the International Patient Access and US Core profiles this guide curated its maps against, other published profiles, or base FHIR resources conforming to no profile beyond the resource definitions."
+    "requirement" : "An Implementer **SHALL** declare which input FHIR profiles the transformation accepts. The declared set could be any FHIR profiles the transformation is built to consume, whether the International Patient Access and US Core profiles this guide curated its maps against, other published profiles, or base FHIR resources conforming to no profile beyond the resource definitions."
   },
   {
     "extension" : [{
@@ -305,7 +309,7 @@
     }],
     "key" : "f2o-014",
     "conformance" : ["MAY"],
-    "requirement" : "A Transformation Engine **MAY** support ingestion of Bulk Data NDJSON exports; this is not required, because Bulk Data Access is itself an optional capability for FHIR servers and not all data holders expose it, but implementers building population-scale OMOP instances should expect to encounter it."
+    "requirement" : "A Transformation Engine **MAY** support ingestion of Bulk Data NDJSON exports; this is not required, because Bulk Data Access is itself an optional capability for FHIR servers and not all data holders expose it, but implementers building population-scale OMOP instances ought to expect to encounter it."
   },
   {
     "extension" : [{
@@ -391,6 +395,14 @@
   },
   {
     "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    },
+    {
       "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
       "valueCodeableConcept" : {
         "coding" : [{
@@ -399,24 +411,6 @@
           "display" : "identifier"
         }]
       }
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
-      "valueCodeableConcept" : {
-        "coding" : [{
-          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
-          "code" : "traceability",
-          "display" : "traceability"
-        }]
-      }
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
-      "valueId" : "xfm"
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
-      "valueId" : "tgt"
     }],
     "key" : "f2o-023",
     "conformance" : ["SHOULD"],
@@ -424,6 +418,14 @@
   },
   {
     "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "tgt"
+    },
+    {
       "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
       "valueCodeableConcept" : {
         "coding" : [{
@@ -432,24 +434,6 @@
           "display" : "identifier"
         }]
       }
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
-      "valueCodeableConcept" : {
-        "coding" : [{
-          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
-          "code" : "traceability",
-          "display" : "traceability"
-        }]
-      }
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
-      "valueId" : "xfm"
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
-      "valueId" : "tgt"
     }],
     "key" : "f2o-024",
     "conformance" : ["SHALL"],
@@ -457,6 +441,10 @@
   },
   {
     "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    },
+    {
       "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
       "valueCodeableConcept" : {
         "coding" : [{
@@ -465,20 +453,6 @@
           "display" : "identifier"
         }]
       }
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
-      "valueCodeableConcept" : {
-        "coding" : [{
-          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
-          "code" : "traceability",
-          "display" : "traceability"
-        }]
-      }
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
-      "valueId" : "imp"
     }],
     "key" : "f2o-025",
     "conformance" : ["SHALL"],
@@ -486,6 +460,14 @@
   },
   {
     "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "xfm"
+    },
+    {
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    },
+    {
       "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
       "valueCodeableConcept" : {
         "coding" : [{
@@ -494,24 +476,6 @@
           "display" : "identifier"
         }]
       }
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
-      "valueCodeableConcept" : {
-        "coding" : [{
-          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
-          "code" : "traceability",
-          "display" : "traceability"
-        }]
-      }
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
-      "valueId" : "xfm"
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
-      "valueId" : "imp"
     }],
     "key" : "f2o-026",
     "conformance" : ["SHALL"],
@@ -1452,6 +1416,10 @@
   },
   {
     "extension" : [{
+      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
+      "valueId" : "imp"
+    },
+    {
       "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
       "valueCodeableConcept" : {
         "coding" : [{
@@ -1460,20 +1428,6 @@
           "display" : "identifier"
         }]
       }
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementcategory",
-      "valueCodeableConcept" : {
-        "coding" : [{
-          "system" : "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes",
-          "code" : "traceability",
-          "display" : "traceability"
-        }]
-      }
-    },
-    {
-      "url" : "http://hl7.org/fhir/tools/StructureDefinition/requirements-statementactor",
-      "valueId" : "imp"
     }],
     "key" : "f2o-132",
     "conformance" : ["SHALL"],
