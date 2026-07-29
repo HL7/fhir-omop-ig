@@ -71,11 +71,11 @@ For example, a medication history reported directly by a patient may not carry t
 
 #### Guidance
 
-§f2o-080^xfm,imp^dataloss,traceability:An Implementer **SHALL** document the points at which the transformation loses information because FHIR granularity exceeds what the OMOP CDM can represent, and **SHALL** make that documentation available to consumers of the resulting OMOP data.§
+§f2o-080^xfm,imp^dataloss:An Implementer **SHALL** document the points at which the transformation loses information because FHIR granularity exceeds what the OMOP CDM can represent, and **SHALL** make that documentation available to consumers of the resulting OMOP data.§
 
-§f2o-081^xfm,tgt^dataloss,traceability:Where a FHIR element carries clinically meaningful content that has no representable target in the OMOP domain tables, a Transformation Engine **SHOULD** emit the residual content to the observation or note domain with a type concept identifying its origin, rather than discarding it silently.§
+§f2o-081^xfm,tgt^dataloss:Where a FHIR element carries clinically meaningful content that has no representable target in the OMOP domain tables, a Transformation Engine **SHOULD** emit the residual content to the observation or note domain with a type concept identifying its origin, rather than discarding it silently.§
 
-§f2o-082^xfm,imp^dataloss,traceability:An Implementer **SHALL** produce and maintain ETL documentation recording mapping decisions, prioritization choices, pre-processing and manual interventions performed, and the known limitations of the transformation.§
+§f2o-082^xfm,imp^dataloss:An Implementer **SHALL** produce and maintain ETL documentation recording mapping decisions, prioritization choices, pre-processing and manual interventions performed, and the known limitations of the transformation.§
 
 §f2o-100^xfm,tgt,imp^traceability:An Implementer **SHOULD** maintain a traceability path from each clinical record in the Target OMOP Instance back to the FHIR resource that produced it.§
 
