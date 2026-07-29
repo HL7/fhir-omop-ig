@@ -499,4 +499,4 @@ A server that hosts the OHDSI Vocabularies and passes the OMOP test cases has ob
 
 §f2o-111^xfm,trm^terminology:A Transformation Engine **SHOULD** cache terminology server responses, and where it does so **SHALL** bind the cache invalidation policy to the OHDSI Vocabulary version, such that entries computed under one vocabulary version are not read under another.§
 
-§f2o-112^trm,imp^terminology,codes:A Terminology Server claiming conformance to this guide **SHALL** expose the OHDSI Standardized Vocabularies as FHIR CodeSystem and ConceptMap resources, and **SHALL** report the vocabulary release it is serving in the `version` element of its responses.§
+§f2o-112^trm,imp^terminology:A Terminology Server claiming conformance to this guide **SHALL** expose the OHDSI Standardized Vocabularies as FHIR CodeSystem and ConceptMap resources, and **SHALL** report the vocabulary release it is serving in the `version` element of its responses.§

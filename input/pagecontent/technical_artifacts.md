@@ -256,21 +256,21 @@ This guide does not yet define the format of such a manifest. Defining it proper
 
 #### Guidance
 
-§f2o-003^xfm,imp^data,traceability:A Transformation Engine and Implementer **SHOULD** publish a machine-readable manifest declaring which input FHIR profiles the transformation supports and which OMOP tables it populates from them. This manifest makes machine-consumable, and connects, the input-profile declaration described for accepted FHIR profiles and the table-population disclosure described for the Target OMOP Instance. The format of the manifest is not defined in this version of the guide; publishing a manifest in an engine-specific format is nonetheless encouraged as a signal of capability and as preparation for a future version that defines a common format.§
+§f2o-003^xfm,imp^scope:A Transformation Engine and Implementer **SHOULD** publish a machine-readable manifest declaring which input FHIR profiles the transformation supports and which OMOP tables it populates from them. This manifest makes machine-consumable, and connects, the input-profile declaration described for accepted FHIR profiles and the table-population disclosure described for the Target OMOP Instance. The format of the manifest is not defined in this version of the guide; publishing a manifest in an engine-specific format is nonetheless encouraged as a signal of capability and as preparation for a future version that defines a common format.§
 
 §f2o-090^xfm,tgt^models:A Target OMOP Instance **SHALL** conform to the logical model this guide defines for each OMOP table it populates.§
 
 §f2o-091^xfm,imp^models:A Transformation Engine **MAY** execute the StructureMaps published by this guide, or **MAY** implement equivalent transformation logic in another technology.§
 
-§f2o-092^xfm,imp^traceability:Where a transformation departs from the logic expressed by a published StructureMap, an Implementer **SHALL** record the departure and its rationale in the ETL documentation.§
+§f2o-092^xfm,imp^models:Where a transformation departs from the logic expressed by a published StructureMap, an Implementer **SHALL** record the departure and its rationale in the ETL documentation.§
 
-§f2o-093^xfm,trm,imp^codes,traceability:A Transformation Engine **SHALL** resolve code-to-concept translation against the OHDSI Standardized Vocabularies. Where a fixed set of mappings prepared in advance is used instead of resolving against the vocabularies at transformation time, an Implementer **SHALL** identify that set and the vocabulary release from which it was derived.§
+§f2o-093^xfm,trm,imp^models:A Transformation Engine **SHALL** resolve code-to-concept translation against the OHDSI Standardized Vocabularies. Where a fixed set of mappings prepared in advance is used instead of resolving against the vocabularies at transformation time, an Implementer **SHALL** identify that set and the vocabulary release from which it was derived.§
 
-§f2o-120^xfm,tgt,imp^data,traceability:A Transformation Engine **SHALL** pass the reference test suite published by this guide for the transformations it claims to support. The suite is versioned independently of this guide, and a conformance claim identifies the suite version against which it was established.§
+§f2o-120^xfm,tgt,imp^testing:A Transformation Engine **SHALL** pass the reference test suite published by this guide for the transformations it claims to support. The suite is versioned independently of this guide, and a conformance claim identifies the suite version against which it was established.§
 
-§f2o-121^xfm,imp^traceability:An Implementer **SHOULD** publish the results of the reference test suite, identifying the version of this Implementation Guide and the OHDSI Vocabulary release under which the run was performed.§
+§f2o-121^xfm,imp^testing:An Implementer **SHOULD** publish the results of the reference test suite, identifying the version of this Implementation Guide and the OHDSI Vocabulary release under which the run was performed.§
 
-§f2o-122^xfm,tgt,imp^traceability:A Target OMOP Instance **SHALL** disclose which OMOP tables it populates fully, which it populates partially, and which it leaves unpopulated.§
+§f2o-122^xfm,tgt,imp^testing:A Target OMOP Instance **SHALL** disclose which OMOP tables it populates fully, which it populates partially, and which it leaves unpopulated.§
 ### Technical Considerations
 The following tables provide some technical information about the guide.
 

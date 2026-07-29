@@ -113,13 +113,13 @@ This report is strongly advised rather than required, and the reason for the dis
 
 #### Guidance
 
-§f2o-060^xfm,imp^status,dataloss:A Transformation Engine **SHALL** evaluate status and intent elements and **SHALL** NOT transform resources describing events that were not realized, including those cancelled, proposed, planned, not done, stopped, or entered in error, into OMOP clinical event tables.§
+§f2o-060^xfm,imp^status:A Transformation Engine **SHALL** evaluate status and intent elements and **SHALL** NOT transform resources describing events that were not realized, including those cancelled, proposed, planned, not done, stopped, or entered in error, into OMOP clinical event tables.§
 
 §f2o-061^xfm,imp^status:A Transformation Engine and Implementer **SHALL** apply consistent filter rules across all incremental loads into a given OMOP instance, and **SHALL** record any change to those rules, with its effective date, in the ETL documentation.§
 
 §f2o-062^xfm,imp^status:A Transformation Engine **SHOULD** emit a run-level report of resources excluded by filter, recording counts by resource type and exclusion reason.§
 
-§f2o-063^xfm^dataloss:A Transformation Engine **SHALL** evaluate FHIR modifier elements and **SHALL** NOT silently transform a resource whose modifier elements alter its clinical interpretation, nor silently emit a concept_id of zero when a terminology lookup fails without recording the failure.§
+§f2o-063^xfm^status:A Transformation Engine **SHALL** evaluate FHIR modifier elements and **SHALL** NOT silently transform a resource whose modifier elements alter its clinical interpretation, nor silently emit a concept_id of zero when a terminology lookup fails without recording the failure.§
 
 ### Data Completeness, Missingness & Integrity
 Handling incomplete or partial data presents an additional challenge in transforming FHIR resources to OMOP. FHIR records are often incomplete for several reasons: the source electronic health record (EHR) itself may contain partial entries, or the FHIR resources may only include a subset of available data tailored to the specific purpose of the resource. In contrast, the OMOP data model assumes that critical fields such as dates, person references, and coded concepts are consistently populated to support standardized analysis.
