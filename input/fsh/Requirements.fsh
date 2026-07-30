@@ -70,22 +70,50 @@ Description: "Codes defined as part of the FHIR to OMOP implementation guide use
 * ^caseSensitive = true
 * ^hierarchyMeaning = #is-a
 * ^content = #complete
+* ^property.code = #requirements-category
+* ^property.description = "The is-a relationship between this requirement code to the Requirements Category code."
+* ^property.type = #Coding
+* ^property.uri = "http://hl7.org/fhir/uv/omop/CodeSystem/FHIRToOMOPRequirementCodes#requirement-category"
 
 * #_reqcat      "Requirements Categories"  "Codes that help to categorize requirements statements"
   * ^property.code = #abstract
   * ^property.valueBoolean = true
   * #scope      "scope"            "Requirements related to scope, versioning, and conformance framework"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #non-functional
   * #data       "data"             "Requirements related to source FHIR data expectations"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
   * #identifier "identifier"       "Requirements related to identifier handling and privacy"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
   * #codes      "codes"            "Requirements related to code mapping and terminology"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
   * #concept    "concept"          "Requirements related to the OMOP type concept fields"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
   * #status     "status"           "Requirements related to status, intent, and filtering"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
   * #temporal   "temporal"         "Requirements related to temporal precision"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
   * #dataloss   "dataloss"         "Requirements related to granularity and data loss"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
   * #models     "models"           "Requirements related to logical models and StructureMaps"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
   * #traceability "traceability"   "Requirements related to traceability, lineage, and reproducibility"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
   * #terminology "terminology"     "Requirements related to terminology server interaction"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
   * #testing     "testing"         "Requirements related to testing and coverage"
+    * ^property.code = #requirements-category
+    * ^property.valueCoding = #processing
 
 ValueSet: FHIRToOMOPConformanceStatementCategories
 Id: cs-categories

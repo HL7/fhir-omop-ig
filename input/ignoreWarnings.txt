@@ -52,7 +52,9 @@ No conformance term found in the text: 3.3, along with a forward reference to th
 No conformance term found in the text:
 
 
-# 13 - We have a code system that defines our requirements categories.  These are FHIR to OMOP-specific so they won't be moving to THO. We also define an abstract code so we can easily create the value set.
+# 13 - We have a code system that defines our requirements categories.  These are FHIR to OMOP-specific so they won't be moving to THO. We also define an abstract code so we can easily create the value set.  (See https://confluence.hl7.org/spaces/TSMG/pages/482410656/2026-07-30+TSMG+Agenda+and+Minutes for TSMG waiver)
 Most code systems defined in HL7 IGs will need to move to THO later during the process. Consider giving this code system a THO URL now (See https://confluence.hl7.org/display/TSMG/Terminology+Play+Book, and/or talk to TSMG)
 The property 'abstract' has no definition in CodeSystem.property. Many terminology tools won't know what to do with it
 
+# 14 - We want to associate our requirement categories to the Requirements-Category code system but it is not in THO yet.  When it does, we will fix the property to use that code system.  For now, we are specifying the codes without a code system.
+A code with no system has no defined meaning, and it cannot be validated. A system should be provided
