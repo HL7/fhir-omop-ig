@@ -9,11 +9,13 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias
 
 group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     {
     // OMOP Condition ID would be a map from FHIR ID to an external key
-    src.id as id -> tgt.condition_occurrence_id = id;
+    src.id as s -> tgt then {
+        s.id as id -> tgt.condition_occurrence_id = (%id.substring(%id.indexOf('/') + 1));
+    };
     
     // OMOP Person ID would be a map from the FHIR Condition subject reference to an external key
     src.subject as subject -> tgt then {
-        subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf("/") + 1)); 
+        subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
     };
 
     src.code as s -> tgt then {
@@ -23,9 +25,9 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
         };
     };
     
-    src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"dateTime"), tgt.condition_start_date = rd;
+    src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"dateTime"), tgt.condition_start_date = cast(rd, "date");
     src.onset : dateTime as osd -> tgt.condition_start_datetime = osd, tgt.condition_start_date = cast(osd, "date");
-    src.abatement : dateTime as abdt -> tgt.condition_end_datetime = adt, tgt.condition_end_date = cast(abdt, "date");
+    src.abatement : dateTime as abdt -> tgt.condition_end_datetime = abdt, tgt.condition_end_date = cast(abdt, "date");
 
     src.clinicalStatus as s -> tgt then {
         s.coding as sc -> tgt then {
@@ -34,8 +36,8 @@ group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     
     };
 
     src.encounter as encounter -> tgt then {
-        encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf("/") + 1));
+        encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
     };
 
     src.category -> tgt.condition_type_concept_id = 32817 "default";
-};
+}

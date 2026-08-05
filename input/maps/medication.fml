@@ -8,9 +8,11 @@ uses "http://hl7.org/fhir/StructureDefinition/MedicationStatement" alias MedStat
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugExpTable as target
 
 group MedExposure(source src : MedState, target tgt : DrugExpTable) {
-        src.id as id -> tgt.drug_exposure_id = id;
+        src.id as s -> tgt then {
+            s.id as id -> tgt.drug_exposure_id = (%id.substring(%id.indexOf('/') + 1));
+        };
         src.subject as subject -> tgt then {
-            subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf("/") + 1)); 
+            subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
         };
         
         src.medication : CodeableReference as s -> tgt then {
@@ -25,10 +27,10 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
             s.start as fps -> tgt.drug_exposure_start_datetime = fps, tgt.drug_exposure_start_date = cast(fps, "date");
         };
         src.effective : Period as s -> tgt then {
-            s.end as fpe -> tgt.drug_exposure_end_datetime = fpe, tgt.drug_exposure_end_date = cast(fps, "date");
+            s.end as fpe -> tgt.drug_exposure_end_datetime = fpe, tgt.drug_exposure_end_date = cast(fpe, "date");
         };
         src.effective : Period as s -> tgt then {
-            s.end as fpe -> tgt.verbatim_end_date = cast(fps, "date");
+            s.end as fpe -> tgt.verbatim_end_date = cast(fpe, "date");
         };
         src.category : CodeableConcept as s -> tgt then {
             s.coding as sc -> tgt then {
@@ -42,4 +44,4 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
             };
         };
     };
-};
+}

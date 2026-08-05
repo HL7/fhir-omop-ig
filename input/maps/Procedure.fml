@@ -8,10 +8,12 @@ uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target
 
 group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)     {
-        src.id as id -> tgt.procedure_occurrence_id = id;
+        src.id as s -> tgt then {
+            s.id as id -> tgt.procedure_occurrence_id = (%id.substring(%id.indexOf('/') + 1));
+        };
 
         src.subject as subject -> tgt then {
-            subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf("/") + 1)); 
+            subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
         };
 
         src.code as s -> tgt then {
@@ -20,13 +22,13 @@ group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)  
             };
         };
 
-        src.occurrence : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = edt;
+        src.occurrence : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = cast(edt, "date");
         src.occurrence : Period as s -> tgt then {
-            s.start as start -> tgt.procedure_datetime = cast(start, "dateTime"), tgt.procedure_date = start;
-			s.end as end -> tgt.procedure_end_datetime, tgt.procedure_end_date = end;
+            s.start as start -> tgt.procedure_datetime = cast(start, "dateTime"), tgt.procedure_date = cast(start, "date");
+			s.end as end -> tgt.procedure_end_datetime, tgt.procedure_end_date = cast(end, "date");
         };
 
         src.encounter as encounter -> tgt then {
-            encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf("/") + 1));
+            encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
         };
 }

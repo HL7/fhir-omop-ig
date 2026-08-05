@@ -11,24 +11,26 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias Observa
 group Allergy(source src: Allergy, target tgt : ObservationTable) {
 
     // OMOP Observation ID would be a map from FHIR ID to an external key
-    src.id as id -> tgt.observation_id = id;
+    src as s -> tgt then {
+        s.id as id -> tgt.observation_id = cast(id, "integer");
+    } "allergyId";
 
     // OMOP Person ID would be a map from the FHIR Allergy Patient reference to an external key
     src.patient as subject -> tgt then {
-        subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf("/") + 1)); 
+        subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
     };
 
     // OMOP Visit Occurrence ID would be a map from the FHIR Allergy Encounter reference to an external key
     src.encounter as encounter -> tgt then {
-        encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf("/") + 1));
+        encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
     };
 
     src.type as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc.code as code where(code="allergy") then {
+            sc.code as code where(code='allergy') then {
                 src.category as category -> tgt.observation_concept_id = translate(category, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergyType', 'code');
             };
-            src.code as code where(code="intolerance") then {
+            sc.code as code where(code='intolerance') then {
                 src.category as category -> tgt.observation_concept_id = translate(category, 'http://hl7.org/fhir/uv/omop/ConceptMap/IntoleranceType', 'code');
             };
         };
@@ -36,7 +38,10 @@ group Allergy(source src: Allergy, target tgt : ObservationTable) {
 	
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
-            sc.code as code -> tgt.value_as_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergySubstanceType', 'code'), tgt.value_source_value = code;
+            sc.system as s where (s='http://snomed.info/sct') then {
+                sc.code as code -> tgt.value_as_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergySubstanceType', 'code'), tgt.value_source_value = code;
+                sc.display as display -> tgt.value_as_string = display;
+            };
         };
     };
 

@@ -8,7 +8,7 @@ uses "http://hl7.org/fhir/StructureDefinition/Observation" alias VitalSigns as s
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
 group VitalSigns(source src : VitalSigns, target tgt : MeasureTable) {
-    src where ('vital-signs').supersetOf(VitalSigns.category.coding.code) then { 
+    src where (src.category.coding.code contains 'vital-signs') then {    
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
                 sc.system where('http://loinc.org') then {
@@ -18,10 +18,10 @@ group VitalSigns(source src : VitalSigns, target tgt : MeasureTable) {
                         src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), (einst.toString().substring(0,10));
                         src.effective : Period as s -> tgt then {
                             s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = (eps.toString().substring(0,10));
-                        };                        
-                        src.issued  as s where (src.issued.toDate != src.effectiveDateTime) -> tgt.measurement_source_value = (s.toString());
+                        };      
+                        //src.issued as s where (src.issued.toDate()  != src.effective) -> tgt.measurement_source_value = (s.toString());    
                         src.value : Quantity as s -> tgt then {
-                            s.value as a -> tgt.value_as_number = a;
+                            s.value as a -> tgt.value_as_number = cast(a, "decimal");
                             s.unit as b -> tgt.unit_concept_id = b;
                         };
                         src.value : CodeableConcept as s  -> tgt then {
@@ -30,11 +30,11 @@ group VitalSigns(source src : VitalSigns, target tgt : MeasureTable) {
                             };
                         };
                         src.value : string as b -> tgt.value_source_value = b;
-                        src.interpretation as c -> tgt.value_as_concept_id = c;
-                        src.note  as d -> tgt.measurement_source_value = d;
+                        src.interpretation as c -> tgt.value_as_concept_id = cast(c, "code");
+                        src.note  as d -> tgt.measurement_source_value = cast(d, "string");
                     };
                 };               
             };
         };  
     } "OnlyMeasures";
-};
+}
