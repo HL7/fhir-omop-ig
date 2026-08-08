@@ -9,9 +9,9 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias Measure
 
 group Measures(source src : Observation, target tgt : MeasureTable) {
     src where (src.category.coding.code contains 'laboratory') then { 
-        src.id as s -> tgt then {
-            s.id as id -> tgt.measurement_id = (%id.substring(%id.indexOf('/') + 1));
-        };
+        src as s -> tgt then {
+            s.id as id -> tgt.measurement_id = cast(id, "code");            
+        } "measureID";
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {

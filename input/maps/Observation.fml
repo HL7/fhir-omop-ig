@@ -10,9 +10,9 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
  group Observe(source src : Observation, target tgt : ObsTable) 
  {
     src where (src.category.coding.code contains 'social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure') then {
-        src.id as s -> tgt then {
-            s.id as id -> tgt.observation_id = (%id.substring(%id.indexOf('/') + 1));
-        };
+        src as s -> tgt then {
+            s.id as id -> tgt.observation_id = cast(id, "integer");
+        } "observationID";
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {

@@ -26,7 +26,7 @@ group RecordSet(source src: Bundle, target tgt : RecordSetTable) {
     // Map bundle timestamp
     src.timestamp as ts -> tgt.record_set_timestamp = ts;
 
-    // Map bundle entries
+    // Map bundle entries    
     src.entry as entry -> tgt then {
         entry.resource : AllergyIntolerance as a -> tgt then {
             a -> tgt.allergy as allergy then Allergy(a, allergy) "allergyEntry";
@@ -43,9 +43,9 @@ group RecordSet(source src: Bundle, target tgt : RecordSetTable) {
             observation -> tgt.measurement as vitalSign then VitalSigns(observation, vitalSign) "simpleVitalSignEntry";
         } "observationEntry";
         entry.resource : Patient as patient -> tgt then {
-            patient.id as s -> tgt then {
-                s.id as id -> tgt.patient_id = (%id.substring(%id.indexOf('/') + 1));
-            };
+            patient as s -> tgt then {
+                s.id as id -> tgt.patient_id = cast(id, "integer");
+            } "personID";
         };
         entry.resource : Encounter as encounter -> tgt then {
             encounter -> tgt.visitOccurrence as visit then VisitOccurrence(encounter, visit) "visit";

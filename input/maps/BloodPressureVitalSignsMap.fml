@@ -26,7 +26,7 @@ group BloodPressure(source src : BloodPressure, target recordSet : BPRecord) {
 }
 
 group parentTable(source src: BloodPressure, target tgt: Measurement) {
-    src.id as id -> tgt.measurement_id = id;
+    src.id as id -> tgt.measurement_id = cast(id, "code");
     src.code as s -> tgt then {
         s.coding as sc -> tgt then {
             sc.code as a -> tgt.measurement_type_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/BloodPressureCodes', 'code');

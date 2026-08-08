@@ -102,6 +102,12 @@ Usage: #definition
       * code = #4240903
       * display = "Allergy to penicillin"
       * relationship = #equivalent
+  * element[+]
+    * code = #91936005
+    * target
+      * code = #4240903
+      * display = "Allergy to penicillin"
+      * relationship = #equivalent
 * group[+]
   * source = "http://www.nlm.nih.gov/research/umls/rxnorm"
   * target = "https://fhir-terminology.ohdsi.org"

@@ -70,6 +70,18 @@ Usage: #definition
       * code = #4195970
       * display = "Family history of cancer of colon"
       * relationship = #equivalent
+  * element[+]
+    * code = #90560007
+    * target
+      * code = #440674
+      * display = "Gout"
+      * relationship = #equivalent
+  * element[+]
+    * code = #962000
+    * target
+      * code = #4319729
+      * display = "Disability evaluation disability 6 percent"
+      * relationship = #equivalent
 
 Instance: ConditionStatusConcepts
 InstanceOf: ConceptMap
