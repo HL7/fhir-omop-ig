@@ -8,9 +8,9 @@ uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target
 
 group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)     {
-        src.id as s -> tgt then {
-            s.id as id -> tgt.procedure_occurrence_id = (%id.substring(%id.indexOf('/') + 1));
-        };
+        src as s -> tgt then {
+            s.id as id -> tgt.procedure_occurrence_id = cast(id, "integer");
+        } "procedureID";
 
         src.subject as subject -> tgt then {
             subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
