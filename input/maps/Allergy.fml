@@ -13,6 +13,12 @@ group Allergy(source src: Allergy, target tgt : ObservationTable) {
     // OMOP Observation ID would be a map from FHIR ID to an external key
     src as s -> tgt then {
         s.id as id -> tgt.observation_id = cast(id, "integer");
+        src as s where(src.id.empty()) then {
+            s.identifier as i -> tgt then {
+                i.value as id -> tgt.observation_id = cast(id, "integer");
+            };
+        } "allergyIdFromIdentifier";
+        
     } "allergyId";
 
     // OMOP Person ID would be a map from the FHIR Allergy Patient reference to an external key

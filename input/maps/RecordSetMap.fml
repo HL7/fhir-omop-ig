@@ -47,8 +47,8 @@ group RecordSet(source src: Bundle, target tgt : RecordSetTable) {
                 s.id as id -> tgt.patient_id = cast(id, "integer");
             } "personID";
         };
-        entry.resource : Encounter as encounter -> tgt then {
-            encounter -> tgt.visitOccurrence as visit then VisitOccurrence(encounter, visit) "visit";
+        entry.resource : Procedure as procedure -> tgt then {
+            procedure -> tgt.procedure as procedureOccurence then ProcedureOccurrence(procedure, procedureOccurence) "procedure";
         };
     } "bundleEntry";
 

@@ -8,6 +8,7 @@ uses "http://hl7.org/fhir/StructureDefinition/Procedure" alias Procedure as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target
 
 group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)     {
+    src where(src.occurrence.empty().not()) then {
         src as s -> tgt then {
             s.id as id -> tgt.procedure_occurrence_id = cast(id, "integer");
         } "procedureID";
@@ -18,7 +19,7 @@ group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)  
 
         src.code as s -> tgt then {
             s.coding as sc -> tgt then {
-                sc.code as a -> tgt.procedure_concept_id, tgt.procedure_source_value, tgt.procedure_source_concept_id = a;
+                sc.code as a -> tgt.procedure_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ProcedureType', 'code'), tgt.procedure_source_value = a;
             };
         };
 
@@ -31,4 +32,6 @@ group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)  
         src.encounter as encounter -> tgt then {
             encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
         };
+    };
+    src where(src.occurrence.empty()) log(src.id);
 }
