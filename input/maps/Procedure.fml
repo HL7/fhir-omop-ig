@@ -32,6 +32,6 @@ group ProcedureOccurrence(source src : Procedure, target tgt : ProcedureTable)  
         src.encounter as encounter -> tgt then {
             encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
         };
-    };
-    src where(src.occurrence.empty()) log(src.id);
+    } "procedureMapping";
+    //src where(src.occurrence.empty()) log(src.id) "procedureMapFail";
 }

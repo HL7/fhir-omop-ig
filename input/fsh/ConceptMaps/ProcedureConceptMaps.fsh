@@ -8,7 +8,7 @@ Usage: #definition
 * experimental = true
 
 * group
-  * source = "http://hl7.org/fhir/ValueSet/procedure-code"
+  * source = "http://snomed.info/sct"
   * target = "https://fhir-terminology.ohdsi.org"
   * element[+]
     * code = #233404000
