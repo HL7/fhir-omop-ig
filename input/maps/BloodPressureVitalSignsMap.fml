@@ -11,17 +11,20 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias Measure
 //make the bundle
 group BloodPressure(source src : BloodPressure, target recordSet : BPRecord) {
     src where (src.category.coding.code contains 'vital-signs') then {
-        src.code as s -> recordSet then {
-            s.coding as sc -> recordSet then {
-                sc.code as a where (a in ('85354-9' | '8478-0')) -> recordSet then {
-                     src as parent -> recordSet.measurement as measurement then parentTable(parent, measurement) "bpMeasurement";
-                     src.component as comp -> recordSet then {
-                        comp where (comp.code.coding.code = '8480-6') -> recordSet.measurement as measurement then Systolic(src, comp, measurement) "systolicMeasurement";
-                        comp where (comp.code.coding.code = '8462-4') -> recordSet.measurement as measurement then Diastolic(src, comp, measurement) "diastolicMeasurement";
+        src where (src.effective.empty().not()) then {
+            src.code as s -> recordSet then {
+                s.coding as sc -> recordSet then {
+                    sc.code as a where (a in ('85354-9' | '8478-0')) -> recordSet then {
+                        src as parent -> recordSet.measurement as measurement then parentTable(parent, measurement) "bpMeasurement";
+                        src.component as comp -> recordSet then {
+                            comp where (comp.code.coding.code = '8480-6') -> recordSet.measurement as measurement then Systolic(src, comp, measurement) "systolicMeasurement";
+                            comp where (comp.code.coding.code = '8462-4') -> recordSet.measurement as measurement then Diastolic(src, comp, measurement) "diastolicMeasurement";
+                        };
                     };
                 };
             };
-        };
+        } "bpMapping";
+        
     } "bpComponentEntries";
 }
 

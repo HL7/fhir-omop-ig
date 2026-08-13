@@ -9,44 +9,46 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias Measure
 
 group Measures(source src : Observation, target tgt : MeasureTable) {
     src where (src.category.coding.code contains 'laboratory') then { 
-        src as s -> tgt then {
-            s.id as id -> tgt.measurement_id = cast(id, "code");            
-        } "measureID";
+        src where (src.effective.empty().not()) then {
+            src as s -> tgt then {
+                s.id as id -> tgt.measurement_id = cast(id, "code");            
+            } "measureID";
 
-        src.code as s -> tgt then {
-            s.coding as sc -> tgt then {
-                sc.code as a -> tgt.measurement_concept_id = a;
+            src.code as s -> tgt then {
+                s.coding as sc -> tgt then {
+                    sc.code as a -> tgt.measurement_concept_id = a;
+                };
+            } "MeasurementConcept";
+
+            src.subject as subject -> tgt then {
+                subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
             };
-        } "MeasurementConcept";
-
-        src.subject as subject -> tgt then {
-            subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
-        };
-        src.encounter as encounter -> tgt then {
-            encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
-        };
-
-        src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10));
-        src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), (einst.toString().substring(0,10));
-        src.effective : Period as s -> tgt then {
-            s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = (eps.toString().substring(0,10));
-        } "MeasurementDate";
-        //src.issued as s where (src.issued.toDate()  != src.effective) -> tgt.measurement_source_value = (s.toString());
-        
-        src.category -> tgt.measurement_type_concept_id = 32817 "EHR";
-        src.performer as performer -> tgt then {
-            performer.reference as p -> tgt.provider_id = (%p.substring(%p.indexOf('/') + 1));
-        };
-        
-        src.value : Quantity as s -> tgt then {
-            s.value as a -> tgt.value_as_number = cast(a, "decimal");
-            s.unit as b -> tgt.unit_concept_id = b;
-        } "QuantityValue";
-        src.value : CodeableConcept as s  -> tgt then {
-            s.coding as sc -> tgt then {
-                sc.code as a -> tgt.value_as_concept_id = a;
+            src.encounter as encounter -> tgt then {
+                encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
             };
-        } "CodeableConceptValue";
-        src.value : string as b -> tgt.value_source_value = b;
-    } "OnlyMeasures";
+
+            src.effective : dateTime as edt -> tgt.measurement_datetime = edt, tgt.measurement_date = (edt.toString().substring(0,10));
+            src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), (einst.toString().substring(0,10));
+            src.effective : Period as s -> tgt then {
+                s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = (eps.toString().substring(0,10));
+            } "MeasurementDate";
+            //src.issued as s where (src.issued.toDate()  != src.effective) -> tgt.measurement_source_value = (s.toString());
+            
+            src.category -> tgt.measurement_type_concept_id = 32817 "EHR";
+            src.performer as performer -> tgt then {
+                performer.reference as p -> tgt.provider_id = (%p.substring(%p.indexOf('/') + 1));
+            };
+            
+            src.value : Quantity as s -> tgt then {
+                s.value as a -> tgt.value_as_number = cast(a, "decimal");
+                s.unit as b -> tgt.unit_concept_id = b;
+            } "QuantityValue";
+            src.value : CodeableConcept as s  -> tgt then {
+                s.coding as sc -> tgt then {
+                    sc.code as a -> tgt.value_as_concept_id = a;
+                };
+            } "CodeableConceptValue";
+            src.value : string as b -> tgt.value_source_value = b;
+        } "OnlyMeasures";
+    } "measurementMap";
 }

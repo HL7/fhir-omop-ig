@@ -9,47 +9,51 @@ uses "http://hl7.org/fhir/StructureDefinition/AllergyIntolerance" alias Allergy 
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObservationTable as target
 
 group Allergy(source src: Allergy, target tgt : ObservationTable) {
+    src where (src.recordedDate.empty().not() | src.onset.empty().not()) then {
+        // OMOP Observation ID would be a map from FHIR ID to an external key
+        src as s -> tgt then {
+            s.id as id -> tgt.observation_id = cast(id, "integer");
+            src as s where(src.id.empty()) then {
+                s.identifier as i -> tgt then {
+                    i.value as id -> tgt.observation_id = cast(id, "integer");
+                };
+            } "allergyIdFromIdentifier";
+            
+        } "allergyId";
 
-    // OMOP Observation ID would be a map from FHIR ID to an external key
-    src as s -> tgt then {
-        s.id as id -> tgt.observation_id = cast(id, "integer");
-        src as s where(src.id.empty()) then {
-            s.identifier as i -> tgt then {
-                i.value as id -> tgt.observation_id = cast(id, "integer");
+        // OMOP Person ID would be a map from the FHIR Allergy Patient reference to an external key
+        src.patient as subject -> tgt then {
+            subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
+        };
+
+        // OMOP Visit Occurrence ID would be a map from the FHIR Allergy Encounter reference to an external key
+        src.encounter as encounter -> tgt then {
+            encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
+        };
+
+        src.type as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as code where(code='allergy') then {
+                    src.category as category -> tgt.observation_concept_id = translate(category, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergyType', 'code');
+                };
+                sc.code as code where(code='intolerance') then {
+                    src.category as category -> tgt.observation_concept_id = translate(category, 'http://hl7.org/fhir/uv/omop/ConceptMap/IntoleranceType', 'code');
+                };
             };
-        } "allergyIdFromIdentifier";
+        };
         
-    } "allergyId";
-
-    // OMOP Person ID would be a map from the FHIR Allergy Patient reference to an external key
-    src.patient as subject -> tgt then {
-        subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
-    };
-
-    // OMOP Visit Occurrence ID would be a map from the FHIR Allergy Encounter reference to an external key
-    src.encounter as encounter -> tgt then {
-        encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
-    };
-
-    src.type as s -> tgt then {
-        s.coding as sc -> tgt then {
-            sc.code as code where(code='allergy') then {
-                src.category as category -> tgt.observation_concept_id = translate(category, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergyType', 'code');
-            };
-            sc.code as code where(code='intolerance') then {
-                src.category as category -> tgt.observation_concept_id = translate(category, 'http://hl7.org/fhir/uv/omop/ConceptMap/IntoleranceType', 'code');
+        src.code as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.system as s where (s='http://snomed.info/sct') then {
+                    sc.code as code -> tgt.value_as_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergySubstanceType', 'code'), tgt.value_source_value = code;
+                    sc.display as display -> tgt.value_as_string = display;
+                };
             };
         };
-    };
-	
-    src.code as s -> tgt then {
-        s.coding as sc -> tgt then {
-            sc.system as s where (s='http://snomed.info/sct') then {
-                sc.code as code -> tgt.value_as_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/AllergySubstanceType', 'code'), tgt.value_source_value = code;
-                sc.display as display -> tgt.value_as_string = display;
-            };
-        };
-    };
 
-	src.recordedDate : dateTime as osd -> tgt.observation_date = (src.recordedDate.toString().substring(0,10)), tgt.observation_datetime = osd;
+        src.recordedDate : dateTime as osd -> tgt.observation_date = (src.recordedDate.toString().substring(0,10)), tgt.observation_datetime = osd;
+        src where(src.recordedDate.empty()) then {
+            src.onset : dateTime as osd -> tgt.observation_date = (src.onset.toString().substring(0,10)), tgt.observation_datetime = cast(osd, "dateTime");
+        } "allergyDateTime";
+    } "allergyMap";    
 }

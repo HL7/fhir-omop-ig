@@ -8,40 +8,41 @@ uses "http://hl7.org/fhir/StructureDefinition/Encounter" alias Encounter as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence" alias VisitTable as target
 
 group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
+	src where (src.actualPeriod.empty().not()) then {
 
-    // OMOP Visit Occurrence ID would be a map from FHIR ID to an external key
-	src as s -> tgt then {
-        s.id as id -> tgt.visit_occurrence_id = cast(id, "integer");
-    } "encounterID";
+		// OMOP Visit Occurrence ID would be a map from FHIR ID to an external key
+		src as s -> tgt then {
+			s.id as id -> tgt.visit_occurrence_id = cast(id, "integer");
+		} "encounterID";
 
-    // OMOP Person ID would be a map from the FHIR Encounter Subject reference to an external key
-    src.subject as subject -> tgt then {
-        subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
-    };
-	
-	src.class as s -> tgt then {
-		s.coding as sc -> tgt then {
-			sc.code as a -> tgt.visit_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterClass', 'code'), tgt.visit_source_value = a;
+		// OMOP Person ID would be a map from the FHIR Encounter Subject reference to an external key
+		src.subject as subject -> tgt then {
+			subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
 		};
-	};
-	
-	src.actualPeriod as s -> tgt then {
-		s.start as std -> tgt.visit_start_date = (src.actualPeriod.start.toString().substring(0,10)), tgt.visit_start_datetime = std;
-		s.end as ed -> tgt.visit_end_date = (src.actualPeriod.end.toString().substring(0,10)), tgt.visit_end_datetime = ed;
-	};
-
-	src.admission as s -> tgt then {
-		s.admitSource as sa -> tgt then {
-			sa.coding as sc -> tgt then {
-				sc.code as code -> tgt.admitted_from_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterAdmitSource', 'code'), tgt.admitted_from_source_value = code;
+		
+		src.class as s -> tgt then {
+			s.coding as sc -> tgt then {
+				sc.code as a -> tgt.visit_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterClass', 'code'), tgt.visit_source_value = a;
 			};
 		};
-	
-		s.dischargeDisposition as sd -> tgt then {
-			sd.coding as sc -> tgt then {
-				sc.code as code -> tgt.discharged_to_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterDischargeDisposition', 'code'), tgt.discharged_to_source_value = code;
+		
+		src.actualPeriod as s -> tgt then {
+			s.start as std -> tgt.visit_start_date = (src.actualPeriod.start.toString().substring(0,10)), tgt.visit_start_datetime = std;
+			s.end as ed -> tgt.visit_end_date = (src.actualPeriod.end.toString().substring(0,10)), tgt.visit_end_datetime = ed;
+		};
+
+		src.admission as s -> tgt then {
+			s.admitSource as sa -> tgt then {
+				sa.coding as sc -> tgt then {
+					sc.code as code -> tgt.admitted_from_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterAdmitSource', 'code'), tgt.admitted_from_source_value = code;
+				};
+			};
+		
+			s.dischargeDisposition as sd -> tgt then {
+				sd.coding as sc -> tgt then {
+					sc.code as code -> tgt.discharged_to_concept_id = translate(code, 'http://hl7.org/fhir/uv/omop/ConceptMap/EncounterDischargeDisposition', 'code'), tgt.discharged_to_source_value = code;
+				};
 			};
 		};
-	};
-	
+	} "visitOccurrenceMap";	
 }

@@ -10,41 +10,43 @@ uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTabl
  group Observe(source src : Observation, target tgt : ObsTable) 
  {
     src where (src.category.coding.code contains 'social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure') then {
-        src as s -> tgt then {
-            s.id as id -> tgt.observation_id = cast(id, "integer");
-        } "observationID";
+        src where (src.effective.empty().not()) then {
+            src as s -> tgt then {
+                s.id as id -> tgt.observation_id = cast(id, "integer");
+            } "observationID";
 
-        src.code as s -> tgt then {
-            s.coding as sc -> tgt then {
-                sc.code as a -> tgt.observation_concept_id = a;
+            src.code as s -> tgt then {
+                s.coding as sc -> tgt then {
+                    sc.code as a -> tgt.observation_concept_id = a;
+                };
             };
-        };
 
-        src.subject as subject -> tgt then {
-            subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
-        };
-        src.encounter as encounter -> tgt then {
-            encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
-        };
-
-        src.effective : dateTime as a -> tgt.observation_datetime = a , tgt.observation_date = cast(a, "date");
-        src.effective : instant as einst -> tgt.observation_datetime = cast(einst, "dateTime"), tgt.observation_date = cast(einst, "date");
-        src.effective : Period as s -> tgt then {
-            s.start as ss -> tgt.observation_datetime = cast(ss, "dateTime"), tgt.observation_date = cast(ss, "date");
-        }; 
-        //src.issued as s where (src.issued.toDate()  != src.effective) -> tgt.observation_source_value = (s.toString());  
-        
-        src.category -> tgt.observation_type_concept_id = 32817;
-
-        src.value : Quantity as s -> tgt then {
-            s.value as a  -> tgt.value_as_number = cast(a, "decimal");
-            s.unit as b -> tgt.unit_concept_id = b;
-        };
-        src.value : CodeableConcept as s  -> tgt then {
-            s.coding as sc -> tgt then {
-                sc.code as a -> tgt.value_as_concept_id = a;
+            src.subject as subject -> tgt then {
+                subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
             };
-        };
-        src.value : string as b -> tgt.value_as_string = b;
+            src.encounter as encounter -> tgt then {
+                encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
+            };
+
+            src.effective : dateTime as a -> tgt.observation_datetime = a , tgt.observation_date = cast(a, "date");
+            src.effective : instant as einst -> tgt.observation_datetime = cast(einst, "dateTime"), tgt.observation_date = cast(einst, "date");
+            src.effective : Period as s -> tgt then {
+                s.start as ss -> tgt.observation_datetime = cast(ss, "dateTime"), tgt.observation_date = cast(ss, "date");
+            }; 
+            //src.issued as s where (src.issued.toDate()  != src.effective) -> tgt.observation_source_value = (s.toString());  
+            
+            src.category -> tgt.observation_type_concept_id = 32817;
+
+            src.value : Quantity as s -> tgt then {
+                s.value as a  -> tgt.value_as_number = cast(a, "decimal");
+                s.unit as b -> tgt.unit_concept_id = b;
+            };
+            src.value : CodeableConcept as s  -> tgt then {
+                s.coding as sc -> tgt then {
+                    sc.code as a -> tgt.value_as_concept_id = a;
+                };
+            };
+            src.value : string as b -> tgt.value_as_string = b;
+        } "observationMap";
     } "OnlyObs";
 }

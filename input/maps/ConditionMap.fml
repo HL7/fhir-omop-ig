@@ -8,36 +8,38 @@ uses "http://hl7.org/fhir/StructureDefinition/Condition" alias Condition as sour
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias ConOccTable as target
 
 group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     {
+    src where (src.recordedDate.empty().not()) then {
     // OMOP Condition ID would be a map from FHIR ID to an external key
-    src as s -> tgt then {
-        s.id as id -> tgt.condition_occurrence_id = cast(id, "integer");
-    } "conditionID";
-    
-    // OMOP Person ID would be a map from the FHIR Condition subject reference to an external key
-    src.subject as subject -> tgt then {
-        subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
-    };
-
-    src.code as s -> tgt then {
-        s.coding as sc -> tgt then {
-            sc.code as a -> tgt.condition_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code');
-            sc.display as d -> tgt.condition_source_value = d;
+        src as s -> tgt then {
+            s.id as id -> tgt.condition_occurrence_id = cast(id, "integer");
+        } "conditionID";
+        
+        // OMOP Person ID would be a map from the FHIR Condition subject reference to an external key
+        src.subject as subject -> tgt then {
+            subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
         };
-    };
-    
-    src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"dateTime"), tgt.condition_start_date = cast(rd, "date");
-    src.onset : dateTime as osd -> tgt.condition_start_datetime = osd, tgt.condition_start_date = cast(osd, "date");
-    src.abatement : dateTime as abdt -> tgt.condition_end_datetime = abdt, tgt.condition_end_date = cast(abdt, "date");
 
-    src.clinicalStatus as s -> tgt then {
-        s.coding as sc -> tgt then {
-            sc.code as a -> tgt.condition_status_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionStatusConcepts', 'code'), tgt.condition_status_source_value = a;
+        src.code as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as a -> tgt.condition_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionConcepts', 'code');
+                sc.display as d -> tgt.condition_source_value = d;
+            };
         };
-    };
+        
+        src.recordedDate as rd -> tgt.condition_start_datetime = cast(rd,"dateTime"), tgt.condition_start_date = cast(rd, "date");
+        src.onset : dateTime as osd -> tgt.condition_start_datetime = osd, tgt.condition_start_date = cast(osd, "date");
+        src.abatement : dateTime as abdt -> tgt.condition_end_datetime = abdt, tgt.condition_end_date = cast(abdt, "date");
 
-    src.encounter as encounter -> tgt then {
-        encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
-    };
+        src.clinicalStatus as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as a -> tgt.condition_status_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ConditionStatusConcepts', 'code'), tgt.condition_status_source_value = a;
+            };
+        };
 
-    src.category -> tgt.condition_type_concept_id = 32817 "default";
+        src.encounter as encounter -> tgt then {
+            encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
+        };
+
+        src.category -> tgt.condition_type_concept_id = 32817 "default";
+    } "conditionMapping";
 }
