@@ -30,10 +30,10 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
             s.start as fps -> tgt.drug_exposure_start_datetime = fps, tgt.drug_exposure_start_date = cast(fps, "date");
         };
         src.effective : Period as s -> tgt then {
-            s.end as fpe -> tgt.drug_exposure_end_datetime = fpe, tgt.drug_exposure_end_date = cast(fpe, "date");
+            s.end as end -> tgt.drug_exposure_end_datetime = end, tgt.drug_exposure_end_date = cast(end, "date");
         };
         src.effective : Period as s -> tgt then {
-            s.end as fpe -> tgt.verbatim_end_date = cast(fpe, "date");
+            s.end as end -> tgt.verbatim_end_date = cast(end, "date");
         };
         src.category : CodeableConcept as s -> tgt then {
             s.coding as sc -> tgt then {

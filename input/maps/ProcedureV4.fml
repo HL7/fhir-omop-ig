@@ -4,7 +4,7 @@
 /// status = 'active'
 /// description = "This mapping maps FHIR Procedure instances to OMOP Procedure Occurrence Table objects."
 
-uses "http://hl7.org/fhir/4.0/StructureDefinition/Procedure" alias ProcedureR4 as source
+uses "http://hl7.org/fhir/StructureDefinition/Procedure|4.0" alias ProcedureR4 as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target
 
 group ProcedureOccurrence(source src : ProcedureR4, target tgt : ProcedureTable)     {

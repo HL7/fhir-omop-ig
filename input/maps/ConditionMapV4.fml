@@ -4,7 +4,7 @@
 /// status = 'active'
 /// description = "This mapping maps FHIR Condition instances to OMOP Condition Occurence Table objects."
 
-uses "http://hl7.org/fhir/4.0/StructureDefinition/Condition" alias Condition as source
+uses "http://hl7.org/fhir/StructureDefinition/Condition|4.0" alias Condition as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ConditionOccurrence" alias ConOccTable as target
 
 group ConditionOccurrence(source src : Condition, target tgt : ConOccTable)     {

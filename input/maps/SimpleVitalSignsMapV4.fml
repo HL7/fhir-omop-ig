@@ -4,7 +4,7 @@
 /// status = 'active'
 /// description = "This mapping maps simple FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."
 
-uses "http://hl7.org/fhir/4.0/StructureDefinition/Observation" alias VitalSigns as source
+uses "http://hl7.org/fhir/StructureDefinition/Observation|4.0" alias VitalSigns as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
 
 group VitalSigns(source src : VitalSigns, target tgt : MeasureTable) {

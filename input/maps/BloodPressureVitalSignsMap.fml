@@ -4,7 +4,7 @@
 /// status = 'active'
 /// description = "This mapping maps blood pressure FHIR Vital Signs instances that are considered measurements to OMOP Measurement Table objects."
 
-uses "http://hl7.org/fhir/StructureDefinition/Observation" alias BloodPressure as source
+uses "http://hl7.org/fhir/StructureDefinition/Observation|5.0" alias BloodPressure as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/RecordSet" alias BPRecord as target
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias Measurement as target
 
