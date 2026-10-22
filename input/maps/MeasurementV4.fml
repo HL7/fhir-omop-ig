@@ -1,0 +1,56 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/MeasurementMapV4'
+/// name = 'MeasurementMapV4'
+/// title = 'Mapping Observation resource to Measurement  OMOP Domain V4'
+/// status = 'active'
+/// description = "This mapping maps FHIR Observation instances that are considered measurements to OMOP Measurement Table objects.  Currently, this is done by considering the category code and mapping 'vital-signs' and 'laboratory' Observations."
+
+uses "http://hl7.org/fhir/4.0/StructureDefinition/Observation" alias Observation as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Measurement" alias MeasureTable as target
+
+group Measures(source src : Observation, target tgt : MeasureTable) {
+    src where (src.category.coding.code contains 'laboratory') then { 
+        src where (src.effective.empty().not()) then {
+            src as s -> tgt then {            
+                s.identifier as i -> tgt then {
+                    i.value as id -> tgt.measurement_id = cast(id, "code");                
+                } "measurementIdFromIdentifier";            
+            } "measurementId";
+
+            src.code as s -> tgt then {
+                s.coding as sc -> tgt then {
+                    sc.code as a -> tgt.measurement_concept_id = cast(a, "code");
+                };
+            } "MeasurementConcept";
+
+            src.subject as subject -> tgt then {
+                subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
+            };
+            src.encounter as encounter -> tgt then {
+                encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
+            };
+
+            src.effective : dateTime as edt -> tgt.measurement_datetime = cast(edt, "dateTime"), tgt.measurement_date = (edt.toString().substring(0,10));
+            src.effective : instant as einst -> tgt.measurement_datetime = cast(einst, "dateTime"), (einst.toString().substring(0,10));
+            src.effective : Period as s -> tgt then {
+                s.start as eps -> tgt.measurement_datetime = cast(eps, "dateTime"), tgt.measurement_date = (eps.toString().substring(0,10));
+            } "MeasurementDate";
+            //src.issued as s where (src.issued.toDate()  != src.effective) -> tgt.measurement_source_value = (s.toString());
+            
+            src.category -> tgt.measurement_type_concept_id = 32817 "EHR";
+            src.performer as performer -> tgt then {
+                performer.reference as p -> tgt.provider_id = (%p.substring(%p.indexOf('/') + 1));
+            };
+            
+            src.value : Quantity as s -> tgt then {
+                s.value as a -> tgt.value_as_number = cast(a, "decimal");
+                s.unit as b -> tgt.unit_concept_id = cast(b, "code");
+            } "QuantityValue";
+            src.value : CodeableConcept as s  -> tgt then {
+                s.coding as sc -> tgt then {
+                    sc.code as a -> tgt.value_as_concept_id = cast(a, "code");
+                };
+            } "CodeableConceptValue";
+            src.value : string as b -> tgt.value_source_value = cast(b, "string");
+        } "OnlyMeasures";
+    } "measurementMap";
+}

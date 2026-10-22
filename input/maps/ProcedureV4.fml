@@ -1,0 +1,38 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ProcedureMapV4'
+/// name = 'ProcedureMapV4'
+/// title = 'Mapping Procedure resource to Procedure Occurrence OMOP Domain V4'
+/// status = 'active'
+/// description = "This mapping maps FHIR Procedure instances to OMOP Procedure Occurrence Table objects."
+
+uses "http://hl7.org/fhir/4.0/StructureDefinition/Procedure" alias ProcedureR4 as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/ProcedureOccurrence" alias ProcedureTable as target
+
+group ProcedureOccurrence(source src : ProcedureR4, target tgt : ProcedureTable)     {
+    src where(src.performed.empty().not()) then {
+        src as s -> tgt then {            
+            s.identifier as i -> tgt then {
+                i.value as id -> tgt.procedure_occurrence_id = cast(id, "integer");            
+            } "procedureIdFromIdentifier";            
+        } "procedureId";
+
+        src.subject as subject -> tgt then {
+            subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
+        };
+
+        src.code as s -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as a -> tgt.procedure_concept_id = translate(a, 'http://hl7.org/fhir/uv/omop/ConceptMap/ProcedureType', 'code'), tgt.procedure_source_value = cast(a, "string");
+            };
+        };
+
+        src.performed : dateTime as edt -> tgt.procedure_datetime = cast(edt, "dateTime"), tgt.procedure_date = cast(edt, "date");
+        src.performed : Period as s -> tgt then {
+            s.start as start -> tgt.procedure_datetime = cast(start, "dateTime"), tgt.procedure_date = cast(start, "date");
+			s.end as end -> tgt.procedure_end_datetime, tgt.procedure_end_date = cast(end, "date");
+        };
+
+        src.encounter as encounter -> tgt then {
+            encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
+        };
+    } "procedureMapping";
+}

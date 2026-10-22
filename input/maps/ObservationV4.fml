@@ -1,0 +1,54 @@
+/// url = 'http://hl7.org/fhir/uv/omop/StructureMap/ObservationMapV4'
+/// name = 'ObservationMapV4'
+/// title = 'Mapping Observation resource to  Observation OMOP Domain V4'
+/// status = 'active'
+/// description = "This mapping maps FHIR Observation instances that are NOT considered measurements to OMOP Observation Table objects.  Currently, this is done by considering the category code and mapping 'social-history', 'imaging', 'survey', 'exam', 'therapy', 'activity', and 'procedure' Observations."
+
+uses "http://hl7.org/fhir/4.0/StructureDefinition/Observation" alias Observation as source
+uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTable as target
+
+ group Observe(source src : Observation, target tgt : ObsTable) 
+ {
+    src where (src.category.coding.code contains 'social-history' | 'imaging' | 'survey' | 'exam' | 'therapy' | 'activity' | 'procedure') then {
+        src where (src.effective.empty().not()) then {
+            src as s -> tgt then {            
+            s.identifier as i -> tgt then {
+                i.value as id -> tgt.observation_id = cast(id, "integer");            
+            } "observationIdFromIdentifier";            
+        } "observationId";
+
+            src.code as s -> tgt then {
+                s.coding as sc -> tgt then {
+                    sc.code as a -> tgt.observation_concept_id = cast(a, "code");
+                };
+            };
+
+            src.subject as subject -> tgt then {
+                subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
+            };
+            src.encounter as encounter -> tgt then {
+                encounter.reference as e -> tgt.visit_occurrence_id = (%e.substring(%e.indexOf('/') + 1));
+            };
+
+            src.effective : dateTime as a -> tgt.observation_datetime = cast(a, "dateTime"), tgt.observation_date = cast(a, "date");
+            src.effective : instant as einst -> tgt.observation_datetime = cast(einst, "dateTime"), tgt.observation_date = cast(einst, "date");
+            src.effective : Period as s -> tgt then {
+                s.start as ss -> tgt.observation_datetime = cast(ss, "dateTime"), tgt.observation_date = cast(ss, "date");
+            }; 
+            //src.issued as s where (src.issued.toDate()  != src.effective) -> tgt.observation_source_value = (s.toString());  
+            
+            src.category -> tgt.observation_type_concept_id = 32817;
+
+            src.value : Quantity as s -> tgt then {
+                s.value as a  -> tgt.value_as_number = cast(a, "decimal");
+                s.unit as b -> tgt.unit_concept_id = cast(b, "string");
+            };
+            src.value : CodeableConcept as s  -> tgt then {
+                s.coding as sc -> tgt then {
+                    sc.code as a -> tgt.value_as_concept_id = cast(a, "string");
+                };
+            };
+            src.value : string as b -> tgt.value_as_string = cast(b, "string");
+        } "observationMap";
+    } "OnlyObs";
+}
