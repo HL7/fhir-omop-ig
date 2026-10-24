@@ -5,7 +5,7 @@
 
 /// description = "This mapping maps FHIR AllergyIntolerance instances to OMOP Observation Table objects."
 
-uses "http://hl7.org/fhir/StructureDefinition/AllergyIntolerance|4.0" alias Allergy as source
+uses "http://hl7.org/fhir/StructureDefinition/AllergyIntolerance|4.0.1" alias Allergy as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObservationTable as target
 
 group Allergy(source src: Allergy, target tgt : ObservationTable) {

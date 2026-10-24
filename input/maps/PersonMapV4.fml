@@ -4,7 +4,7 @@
 /// status = 'active'
 /// description = "This mapping maps FHIR Patient instances to OMOP Person Table objects."
 
-uses "http://hl7.org/fhir/StructureDefinition/Patient|4.0" alias Patient as source
+uses "http://hl7.org/fhir/StructureDefinition/Patient|4.0.0" alias Patient as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Person" alias PersonTable as target
 
 

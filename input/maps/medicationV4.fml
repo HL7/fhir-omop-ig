@@ -4,27 +4,30 @@
 /// status = 'active'
 /// description = "This mapping maps FHIR MedicationStatement instances to OMOP Drug Exposure Table objects.  NOTE: It does not map FHIR MedicationRequest instances although there is a discussion of those instances in the notes."
 
-uses "http://hl7.org/fhir/StructureDefinition/MedicationStatement|4.0" alias MedState as source
+uses "http://hl7.org/fhir/StructureDefinition/MedicationStatement|4.0.1" alias MedState as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/DrugExposure" alias DrugExpTable as target
 
 group MedExposure(source src : MedState, target tgt : DrugExpTable) {
-    src where (src.effective.empty().not()) then {
+    src where (src.effective.empty().not() and src.identifier.empty().not()) then {
         src as s -> tgt then {            
             s.identifier as i -> tgt then {
                 i.value as id -> tgt.drug_exposure_id = cast(id, "integer");            
             } "medIdFromIdentifier";            
         } "medicationId";
+
         src.subject as subject -> tgt then {
             subject.reference as s -> tgt.person_id = (%s.substring(%s.indexOf('/') + 1)); 
         };
         
-        src.medication : CodeableReference as s -> tgt then {
-          s.concept as scs -> tgt then {
-            scs.coding as sc -> tgt then {
-                sc.code as a -> tgt.drug_concept_id  = a;
+        src.medication : CodeableConcept as s  -> tgt then {
+            s.coding as sc -> tgt then {
+                sc.code as a -> tgt.drug_concept_id = a;
             };
-          };
+        };      
+        src.medication : Reference as s -> tgt then {
+            s.reference as sr -> tgt.drug_concept_id = sr;
         };
+
         src.effective : dateTime as edt -> tgt.drug_exposure_start_datetime = edt, tgt.drug_exposure_start_date = cast(edt, "date");
         src.effective : Period as s -> tgt then {
             s.start as fps -> tgt.drug_exposure_start_datetime = fps, tgt.drug_exposure_start_date = cast(fps, "date");
@@ -35,11 +38,13 @@ group MedExposure(source src : MedState, target tgt : DrugExpTable) {
         src.effective : Period as s -> tgt then {
             s.end as end -> tgt.verbatim_end_date = cast(end, "date");
         };
+
         src.category : CodeableConcept as s -> tgt then {
             s.coding as sc -> tgt then {
                 sc.code as a -> tgt.drug_type_concept_id = a;
             };
         };
+        
         src.reason : CodeableReference as s -> tgt then {
           s.concept as scs -> tgt then {
             scs.coding as sc -> tgt then {

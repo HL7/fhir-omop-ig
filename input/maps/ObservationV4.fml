@@ -4,7 +4,7 @@
 /// status = 'active'
 /// description = "This mapping maps FHIR Observation instances that are NOT considered measurements to OMOP Observation Table objects.  Currently, this is done by considering the category code and mapping 'social-history', 'imaging', 'survey', 'exam', 'therapy', 'activity', and 'procedure' Observations."
 
-uses "http://hl7.org/fhir/StructureDefinition/Observation|4.0" alias Observation as source
+uses "http://hl7.org/fhir/StructureDefinition/Observation|4.0.1" alias Observation as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/Observation" alias ObsTable as target
 
  group Observe(source src : Observation, target tgt : ObsTable) 

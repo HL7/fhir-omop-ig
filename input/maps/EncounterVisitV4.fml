@@ -4,12 +4,11 @@
 /// status = 'active'
 /// description = "This mapping maps FHIR Encounter instances to OMOP Visit Occurence Table objects."
 
-uses "http://hl7.org/fhir/4.0/StructureDefinition/Encounter" alias Encounter as source
+uses "http://hl7.org/fhir/StructureDefinition/Encounter|4.0.1" alias Encounter as source
 uses "http://hl7.org/fhir/uv/omop/StructureDefinition/VisitOccurrence" alias VisitTable as target
 
 group VisitOccurrence(source src: Encounter, target tgt : VisitTable) {
 	src where (src.period.empty().not()) then {
-
 		// OMOP Visit Occurrence ID would be a map from FHIR ID to an external key
 		src as s -> tgt then {            
             s.identifier as i -> tgt then {
