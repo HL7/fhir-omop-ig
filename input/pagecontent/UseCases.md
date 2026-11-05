@@ -92,7 +92,12 @@ The following is an illustrative example of the type of AI application this work
 
 A healthcare provider could use an AI model to predict medication adherence for patients. The AI model would be trained on historical clinical data stored in the OMOP format, which contains detailed, structured information about patient visits, medications, diagnoses, and more. The healthcare provider would collect patient data in real-time via FHIR resources, such as prescriptions and medication refills, stored in their EHR system.
 
-![FHIR to OMOP Transformation for AI Training and Classification](fhir-omop-ig-ai-downstream.jpg)
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b></b></figcaption>
+<img src="fhir-omop-ig-ai-downstream.jpg" style="padding-top:0;padding-bottom:30px" width="800" alt="FHIR to OMOP Transformation for AI Training and Classification"/>
+</figure>
+{::options parse_block_html="true" /}
 
 Through the ETL process, the FHIR resources (prescription orders, medication administration records, etc.) would be transformed into the OMOP CDM format, ensuring compatibility with the trained model. Once transformed, the model would be applied to real-time data to predict whether a patient is likely to adhere to their prescribed medication regimen. The output of the model would then be classified based on this prediction and used to guide healthcare interventions.
 
