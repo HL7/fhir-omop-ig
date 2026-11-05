@@ -126,7 +126,12 @@ An implementer raised the use case during the Informative ballot of this guide. 
 
 A clinical event triggers the request: an admission, a medication order, a chart opening. The decision support application retrieves the patient's FHIR resources from the EHR's FHIR API. A transformation engine converts them to OMOP rows for that patient alone: one PERSON record plus the visits, conditions, drug exposures, measurements and observations the model reads. The model computes its features from those rows and returns a prediction to the workflow. The OMOP rows may be discarded once the prediction is returned.
 
-![Single-patient FHIR to OMOP transformation for clinical decision support: one request end to end](fhir-omop-ig-single-patient-sequence.png)
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b></b></figcaption>
+<img src="fhir-omop-ig-single-patient-sequence.png" style="padding-top:0;padding-bottom:30px" width="800" alt="Single-patient FHIR to OMOP transformation for clinical decision support: one request end to end"/>
+</figure>
+{::options parse_block_html="true" /}
 
 Bulk conversion is outside this use case. An initial warehouse load from an EHR vendor's reporting database continues to use extract tooling built for that volume.
 
@@ -136,7 +141,12 @@ The logical models, StructureMaps, ConceptMaps and code mapping patterns in this
 
 A model's validity depends on that sameness. A model trained on OMOP data expects point-of-care data to follow the conventions of its training data: the same domain assignments, the same standard concepts, the same handling of status elements and unmapped codes. Many training warehouses were loaded by a different pipeline than the one that will serve the model. The two pipelines can disagree about the same patient, and when they do the model receives inputs unlike its training data with no error raised. Comparing the output of both pipelines for a sample of patients before deployment exposes these disagreements.
 
-![Two routes to OMOP, one set of mappings: the training route and the point-of-care route must agree](fhir-omop-ig-two-routes.png)
+{::options parse_block_html="false" /}
+<figure>
+<figcaption><b></b></figcaption>
+<img src="fhir-omop-ig-two-routes.png" style="padding-top:0;padding-bottom:30px" width="800" alt="Two routes to OMOP, one set of mappings: the training route and the point-of-care route must agree"/>
+</figure>
+{::options parse_block_html="true" /}
 
 #### Where It Differs
 
