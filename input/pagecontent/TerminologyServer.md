@@ -8,7 +8,7 @@ Note also that the responses shown here, and in particular the terminology `vers
 
 
 ### CodeSystem $Lookup Operation
-The FHIR [CodeSystem/$lookup](https://hl7.org/fhir/codesystem-operation-lookup.html) provides additional information about a concept.  Given a concept ID, e.g. `1567956` we can lookup its properties:
+The FHIR [CodeSystem/$lookup](https://hl7.org/fhir/codesystem-operation-lookup.html) provides additional information about a concept.  Given a concept ID, e.g. `1567156` we can lookup its properties:
 
 **Request:**
 
