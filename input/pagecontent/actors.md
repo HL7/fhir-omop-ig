@@ -4,7 +4,7 @@ This guide defines a single level of conformance. A system claims conformance by
 
 ### A1 FHIR Source System (SRC)
 
-The FHIR-conformant system that exposes the clinical data consumed by the transformation. This is typically an EHR FHIR endpoint, a clinical data repository, a FHIR facade over a legacy system, or a static FHIR Bundle or NDJSON export. The Source System is responsible only for producing FHIR resources that validate against declared profiles; it carries no OMOP-specific obligations.
+The FHIR-conformant system that exposes the clinical data consumed by the transformation. This is typically an EHR FHIR endpoint, a clinical data repository, a FHIR facade over a legacy system, or a system that produces a static FHIR Bundle or NDJSON export. The Source System is responsible only for producing FHIR resources that validate against declared profiles; it carries no OMOP-specific obligations.
 
 This actor is almost always operated by a party other than the Transformation Engine operator: the hospital, the data holder, the national exchange. Stating its obligations explicitly allows this guide to set realistic expectations without imposing OMOP-specific requirements on systems whose primary purpose is clinical exchange.
 
